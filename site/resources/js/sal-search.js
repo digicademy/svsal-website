@@ -324,3 +324,16 @@ function updateAllURLParameters (nodelist, param, paramVal) {
     return nodelist[i]
   }
 };
+
+function showSpinnerTotal () {
+  document.getElementById('spinner-total').classList.add('show');
+};
+function hideSpinnerTotal () {
+  document.getElementById('spinner-total').classList.remove('show');
+};
+function showSpinnerDetails (id) {
+  document.getElementById(id).classList.add('show');
+};
+function hideSpinnerDetails (id) {
+  document.getElementById(id).classList.remove('show');
+};

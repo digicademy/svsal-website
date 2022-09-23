@@ -227,27 +227,6 @@
             });
             $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });  // set navbar height
         </script>
-        <script type="text/javascript"> // set spinners on ajax actions
-            function showSpinnerTotal () {
-                document.getElementById("spinner-total").classList.add("show");
-            };
-            function hideSpinnerTotal () {
-                document.getElementById("spinner-total").classList.remove("show");
-            };
-            function showSpinnerDetails (id) {
-                document.getElementById(id).classList.add("show");
-            };
-            function hideSpinnerDetails (id) {
-                document.getElementById(id).classList.remove("show");
-            };
-            /*
-            jQuery.ajaxSetup({
-                beforeSend: function() { $('.spin100').show(); },
-                complete:   function() { $('.spin100').hide(); },
-                success:    function() {}
-            });
-            */
-        </script>
         <script type="text/javascript"> // trigger search functions
             $("#doSearch").click(function (event) {                                             // Do the Search!
                 let field = document.getElementById('field').value
