@@ -1,0 +1,1491 @@
+/* Application styles for reading view */
+
+/* FONTS */
+/* 1. Cardo (Bembo Variante, Hausschrift der AdWL)
+      URL: http://scholarsfonts.net/cardofnt.html
+*/
+@font-face {
+    font-family:Cardo;
+    src: url('/resources/fonts/cardo/cardo104s-webfont.woff'); /* Embedded font type used by other browsers */
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family:Cardo;
+    src: url('/resources/fonts/cardo/cardob101-webfont.woff');
+    font-weight: bold;
+    font-display: swap;
+}
+@font-face {
+    font-family:Cardo;
+    src: url('/resources/fonts/cardo/cardoi99-webfont.woff');
+    font-style: italic;
+    font-display: swap;
+}
+/* 2. Junicode
+      URL: http://junicode.sourceforge.net/
+*/
+@font-face{
+    font-family:Junicode;
+    src:url("/resources/fonts/junicode/junicode.woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("/resources/fonts/junicode/junicode-bold.woff");
+    font-weight:bold;
+    font-display: swap;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("/resources/fonts/junicode/junicode-italic.woff");
+    font-style:italic;
+    font-display: swap;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("/resources/fonts/junicode/junicode-bolditalic.woff");
+    font-weight:bold;
+    font-style:italic;
+    font-display: swap;
+}
+/* 3. Andron (A. Stötzner, Koop. m. MUFI)
+      URL: http://www.mufi.info/fonts/#Andron
+*/
+@font-face{
+    font-family:Andron;
+    src:url("/resources/fonts/andron/andron-scriptor-web.woff");
+    font-display: swap;
+}
+
+
+/*Main stylesheet for Backtop jQuery Plugin */
+#backTop{
+    width:35px;
+    height:35px;
+    padding:10px;
+    border-radius:4px;
+    text-indent:-9999px;
+    cursor:pointer;
+    z-index:999999999;
+	display:none;
+	box-sizing:content-box;
+	-webkit-box-sizing:content-box;
+}
+#backTop.white{
+     background:url("/resources/images/uparr-48-b.png") no-repeat center center rgba(255,255,255,0.8);
+    border:1px solid #ccc;
+}
+#backTop.black{
+     background:url("/resources/images/uparr-48-w.png") no-repeat center center rgba(0,0,0,0.8); 
+    border:1px solid #ccc;
+}
+#backTop.red{
+     background:url("/resources/images/uparr-48-w.png") no-repeat center center rgba(217,97,81,0.9); 
+    border:1px solid #fff;
+}
+#backTop.green{
+     background:url("/resources/images/uparr-48-b.png") no-repeat center center rgba(81,217,187,0.9); 
+    border:1px solid #fff;
+}
+
+
+/* Color scheme:
+    Dark Blue:  #102873
+    Even Darker Blue: #03123F
+    Medium Blue: #081D5C
+    Light Blue: #39529B
+    Light Grey: #DEDFE7
+    Dark Grey:  #ADB2BD
+    Orange:     #B57D29
+    Orange2:    #CF9416
+*/
+
+.navbar-default {
+        color: #DEDFE7;
+        background-color: #102873;
+        font-size: 14px;
+        border-bottom-width: 1px;
+        border-color: #39529B;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav > li > a {
+    color: #DEDFE7;
+}
+.navbar-default .navbar-brand a:hover,
+.navbar-default .navbar-brand a:focus,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #DEDFE7;
+    background-color: #03123F;
+    background: -webkit-linear-gradient(top, #102873 0%, #081D5C 100%);
+    background: linear-gradient(to bottom, #102873 0%, #081D5C 100%);
+}
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #DEDFE7;
+    background-color: #081D5C;
+}
+
+.navbar-default .btn-default {
+    color: #DEDFE7;
+    background-color: #102873;
+    background: none;
+    border: 1px solid #39529B;
+    border-radius:0px;
+}
+.navbar-default .btn-default.focus,
+.navbar-default .btn-default:focus {
+    color: #DEDFE7;
+    background-color: #03123F;
+/*    background: none;*/
+    border: 1px solid #39529B;
+    border-radius:0px;
+}
+.navbar-default .btn-default.active,
+.navbar-default .btn-default.active:focus,
+.navbar-default .btn-default.focus:active,
+.navbar-default .btn-default:active,
+.navbar-default .btn-info,
+.navbar-default .btn-info.active,
+.navbar-default .btn-info.focus,
+.navbar-default .btn-info:active,
+.navbar-default .btn-info:focus,
+.navbar-default .btn-info.active:focus,
+.navbar-default .btn-info.focus:active {
+    color: #DEDFE7;
+    background-color: #102873;
+    background: none;
+    border: 3px solid #DEDFE7;
+    border-radius:0px;
+    padding: 4px 8px;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: #337ab7;
+}
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: white;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: white;
+}
+.navbar-default .navbar-toggle:hover .icon-bar,
+.navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #337ab7;
+}
+
+
+
+/* Elements */
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+/*body and html adjusted for the "dialog off screen functionality"*/
+body {
+    position: relative;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /*padding-top: 25px;*/
+}
+
+a {
+    color: #102873;
+}      
+
+a[id]:not(.jstree-anchor) {
+/*    padding-top: 10px; */
+/*    margin-top: -10px; */
+    display: inline-block; /* required for webkit browsers */
+    
+}
+
+a[id]:before { 
+  display: block; 
+  content: " "; 
+  margin-top: -100px; 
+  height: 100px; 
+  visibility: hidden; 
+}
+
+/*a.anchor {
+    display: block; 
+    position: relative; 
+    top: -50px; 
+    visibility: hidden;
+}*/
+
+a[class~="hideMe"] {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;     /** IE6+, Firefox 7+, Opera 11+, Chrome, Safari **/
+        -o-text-overflow: ellipsis;  /** Opera 9 & 10 **/
+        width: 65% /* note that this width will have to be smaller to see the effect */
+    }
+
+a > span[class~=pull-right] {
+        position:absolute;
+        right: 10%; 
+    }
+
+a:hover > span[class~=pull-right] {
+    background-color: #E7F4F9
+} 
+
+#wrapperWork > * {
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+}
+
+it {
+    font-style: italic;
+}
+li.cardoStyleLi {
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: x-large;
+} 
+
+
+
+/* font sizes for different screen sizes */
+@media only screen and (min-width: 320px){ 
+.hauptText,
+.SvSalPage li,
+.SvSalPage section {
+    text-align: justify;
+    clear: both; 
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.2em;
+    z-index: -10;
+    } 
+.SvSalPage h3 {
+    font-size: 1.4em;
+    font-weight: bold;
+    }
+.SvSalPage h4 {
+    font-size: 1.2em;
+    font-weight: bold;
+    }
+}
+
+@media only screen and (min-width: 533px){ 
+.hauptText,
+.SvSalPage li,
+.SvSalPage section {
+    text-align: justify;
+    clear: both; 
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.4em;
+    } 
+.SvSalPage h3 {
+    font-size: 1.5em;
+    }
+.SvSalPage h4 {
+    font-size: 1.4em;
+    font-weight: bold;
+    }
+}
+
+@media only screen and (min-width: 768px){ 
+.hauptText,
+.SvSalPage li,
+.SvSalPage section {
+    text-align: justify;
+    clear: both; 
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.3em;
+    } 
+.SvSalPage h3 {
+    font-size: 1.7em;
+    }
+.SvSalPage h4 {
+    font-size: 1.3em;
+    font-weight: bold;
+    }
+}
+
+@media only screen and (min-width: 1024px){
+.hauptText,
+.hauptText li,
+.SvSalPage section {
+    text-align: justify;
+    clear: both; 
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.4em;
+    }
+.SvSalPage h3 {
+    font-size: 1.5em;
+    }
+.SvSalPage h4 {
+    font-size: 1.4em;
+    font-weight: bold;
+    }
+}
+
+@media only screen and (min-width: 1440px){
+.hauptText,
+.hauptText li,
+.SvSalPage section {
+    text-align: justify;
+    clear: both; 
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.8em;
+    }
+.SvSalPage h3 {
+    font-size: 2.2em;
+    } 
+.SvSalPage h4 {
+    font-size: 1.8em;
+    font-weight: bold;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+
+
+/* Essential text areas, to be rendered as "columns" from left to right:
+ * - teasers: .section-title -> positioned relative to the main area (left) & hidden in smaller-screen view
+ * - pagination & image links: .pageNumbers -> positioned relative to the main area (left)
+ * - main area: .hauptText, .titlePage, .sec-titlePage (don't need any relative positioning)
+ * - marginals: .marginal -> -> positioned relative to the main area (right)
+ * Additionally, there are citation toolboxes (.sal-toolbox) in the main and marginal area 
+ * that are always slightly offset to the left, relative to *their* immediate container (.hauptText, .marginal, etc.)
+*/
+
+/*.summary_title {
+    float: left;
+    clear: left;
+    position: relative;
+    width: 17.5rem;
+    margin-left:-33rem;
+	line-height: 1.6;
+    font-family: Helvetica, Arial, sans-serif;
+	vertical-align: baseline;
+    font-size: initial;
+    bottom: -0.55em;
+}*/
+
+.pageNumbers {
+    display: inline-block;
+    position: absolute;
+    text-align:left;
+    width: 18%;
+    left:-20%;
+}
+.sal-toolbox {
+    display: inline-block;
+    position: absolute;
+    left: -2.5%;
+}
+
+
+.sal-toolbox-title {
+    display: table-cell;
+    padding-right:0.8rem;
+}
+
+.sal-toolbox-marginal {
+    display:table-cell;
+    visibility: hidden;
+    padding-right:0.3em;
+}
+.marginal:hover .sal-toolbox-marginal {
+    visibility: visible;
+    transition:display 0.7s linear;
+}
+.sal-toolbox-body:hover .sal-toolbox-marginal {
+    visibility: visible;
+}
+
+/* Hover animations with citation toolboxes */
+.sal-toolbox-marginal:hover ~ .marginal-body,
+.sal-toolbox:hover ~ .heading-text,
+.sal-toolbox:hover ~ .titlePage-body,
+.sal-toolbox:hover ~ .hauptText-body,
+.sal-toolbox-title:hover ~ .section-title-body {
+    background-color: #F0F0F0; /* #F5F5F5 */
+    transition: background-color 0.2s linear;
+}
+.sal-toolbox a,
+.sal-toolbox-title a,
+.sal-toolbox-marginal a {
+    color: #B0C4DE !important;
+}
+.sal-toolbox:hover a,
+.sal-toolbox-marginal:hover a,
+.sal-toolbox-title:hover a {
+    color: #102873 !important;
+    transition: color 0.2s linear;
+}
+
+.marginal-body {
+    display:table-cell;
+    text-align:left;
+    font-size: 20px !important; 
+    font-style: normal !important;
+    font-weight: normal !important;
+    width:32rem;
+}
+.sal-toolbox-body {
+    display:none;
+}
+.sal-toolbox-body .popover-content { /* overwriting Bootstrap settings here */
+    padding: 3px;
+}
+
+div.sal-tb-btn {
+    font-size:16px !important;
+    display:block;
+}
+
+.sal-cite-toggle button {
+    margin-left:40%;
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    color: #102873 !important;
+    outline: none;
+    height:1.5em;
+}
+
+.sal-cite-toggle button:hover {
+    background-color: #E8E8E8 !important;
+    transition: color 0.2s linear;
+}
+
+.sal-cite-toggle > * {
+    margin:0.3em;
+}
+.sal-cite-input {
+    width:95%;
+}
+
+.marginal {
+    float: right;
+	clear: right;
+	margin-right: -49%;
+    padding: 5px;
+	line-height: 1.6;
+	text-indent: 0;
+	text-align: left;
+	width:45%;
+    display:table;
+}
+
+/* Section titles */
+.section-title-body {
+    display:table-cell;
+    width:90%;
+    font-size: 18px !important; 
+    font-style: normal !important;
+    font-weight: normal !important;
+}
+.section-title-text {
+    display:inline;
+}
+.section-title {
+    float: left;
+	clear: left;
+	line-height: 1.6;
+	text-indent: 0;
+	font-family: Helvetica, Arial, sans-serif;
+	text-align: left;
+	width: 34%;
+    margin-left:-56%;
+    display:table;
+}
+.section-title p.collapse[aria-expanded="false"] {
+    display: block;
+    height: 1.6em !important;
+    overflow: hidden;
+}
+.section-title p.collapsing[aria-expanded="false"] {
+    height: 1.6em !important;
+}
+.section-title a:not(.collapsed) {
+    text-decoration: none;
+    color: black;
+}
+.section-title a:not(.collapsed) .edited {
+    color:#707070;
+}
+.section-title a:not(.collapsed) .original {
+    color:#993333;
+}
+.section-title a.collapsed:after {
+    content: '...⌄';
+    margin-top:-1em;
+    position:absolute;
+}
+/*.sal-section-title {
+    float: left;
+    clear: left;
+    position: relative;
+    width: 17.5rem;
+    margin-left:-33rem;
+	line-height: 1.6;
+    font-family: Helvetica, Arial, sans-serif;
+	vertical-align: baseline;
+    font-size: initial;
+    bottom: -0.55em;
+}*/
+
+
+/* ------------------------------------------------------------------ */
+
+/* Classes */
+
+
+/*a[name] {
+    padding-top: 45%;
+}*/
+
+.alpheios-enabled-text {
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    padding:0px;
+    margin:0px;
+}
+
+.boxRight {
+    position: fixed;
+   /* top: 40%;*/
+	/*background-color: #f5f5f5;*/
+	z-index:1;
+	/*font-size: 14px;*/
+	display: none;
+	
+	/*margin-top: 3.1%;*/
+	
+	/*-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+    border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    min-width: 20%; */
+   /* left: 20%;*/
+	}
+
+.boxLeft {
+    position: fixed;
+	/*background-color: #f5f5f8;*/
+	z-index:1;
+	/*font-size: 14px;*/
+	/*width: 37%;*/
+	/*margin-top:5%;*/
+	display: none;
+	/*overflow:scroll;*/
+	/*margin-top: 3.1%;*/
+	/*left: -5%;*/
+	/*-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+    border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);*/
+    /*min-height: 20%;*/
+    /*max-height: 97%;*/
+   /* padding-top: 3%;*/
+   /* overflow-x: hidden*/
+	}
+
+#content .container .watermark-wip-text {
+    display:block;
+    position:fixed;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    top:40%;
+    color:gray;
+    z-index:1000;
+    font-size:10em;
+    font-weight:bold;
+    transform:rotate(330deg);
+    -webkit-transform:rotate(330deg);
+    opacity:0.25;
+    filter:alpha(opacity=25);   /* for <= IE 8 */
+    pointer-events: none;       /* click through it */
+}
+
+
+/* 
+ * Citation references:
+ */
+ 
+.citRefModal {
+  font-size:1.2em;
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.citRefModal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.closeCitRef {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closeCitRef:hover,
+.closeCitRef:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* cit. ref. end */
+
+
+.dictLemma {
+    font-weight: bold;
+}
+
+.original, .abbr, .orig, .sic{
+    color:#993333;
+}
+.edited, .expan, .reg, .corr{
+    color:#707070;
+}
+a .edited, a .expan, a .reg, a .corr{
+    color: #428bca;    
+} 
+/*.glyph{
+    color:#707070 !important;
+}*/
+
+.hauptText .fa {
+    font-size:0.75em !important;
+    vertical-align: initial;
+}
+
+.fa-hand-point-right {
+/*    font-size:unset;*/
+    font-size:23px;
+}
+
+.sal-tb-a > .fa-link {
+    font-size:20px;
+}
+.sal-tb-btn button {
+    margin-left:-0.5em;
+    border: none;
+    background-color: transparent;
+    color: #102873 !important;
+    outline: none;
+}
+.sal-tb-btn:hover {
+    background-color: #E8E8E8 !important;
+    transition: color 0.2s linear;
+}
+
+.sal-toolbox-body i {
+    width:1em;
+}
+span.copy-alert {
+    position:absolute;
+    white-space: nowrap;
+    display:inline-block;
+    background-color: #404040;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 3px;  
+    opacity:0.9;
+    font-size:90%;
+}
+
+.hauptText .signed {
+    font-size:0.9em !important;
+    text-align:right !important;
+    font-style: italic;
+    padding-top:0.3em;
+}
+
+.hauptText .argument {
+    font-size:1.0em !important;
+    text-align:left !important;
+    font-style:italic;
+    padding-top:0.2em;
+}
+
+.form-inline > .form-group {
+    vertical-align: top;
+}
+
+.glyphicon {
+    font-size: 1.25em;
+    top: 0.10em;
+}
+
+.inlist-head {
+    font-size:1.1em !important;
+}
+
+.navbar .glyphicon {
+    font-size: 1em;
+}
+
+.cardoStyle {
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.8em;
+}
+
+.hi { 
+/*    background-color: #B57D29;*/
+    background-color: gold;
+    padding: 0 3px 0 3px;
+}
+
+.highlighted {
+    background-color: #CF9416;
+/*    background-color: wheat;*/
+    padding: 0 3px 0 3px;
+}
+
+.item-paragraph {
+    display:block;
+}
+
+.list-index-head, .list-default-head {
+    font-size:27px !important;
+    font-weight:bold;
+}
+.list-index-item, .list-default-item {
+    font-size:20px !important;
+}
+
+.note-label {
+    font-style: italic;
+    display:inline;
+}
+.note-paragraph {
+    display:inline;
+}
+.marginal p.collapse[aria-expanded="false"] {
+    display: block;
+    height: 1.6em !important;
+    overflow: hidden;
+}
+.marginal p.collapsing[aria-expanded="false"] {
+    height: 1.6em !important;
+}
+.marginal a:not(.collapsed) {
+    text-decoration: none;
+    color: black;
+}
+.marginal a:not(.collapsed) .edited {
+    color:#707070;
+}
+.marginal a:not(.collapsed) .original {
+    color:#993333;
+}
+.marginal a.collapsed:after {
+    content: '...⌄';
+    margin-top:-1em;
+    position:absolute;
+}
+
+a .original {
+    color:#80005e;
+}
+
+.simple-char {
+    color:inherit;
+}
+
+span.gap:after {
+    content: '[…]';
+    color:gray;
+    font-size:70%;
+}
+
+span.blankPage {
+    display:block;
+}
+
+span.label-inline {
+    display:block;
+    text-align:center;
+    font-weight: bold;
+    font-size:28px !important;
+    padding:0.5em;
+}
+
+/*.page-numbers {
+    padding: 3em !important;
+    float: right !important;
+}*/
+
+.facs-icon {
+    font-size:18px !important;
+}
+
+hr.ornament {
+    width: 30%;
+}
+
+.pageNo {
+   /* font-size:large;*/
+    font-size: 18px !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+}
+
+.pipe {
+  /*  font-size:initial;*/
+    padding-bottom: 5%;
+}
+
+.poem {
+    font-style:italic;
+    font-size:23px !important;
+/*    padding-bottom:3em !important;*/
+    text-align: left !important;
+}
+.poem-head {
+    font-size:26px;
+    text-align: left !important;
+}
+
+.marginal .poem {
+    font-style:italic;
+    font-size:19px !important;
+/*    padding-bottom:3em !important;*/
+    text-align: left !important;
+}
+.marginal .poem-head {
+    font-size:17px;
+    text-align: left !important;
+}
+
+.searchResultsNav {
+    position: fixed;
+    top:48px;
+    height:32px;
+    padding: 4px 2px 4px 2px;
+    z-index: 9;
+    text-align: center;
+    background: gold none repeat scroll 0% 0%;
+    border: 1px solid tan;
+}
+
+.sidebar {
+    background-color: red;
+}
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar-outer {
+    position: relative;
+}
+
+.smallcaps {
+    font-variant: small-caps;
+}
+
+.spacer {
+    min-height: 60%;
+}
+.summaria, .summaries{
+    text-align: justify;
+    clear: both; 
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.4em;
+    display: block;
+   /* text-indent:1em;*/
+}
+
+table {
+    font-size: 1.15em;
+}
+
+span.sal-unclear:after {
+    color:#993333;
+    content: '[?]';
+    font-style: italic;
+}
+
+span.sal-unclear-text {
+    color:#993333;
+    border-bottom: 2px dotted #993333;
+}
+
+/* Tables */
+.hauptText table {
+    font-size:0.9em;
+}
+table td {
+    vertical-align:top;
+    text-align:left;
+}
+.table-label {
+    font-weight:bold;
+    padding-right:0.9em;
+}
+
+/*a[name] {display: block; position: relative; top: -50px; visibility: hidden;}*/
+
+.titlePage {
+    /*border:medium double black;*/
+    background-color:#e8f1fa;
+    /* padding:0.2em;*/
+    line-height: 150%;
+    border-radius: 2px;
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.8em;
+    display: block;
+    text-align: center;
+    margin-bottom: 10%;
+        
+}
+/* subsequent title pages: identical to first one, but without blueish background or border */
+.sec-titlePage {
+    /* padding:0.2em;*/
+    line-height: 150%;
+    border-radius: 2px;
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: 1.8em;
+    display: block;
+    text-align: center;
+    margin-bottom: 10%;
+}
+
+@keyframes spinner {
+    0% {
+      transform: translate3d(-50%, -50%, 0) rotate(0deg);
+    }
+    100% {
+      transform: translate3d(-50%, -50%, 0) rotate(360deg);
+    }
+}
+
+.spinner::before {
+    animation: 1.5s linear infinite spinner;
+    animation-play-state: inherit;
+    border: solid 5px #cfd0d1;
+    border-bottom-color: #1c87c9;
+    border-radius: 50%;
+    content: "";
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform;
+  }
+
+li.toc {
+    list-style-type: none; 
+}
+
+ul.toc-sub {
+    list-style-type: none;
+    margin-left: -2%;
+}
+
+li.list-paragraph {
+    list-style-type: none; 
+    /*  or  list-style: none; ? */
+}
+
+/*ul.cardoStyleUl {
+    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
+    font-size: initial;
+}*/
+
+span.unsichtbar, .unsichtbar {
+    display:none !important;
+}
+
+span.sal-section-teaser{
+    padding-left:0.5em;
+    display:block;
+}
+
+.visible {
+    display:inherit;
+}
+
+/*#wrapper {
+    font-size: 0.94em;
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: 150%;
+}*/
+
+
+
+/* IDs */
+/*#box {
+    bottom: 0; /\* increase for footer use *\/
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 4.8%; /\* spacer to show the scrollbar of the "haupttext" right under the header *\/
+}*/
+
+#buttonRight {
+    /*padding-top: 6%; */
+   /* padding-right: 2.5%;*/
+    position: fixed; 
+    z-index: 1000;
+    
+    /*right: 1%;
+    padding: 1%;*/
+    
+}
+
+#buttonLeft {
+    /*padding-top: 6%; */
+   /* padding-right: 2.5%;*/
+   /* position: fixed; */
+    z-index: 10000;
+    /*left: 1%;
+    padding: 1%;*/
+}
+
+/*#column {
+    height: 100%;
+    padding-top: 3%;
+    overflow-x: hidden;
+}*/
+
+#column:before, .column:after {
+    content: "";
+    display: table;
+}
+
+#column:after {
+    clear: both;
+}
+
+/*for  the two scrollbars and the expandable left div (switch to scroll, when height is higher than 100%*/
+
+#container {
+    width: auto; 
+}
+
+
+
+#full {
+    width: 100%;
+}
+
+#initials {
+    text-align: justify;
+    clear: right;
+    font-size: 1.5em;
+    display: inline-block;
+    margin-bottom: -2%;
+}
+
+#row-fluid {
+   min-height: 95%;
+}
+
+/*affix info*/
+
+/*#con{
+    height:30px;
+    width: 100%;
+}*/
+
+#nav.affix {
+    position: fixed;
+    top: 23px;
+    width: 100%;
+    z-index: 1;
+}
+
+#nav {
+    width: 100%;
+    margin-top: -30px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* jsTree Dialog "Expand/Collapse all" button */
+button#toggleButton {
+    display: none;
+}
+
+/*Change the point at which your navbar switches between collapsed and horizontal mode.
+CSS-Solution from http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse*/
+@media (max-width: 1199px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin: 7.5px -15px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    /* since 3.1.0 */
+    .navbar-collapse.collapse.in { 
+        display: block!important;
+        
+    }
+    .collapsing {
+        overflow: hidden!important;
+        z-index: 1000;
+    }
+}
+
+/*Make header title smaller for mobile View*/
+@media (min-width: 320px) {
+.smallNav{
+white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    width: 30%;
+    }
+  }
+ 
+@media (min-width: 361px) {
+.smallNav{
+white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    width: 54%;
+    }
+  }
+  
+
+/*scrollable paginator*/
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+/*Make caret white*/
+.whiteCaret {
+    border-color: white transparent;
+    border-style: solid solid dotted;
+    border-width: 4px 4px 0;
+    display: inline-block;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    width: 0;
+    }
+
+/*GUI Navbar Design */
+.navbar-white {
+/*    background: rgba(0, 0, 0, 0) linear-gradient(5deg, white, white 10%, #39b3d7, #39b3d7, 20%, #428bca, #428bca 60%, #67598a, #67598a) repeat scroll 0 0;*/
+    color: #333;
+    background-color: #F8F8F8;
+    border-color: #39529B;
+/*    border-bottom-color: #4710D5;*/
+    padding-bottom: 3px;
+    padding-top: 40px;
+}
+.navbar-white .btn-link {
+    color: #333;
+}
+
+/*responsive screen display behaviour*/
+@media (min-width: 768px) {
+  .modal-xl {
+    width: 90%;
+   max-width:1200px;
+  }
+}
+
+@media only screen and (min-width: 320px){
+#wrapperWork {
+  padding-left: 6%;
+ }
+}
+
+@media only screen and (min-width: 603px){
+#wrapperWork {
+    padding-left: 8%;
+ }
+}
+
+@media only screen and (min-width: 768px){
+#wrapperWork {
+    padding-left: 9%;
+ }
+}
+
+@media only screen and (min-width: 1024px){
+#wrapperWork {
+    padding-left: 2%;
+ }
+}
+
+/*Change the point at which your navbar switches between collapsed and horizontal mode.
+CSS-Solution from http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse*/
+@media (max-width: 1199px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin: 7.5px -15px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    /* since 3.1.0 */
+    .navbar-collapse.collapse.in { 
+        display: block!important;
+    }
+    .collapsing {
+        overflow: hidden!important;
+    }
+}
+
+/*Make header title smaller for mobile View*/
+@media (min-width: 320px) {
+.smallNav{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    width: 70%;
+    }
+  }
+ 
+@media (min-width: 361px) {
+.smallNav{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    width: 70%;
+    }
+  }
+
+.openseadragon-small
+{
+    width:      40px;
+    height:     30px;
+    border:     1px solid black;
+    color:      #333; /* text color for messages */
+    background-color: white;
+}
+
+.toolbar
+{
+    width:      600px;
+    height:     33px;
+    border:     none;
+    color:      #333;
+    padding:    4px;
+    background-color: transparent;
+}
+.toolbar.fullpage{
+    width:      100%;
+    border:     none;
+    position:   fixed;
+    z-index:    999999;
+    left:       0;
+    top:        0;
+    background-color: #ccc;
+}
+
+it {
+    font-style: italic;
+}
+
+a.unavailable {
+  text-decoration-style: dashed;
+}
+
+.lemma_link::before {
+  font-weight: bold;
+  color: #c0c0d4;
+  content: "‣\202F";
+}
+
+.external_link:after {
+  color: #c0c0d4;
+  vertical-align: super;
+  font-size: small;
+  content: "\202F↗";     /* ⏩ */
+}
+
+/* Dropdown submenu */
+.dropdown-submenu {
+    position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+.dropdown-submenu.pull-left {
+    float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.ui-dialog .ui-dialog-content {
+    padding: 0 0;
+}
+/* .ui-dialog-titlebar {display:none} */
+
+/* Fontawesome & Glyphicon icons currently in use (in *all* templates/pages, except for Mirador-related code):
+ * FA:
+ * - fa fa-anchor
+ * - fa fa-angle-double-down
+ * - fa fa-arrow-right
+ * - fa fa-bars
+ * - fa fa-birthday-cake
+ * - fas fa-file-book (Download e-Book)
+ * - fa fa-chevron-down
+ * - fa fa-chevron-left
+ * - fa fa-chevron-right
+ * - fas fa-file-code (Download TEI-XML)
+ * - fa fa-cogs
+ * - far fa-copyright
+ * - fas fa-code-branch (Download RDF)
+ * - fa fa-download
+ * - far fa-envelope (contact)
+ * - fas fa-book-open
+ * - fa fa-file-alt
+ * - fa fa-file (Download txt (edit & orig), Mirador)
+ * - fas fa-file-pdf (Download PDF)
+ * - fa fa-group
+ * - far fa-hand-point-right
+ * - fa fa-info-circle
+ * - fa fa-list-ul
+ * - fa fa-balance-scale
+ * - fas fa-pencil-alt
+ * - fa fa-plus
+ * - fa fa-question-circle
+ * - fa fa-reply
+ * - fa fa-share
+ * - fa fa-spinner
+ * - fa fa-spin
+ * - fa fa-th-list (sources list)
+ * - fa fa-university (Academy/project)
+ * - fa fa-window-close
+ * 
+ * GLYPHICON:
+ * - glyphicon-book
+ * - glyphicon-bookmark
+ * - glyphicon-check
+ * - glyphicon-chevron-left
+ * - glyphicon-chevron-right
+ * - glyphicon-console
+ * - glyphicon-download-alt
+ * - glyphicon-edit
+ * - glyphicon-eye-open
+ * - glyphicon-file (works icon)
+ * - glyphicon-flag
+ * - glyphicon-hand-right
+ * - glyphicon-leaf
+ * - glyphicon-link
+ * - glyphicon-list
+ * - glyphicon-pushpin
+ * - glyphicon-new-window
+ * - glyphicon-picture
+ * - glyphicon-play
+ * - glyphicon-print
+ * - glyphicon-remove-circle
+ * - glyphicon-refresh
+ * - glyphicon-resize-full
+ * - glyphicon-resize-fullscreen
+ * - glyphicon-resize-small
+ * - glyphicon-search
+ * - glyphicon-send (?)
+ * - glyphicon-sort-by-alphabet
+ * - glyphicon-stats
+ * - glyphicon-thumbs-up
+ * - glyphicon-unchecked
+ * - glyphicon-user
+ *
+ */

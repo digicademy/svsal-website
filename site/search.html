@@ -1,0 +1,559 @@
+{{$domain := "test.salamanca.school"}}
+{{$searchterm := placeholder "http.request.uri.query.q"}}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="">
+        <meta name="description" content="Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca.">
+        <title>{{if $searchterm}}{{$searchterm}}{{else}}Search{{end}} - The School of Salamanca</title>
+        <link rel="canonical" href="https://www.{{$domain}}/search.html">
+        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/search_de.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
+        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/search_en.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
+        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/search_es.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
+
+        <!-- ==== CSS ==== -->
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
+        <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/style_default.css"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/tooltipster.css"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/ispinner.prefixed.css">
+
+        <!-- ==== favIcon ==== -->
+        <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="resources/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="resources/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="resources/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="resources/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="resources/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="resources/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="resources/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="resources/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="resources/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon"             type="image/png" sizes="32x32"   href="resources/favicons/favicon-32x32.png">
+        <link rel="icon"             type="image/png" sizes="194x194" href="resources/favicons/favicon-194x194.png">
+        <link rel="icon"             type="image/png" sizes="96x96"   href="resources/favicons/favicon-96x96.png">
+        <link rel="icon"             type="image/png" sizes="192x192" href="resources/favicons/android-chrome-192x192.png">
+        <link rel="icon"             type="image/png" sizes="16x16"   href="resources/favicons/favicon-16x16.png">
+        <link rel="manifest" href="resources/favicons/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+
+    <body id="body">
+        <div id="wrap">
+            <div class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Header and Navbar -->
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
+                            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand hidden-xs" href="https://www.{{$domain}}/index.html">The School of Salamanca</a>
+                        <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="https://www.{{$domain}}/index.html">The School of Salamanca</a>
+                    </div>
+                    <div class="collapse navbar-collapse navbar-menubuilder" style="max-height: 569px;">
+                        <menu class="nav navbar-nav">
+                            <li class="">
+                                <a href="https://blog.{{$domain}}/?lang=en">
+                                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;News
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/project.html">
+                                    <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Project
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/works.html">
+                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/dictionary.html">
+                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Dictionary
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/authors.html">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Authors
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/workingPapers.html">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="https://www.{{$domain}}/search.html">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search
+                                </a>
+                            </li>
+                            <li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Language<span class="caret"></span>
+                                </a>
+                                <menu class="dropdown-menu">
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;German
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;English
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanish
+                                        </a>
+                                    </li>
+                                </menu>
+                            </li>
+                        </menu>
+                        <menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
+                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">de</a>
+                                    <a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">en</a>
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">es</a>
+                                </div>
+                            </li>
+                        </menu>
+                    </div>
+                </div>
+            </div>
+            <div id="content" class="container-fluid"><!-- Main area: Search form and results list -->
+                <div class="container">
+                    <div><!-- Page Heading -->
+                        <h2 class="hidden-md hidden-sm hidden-xs" style="margin-top: 3%">
+                            <span class="text-muted">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search
+                            </span>
+                        </h2>
+                        <h2 class="hidden-lg hidden-sm hidden-xs" style="margin-top: 2%">
+                            <span class="text-muted">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search
+                            </span>
+                        </h2>
+                        <h2 class="hidden-lg hidden-md">
+                            <span class="text-muted">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search
+                            </span>
+                        </h2>
+                    </div>
+                    <br>
+
+                    <form class="col-md-12 form-group" name="f-query" role="form" action="search.html" method="get"><!-- Search Form -->
+                        <div class="col-md-4 col-sm-5 col-xs-5">
+                            <select class="span12 form-control templates:form-control" name="field" id="field" data-template="form-control">
+                                <option value="everything" accesskey="1" title="everything" disabled="disabled">All data sources</option>
+                                <option value="corpus" accesskey="2" title="corpus" selected="selected">Works: full text</option>
+                                <option value="headings" accesskey="3" title="corpus, headings only" disabled="disabled">Works: headings</option>
+                                <option value="notes" accesskey="4" title="corpus, notes only" disabled="disabled">Works: notes</option>
+                                <option value="nonotes" accesskey="5" title="corpus, without the notes" disabled="disabled">Works: without notes</option>
+                                <option value="wp" accesskey="a" title="working papers" disabled="disabled">Working Papers: abstract, keywords, etc.</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-5 col-xs-5">
+                            <input class="templates:form-control form-control" id="q" name="q" placeholder="search" value="">
+                        </div>
+                        <div class="col-md-1 col-sm-2 col-xs-2">
+                            <button class="btn btn-default" name="action" id="doSearch" value="Search">
+                                &nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;
+                            </button>
+                        </div>
+                        <a style="font-size:1.05em;" class="btn btn-link" id="toggleHelp" target="#">
+                            <i class="glyphicon glyphicon-info-sign"></i> Need help?
+                        </a>
+                        <input type="hidden" name="lang" value="en">
+                    </form>
+
+                    <div class="col-md-9 col-sm-12 searchResults"><!-- Results List -->
+                        <p id="searchInfo" style="visibility: hidden;">
+                            Search for: <span id="searchterm"></span><br>
+                            <span id="searchSummary" style="visibility: hidden;">
+                                found:&nbsp;<strong><span id="resultDocs"></span>&nbsp;Works.</strong>&nbsp;
+                                display:&nbsp;<span id="currentPaging"></span>
+                            </span>
+                        </p>
+                        <p id="docPagingTop" class="paging-doc"></p>
+                        <div id="spinner-total" class="ispinner ispinner-large">
+                            <div class="spinner-container">
+                                <div class="ispinner-blade"></div>
+                                <div class="ispinner-blade"></div>
+                                <div class="ispinner-blade"></div>
+                                <div class="ispinner-blade"></div>
+                                <div class="ispinner-blade"></div>
+                                <div class="ispinner-blade"></div>
+                                <div class="ispinner-blade"></div>
+                                <div class="ispinner-blade"></div>
+                            </div>
+                        </div>
+                        <ul id="resultsList" class="resultsList"></ul>
+                        <p id="docPagingBottom" class="paging-doc"></p>
+                    </div>
+
+                </div>
+            </div>
+            <div id="push"></div>
+        </div>
+
+        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
+
+        <script type="text/javascript" src="resources/js/jquery-1.js"></script>
+        <script type="text/javascript" src="resources/js/bootstrap.js"></script>
+        <script type="text/javascript" src="resources/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="resources/js/jquery.js"></script><!-- this is only the backTop function -->
+        <script type="text/javascript" src="resources/js/sal-search.js"></script><!-- this contains the actual search functions -->
+
+        <script type="text/javascript">
+            jQuery('body').bind('click', function(e) {                                              // hide navbar when clicking anywhere
+                if(jQuery(e.target).closest('.navbar-collapse').length == 0) {
+                    // click happened outside of .navbar, so hide
+                    var opened = jQuery('.navbar-collapse').hasClass('in');
+                    if ( opened === true ) {
+                        jQuery('.navbar-collapse').collapse('hide');
+                    }
+                }
+            });
+            $(document).on('click',function(){
+                $('.collapse .navbar-collapse').collapse('hide');
+            });
+            $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });  // set navbar height
+        </script>
+        <script type="text/javascript"> // set spinners on ajax actions
+            function showSpinnerTotal () {
+                document.getElementById("spinner-total").classList.add("show");
+            };
+            function hideSpinnerTotal () {
+                document.getElementById("spinner-total").classList.remove("show");
+            };
+            function showSpinnerDetails (id) {
+                document.getElementById(id).classList.add("show");
+            };
+            function hideSpinnerDetails (id) {
+                document.getElementById(id).classList.remove("show");
+            };
+            /*
+            jQuery.ajaxSetup({
+                beforeSend: function() { $('.spin100').show(); },
+                complete:   function() { $('.spin100').hide(); },
+                success:    function() {}
+            });
+            */
+        </script>
+        <script type="text/javascript"> // trigger search functions
+            $("#doSearch").click(function (event) {                                             // Do the Search!
+                let field = document.getElementById('field').value
+                let searchterm = document.getElementById('q').value
+                let params = (new URL(window.location.href)).searchParams
+                let page = params.has('offset') ? params.get('offset') : 0
+                let limit = params.has('limit') ? params.get('limit') : 10
+                window.history.replaceState('', '', updateURLParameter(window.location.href, "q", searchterm))
+                document.title = searchterm + ' - The School of Salamanca'
+                mainSearch(field, searchterm, "resultsList", page, limit)
+                event.stopImmediatePropagation()
+                event.preventDefault()
+            });
+            document.querySelector("#resultsList").addEventListener('click', async function(e) {      // Call details handling
+                // Since details are not available on document load, we have to listen to events on the ancestor
+                // The clicked element then is in `e.target`.
+                /* If querying excerpts right on loading the main query is too much overhead, we can re-enable this and defer excerpting to here...
+                    if (e.target.classList.contains('toggle-details')) {
+                        let workId = e.target.getAttribute('data-wid')
+                        let searchterm = document.getElementById('q').value
+                        for (let [pos, item] of Array.from(e.target.nextElementSibling.getElementsByClassName('details_td')).entries()) {
+                            if (item.getElementsByClassName('result__snippet')[0].hasAttribute('data-orig')) {
+                                let index   = item.getAttribute('data-index')
+                                let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
+                                let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
+                                excerptsSearch(workId, index, searchterm, docOrig, docEdit)
+                            }
+                        }
+                    }
+                */
+                if (e.target.classList.contains('paging-details')) {
+                    let workId = e.target.getAttribute('data-wid')
+                    let oldPage = parseInt(e.target.getAttribute('data-current-page'))
+                    let limit = parseInt(e.target.getAttribute('data-limit'))
+                    let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
+                    let searchterm = document.getElementById('q').value
+                    await detailsSearch (workId, newPage, 5, searchterm)
+                    for (let [pos, item] of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
+                        let index   = item.getAttribute('data-index')
+                        let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
+                        let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
+                        excerptsSearch(workId, index, searchterm, docOrig, docEdit)
+                    }
+
+                    event.stopImmediatePropagation()
+                    event.preventDefault()
+                }
+            });
+            $(document).ready(function(){                                                       // Prepare page: fill fields, position backtotop, prevent defaultactions
+                let params = (new URL(window.location.href)).searchParams
+                let page = params.has('offset') ? params.get('offset') : 0
+                let limit = params.has('limit') ? params.get('limit') : 0
+                let field = params.has('field') ? params.get('field') : 'corpus'
+                let searchterm = params.has('q') ? params.get('q') : ''
+
+                document.getElementById('field').value = field                                          // Prepopulate fields based on url paramaters
+                document.getElementById('q').value = searchterm
+                if (searchterm.length > 0) {
+                    document.getElementById('q').value = searchterm
+                    mainSearch(field, searchterm, "resultsList", page, limit)                           // immediately call search function if "q" parameter given
+                }
+
+                $(".toggle-details").on('click', function (e) { e.preventDefault(); })                  // prevent default action on .toggle-details
+
+                $('#backTop').backTop({                                                                 // Position Back-to-top arrow
+                    'position' : 100,
+                    'speed' : 200,
+                    'color' : 'white',
+                });
+            });
+        </script>
+
+{{include "resources/templates/template_footer.html"}}
+
+        <!-- Help window -->
+        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" style="display: none; position: fixed;" tabindex="-1" role="dialog" aria-describedby="helpBox2" aria-labelledby="ui-id-1">
+            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">
+                <span id="ui-id-1" class="ui-dialog-title"></span>
+                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="Close">
+                    <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">Close</span>
+                </button>
+            </div>
+            <div id="helpBox2" style="overflow:auto" class="ui-dialog-content ui-widget-content">
+                <a data-toggle="collapse" href="#collapseTOC" aria-expanded="false" aria-controls="collapseTOC">
+                    <h4 style="top: 10%;">
+                        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                        Contents
+                    </h4>
+                </a>
+                <div id="help" class="help">
+                    <div id="collapseTOC" class="collapse"><!-- class="collapse"  -->
+                        <div><!-- class="panel panel-default" -->
+                            <ul class="toc tocStyle">
+                                <li class="tocStyle"><a href="#div_modi_en">Search Modes</a></li>
+                                <li class="tocStyle"><a href="#div_terms">How the Search Syntax Works</a></li>
+                                <li class="tocStyle"><a href="#div_multiple">How the Multiple-Term Search Works</a></li>
+                                <li class="tocStyle"><a href="#div_single_work_en">Search within Single Works</a></li>
+                                <li class="tocStyle"><a href="#div_more_info_en">Where to Find more Information</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="div_searchHelp_en">
+                        <div id="div_modi_en">
+                            <h3 id="head_modi_en">
+                                <a class="anchorjs-link" id="div_modi_en" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_modi_en">
+                                    <span class="anchorjs-icon"></span>
+                                </a>Search Modes
+                            </h3>
+                            <p class="hauptText" id="p_sdfgcerbc">In the dropdown menu on the left hand side, you can choose among different search modes: </p>
+                            <section>
+                                <ol>
+                                    <li>
+                                        <span style="font-weight:bold;" class="term hi_#option1" title="">All data sources</span>
+                                        searches for terms across all types of text, that is, including
+                                        biographic and topic-related dictionary articles as well as abstracts
+                                        and keywords from the workin papers. The results are grouped according
+                                        to text types, possibly offering an option for repeating the search
+                                        within one such group and for yielding more, or more detailed,
+                                        respectively, results. (This is the standard mode of search.)
+                                    </li>
+                                    <li>
+                                        <span style="font-weight:bold;" class="term hi_#option2" title="">Works: full text</span>
+                                        searches for terms in the full texts of all (published) works throughout the complete digital
+                                        collection of sources.
+                                    </li>
+                                    <li>
+                                        <span style="font-weight:bold;" class="term hi_#option3" title="">Works: headings</span>
+                                        searches for terms in all works, but only within their headings.
+                                    </li>
+                                    <li>
+                                        <span style="font-weight:bold;" class="term hi_#option4" title="">Works: notes</span>
+                                        searches for terms in all works, but only within marginal, bottom, and end notes.
+                                    </li>
+                                    <li>
+                                        <span style="font-weight:bold;" class="term hi_#optiona" title="">Working Papers: Abstract, Keywords etc.</span>
+                                        searches for terms in the metadata of the working papers. The full
+                                        text of the working papers is not included in this search mode.
+                                    </li>
+                                </ol>
+                            </section>
+                            <p></p>
+                        </div>
+                        <div id="div_terms">
+                            <h3 id="head_searchTerms">
+                                <a class="anchorjs-link" id="div_terms" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_terms">
+                                    <span class="anchorjs-icon"></span>
+                                </a>
+                                How the Search Syntax Works
+                            </h3>
+                            <p class="hauptText" id="p_sefgcerbczcx">The search works, in general, based on lemmatization;
+                            that is, a search for
+                            a word form finds all other word forms of the respective lemma: </p>
+                            <pre> lex =&gt; finds all passages with "lex", "legum", "leges", etc. </pre>
+                            If a specific word form is to be found, an equality sign must be prepended to the search term:
+                            <pre> =lex =&gt; finds passages with "lex", but not those in which only "legum", "leges", etc. occur. </pre>
+                            (This operator can also be applied within phrases and other operators 
+                            described further below.) Furthermore, the search allows the use of "?" 
+                            and "*" as placeholders for one or infinitely many character(s):
+                            <pre> l?b?r =&gt; finds liber and labor lab* =&gt; finds labor and labello leg* =&gt; finds leges, legislator, legitimus, legatus, etc. </pre>
+                            <p></p>
+                        </div>
+                        <div id="div_multiple">
+                            <h3 id="head_multipleTerms">
+                                <a class="anchorjs-link" id="div_multiple" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_multiple">
+                                    <span class="anchorjs-icon"></span>
+                                </a>
+                                How the Multiple-Term Search Works
+                            </h3>
+                            <p class="hauptText" id="p_swsaeaserea"> The input of multiple search terms implies a search for text passages in which <it>all</it>
+                            the stated search terms must be present (implicit AND operator). If 
+                            this is not desired, the terms must be separated by means of a "|" pipe 
+                            (as OR operator): </p>
+                            <pre> lex | ius =&gt; finds texts in which either lex or ius, or both, occur. </pre>
+                            At this, the precedence of the OR operator is higher than the precedence of the AND operator, such that
+                            <pre> Francisco Vitoria | Suárez =&gt; searches for Francisco and (Vitoria or Suárez), thus finds no document that only contains the string "Suárez". </pre>
+                            In case of doubt, the grouping of terms and operators may be explicitely stated in brackets:
+                            <pre> (Francisco Vitoria) | Suárez =&gt; searches for documents in which Francisco and Vitoria occur, or in which Suárez occurs. </pre>
+                            In case a term is to be <it>excluded</it>, it must be prepended by a "-" hyphen:
+                            <pre> lex -ius =&gt; finds all texts in which lex occurs but not ius. lex -(ius | naturalis) =&gt; finds all texts containing lex but neither ius nor naturalis. </pre>
+                            If an exact phrase is to be searched for, the respective terms must be embedded within quotation signs:
+                            <pre> "lex naturalis" =&gt; searches for lex naturalis, with both terms being required to occur in this very sequence. </pre>
+                            If the search terms are to occur close to each other, the phrase can either be relativized:
+                            <pre> "lex aeterna naturalis"~10 =&gt; searches for the occurrence of all three search terms within a scope of ten words. </pre>
+                            ... or a tolerance for distance must be stated by means of the "NEAR/XY" operator between each search term:
+                            <pre> lex NEAR/10 aeterna NEAR/20 =&gt; searches for a passage of maximally 9 words between lex and aeterna and maximally 19 words between the found aeterna and naturalis. </pre>
+                            In case that merely some of a set of search terms shall be found, a phrase can be relativized through "/":
+                            <pre> lex "divina aeterna naturalis positiva civilis"/2 =&gt; searches for the term "lex" and 2 out of the 5 stated additional words. </pre>
+                            If the order but not the immediate succession of search terms is relevant, the order operator "&lt;&lt;" can be used:
+                            <pre> lex &lt;&lt; ius =&gt; searches for lex ahead of ius </pre>
+                            (This operator has, along with the NEAR/XY operator, the lowest 
+                            precedence of all operators.) The "SENTENCE" operator assigns two search
+                            terms to the condition of both thse terms having to occur within the 
+                            same sentence.
+                            <pre> lex SENTENCE naturalis =&gt; searches for a sentence in which lex as well as naturalis occur. </pre>
+                            <p></p>
+                        </div>
+                        <div id="div_single_work_en">
+                            <h3 id="head_single_work_en">
+                                <a class="anchorjs-link" id="div_single_work_en" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_single_work_en">
+                                    <span class="anchorjs-icon"></span>
+                                </a>
+                                Search within Single Works
+                            </h3>
+                            <p class="hauptText" id="p_lakjsfass">When
+                            searching globally or within a specific category of "data sources" 
+                            ("Works: full text", "Works: headings", "Working Papers: ..."), all 
+                            texts (of the selected category) are targeted through the search. A more
+                            selective search for single works (instead of the whole corpus) is not 
+                            possible by means of the graphical user interface at the moment. 
+                            However, the technically adventurous may limit their search queries 
+                            already through the "@sphinx_work" field operator.</p>
+                            <p class="hauptText" id="p_kjassdlas">For
+                            this purpose, it is necessary to know the specific "work id" of the 
+                            respective work. This five-place id consists of the initial "W" (for 
+                            "work") followed by four digits and can be found in URLs of 
+                            work-specific views (such as the reading view or the catalogue entry for
+                            a work) in the "wid=" parameter; alternatively, the citation proposal 
+                            for a work, to be found in its catalogue entry, contains the work id in 
+                            its URL: "https://id.{{$domain}}/texts/[work id]". </p>
+                            <p class="hauptText" id="p_oijsdfsi">Once
+                            the respective work's id has been identified, the search can be limited
+                            to this work through the field operator in the following way:</p>
+                            <pre>[query term] @sphinx_work ^[work id]</pre>
+                            <p class="hauptText" id="p_lshdfjlssdjf">For
+                            example, searching for the term "lex" only in Diego de Castillo's 
+                            "Tratado de Cuentas" (which has the work id "W0004") is possible by 
+                            means of the following query (to be entered in the search field): </p>
+                            <pre>lex @sphinx_work ^W0004</pre>
+                            <p class="hauptText" id="p_saiousdas">Apart from that, the search syntax follows the guidelines stated above.</p>
+                        </div>
+                        <div id="div_more_info_en">
+                            <h3 id="head_more_info_en">
+                                <a class="anchorjs-link" id="div_more_info_en" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_more_info_en">
+                                    <span class="anchorjs-icon"></span>
+                                </a>
+                                Where to Find more Information
+                            </h3>
+                            <p class="hauptText" id="p_juzserdvnzu"> The search is based, in the background, on the
+                                <a href="http://sphinxsearch.com/" target="_blank">Sphinx</a> search engine in version 2.1.3.
+                                The largest part of the <a href="http://sphinxsearch.com/docs/archives/2.1.3/extended-syntax.html" target="_blank">documentation
+                                of search syntax</a> displayed there also applies to the search function at hand.
+                                <sup>*</sup><span class="marginal note" id="note_note_esfwerer">
+                                    <a class="" data-toggle="collapse" data-target="#subdiv_note_esfwerer">* An important exception is the stating of field
+                                        operators "@"…<i class="fa fa-angle-double-down"></i>
+                                    </a>
+                                    <br>
+                                    <span class="collapse" id="subdiv_note_esfwerer">An important exception is the stating of field operators "@", which are 
+                                    not available on our search function. The source text is always searched
+                                    after (and in the search for everything, the lemma, author, and working
+                                    paper search also the author name); with the search within works, the 
+                                    diplomatic as well as the constituted version are searched after.</span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#helpBox2').dialog({
+                                autoOpen:   false,
+                                //position:   {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
+                                
+                                height:     $(window).height()* 0.6,
+                                maxHeight:  $(window).height()* 0.95,
+                                width:      $(window).width() * 0.45,
+                                create:     function(event, ui) {
+                                                $(event.target).parent().css('position', 'fixed');
+                                            },
+                                resizeStop: function(event, ui) {
+                                                var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
+                                                                 (Math.floor(ui.position.top) - $(window).scrollTop())];
+                                                $(event.target).parent().css('position', 'fixed');
+                                                $(dlg).dialog('option','position',position);
+                                            },
+                                beforeClose: function( event, ui ) {
+                                                $("#showHelp").show();
+                                             }
+                    });
+                });
+                $(document).on('click', '#toggleHelp',  function(event) {
+                    if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close'); } else { $('#helpBox2').dialog('open'); }
+                    event.preventDefault();
+                });
+                $(document).on('click', 'a[href^="#option"]',  function(event) {
+                    $('option:selected', 'select[name="field"]').removeAttr('selected');
+                    var optionNumber = $(this).attr('href').substring(7);
+                    $('option[accesskey="' + optionNumber +'"]').prop('selected',true);
+                    event.preventDefault();
+                });
+                $(document).on('click', 'a[href^="#div_"]',  function(event) {
+                    var target = $(this).attr('href');
+                    $('#helpBox2').scrollTop($(target).position().top);
+                    event.preventDefault();
+                });
+            </script>
+            </div>
+            <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
+            <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div>
+            <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
+            <div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div>
+            <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div>
+            <div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div>
+            <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div>
+            <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div>
+        </div>
+
+    </body>
+</html>

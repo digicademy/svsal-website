@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% for index in indexes %}
+		<link rel="search" type="application/opensearchdescription+xml" title="{{ index.description }}" href="{{ index.path }}/">
+		{% endfor %}
+	</head>
+	<body>
+		<h1>Open Salamanca Search</h1>
+		<p>This is a machine-readable interface to the search engine run by the project <a href="http://www.salamanca.school/">The School of Salamanca. A Digital Collection of Sources and a Dictionary of its Juridical-Political Language</a></p>
+	</body>
+</html>

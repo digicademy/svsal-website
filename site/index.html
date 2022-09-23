@@ -1,0 +1,341 @@
+{{$domain := "test.salamanca.school"}}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="">
+        <meta name="description" content="Eine Sammlung digitaler Quellen und ein Wörterbuch der juridisch-politischen Diskurse von iberischen Theologen, Juristen und Philosophen der Frühen Neuzeit.">
+        <title>Home - Die Schule von Salamanca</title>
+        <link rel="canonical" href="https://www.{{$domain}}/index.html">
+        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/index_de.html">
+        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/index_en.html">
+        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/index_es.html">
+        
+        <!-- ==== CSS ==== -->
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <!-- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/> -->
+        <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <!--    <link rel="stylesheet" type="text/css" href="resources/css/backTop.css"/> -->
+        <style>     /*Main stylesheet for Backtop jQuery Plugin */
+            #backTop{
+                width:35px;
+                height:35px;
+                padding:10px;
+                border-radius:4px;
+                text-indent:-9999px;
+                cursor:pointer;
+                z-index:999999999;
+                display:none;
+                box-sizing:content-box;
+                -webkit-box-sizing:content-box;
+            }
+            #backTop.white{
+                background:url('resources/css/images/uparr-48-b.png') no-repeat center center rgba(255,255,255,0.8);
+                border:1px solid #ccc;
+            }
+            #backTop.black{
+                background:url('resources/css/images/uparr-48-w.png') no-repeat center center rgba(0,0,0,0.8); 
+                border:1px solid #ccc;
+            }
+            #backTop.red{
+                background:url('resources/css/images/uparr-48-w.png') no-repeat center center rgba(217,97,81,0.9); 
+                border:1px solid #fff;
+            }
+            #backTop.green{
+                background:url('resources/css/images/uparr-48-b.png') no-repeat center center rgba(81,217,187,0.9); 
+                border:1px solid #fff;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css" href="resources/css/style_default.css">
+        
+        <!-- ==== Scripts ==== -->
+        <!-- - - Piwik for visitor stats (modified to enable caching and compression) - - -->
+        <!-- <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+          _paq.push(["setCookieDomain", "*.salamanca.school"]);
+          _paq.push(["setDomains", ["*.salamanca.school"]]);
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//stats.adwmainz.net/";
+            _paq.push(['setTrackerUrl', u+'js/']);
+            /* _paq.push(['setTrackerUrl', u+'piwik.php']); */
+            _paq.push(['setSiteId', 20]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true;
+            /* g.src=u+'piwik.js'; */
+            g.src=u+'js/';
+            s.parentNode.insertBefore(g,s);
+          })();
+            </script>
+        -->
+        <!-- End Piwik Code -->
+        
+        <!-- ==== favIcon ==== -->
+        <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="resources/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="resources/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="resources/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="resources/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="resources/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="resources/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="resources/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="resources/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="resources/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon"             type="image/png" sizes="32x32"   href="resources/favicons/favicon-32x32.png">
+        <link rel="icon"             type="image/png" sizes="194x194" href="resources/favicons/favicon-194x194.png">
+        <link rel="icon"             type="image/png" sizes="96x96"   href="resources/favicons/favicon-96x96.png">
+        <link rel="icon"             type="image/png" sizes="192x192" href="resources/favicons/android-chrome-192x192.png">
+        <link rel="icon"             type="image/png" sizes="16x16"   href="resources/favicons/favicon-16x16.png">
+        <link rel="manifest" href="resources/favicons/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <meta name="google-site-verification" content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M">
+    </head>
+
+    <body id="body">
+        <div id="wrap">
+            <div id="content" class="container-fluid">
+                <header id="myCarousel" class="carousel slide hidden-xs">
+                    <div id="carousel" class="carousel slide" data-ride="carousel"><!-- Indicators -->
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                        <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                                        <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+                                        <li data-target="#carousel-example-generic" data-slide-to="5"></li>
+                                        <li data-target="#carousel-example-generic" data-slide-to="6"></li>
+                                    </ol><!-- Wrapper for slides -->
+                                    <div class="carousel-inner">
+                                        <div class="item active"><img src="resources/images/slider/slide01a.jpg" class="img-responsive" alt="Responsive image"></div>
+                                        <div class="item"><img src="resources/images/slider/slide02a.jpg" class="img-responsive" alt="Responsive image"></div>
+                                        <div class="item"><img src="resources/images/slider/slide03a.jpg" class="img-responsive" alt="Responsive image"></div>
+                                        <div class="item"><img src="resources/images/slider/slide04a.jpg" class="img-responsive" alt="Responsive image"></div>
+                                        <div class="item"><img src="resources/images/slider/slide05a.jpg" class="img-responsive" alt="Responsive image"></div>
+                                        <div class="item"><img src="resources/images/slider/slide06a.jpg" class="img-responsive" alt="Responsive image"></div>
+                                        <div class="item"><img src="resources/images/slider/slide07a.jpg" class="img-responsive" alt="Responsive image"></div>
+                                    </div><!-- Controls --><a class="left carousel-control" href="#carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a><a class="carousel-control right" href="#carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a></div>
+                    <noscript>
+                        <br>
+                        <p class="label label-warning">Javascript disabled.</p>
+                    </noscript>
+                </header>
+                <div class="container" style="padding-top: 2%"><!-- Main area -->
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12"><!-- Page title -->
+                            <h1 class="bs-docs-featurette-title text-center hbigger">Die Schule von Salamanca</h1>
+                            <p class="lead text-center">
+                                Eine digitale Quellensammlung und ein Wörterbuch ihrer juristisch-politischen Sprache
+                            </p>
+                        </div>
+                        <div class="col-sm-12 col-md-4" style="padding-top: 2%"><!-- Works -->
+                            <h2 class="text-center">
+                                <a href="works.html"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Werke</a>
+                            </h2>
+                            <p class="bigger text-center">
+                                Digitale Quellensammlung mit 116 Werken, aufbereitet gemäß unserer
+                                <a href="guidelines.html"><i class="fa fa-cogs" aria-hidden="true"></i>&nbsp;Editionsrichtlinien</a>.
+                            </p>
+                        </div>
+                        <div class="col-sm-12 col-md-4" style="padding-top: 2%"><!-- Dictionary -->
+                            <h2 class="text-center">
+                                <a href="dictionary.html"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Wörterbuch</a>
+                            </h2>
+                            <p class="bigger text-center">
+                                zur juristisch-politischen Sprache der Schule von Salamanca.
+                            </p>
+                        </div>
+                        <div class="col-sm-12 col-md-4" style="padding-top: 2%"><!-- Authors -->
+                            <h2 class="text-center">
+                                <a href="authors.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Autoren</a>
+                            </h2>
+                            <p class="bigger text-center">
+                                Biografische und bibliografische Informationen zu den in der Quellensammlung vertretenen Autoren.
+                            </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4" style="padding-top: 2%"><!-- Search -->
+                            <h2 class="text-center">
+                                <a href="search.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Suche</a>
+                            </h2>
+                            <p class="bigger text-center">
+                                Suche in der Quellensammlung, im Wörterbuch, in den biografischen Informationen und in den Working Papers.
+                            </p>
+                        </div>
+                        <div class="col-sm-12 col-md-4" style="padding-top: 2%"><!-- Working Papers -->
+                            <h2 class="text-center">
+                                <a href="workingPapers.html"><i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers</a>
+                            </h2>
+                            <p class="bigger text-center">
+                                Beiträge der projekteigenen Working Paper Series.
+                            </p>
+                        </div>
+                        <div class="col-sm-12 col-md-4" style="padding-top: 2%"><!-- About the project -->
+                            <h2 class="text-center">
+                                <a href="project.html"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;Projekt</a>
+                            </h2>
+                            <p class="bigger text-center">
+                                Mitarbeiter, Projektbeschreibung, Kontakt und Impressum.
+                            </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row"><!-- layout spacing -->
+                        <div class="col-sm-12 col-md-5"></div>
+                        <div class="col-sm-12 col-md-2">
+                            <hr>
+                        </div>
+                        <div class="col-sm-12 col-md-5"></div>
+                    </div>
+                    <br>
+                    <div class="row text-center"><!-- Logo -->
+                        <img src="resources/images/slider/SvSal-Logo.png" alt="SvSal-Logo" class="img-rounded">
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+            <div id="blue-one" class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Navbar -->
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand hidden-xs" href="index.html">Die Schule von Salamanca</a>
+                        <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="index.html">Die Schule von Salamanca</a>
+                    </div>
+                    <div class="collapse navbar-collapse navbar-menubuilder">
+                        <menu class="nav navbar-nav">
+                            <li class="">
+                                <a href="https://blog.{{$domain}}/?lang=de">
+                                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;Blog
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/project.html">
+                                    <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Projekt
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/works.html">
+                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Werke
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/dictionary.html">
+                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Wörterbuch
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/authors.html">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Autoren
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/workingPapers.html">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/search.html">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Suche
+                                </a>
+                            </li>
+                            <li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Sprache<span class="caret"></span>
+                                </a>
+                                <menu class="dropdown-menu">
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/index_de.html">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Deutsch
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/index_en.html">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Englisch
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/index_es.html">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanisch
+                                        </a>
+                                    </li>
+                                </menu>
+                            </li>
+                        </menu>
+                        <menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
+                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/index_de.html">de</a>
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/index_en.html">en</a>
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/index_es.html">es</a>
+                                </div>
+                            </li>
+                        </menu>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==== Core JavaScript ==== -->
+            <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+            <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"/> -->
+
+            <!-- ==== jQuery Back to top ==== -->
+            <a id="backTop"></a>
+            <script src="resources/js/jquery.backTop.js"></script>
+            <script>
+                $(document).ready( function() {
+                    $('#backTop').backTop({
+                        'position' : 100,
+                        'speed' : 200,
+                        'color' : 'white',
+                     });
+                });
+            </script>
+
+            <!-- ==== Carousel interval = 15 Sec. ==== -->
+            <script>
+                // interval is in milliseconds. 1000 = 1 second - so 1000 * 10 = 10 seconds
+                $('.carousel').carousel({
+                  interval: 1500 * 10
+                });
+            </script>
+
+            <!-- ==== Mobil-View: Hide opened collapsed menu after clicking elsewhere on page ==== -->
+            <script>
+                 $(document).on('click',function(){
+                     $('.collapse').collapse('hide');
+                 });
+            </script>
+
+            <!-- ==== Mobil-View: scroll to last collapsed navbar item on mobile when there are many items ==== -->
+            <script>
+                $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });
+            </script>
+
+            <!-- - - once more piwik code, in case the browser does not support script - - -->
+            <!-- <noscript>
+                <img src="//stats.adwmainz.net/piwik.php?idsite=20" style="border:0;" alt=""/>
+                </noscript>
+            -->
+
+            <div id="push"></div>
+        </div>
+
+        <h2></h2>
+
+{{include "resources/templates/template_footer.html"}}
+
+    </body>
+</html>

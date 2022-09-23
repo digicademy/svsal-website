@@ -1,0 +1,36 @@
+{
+  "sphinx": {
+    "settings": {
+        "host": "localhost",
+        "port": 9312,
+        "mode": 4,
+        "sort": 2,
+        "sortby": "sphinx_fragment_number",
+        "ranker": 0
+    },
+    "indexes": {
+            "lemmatized": {
+                "alias": "salamanca_lemmatized",
+                "allowParameters": "q,limit,offset,html_strip_mode,query_mode,groupby,groupfunc,groupsort,ranker,sort,sortby,around",
+                "description": "The School of Salamanca Open Search",
+                "excerpts": {
+                    "after_match": "</span>",
+                    "before_match": "<span class=\"hi\" id=\"hi_%PASSAGE_ID%\">",
+                    "html_strip_mode": "none",
+                    "limit": 750,
+                    "around": 10,
+                    "query_mode": true
+                },
+                "keywords": [],
+                "settings": []
+            }
+        }
+    },
+    "slim": {
+        "templatesPath": "../templates"
+    },
+    "twig": {
+        "nothing": "yet"
+    }
+}
+

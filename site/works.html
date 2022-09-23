@@ -1,0 +1,447 @@
+{{$domain := "test.salamanca.school"}}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="">
+        <meta name="description" content="Überblick über die Quellen, die im Rahmen der digitalen Quellenedition in Text und Bild verfügbar sind. Filter- und Sortierbar.">
+        <title>Works - The School of Salamanca</title>
+        <link rel="canonical" href="https://www.{{$domain}}/works.html">
+        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/works_de.html">
+        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/works_en.html">
+        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/works_es.html">
+
+        <!-- ==== CSS ==== -->
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <style>     /* Main stylesheet for Backtop jQuery Plugin */
+            #backTop{
+                width:35px;
+                height:35px;
+                padding:10px;
+                border-radius:4px;
+                text-indent:-9999px;
+                cursor:pointer;
+                z-index:999999999;
+                display:none;
+                box-sizing:content-box;
+                -webkit-box-sizing:content-box;
+            }
+            #backTop.white{
+                background:url('resources/css/images/uparr-48-b.png') no-repeat center center rgba(255,255,255,0.8);
+                border:1px solid #ccc;
+            }
+            #backTop.black{
+                background:url('resources/css/images/uparr-48-w.png') no-repeat center center rgba(0,0,0,0.8);
+                border:1px solid #ccc;
+            }
+            #backTop.red{
+                background:url('resources/css/images/uparr-48-w.png') no-repeat center center rgba(217,97,81,0.9);
+                border:1px solid #fff;
+            }
+            #backTop.green{
+                background:url('resources/css/images/uparr-48-b.png') no-repeat center center rgba(81,217,187,0.9);
+                border:1px solid #fff;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css" href="resources/css/style_default.css">
+
+        <!-- ==== favIcon ==== -->
+        <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="resources/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="resources/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="resources/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="resources/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="resources/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="resources/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="resources/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="resources/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="resources/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon"             type="image/png" sizes="32x32"   href="resources/favicons/favicon-32x32.png">
+        <link rel="icon"             type="image/png" sizes="194x194" href="resources/favicons/favicon-194x194.png">
+        <link rel="icon"             type="image/png" sizes="96x96"   href="resources/favicons/favicon-96x96.png">
+        <link rel="icon"             type="image/png" sizes="192x192" href="resources/favicons/android-chrome-192x192.png">
+        <link rel="icon"             type="image/png" sizes="16x16"   href="resources/favicons/favicon-16x16.png">
+        <link rel="manifest" href="resources/favicons/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <meta name="google-site-verification" content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M">
+    </head>
+
+    <body id="body">
+        <div id="wrap">
+
+            <div id="blue-one" class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Navbar -->
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand hidden-xs" href="index.html">Die Schule von Salamanca</a>
+                        <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="index.html">Die Schule von Salamanca</a>
+                    </div>
+                    <div class="collapse navbar-collapse navbar-menubuilder">
+                        <menu class="nav navbar-nav">
+                            <li class="">
+                                <a href="https://blog.{{$domain}}/?lang=de">
+                                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;Blog
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/project.html">
+                                    <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Projekt
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/works.html">
+                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Werke
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/dictionary.html">
+                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Wörterbuch
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/authors.html">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Autoren
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/workingPapers.html">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{$domain}}/search.html">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Suche
+                                </a>
+                            </li>
+                            <li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Sprache<span class="caret"></span>
+                                </a>
+                                <menu class="dropdown-menu">
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/index_de.html">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Deutsch
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/index_en.html">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Englisch
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/index_es.html">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanisch
+                                        </a>
+                                    </li>
+                                </menu>
+                            </li>
+                        </menu>
+                        <menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
+                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/index_de.html">de</a>
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/index_en.html">en</a>
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/index_es.html">es</a>
+                                </div>
+                            </li>
+                        </menu>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content" class="container-fluid">
+                <div class="container">
+                    <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+                        <span class="text-muted">
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
+                        </span>
+                        <hr>
+                    </h2>
+                    <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+                        <span class="text-muted">
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
+                        </span>
+                        <hr>
+                    </h2>
+                    <h2 class="hidden-lg hidden-md">
+                        <span class="text-muted">
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
+                        </span>
+                        <hr>
+                    </h2>
+                    <div style="margin-bottom:1em;border:1px solid gray;border-radius:5px;"><!-- introductory note -->
+                        <div style="padding:0.2em;text-align:justify">
+                            The digital collection of sources of the project "The School of Salamanca" comprises
+                            <a href="sources.html">116 works in total</a>, which are successively published on this page.
+                            For this purpose, the texts are encoded according to the specifications of the Text Encoding
+                            Initiative (TEI); for further information, please refer to the
+                            <a href="guidelines.html">Edition Guidelines</a>.
+                        </div>
+                    </div>
+                    <div class="row"><!-- main area -->
+                        <div class="col-md-3 hidden-xs hidden-sm"><!-- left column with facets and corpus info -->
+                            <ul class="fadeIn" id="facets" style="padding-top: 20%; padding-left: 5%"></ul>
+                            <!-- <noscript><!-/- show this as facets when js is disabled -/->
+                                    <div style="margin-top: -13%;">
+                                        <span>   <span class="lead" style="color: #999999;">
+                                                    <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span>Sort
+                                                </span>
+                                                <ul class="list-unstyled">
+                                                    <li><a href="works.html?sort=surname" role="button" class="btn btn-link">Surname</a></li>
+                                                    <li><a href="works.html?sort=title" role="button" class="btn btn-link">Title</a></li>
+                                                    <li><a href="works.html?sort=year" role="button" class="btn btn-link">Year of Publication</a></li>
+                                                    <li><a href="works.html?sort=place" role="button" class="btn btn-link">Place</a></li>
+                                                </ul>
+                                        </span>
+                                    </div>
+                                </noscript>
+                            -->
+                            <div class="corpus-download"><!-- Box with info about the corpus -->
+                                <h4>About the Corpus</h4>
+                                <span data-template="app:corpusStatsTeaser"></span>
+                                <hr>
+                                <p>Download the complete corpus:</p>
+                                <ul>
+                                    <li>
+                                        <a href="https://id.{{$domain}}/texts?format=tei">
+                                            <span class="glyphicon glyphicon-download-alt"></span>&nbsp;TEI XML
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://id.{{$domain}}/texts?format=txt">
+                                            <span class="glyphicon glyphicon-download-alt"></span>&nbsp;Plain text (TXT)
+                                        </a>
+                                    </li>
+                                </ul>
+                                <hr>
+                                <p>
+                                    <a href="sources.html">
+                                        <span class="fas fa-th-list" aria-hidden="true"></span>&nbsp;List of all sources
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-9" id="results" style="padding-top: 5%"><!-- Main area -->
+                            <noscript><!-- show this when js is disabled -->
+                                <div class="col-md-12" style="top: -27px; margin-bottom: -3%;">
+                                    <h3>Works</h3>
+                                </div>
+                                {{include "data/worksNoJs_en_surname.html"}}
+                            </noscript>
+                        </div>
+                        <script type="text/javascript">
+                            var works_items = {{include "data/works_en.json"}} // [ {"title":"Tractatus de casibus curiae.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0033","workDetails":"workDetails.html?wid=W0033","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0033","facsAttrib":"Bildansicht","printer":": González","name":"Carrasco del Saz, Francisco","sortName":"carrasco del saz","nameFacet":"A - F","date":"1630","chronology":"1601-1650","textLanguage":"Latein","printingPlace":"Madrid","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Apologia pro libro de iustis belli causis","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0095","workDetails":"workDetails.html?wid=W0095","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0095","facsAttrib":"Bildansicht","printer":": Dorico","name":"Sepúlveda, Juan Ginés de","sortName":"sepúlveda","nameFacet":"S - Z","date":"1550","chronology":"1501-1550","textLanguage":"Latein","printingPlace":"Romae","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Treinta Proposiciones","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0034","workDetails":"workDetails.html?wid=W0034","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0034","facsAttrib":"Bildansicht","printer":": Trugillo","name":"Las Casas, Bartolomé de","sortName":"las casas","nameFacet":"G - L","date":"1552","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Seuilla","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Provechoso tratado de cambios y contrataciones de mercaderes y reprovación de usura.","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0113","workDetails":"workDetails.html?wid=W0113","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0113","facsAttrib":"Bildansicht","printer":": Fernandez d[e] Cordoua","name":"Villalón, Cristóbal de","sortName":"villalón","nameFacet":"S - Z","date":"1541","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Valladolid","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Expositiones locorum obscuriorum et Paratitulorum in Pandectas.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0103","workDetails":"workDetails.html?wid=W0103","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0103","facsAttrib":"Bildansicht","printer":": Bonhomme","name":"Vacca, Antonius","sortName":"vacca","nameFacet":"S - Z","date":"1554","chronology":"1551-1600","textLanguage":"Latein","printingPlace":"Lyon","facetPlace":"G - L","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Summa de casos de consciencia","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0083","workDetails":"workDetails.html?wid=W0083","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0083","facsAttrib":"Bildansicht","printer":": Canto","name":"Pedraza, Juan de","sortName":"pedraza","nameFacet":"M - R","date":"1568","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Medina del Campo","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Tratado de Cuentas","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0004","workDetails":"workDetails.html?wid=W0004","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0004","facsAttrib":"Bildansicht","printer":": Melgar","name":"Castillo, Diego de","sortName":"castillo","nameFacet":"A - F","date":"1522","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Burgos","facetPlace":"A - F","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Tractado de los préstamos.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0018","workDetails":"workDetails.html?wid=W0018","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0018","facsAttrib":"Bildansicht","printer":": Ayala","name":"Alcalá, Luis de","sortName":"alcalá","nameFacet":"A - F","date":"1543","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Toledo","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Confessionario","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0015","workDetails":"workDetails.html?wid=W0015","titAttrib":"Katalogeintrag","workImages":"viewer_standalone.html?wid=W0015","facsAttrib":"Bildansicht","printer":": [s.n.]","name":"Vitoria, Francisco de","sortName":"vitoria","nameFacet":"S - Z","date":"1562","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Santiago","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, ];
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="push"></div>
+        <h2></h2>
+
+{{include "resources/templates/template_footer.html"}}
+
+        <!-- ==== JavaScript placed at the end of the document so the pages load faster ==== -->
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="resources/js/jquery.backTop.js"></script>
+
+        <!-- ==== Facets ==== -->
+        <script type="text/javascript" src="resources/js/underscore-1.1.7.js"></script>
+        <script type="text/javascript" src="resources/js/facetedsearchWrks.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                var item_template =
+                    '<div class="col-lg-6 col-md-12 col-sm-12">' +
+                        '<div class="panel panel-default <%= obj.status %>">' +
+                            '<div class="panel-body">' +
+                                '<div class="hit">' +
+                                    '<% if (obj.WIPstatus == "yes") { %>' +
+                                        '<p class="watermark-wip-text">Work in Progress!</p>' +
+                                    '<% } %>' +
+                                    '<p class="lead">' +
+                                        '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) {  %><%= obj.title %><% } %> </span></a>' +
+                                        '</br>' +
+                                        '<span><% if (obj.name) {  %><%= obj.name %><% } %></span>' +
+                                    '</p>' +
+                                    '<p>' +
+                                        '<span ><% if (obj.printingPlace) {  %><%= obj.printingPlace %><% } %><% if (obj.printer) {  %><%= obj.printer %><% } %><% if (obj.date) {  %>, <%= obj.date %><% } %></span>' +
+                                    '</p>' +
+                                    '<p class="volumeLinks">' +
+                                        '<span><%= obj.volLabel %></span>' +
+                                        '<% if (obj.vol1) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol1 %>"><%= obj.vol1Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol1Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol2) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol2 %>"><%= obj.vol2Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol2Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol3) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol3 %>"><%= obj.vol3Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol3Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol4) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol4 %>"><%= obj.vol4Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol4Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol5) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol5 %>"><%= obj.vol5Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol5Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol6) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol6 %>"><%= obj.vol6Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol6Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol7) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol7 %>"><%= obj.vol7Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol7Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol8) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol8 %>"><%= obj.vol8Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol8Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol9) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol9 %>"><%= obj.vol9Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol9Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol10) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol10 %>"><%= obj.vol10Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol10Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol11) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol11 %>"><%= obj.vol11Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol11Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol12) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol12 %>"><%= obj.vol12Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol12Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol13) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol13 %>"><%= obj.vol13Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol13Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol14) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol14 %>"><%= obj.vol14Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol14Cont %></span>' +
+                                        '<% }%>' +
+                                        '<% if (obj.vol15) { %>' +
+                                            '<a class="workVolume" href="<%= obj.vol15 %>"><%= obj.vol15Cont %></a>' +
+                                        '<% } else {%>' +
+                                            '<span class="workVolume"><%= obj.vol15Cont %></span>' +
+                                        '<% }%>' +
+                                    '</p>' +
+                                        '<a title="<%=obj.facsAttrib %>" class="workImages pull-right" target="_blank" rel="noopener noreferrer" href="<%= obj.workImages %>"><i class="fas fa-book-open" ></i> <%=obj.facsAttrib %></a>' +
+                                    '<br/>' +
+                                    '<a title="<%=obj.titAttrib %>" class="workDetails pull-right" href="<%= obj.workDetails %>"><i class="fas fa-file-alt" ></i> <%=obj.titAttrib %></a>' +
+                                        '<a style="display: none;"  ><%= obj.sortName %></a>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>'
+                settings = {
+                    items            : works_items,
+                    facets           : {
+                                        'nameFacet'         : 'Author',
+                                        'chronology'        : 'Year of Publication',
+                                        'textLanguage'      : 'Language',
+                                        'facetPlace'	    : 'Publish place',
+                                        'facetAvailability' : 'Availability'
+                                        },
+                    resultSelector   : '#results',
+                    facetSelector    : '#facets',
+                    resultTemplate   : item_template,
+                    deselectTemplate   : '<div class=deselectstartover><span class="glyphicon glyphicon-remove-circle"></span> Deselect filters</div>',
+                    countTemplate      : '<div class=facettotalcount style="position: absolute; top: 10px; left:340px;width:400px"><%= count %> Entries </div>',
+                    noResults          : '<div class=results style=float:left;>Sorry, but no items match these criteria (or the list of items has not been found [hint to admin])</div>',
+                    paginationCount  : 10,
+                    orderByOptions   : {'sortName': 'Author', 'title': 'Title', 'printingPlace': 'Publish place', 'date': 'Year of Publication'}
+                    }
+                $.facetelize(settings)
+            });
+        </script>
+
+        <!-- ==== change label value in dropdown when order by value is chosen ==== -->
+        <script type="text/javascript">
+            $(function(){
+                $(".dropdown-menu").on('click', 'li a', function(){
+                    $("#order:first-child").html($(this).text()+' <span class="caret"></span>')
+                    $("#order:first-child").val($(this).text())
+                });
+            });
+        </script>
+
+        <!-- ==== Mobil-View: Hide opened collapsed menu after clicking elsewhere on page ==== -->
+        <script type="text/javascript">
+            $(document).on('click',function(){
+                $('.collapse').collapse('hide')
+            });
+        </script>
+
+        <!-- ==== Mobil-View: scroll to last collapsed navbar item on mobile when there are many items ==== -->
+        <script type="text/javascript">
+            $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });
+        </script>
+
+        <!-- ==== Back to top ==== -->
+        <a id="backTop"></a>
+        <script type="text/javascript">
+            $(document).ready( function() {
+                $('#backTop').backTop({
+                    'position' : 100,
+                    'speed' : 200,
+                    'color' : 'white',
+                });
+            });
+        </script>
+
+        <!-- ==== Piwik for visitor stats ==== -->
+        <!-- - - Piwik for visitor stats (modified to enable caching and compression) - - -->
+        <!--<script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+          _paq.push(["setCookieDomain", "*.salamanca.school"]);
+          _paq.push(["setDomains", ["*.salamanca.school"]]);
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//stats.adwmainz.net/";
+            _paq.push(['setTrackerUrl', u+'js/']);
+/*          _paq.push(['setTrackerUrl', u+'piwik.php']); */
+            _paq.push(['setSiteId', 20]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true;
+/*          g.src=u+'piwik.js'; */
+            g.src=u+'js/';
+            s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <noscript><p><img src="//stats.adwmainz.net/piwik.php?idsite=20" style="border:0;" alt=""/></p></noscript>-->
+        <!-- End Piwik Code -->
+
+    </body>
+</html>

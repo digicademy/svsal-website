@@ -1,0 +1,189 @@
+{
+	debug
+	log {
+		output file /var/log/caddy/access.log
+		format console
+	}
+	email bla@foo.com
+	# acme_ca https://acme-staging-v02.api.letsencrypt.org/directory # Comment this out if everything works fine
+	# auto_https disable_redirects
+}
+foo.com,
+www.foo.com {
+	# Compress responses according to Accept-Encoding headers
+	encode zstd gzip
+
+	# Enable http2 pushing
+	push
+
+	# enable CORS headers
+	header {
+		Access-Control-Allow-Methods *
+		Access-Control-Allow-Headers *
+	}
+
+	# Templates give static sites some dynamic features
+	templates
+
+	# Serve everything else from the file system
+	root * /var/data/caddy/site
+	file_server
+
+	# Make HTML file extension optional
+	try_files {path}.html {path}
+}
+
+api.foo.com {
+	# Compress responses according to Accept-Encoding headers
+	encode zstd gzip
+
+	# Enable http2 pushing
+	push
+
+	# enable CORS headers
+	header {
+		Access-Control-Allow-Methods *
+		Access-Control-Allow-Headers *
+	}
+
+	rewrite * /exist/restxq{uri}
+	reverse_proxy localhost:8080 {
+		header_down Access-Control-Allow-Origin *
+		header_down Access-Control-Allow-Methods *
+		header_down Access-Control-Allow-Headers *
+	}
+}
+
+id.foo.com {
+	# Enable CORS headers
+	header {
+		Access-Control-Allow-Origin *
+		Access-Control-Allow-Methods *
+		Access-Control-Allow-Headers *
+	}
+
+	# Prepare a map to hold passage id ←→ html fragment file associations
+	map {path} {myfile} {online} {
+		#   PATH                 FILE                                                               ONLINE
+		# ------------------------------------------------------------------------------------------------------
+		# /texts/W0004:frontmatter W0004/00001_W0004-00-0005-fm-03e8.html#W0004-00-0005-fm-03e8       yes
+		# /texts/W0013:vol1.4 W0013/00011_W0013-01-0215-d1-03fc.html#W0013-01-0215-d1-03fc            yes
+		# /texts/W0002:frontmatter W0002/00001_W0002-00-0004-fm-03e8.html#W0002-00-0004-fm-03e8       yes
+	}
+
+	# ===== We need (lots of) named matchers... =====
+
+	@not_a_passage {
+		not {
+			path_regexp :
+		}
+	}
+	@work_id {
+		path_regexp wid /texts/(W[^:]+)
+	}
+	@html {
+		conneg {
+			match_types text/html
+			force_type_query_string format
+		}
+	}
+	@tei {
+		conneg {
+			match_types application/tei+xml
+			force_type_query_string format
+		}
+	}
+	@rdf {
+		conneg {
+			match_types application/rdf+xml
+			force_type_query_string format
+		}
+	}
+	@pdf {
+		conneg {
+			match_types application/pdf
+			force_type_query_string format
+		}
+	}
+	@txt_orig {
+		query mode=orig
+		conneg {
+			match_types text/plain
+			force_type_query_string format
+		}
+	}
+	@txt_edit {
+		query mode=edit
+		conneg {
+			match_types text/plain
+			force_type_query_string format
+		}
+	}
+	@txt_default {
+		conneg {
+			match_types text/plain
+			force_type_query_string format
+		}
+	}
+
+	# ===== Now comes the actual routing... ====
+
+	# HTML is always served via mapped file fragments 
+	handle @html {
+		redir /texts/* https://www.foo.com/data/{myfile}
+	}
+
+	# For other types, if a full work is requested, we have that prepared
+	# in the filesystem.
+	handle @not_a_passage {
+		handle @tei {
+			redir @work_id https://www.foo.com/data/{re.wid.1}/{re.wid.1}.xml
+		}
+		handle @rdf {
+			redir @work_id https://www.foo.com/data/{re.wid.1}/{re.wid.1}.rdf
+		}
+		handle @pdf {
+			redir @work_id https://www.foo.com/data/{re.wid.1}/{re.wid.1}.pdf
+		}
+		handle @txt_orig {
+			redir @work_id https://www.foo.com/data/{re.wid.1}/text/{re.wid.1}_orig.txt
+		}
+		handle @txt_edit {
+			redir @work_id https://www.foo.com/data/{re.wid.1}/text/{re.wid.1}_edit.txt
+		}
+		handle @txt_default {
+			redir @work_id https://www.foo.com/data/{re.wid.1}/text/{re.wid.1}_edit.txt
+		}
+		# Do we need a default, or is it okay to respond with 404?
+	}
+
+	# Otherwise, a (non-html) passage is requested and has to be
+	# generated on the fly, so we forward to the XQuery processor
+	handle {
+		rewrite * /exist/restxq{uri}
+		reverse_proxy localhost:8080 {
+			header_down Access-Control-Allow-Origin *
+			header_down Access-Control-Allow-Methods *
+			header_down Access-Control-Allow-Headers *
+		}
+	}
+}
+
+search.foo.com {
+	# Compress responses according to Accept-Encoding headers
+	encode zstd gzip
+
+	# Enable http2 pushing
+	push
+
+	# enable CORS headers
+	header {
+		Access-Control-Allow-Origin *
+		Access-Control-Allow-Methods *
+		Access-Control-Allow-Headers *
+	}
+
+	root * /opt/opensphinxsearch/public
+	php_fastcgi unix//run/php/php-fpm.sock
+	file_server
+}

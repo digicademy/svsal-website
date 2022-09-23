@@ -1,0 +1,10 @@
+["{{ q }}"{% if result.total_found > 0 %},[
+{% endif %}
+{% for key, item in result.matches %}
+{% if loop.last %}
+"{{ item.attrs.fragment_path }}"
+{% else %}
+"{{ item.attrs.fragment_path }}",
+{% endif %}
+{% endfor %}
+{% if result.total_found > 0 %}]{% endif %}]

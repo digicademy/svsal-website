@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	 xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
+	 xmlns:atom="http://www.w3.org/2005/Atom"
+	 xmlns:sphinx="http://sphinxsearch.com">
+	<channel>
+		<title>Open Salamanca Search</title>
+		<link>http://search.test.salamanca.school</link>
+		<description>Search The School of Salamanca's works, the project's dictionary and other resources</description>
+		<opensearch:totalResults>{{ result.total_found }}</opensearch:totalResults>
+		<opensearch:startIndex>{{ startIndex }}</opensearch:startIndex>
+		<opensearch:itemsPerPage>{{ itemsPerPage }}</opensearch:itemsPerPage>
+		<atom:link rel="search" type="application/opensearchdescription+xml" href="http://{{ host }}{{ path }}"/>
+		<opensearch:Query role="request" searchTerms="{{ q }}" startPage="{{ startPage }}" count="{{ itemsPerPage }}" />
+		{% for key, word in result.words if not (key == 'w0*') and not (key == 'l*') and not (key == 'wp*') %}
+
+		<terms>
+			<word>{{ key }}</word>
+			<hits>{{ word.hits }}</hits>
+			<docs>{{ word.docs }}</docs>
+		</terms>
+		{% endfor %}
+
+		{% for key, item in result.matches %}
+
+		<item>
+			<sphinx:id>{{ key }}</sphinx:id>
+			<sphinx:weight>{{ item.weight }}</sphinx:weight>
+			<sphinx:groupcount>{{ attribute(item.attrs, '@count') }}</sphinx:groupcount>
+			<work>{{ item.attrs.sphinx_work }}</work>
+			<work_type>{{ item.attrs.sphinx_work_type }}</work_type>
+			<author>{{ item.attrs.sphinx_author }}</author>
+			<author_id>{{ item.attrs.sphinx_authorid }}</author_id>
+			<title>{{ item.attrs.sphinx_title }}</title>
+			<year>{{ item.attrs.sphinx_year }}</year>
+			<hit_type>{{ item.attrs.sphinx_hit_type }}</hit_type>
+			<hit_id>{{ item.attrs.sphinx_hit_id }}</hit_id>
+			<hit_language>{{ item.attrs.sphinx_hit_language }}</hit_language>
+			<hit_label>{{ item.attrs.sphinx_hit_label }}</hit_label>
+			<hit_crumbtrail>{{ item.attrs.sphinx_hit_crumbtrail }}</hit_crumbtrail>
+			<description_orig>{{ item.attrs.sphinx_description_orig }}</description_orig>
+			<description_edit>{{ item.attrs.sphinx_description_edit }}</description_edit>
+			<html_path>{{ item.attrs.sphinx_html_path }}</html_path>
+			<fragment_path>{{ item.attrs.sphinx_fragment_path }}</fragment_path>
+			<fragment_number>{{ item.attrs.sphinx_fragment_number }}</fragment_number>
+		</item>
+		{% endfor %}
+
+	</channel>
+</rss>

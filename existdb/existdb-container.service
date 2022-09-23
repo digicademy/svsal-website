@@ -1,0 +1,37 @@
+[Unit]
+Description=existdb Podman Container
+After=network.target
+
+[Service]
+Type=simple
+TimeoutStartSec=450
+RestartSec=120
+
+ExecStartPre=-/usr/bin/rm -f %T/%n.pid %T/%n.cid
+User=existdb
+
+ExecStart=/usr/bin/podman run \
+  --name existdb \
+  -v /var/data/existdb/data:/exist/data \
+  -v /var/data/existdb/logs:/exist/logs \
+  -p 8080:8080 \
+  -p 8443:8443 \
+  --conmon-pidfile %T/%n.pid \
+  --cidfile %T/%n.cid \
+  --network=host \
+  -e JAVA_TOOL_OPTIONS='-Xmx7g -Xms7g -Dfile.encoding=UTF8 -Dsun.jnu.encoding=UTF-8 -Djava.awt.headless=true -Dorg.exist.db-connection.cacheSize=256M -Dorg.exist.db-connection.pool.max=20 -Dlog4j.configurationFile=/exist/etc/log4j2.xml -Dexist.home=/exist -Dexist.configurationFile=/exist/etc/conf.xml -Djetty.home=/exist -Dexist.jetty.config=/exist/etc/jetty/standard.enabled-jetty-configs -XX:+UseG1GC -XX:+UseStringDeduplication -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError' \
+  existdb/existdb:latest
+#  --detach \
+#  --rm \
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman stop -t 30 `cat %T/%n.cid`"
+ExecStop=/usr/bin/sh -c "/usr/bin/podman stop existdb"
+# ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat %T/%n.cid`"
+# ExecStop=/usr/bin/sh -c "/usr/bin/podman rm existdb"
+
+Restart=on-failure
+# KillMode=none
+PIDFile=%T/%n.pid
+
+[Install]
+WantedBy=multi-user.target

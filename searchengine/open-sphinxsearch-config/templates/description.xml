@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<ShortName>Open Salamanca Search</ShortName>
+	<Description>Search The School of Salamanca's works, the project's dictionary and other resources</Description>
+	<Tags>Salamanca, Scholastics, juridical-political language</Tags>
+	<Contact>admin@salamanca.school</Contact>
+	<InputEncoding>UTF-8</InputEncoding>
+	<OutputEncoding>UTF-8</OutputEncoding>
+	<Url type="application/opensearchdescription+xml" rel="self" template="http://{{ host }}{{ path }}" />
+	<Url type="application/x-suggestions+json" template="http://{{ host }}{{ path }}/suggest?q={searchTerms}"/>
+	<Url type="application/rss+xml" rel="results" template="http://{{ host }}{{ path }}/search?q={searchTerms}&amp;offset={startPage?}&amp;limit={count?}"/>
+	<Query role="example" searchTerms="cat" />
+</OpenSearchDescription>
