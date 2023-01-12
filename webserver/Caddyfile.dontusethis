@@ -4,12 +4,18 @@
 		output file /var/log/caddy/access.log
 		format console
 	}
-	email bla@foo.com
-	# acme_ca https://acme-staging-v02.api.letsencrypt.org/directory # Comment this out if everything works fine
+	email bla@foo.com # change this to your admin address
+	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory # Comment this out if everything works fine
 	# auto_https disable_redirects
 }
 foo.com,
 www.foo.com {
+	# Define domain as a variable, so we only have to change it in one place (at least inside this site block)
+	# Probably it corresponds to hostname of the address served by this block, after the "id."
+	map 1 {mydomain} {
+		default "test.salamanca.school"
+	}
+
 	# Compress responses according to Accept-Encoding headers
 	encode zstd gzip
 
@@ -21,6 +27,11 @@ www.foo.com {
 		Access-Control-Allow-Methods *
 		Access-Control-Allow-Headers *
 	}
+
+	# The following permanent redirection is for backwards compatibility only
+	# (we now access details at https://id.{mydomain}/texts/{wid}?mode=details
+	#  whereas earlier it was at https://www.{mydomain}/workDetails.html?wid={wid}
+	redir /workDetails.html https://id.{mydomain}/texts/{query.wid}?mode=details 301
 
 	# Templates give static sites some dynamic features
 	templates
@@ -62,7 +73,13 @@ id.foo.com {
 		Access-Control-Allow-Headers *
 	}
 
-	# Prepare a map to hold passage id ←→ html fragment file associations
+	# Define domain as a variable, so we only have to change it in one place (at least inside this site block)
+	# Probably it corresponds to hostname of the address served by this block, after the "id."
+	map 1 {mydomain} {
+		default "foo.com"
+	}
+
+	# Prepare another map variable to hold passage id ←→ html fragment file associations
 	map {path} {myfile} {online} {
 		#   PATH                 FILE                                                               ONLINE
 		# ------------------------------------------------------------------------------------------------------
@@ -85,6 +102,14 @@ id.foo.com {
 		conneg {
 			match_types text/html
 			force_type_query_string format
+		}
+	}
+	@details {
+		query mode=details
+	}
+	@not_details {
+		not {
+			query mode=details
 		}
 	}
 	@tei {
@@ -126,33 +151,38 @@ id.foo.com {
 		}
 	}
 
-	# ===== Now comes the actual routing... ====
+	# ===== Now comes the actual routing (mostly temporary redirects) ... ====
 
-	# HTML is always served via mapped file fragments 
+	# HTML is always served via mapped file fragments
 	handle @html {
-		redir /texts/* https://www.foo.com/data/{myfile}
+		handle @not_details {
+			redir /texts/* https://www.{mydomain}/data/{myfile} 302
+		}
+		handle @details {
+			redir @work_id https://www.{mydomain}/data/{re.wid.1}/html/{re.wid.1}_details.html 302
+		}
 	}
 
 	# For other types, if a full work is requested, we have that prepared
 	# in the filesystem.
 	handle @not_a_passage {
 		handle @tei {
-			redir @work_id https://www.foo.com/data/{re.wid.1}/{re.wid.1}.xml
+			redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.xml 302
 		}
 		handle @rdf {
-			redir @work_id https://www.foo.com/data/{re.wid.1}/{re.wid.1}.rdf
+			redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.rdf 302
 		}
 		handle @pdf {
-			redir @work_id https://www.foo.com/data/{re.wid.1}/{re.wid.1}.pdf
+			redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.pdf 302
 		}
 		handle @txt_orig {
-			redir @work_id https://www.foo.com/data/{re.wid.1}/text/{re.wid.1}_orig.txt
+			redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_orig.txt 302
 		}
 		handle @txt_edit {
-			redir @work_id https://www.foo.com/data/{re.wid.1}/text/{re.wid.1}_edit.txt
+			redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_edit.txt 302
 		}
 		handle @txt_default {
-			redir @work_id https://www.foo.com/data/{re.wid.1}/text/{re.wid.1}_edit.txt
+			redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_edit.txt 302
 		}
 		# Do we need a default, or is it okay to respond with 404?
 	}

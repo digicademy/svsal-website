@@ -9,6 +9,7 @@ Wants=network-online.target systemd-networkd-wait-online.service
 StartLimitIntervalSec=86400
 StartLimitBurst=10
 
+
 [Service]
 Restart=on-failure
 RestartSec=1080
@@ -17,8 +18,15 @@ RestartSec=1080
 User=www-data
 Group=podman
 
-; ExecStart=/usr/local/bin/caddy run --config /etc/caddy/caddy_config.json --resume
+; Commands to start/reload/stop the server and extend the stock configuration with available routes
 ExecStart=/usr/local/bin/caddy run --config /etc/caddy/caddy_config.json
+ExecStartPost=-/etc/caddy/buildroutes.sh
+ExecStartPost=-/etc/caddy/postroutes.sh
+
+ExecReload=/usr/local/bin/caddy reload --config /etc/caddy/caddy_config.json
+ExecReload=-/etc/caddy/buildroutes.sh
+ExecReload=-/etc/caddy/postroutes.sh
+
 ExecStop=/usr/local/bin/caddy stop
 
 ; Limit the number of file descriptors; see `man systemd.exec` for more limit settings.

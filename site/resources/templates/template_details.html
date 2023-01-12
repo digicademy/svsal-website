@@ -1,0 +1,365 @@
+{{ $domain := "test.salamanca.school" }}
+{{ $work_info := index .Args 0 }}
+{{ $wid := $work_info.id }}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="">
+        <meta name="description" content="Bibliographical data for {{ $work_info.author_short }}: {{ $work_info.title_short }}">
+        <title>{{ $work_info.author_short }}: {{ $work_info.title_short }} - The School of Salamanca</title>
+
+        <link rel="canonical" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}">
+        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=de">
+        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=en">
+        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=es">
+
+        <!-- ==== CSS ==== -->
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
+        <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/style_default.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/ispinner.prefixed.css">
+
+        <!-- ==== favIcon ==== -->
+        <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="/resources/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="/resources/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="/resources/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="/resources/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="/resources/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="/resources/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="/resources/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="/resources/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/resources/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon"             type="image/png" sizes="32x32"   href="/resources/favicons/favicon-32x32.png">
+        <link rel="icon"             type="image/png" sizes="194x194" href="/resources/favicons/favicon-194x194.png">
+        <link rel="icon"             type="image/png" sizes="96x96"   href="/resources/favicons/favicon-96x96.png">
+        <link rel="icon"             type="image/png" sizes="192x192" href="/resources/favicons/android-chrome-192x192.png">
+        <link rel="icon"             type="image/png" sizes="16x16"   href="/resources/favicons/favicon-16x16.png">
+        <link rel="manifest" href="/resources/favicons/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/resources/favicons/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+
+    <body id="body">
+        <div id="wrap">
+            <div class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Header and Navbar -->
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
+                            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand hidden-xs" href="https://www.{{ $domain }}/index.html">The School of Salamanca</a>
+                        <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="https://www.{{ $domain }}/index.html">The School of Salamanca</a>
+                    </div>
+                    <div class="collapse navbar-collapse navbar-menubuilder" style="max-height: 569px;">
+                        <menu class="nav navbar-nav">
+                            <li class="">
+                                <a href="https://blog.{{ $domain }}/?lang=en">
+                                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;News
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{ $domain }}/project.html">
+                                    <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Project
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{ $domain }}/works.html">
+                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{ $domain }}/dictionary.html">
+                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Dictionary
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{ $domain }}/authors.html">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Authors
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="https://www.{{ $domain }}/workingPapers.html">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="https://www.{{ $domain }}/search.html">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search
+                                </a>
+                            </li>
+                            <li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Language<span class="caret"></span>
+                                </a>
+                                <menu class="dropdown-menu">
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=de">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;German
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=en">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;English
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=es">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanish
+                                        </a>
+                                    </li>
+                                </menu>
+                            </li>
+                        </menu>
+                        <menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
+                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=de">de</a>
+                                    <a class="btn navbar-btn btn-info" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=en">en</a>
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=es">es</a>
+                                </div>
+                            </li>
+                        </menu>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content" class="container-fluid">
+
+                <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+                    <span class="text-muted"><span class="text-muted">{{ $work_info.author_full }}: </span>
+                                             <span class="text-muted">{{ $work_info.title_short }}</span>{{ if $work_info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
+                                             <hr>
+                    </span>
+                </h2>
+                <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+                    <span class="text-muted"><span class="text-muted">{{ $work_info.author_full }}: </span>
+                                             <span class="text-muted">{{ $work_info.title_short }}</span>{{ if $work_info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
+                                             <hr>
+                    </span>
+                </h2>
+                <h2 class="hidden-lg hidden-md">
+                    <span class="text-muted"><span class="text-muted">{{ $work_info.author_full }}: </span>
+                                             <span class="text-muted">{{ $work_info.title_short }}</span>{{ if $work_info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
+                                             <hr>
+                    </span>
+                </h2>
+
+                <div>
+                    <div class="row"><!-- Main entry -->
+                        <div class="col-md-8"><!-- Metadata for digital and source ed. -->
+                            <div>
+                                <h4>Digital Edition</h4>
+                                <div>
+                                    <table class="borderless table table-hover"><!-- Metadata -->
+                                        <tbody>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Citation title:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.title_short }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Author:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.author_full }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3">Electronic publication:</td>
+                                                <td class="col-md-9">{{ $work_info.el_publication_date }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3">Scholarly editing:</td>
+                                                <td class="col-md-9">{{ $work_info.schol_ed }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3">Technical editing:</td>
+                                                <td class="col-md-9">{{ $work_info.tech_ed }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3">Series:</td>
+                                                <td class="col-md-9">The School of Salamanca. A Digital Collection of Sources</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3">Series volume:</td>
+                                                <td class="col-md-9">{{ $work_info.series_num }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3">Series directors:</td>
+                                                <td class="col-md-9">Thomas Duve; Matthias Lutz-Bachmann</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3">Published by:</td>
+                                                <td class="col-md-9">Akademie der Wissenschaften und der Literatur, Mainz</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="catalogue-citation">
+                                    <span style="font-weight:bold">Proposed citation:</span><br>
+                                    <span class="cite-rec-body">{{ $work_info.author_short }}, {{ $work_info.title_short }} ({{ $work_info.el_publication_date }} [{{ $work_info.year }}]),
+                                                                in: The School of Salamanca. A Digital Collection of Sources
+                                                                &lt;<a href="https://id.salamanca.school/texts/{{ $wid }}">https://id.salamanca.school/texts/{{ $wid }}</a>&gt;
+                                    </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div>
+                                <h4>Bibliographical Information</h4>
+                                <div>
+                                    <table class="borderless table table-hover"><!-- Source edition -->
+                                        <tbody>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Title:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.title_full }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Period of publication:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.src_publication_period }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Publisher:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.printer_full }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Publish place:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.place }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Language(s):</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.language }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4"><!-- Views, downloads -->
+                            <div>
+                                <div>
+                                    <h4>Views for this Text</h4>
+                                    <ul>
+                                        <li>
+                                            <h5>Reading View:</h5>
+                                            <div>
+                                                <a class="g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
+                                                    <img src="{{ $work_info.thumbnail }}" class="img-responsive thumbnail" alt="Titlepage{{ if $work_info.volumes }} Multivolume{{ end }}">
+                                                </a>
+                                                <a class="btn btn-info button g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
+                                                    <span class="glyphicon glyphicon-file"></span> Read
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li><a href="viewer_standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimiles</a></li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div>
+                                    <h4>Metadata</h4>
+                                    <ul>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=tei&amp;mode=meta">TEI Header</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=rdf">RDF</a></li>
+                                        <li><a href="https://facs.salamanca.school/iiif/presentation/collection/{{ $wid }}">IIIF Collection</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <hr>
+                                    <h4>Download</h4>
+                                    <ul>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=tei">XML (TEI P5)</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=txt&amp;mode=edit">Text (constituted)</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=txt&amp;mode=orig">Text (diplomatic)</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+{{ if $work_info.volumes }}
+                    <div><!-- Individual Volumes -->
+                        <hr>
+                        <h4>Volumes ({{ $work_info.volumes.number }})</h4>
+    {{ range $work_info.volumes.volumes }}
+                        <div class="row"><!-- Volume {{ .num }} -->
+                            <div class="col-md-3"><!-- teaser -->
+                                <div class="catrecord-teaser">
+                                    <a class="{{ .status }}" href="https://id.{{ $domain }}/texts/{{ $wid }}:vol{{ .num }}?format=html">
+                                        <img src="{{ .thumbnail }}" class="img-responsive thumbnail teaser-thumbnail" alt="Titlepage Volume">
+                                    </a>
+                                    <a class="btn btn-info teaser-button {{ .status }}" href="https://id.{{ $domain }}/texts/{{ $wid }}:vol{{ .num }}?format=html">
+                                        <span class="glyphicon glyphicon-file"></span> <span>Volume {{ .num }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-9 catrecord-teasertext"><!-- metadata -->
+                                <table class="borderless table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-md-2" style="line-height: 1.2">Title:</td>
+                                            <td class="col-md-10" style="line-height: 1.2">{{ .title_short }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2" style="line-height: 1.2">Volume (original):</td>
+                                            <td class="col-md-10" style="line-height: 1.2">{{ .num }} of {{ $work_info.volumes.number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2" style="line-height: 1.2">Imprint:</td>
+                                            <td class="col-md-10" style="line-height: 1.2">{{ .place }} : {{ .printer_full }}, {{ .year }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2" style="line-height: 1.2">Electronic publication:</td>
+                                            <td class="col-md-10" style="line-height: 1.2">{{ .el_publication_date }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <span><a href="workDetails.html?wid={{ .id }}"><span class="fa fa-arrow-right"></span> Full catalogue record</a></span><br>
+                                <span><a href="viewer_standalone.html?wid={{ .id }}" target="_blank" rel="noopener noreferrer"><span class="fa fa-arrow-right"></span> Facsimiles</a></span>
+                            </div>
+                        </div>
+    {{ end }}
+                    </div>
+{{ end }}
+                </div>
+            </div>
+        </div>
+            
+        <!-- ==== Core JavaScript ==== -->
+        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
+
+        <script type="text/javascript" src="/resources/js/jquery-1.js"></script>
+        <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/resources/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="/resources/js/jquery.js"></script><!-- this is only the backTop function -->
+
+        <script type="text/javascript">
+            jQuery('body').bind('click', function(e) {                                              // hide navbar when clicking anywhere
+                if(jQuery(e.target).closest('.navbar-collapse').length == 0) {
+                    // click happened outside of .navbar, so hide
+                    var opened = jQuery('.navbar-collapse').hasClass('in');
+                    if ( opened === true ) {
+                        jQuery('.navbar-collapse').collapse('hide');
+                    }
+                }
+            });
+
+            $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });  // set navbar height
+
+            $(document).ready(function () {
+                $("#content").css('padding-top', parseInt($('.alert').css("height")) + 2);
+                $('#backTop').backTop({                                                                 // Position Back-to-top arrow
+                    'position' : 100,
+                    'speed' : 200,
+                    'color' : 'white',
+                });
+            });
+        </script>
+
+{{ include "/resources/templates/template_footer.html" }}
+
+    </body>
+</html>
