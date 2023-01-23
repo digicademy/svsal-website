@@ -79,4 +79,13 @@ $(document).ready(function () {
       'speed' : 200,
       'color' : 'white',
   });
+  SyntaxHighlighter.all();
+});
+
+// ==== Popover for citation proposal ====
+$('[data-toggle="popover"]').popover();
+$('body').on('click', function (e) {
+    if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('.popover.in').length === 0) { 
+        $('[data-toggle="popover"]').popover('hide');
+    }
 });

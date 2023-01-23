@@ -13,21 +13,24 @@
         <title>{{ if $info.title }}{{ $info.title }} - {{ end }}The School of Salamanca</title>
 
         <link rel="canonical" href="https://www.{{ $domain }}/{{ $info.page }}">
-        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}&lang=de">
-        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}&lang=en">
-        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}&lang=es">
+        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}?lang=de">
+        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}?lang=en">
+        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}?lang=es">
 
         <!-- ==== CSS ==== -->
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
         <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/style_default.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/shCoreDefault.css"/>
 
         <!-- ==== Javascript ==== -->
         <script type="text/javascript" src="/resources/js/jquery-1.js" defer></script>
         <script type="text/javascript" src="/resources/js/bootstrap.js" defer></script>
         <script type="text/javascript" src="/resources/js/jquery-ui.js" defer></script>
         <script type="text/javascript" src="/resources/js/jquery.js" defer></script><!-- this is only the backTop function -->
+        <script type="text/javascript" src="/resources/js/shCore.js" defer></script>
+        <script type="text/javascript" src="/resources/js/shBrushXml.js" defer></script>
         <script type="text/javascript" src="/resources/js/sal-common.js" defer></script>
 
         <!-- ==== favIcon ==== -->
@@ -45,47 +48,46 @@
         <link rel="icon"             type="image/png" sizes="96x96"   href="/resources/favicons/favicon-96x96.png">
         <link rel="icon"             type="image/png" sizes="192x192" href="/resources/favicons/android-chrome-192x192.png">
         <link rel="icon"             type="image/png" sizes="16x16"   href="/resources/favicons/favicon-16x16.png">
+        <link rel="manifest" href="resources/favicons/manifest.json">
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="/resources/favicons/mstile-144x144.png">
         <meta name="theme-color" content="#ffffff">
+        <meta name="google-site-verification" content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M">
     </head>
 
     <body id="body">
-        <div id="wrap">
-
 {{include "resources/templates/template_navbar.html" $info}}
 
-            <!-- Main page area -->
-            <div id="content" class="container-fluid">
+        <!-- Main page area -->
+        <div id="content" class="container-fluid">
 
-                {{if $info.header }}<!-- Page title -->
-                <div class="container">
-                    <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
-                        <span class="text-muted">
-                            <span class="text-muted">{{ $info.header }}</span>
-                            <hr>
-                        </span>
-                    </h2>
-                    <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
-                        <span class="text-muted">
-                            <span class="text-muted">{{ $info.header }}</span>
-                            <hr>
-                        </span>
-                    </h2>
-                    <h2 class="hidden-lg hidden-md">
-                        <span class="text-muted">
-                            <span class="text-muted">{{ $info.header }}</span>
-                            <hr>
-                        </span>
-                    </h2>
-                </div>{{end}}
+            {{if $info.header }}<!-- Page title -->
+            <div class="container">
+                <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+                    <span class="text-muted">
+                        <span class="text-muted">{{ $info.header }}</span>
+                        <hr>
+                    </span>
+                </h2>
+                <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+                    <span class="text-muted">
+                        <span class="text-muted">{{ $info.header }}</span>
+                        <hr>
+                    </span>
+                </h2>
+                <h2 class="hidden-lg hidden-md">
+                    <span class="text-muted">
+                        <span class="text-muted">{{ $info.header }}</span>
+                        <hr>
+                    </span>
+                </h2>
+            </div>{{end}}
 
-                <!-- Page content -->{{ $info.content }}
-            </div>
+            <!-- Page content -->{{ $info.content }}
+        </div>
 
-            <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
+        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
 
 {{ include "/resources/templates/template_footer.html" }}
-        </div>
     </body>
 </html>

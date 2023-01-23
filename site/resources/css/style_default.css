@@ -204,7 +204,10 @@ color:#102873
 }      
 /*Important for mobile devices in portrait format/ and fixed header overlap*/
 body {
-padding-top:50px
+padding-top:50px;
+display: flex;
+flex-direction: column;
+min-height: 100%;
 }
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -218,10 +221,23 @@ margin:0 auto -110px
 #push {
 height:100px
 }
+#content {
+flex: 1;
+padding-bottom: 5px;
+}
 #footer {
 border-top:thin double #eeeeee;
 background-color:#f8f8f8;
-height:250px
+height:250px;
+width:100%;
+text-align: center;
+}
+#footer > div {
+text-align: center;
+}
+#footer > div > div {
+display:inline-block;
+float:inherit;
 }
 /*news entry style*/
 .newsP {

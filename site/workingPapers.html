@@ -1,535 +1,399 @@
-{{$domain := "test.salamanca.school"}}
-{{$info := dict "page" "workingPapers.html" "title" "Working Papers" "header" "" "description" "Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca." "domain" $domain}}
-
-<!DOCTYPE html>
-<html data-template="i18n:translate" data-template-catalogues="data/i18n">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="">
-        <meta name="description" content="Überblick über die Working Papers zur Schule von Salamanca, die im Rahmen der vom Projekt veranstalteten Reihe erschienen sind.">
-        <title>{{ $info.title }} - Die Schule von Salamanca</title>
-        <link rel="canonical" href="https://www.{{$domain}}/{{$info.page}}">
-        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/{{$info.page}}?lang=de">
-        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/{{$info.page}}?lang=en">
-        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/{{$info.page}}?lang=es">
-        
-        <!-- ==== CSS ==== -->
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="resources/css/style_default.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="resources/css/backTop.css">
-        
-        <!-- ==== favIcon ==== -->
-        <link rel="apple-touch-icon" sizes="57x57" href="resources/favicons/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="resources/favicons/apple-touch-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="resources/favicons/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="resources/favicons/apple-touch-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="resources/favicons/apple-touch-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="resources/favicons/apple-touch-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="resources/favicons/apple-touch-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="resources/favicons/apple-touch-icon-152x152.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="resources/favicons/apple-touch-icon-180x180.png">
-        <link rel="icon" type="image/png" href="resources/favicons/favicon-32x32.png" sizes="32x32">
-        <link rel="icon" type="image/png" href="resources/favicons/favicon-194x194.png" sizes="194x194">
-        <link rel="icon" type="image/png" href="resources/favicons/favicon-96x96.png" sizes="96x96">
-        <link rel="icon" type="image/png" href="resources/favicons/android-chrome-192x192.png" sizes="192x192">
-        <link rel="icon" type="image/png" href="resources/favicons/favicon-16x16.png" sizes="16x16">
-        <link rel="manifest" href="resources/favicons/manifest.json">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png">
-        <meta name="theme-color" content="#ffffff">
-        
-    </head>
-    <body id="body">
-        <div id="wrap">
-
-{{include "resources/templates/template_navbar.html" $info}}
-
-            <div id="content" class="container-fluid">
-                <div class="container">
-                    <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
-                        <span class="text-muted">
-                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-                            Salamanca Working Paper Series (ISSN 2509-5080)
-                        </span>
-                    </h2>
-                    <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
-                        <span class="text-muted">
-                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-                            Salamanca Working Paper Series (ISSN 2509-5080)
-                        </span>
-                    </h2>
-                    <h2 class="hidden-lg hidden-md">
-                        <span class="text-muted">
-                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-                            Salamanca Working Paper Series (ISSN 2509-5080)
-                        </span>
-                    </h2>
-                    <p>
-                        Die Salamanca Working Papers Series ist eine interdisziplinäre
-                            Reihe von Beiträgen, die Themen aus den philosophischen, juristischen und theologischen
-                            Wissenschaften bearbeiten. Die Reihe begleitet die Projektarbeit, ist aber auch für
-                            externe Beiträge offen. Eingereichte Beiträge durchlaufen ein double blind peer
-                            review-Verfahren. Gern nehmen wir Vorschläge unter dieser Adresse entgegen:
-                        <a href="mailto:info.salamanca@adwmainz.de">info.salamanca(at)adwmainz.de</a>
-                    </p>
-                    <hr>
-                    <span>
-                        <span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp"><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0015"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-15.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0015">No. 2021-01</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Luisa Brunori</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">The First Doctrinal Consideration on "Transatlantic" Commercial Law: Tomás de Mercado’s Summa de tratos y contratos, 1569-1571</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-465252</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Luisa Brunori (2021): The First Doctrinal Consideration on &#34;Transatlantic&#34; Commercial Law: Tomás de Mercado’s Summa de tratos y contratos, 1569-1571 - Salamanca Working Paper Series (ISSN 2509-5080) No. 2021-01. urn:nbn:de:hebis:30:3-465252 (17.01.2023)." data-original-title="" data-content="Luisa Brunori (2021): The First Doctrinal Consideration on &#34;Transatlantic&#34; Commercial Law: Tomás de Mercado’s Summa de tratos y contratos, 1569-1571 - Salamanca Working Paper Series (ISSN 2509-5080) No. 2021-01. urn:nbn:de:hebis:30:3-465252 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0014"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-14.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0014">No. 2020-01</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Otto Danwerth</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">Erasmus, christlicher Humanismus und Spiritualität in Spanien und Neu-Spanien (16. Jahrhundert)</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-465241</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Otto Danwerth (2020): Erasmus, christlicher Humanismus und Spiritualität in Spanien und Neu-Spanien (16. Jahrhundert) - Salamanca Working Paper Series (ISSN 2509-5080) No. 2020-01. urn:nbn:de:hebis:30:3-465241 (17.01.2023)." data-original-title="" data-content="Otto Danwerth (2020): Erasmus, christlicher Humanismus und Spiritualität in Spanien und Neu-Spanien (16. Jahrhundert) - Salamanca Working Paper Series (ISSN 2509-5080) No. 2020-01. urn:nbn:de:hebis:30:3-465241 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0013"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-13.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0013">No. 2019-02</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">José Antonio Cervera</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">The School of Salamanca at the end of the known world in the 16th century:
-                                                Martín de Rada, Domingo de Salazar and Juan Cobo in the Philippines, 1565–1594</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-465235</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: José Antonio Cervera (2019): The School of Salamanca at the end of the known world in the 16th century:&#xA;                                    Martín de Rada, Domingo de Salazar and Juan Cobo in the Philippines, 1565–1594 - Salamanca Working Paper Series (ISSN 2509-5080) No. 2019-02. urn:nbn:de:hebis:30:3-465235 (17.01.2023)." data-original-title="" data-content="José Antonio Cervera (2019): The School of Salamanca at the end of the known world in the 16th century:&#xA;                                    Martín de Rada, Domingo de Salazar and Juan Cobo in the Philippines, 1565–1594 - Salamanca Working Paper Series (ISSN 2509-5080) No. 2019-02. urn:nbn:de:hebis:30:3-465235 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0012"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-12.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0012">No. 2019-01</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Xavier Agenjo &amp; Francisca Hernández</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">Visibility and Digital Accessibility of the School of Salamanca in a Linked Open-Data Environment</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-465229</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Xavier Agenjo &amp; Francisca Hernández (2019): Visibility and Digital Accessibility of the School of Salamanca in a Linked Open-Data Environment - Salamanca Working Paper Series (ISSN 2509-5080) No. 2019-01. urn:nbn:de:hebis:30:3-465229 (17.01.2023)." data-original-title="" data-content="Xavier Agenjo &amp; Francisca Hernández (2019): Visibility and Digital Accessibility of the School of Salamanca in a Linked Open-Data Environment - Salamanca Working Paper Series (ISSN 2509-5080) No. 2019-01. urn:nbn:de:hebis:30:3-465229 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0011"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-11.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0011">No. 2018-03</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Martin Schlag</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">Socio-Economic-Political Concepts in Late Iberian Scholasticism</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-465215</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Martin Schlag (2018): Socio-Economic-Political Concepts in Late Iberian Scholasticism - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-03. urn:nbn:de:hebis:30:3-465215 (17.01.2023)." data-original-title="" data-content="Martin Schlag (2018): Socio-Economic-Political Concepts in Late Iberian Scholasticism - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-03. urn:nbn:de:hebis:30:3-465215 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0010"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-10.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0010">No. 2018-02</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Thomas Duve</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">La Escuela de Salamanca: ¿un caso de producción global de conocimiento?</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-376152</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Thomas Duve (2018): La Escuela de Salamanca: ¿un caso de producción global de conocimiento? - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-02. urn:nbn:de:hebis:30:3-376152 (17.01.2023)." data-original-title="" data-content="Thomas Duve (2018): La Escuela de Salamanca: ¿un caso de producción global de conocimiento? - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-02. urn:nbn:de:hebis:30:3-376152 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0009"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-09.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0009">No. 2018-01</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Francisco Cuena Boy</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">Contractus et quasi-contractus</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-376135</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Francisco Cuena Boy (2018): Contractus et quasi-contractus - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-01. urn:nbn:de:hebis:30:3-376135 (17.01.2023)." data-original-title="" data-content="Francisco Cuena Boy (2018): Contractus et quasi-contractus - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-01. urn:nbn:de:hebis:30:3-376135 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0008"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-08.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0008">No. 2015-05</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Daniel S. Allemann</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">Spreading the Faith to American Indians: Alfonso de Castro's Call for Amerindian Education in the Context of the Second Scholastic</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-376129</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Daniel S. Allemann (2015): Spreading the Faith to American Indians: Alfonso de Castro's Call for Amerindian Education in the Context of the Second Scholastic - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-05. urn:nbn:de:hebis:30:3-376129 (17.01.2023)." data-original-title="" data-content="Daniel S. Allemann (2015): Spreading the Faith to American Indians: Alfonso de Castro's Call for Amerindian Education in the Context of the Second Scholastic - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-05. urn:nbn:de:hebis:30:3-376129 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0007"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-07.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0007">No. 2015-04</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Simona Langella</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">Francisco de Vitoria y la cuestión del tiranicidio</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-376115</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Simona Langella (2015): Francisco de Vitoria y la cuestión del tiranicidio - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-04. urn:nbn:de:hebis:30:3-376115 (17.01.2023)." data-original-title="" data-content="Simona Langella (2015): Francisco de Vitoria y la cuestión del tiranicidio - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-04. urn:nbn:de:hebis:30:3-376115 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0006"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-06.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0006">No. 2015-03</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Ana María Carabias Torres</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">La Escuela de Salamanca. Perspectivas de investigación</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-376105</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Ana María Carabias Torres (2015): La Escuela de Salamanca. Perspectivas de investigación - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-03. urn:nbn:de:hebis:30:3-376105 (17.01.2023)." data-original-title="" data-content="Ana María Carabias Torres (2015): La Escuela de Salamanca. Perspectivas de investigación - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-03. urn:nbn:de:hebis:30:3-376105 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0005"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-05.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0005">No. 2015-02</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">María Emilia Granduque José</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">El saber procedente del Nuevo Mundo y su traslado a Salamanca</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-324054</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: María Emilia Granduque José (2015): El saber procedente del Nuevo Mundo y su traslado a Salamanca - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-02. urn:nbn:de:hebis:30:3-324054 (17.01.2023)." data-original-title="" data-content="María Emilia Granduque José (2015): El saber procedente del Nuevo Mundo y su traslado a Salamanca - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-02. urn:nbn:de:hebis:30:3-324054 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0004"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-04.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0004">No. 2015-01</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">José Luis Egío</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">La consolidación del estatuto teológico-político del pagano amerindio en los maestros ‘salmantinos’ y sus discípulos novohispanos (1512-1593)</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-324042</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: José Luis Egío (2015): La consolidación del estatuto teológico-político del pagano amerindio en los maestros ‘salmantinos’ y sus discípulos novohispanos (1512-1593) - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-01. urn:nbn:de:hebis:30:3-324042 (17.01.2023)." data-original-title="" data-content="José Luis Egío (2015): La consolidación del estatuto teológico-político del pagano amerindio en los maestros ‘salmantinos’ y sus discípulos novohispanos (1512-1593) - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-01. urn:nbn:de:hebis:30:3-324042 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0003"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-03.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0003">No. 2014-02</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Danaë Simmermacher</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">"Non qua servus est, sed qua homo." Der rechtliche Status von Sklaven bei Luis de Molina</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-324038</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Danaë Simmermacher (2014): &#34;Non qua servus est, sed qua homo.&#34; Der rechtliche Status von Sklaven bei Luis de Molina - Salamanca Working Paper Series (ISSN 2509-5080) No. 2014-02. urn:nbn:de:hebis:30:3-324038 (17.01.2023)." data-original-title="" data-content="Danaë Simmermacher (2014): &#34;Non qua servus est, sed qua homo.&#34; Der rechtliche Status von Sklaven bei Luis de Molina - Salamanca Working Paper Series (ISSN 2509-5080) No. 2014-02. urn:nbn:de:hebis:30:3-324038 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0002"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-02.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0002">No. 2014-01</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">The School of Salamanca: a digital collection of sources and a dictionary of its juridical-political language. The basic objectives and structure of a research project</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-324023</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger (2014): The School of Salamanca: a digital collection of sources and a dictionary of its juridical-political language. The basic objectives and structure of a research project - Salamanca Working Paper Series (ISSN 2509-5080) No. 2014-01. urn:nbn:de:hebis:30:3-324023 (17.01.2023)." data-original-title="" data-content="Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger (2014): The School of Salamanca: a digital collection of sources and a dictionary of its juridical-political language. The basic objectives and structure of a research project - Salamanca Working Paper Series (ISSN 2509-5080) No. 2014-01. urn:nbn:de:hebis:30:3-324023 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
-                            <div class="row-fluid">
-                                <table class="table table-hover borderless">
-                                    <tr>
-                                        <td class="col-md-2 hidden-xs hidden-sm">
-                                            <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0001"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-01.png"></a></span>
-                                        </td>
-                                        <td class="col-md-2 col-sm-3 col-xs-3">
-                                            <span data-template="app:WPvol">
-                                                                <h4><a href="workingPaper.html?wpid=WP0001">No. 2013-01</a></h4></span>
-                                        </td>
-                                        <td class="col-md-8 xol-sm-9 col-xs-9">
-                                            <span data-template="app:WPauthor">Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger</span>
-                                            <br>
-                                            <span class="lead">
-                                                <span data-template="app:WPtitle"><span style="text-align: justify;">Die Schule von Salamanca: eine digitale Quellensammlung und ein Wörterbuch ihrer juristisch-politischen Sprache. Zu Grundanliegen und Struktur eines Forschungsvorhabens</span></span>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span data-template="app:citation"><span>
-                                                                    <ref type="url">urn:nbn:de:hebis:30:3-324011</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger (2013): Die Schule von Salamanca: eine digitale Quellensammlung und ein Wörterbuch ihrer juristisch-politischen Sprache. Zu Grundanliegen und Struktur eines Forschungsvorhabens - Salamanca Working Paper Series (ISSN 2509-5080) No. 2013-01. urn:nbn:de:hebis:30:3-324011 (17.01.2023)." data-original-title="" data-content="Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger (2013): Die Schule von Salamanca: eine digitale Quellensammlung und ein Wörterbuch ihrer juristisch-politischen Sprache. Zu Grundanliegen und Struktur eines Forschungsvorhabens - Salamanca Working Paper Series (ISSN 2509-5080) No. 2013-01. urn:nbn:de:hebis:30:3-324011 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </span></span>
-                    </span>
+{{$content := `
+    <div class="container">
+        <p>
+            Die Salamanca Working Papers Series ist eine interdisziplinäre
+            Reihe von Beiträgen, die Themen aus den philosophischen, juristischen und theologischen
+            Wissenschaften bearbeiten. Die Reihe begleitet die Projektarbeit, ist aber auch für
+            externe Beiträge offen. Eingereichte Beiträge durchlaufen ein double blind peer
+            review-Verfahren. Gern nehmen wir Vorschläge unter dieser Adresse entgegen:
+            <a href="mailto:info.salamanca@adwmainz.de">info.salamanca(at)adwmainz.de</a>
+        </p>
+        <div>
+            <span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp"><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0015"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-15.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0015">No. 2021-01</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Luisa Brunori</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">The First Doctrinal Consideration on "Transatlantic" Commercial Law: Tomás de Mercado’s Summa de tratos y contratos, 1569-1571</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                    <ref type="url">urn:nbn:de:hebis:30:3-465252</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Luisa Brunori (2021): The First Doctrinal Consideration on &#34;Transatlantic&#34; Commercial Law: Tomás de Mercado’s Summa de tratos y contratos, 1569-1571 - Salamanca Working Paper Series (ISSN 2509-5080) No. 2021-01. urn:nbn:de:hebis:30:3-465252 (17.01.2023)." data-original-title="" data-content="Luisa Brunori (2021): The First Doctrinal Consideration on &#34;Transatlantic&#34; Commercial Law: Tomás de Mercado’s Summa de tratos y contratos, 1569-1571 - Salamanca Working Paper Series (ISSN 2509-5080) No. 2021-01. urn:nbn:de:hebis:30:3-465252 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-            </div>
+            </span>
+            <span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0014"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-14.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0014">No. 2020-01</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Otto Danwerth</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">Erasmus, christlicher Humanismus und Spiritualität in Spanien und Neu-Spanien (16. Jahrhundert)</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-465241</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Otto Danwerth (2020): Erasmus, christlicher Humanismus und Spiritualität in Spanien und Neu-Spanien (16. Jahrhundert) - Salamanca Working Paper Series (ISSN 2509-5080) No. 2020-01. urn:nbn:de:hebis:30:3-465241 (17.01.2023)." data-original-title="" data-content="Otto Danwerth (2020): Erasmus, christlicher Humanismus und Spiritualität in Spanien und Neu-Spanien (16. Jahrhundert) - Salamanca Working Paper Series (ISSN 2509-5080) No. 2020-01. urn:nbn:de:hebis:30:3-465241 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span>
+            <span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0013"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-13.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0013">No. 2019-02</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">José Antonio Cervera</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">The School of Salamanca at the end of the known world in the 16th century:
+                                    Martín de Rada, Domingo de Salazar and Juan Cobo in the Philippines, 1565–1594</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-465235</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: José Antonio Cervera (2019): The School of Salamanca at the end of the known world in the 16th century:&#xA;                                    Martín de Rada, Domingo de Salazar and Juan Cobo in the Philippines, 1565–1594 - Salamanca Working Paper Series (ISSN 2509-5080) No. 2019-02. urn:nbn:de:hebis:30:3-465235 (17.01.2023)." data-original-title="" data-content="José Antonio Cervera (2019): The School of Salamanca at the end of the known world in the 16th century:&#xA;                                    Martín de Rada, Domingo de Salazar and Juan Cobo in the Philippines, 1565–1594 - Salamanca Working Paper Series (ISSN 2509-5080) No. 2019-02. urn:nbn:de:hebis:30:3-465235 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span>
+            <span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0012"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-12.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0012">No. 2019-01</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Xavier Agenjo &amp; Francisca Hernández</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">Visibility and Digital Accessibility of the School of Salamanca in a Linked Open-Data Environment</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-465229</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Xavier Agenjo &amp; Francisca Hernández (2019): Visibility and Digital Accessibility of the School of Salamanca in a Linked Open-Data Environment - Salamanca Working Paper Series (ISSN 2509-5080) No. 2019-01. urn:nbn:de:hebis:30:3-465229 (17.01.2023)." data-original-title="" data-content="Xavier Agenjo &amp; Francisca Hernández (2019): Visibility and Digital Accessibility of the School of Salamanca in a Linked Open-Data Environment - Salamanca Working Paper Series (ISSN 2509-5080) No. 2019-01. urn:nbn:de:hebis:30:3-465229 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span>
+            <span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0011"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-11.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0011">No. 2018-03</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Martin Schlag</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">Socio-Economic-Political Concepts in Late Iberian Scholasticism</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-465215</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Martin Schlag (2018): Socio-Economic-Political Concepts in Late Iberian Scholasticism - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-03. urn:nbn:de:hebis:30:3-465215 (17.01.2023)." data-original-title="" data-content="Martin Schlag (2018): Socio-Economic-Political Concepts in Late Iberian Scholasticism - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-03. urn:nbn:de:hebis:30:3-465215 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0010"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-10.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0010">No. 2018-02</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Thomas Duve</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">La Escuela de Salamanca: ¿un caso de producción global de conocimiento?</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-376152</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Thomas Duve (2018): La Escuela de Salamanca: ¿un caso de producción global de conocimiento? - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-02. urn:nbn:de:hebis:30:3-376152 (17.01.2023)." data-original-title="" data-content="Thomas Duve (2018): La Escuela de Salamanca: ¿un caso de producción global de conocimiento? - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-02. urn:nbn:de:hebis:30:3-376152 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0009"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-09.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0009">No. 2018-01</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Francisco Cuena Boy</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">Contractus et quasi-contractus</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-376135</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Francisco Cuena Boy (2018): Contractus et quasi-contractus - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-01. urn:nbn:de:hebis:30:3-376135 (17.01.2023)." data-original-title="" data-content="Francisco Cuena Boy (2018): Contractus et quasi-contractus - Salamanca Working Paper Series (ISSN 2509-5080) No. 2018-01. urn:nbn:de:hebis:30:3-376135 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0008"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-08.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0008">No. 2015-05</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Daniel S. Allemann</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">Spreading the Faith to American Indians: Alfonso de Castro's Call for Amerindian Education in the Context of the Second Scholastic</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-376129</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Daniel S. Allemann (2015): Spreading the Faith to American Indians: Alfonso de Castro's Call for Amerindian Education in the Context of the Second Scholastic - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-05. urn:nbn:de:hebis:30:3-376129 (17.01.2023)." data-original-title="" data-content="Daniel S. Allemann (2015): Spreading the Faith to American Indians: Alfonso de Castro's Call for Amerindian Education in the Context of the Second Scholastic - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-05. urn:nbn:de:hebis:30:3-376129 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0007"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-07.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0007">No. 2015-04</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Simona Langella</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">Francisco de Vitoria y la cuestión del tiranicidio</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-376115</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Simona Langella (2015): Francisco de Vitoria y la cuestión del tiranicidio - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-04. urn:nbn:de:hebis:30:3-376115 (17.01.2023)." data-original-title="" data-content="Simona Langella (2015): Francisco de Vitoria y la cuestión del tiranicidio - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-04. urn:nbn:de:hebis:30:3-376115 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0006"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-06.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0006">No. 2015-03</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Ana María Carabias Torres</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">La Escuela de Salamanca. Perspectivas de investigación</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-376105</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Ana María Carabias Torres (2015): La Escuela de Salamanca. Perspectivas de investigación - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-03. urn:nbn:de:hebis:30:3-376105 (17.01.2023)." data-original-title="" data-content="Ana María Carabias Torres (2015): La Escuela de Salamanca. Perspectivas de investigación - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-03. urn:nbn:de:hebis:30:3-376105 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0005"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-05.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0005">No. 2015-02</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">María Emilia Granduque José</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">El saber procedente del Nuevo Mundo y su traslado a Salamanca</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-324054</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: María Emilia Granduque José (2015): El saber procedente del Nuevo Mundo y su traslado a Salamanca - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-02. urn:nbn:de:hebis:30:3-324054 (17.01.2023)." data-original-title="" data-content="María Emilia Granduque José (2015): El saber procedente del Nuevo Mundo y su traslado a Salamanca - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-02. urn:nbn:de:hebis:30:3-324054 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0004"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-04.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0004">No. 2015-01</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">José Luis Egío</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">La consolidación del estatuto teológico-político del pagano amerindio en los maestros ‘salmantinos’ y sus discípulos novohispanos (1512-1593)</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-324042</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: José Luis Egío (2015): La consolidación del estatuto teológico-político del pagano amerindio en los maestros ‘salmantinos’ y sus discípulos novohispanos (1512-1593) - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-01. urn:nbn:de:hebis:30:3-324042 (17.01.2023)." data-original-title="" data-content="José Luis Egío (2015): La consolidación del estatuto teológico-político del pagano amerindio en los maestros ‘salmantinos’ y sus discípulos novohispanos (1512-1593) - Salamanca Working Paper Series (ISSN 2509-5080) No. 2015-01. urn:nbn:de:hebis:30:3-324042 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0003"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-03.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0003">No. 2014-02</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Danaë Simmermacher</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">"Non qua servus est, sed qua homo." Der rechtliche Status von Sklaven bei Luis de Molina</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-324038</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Danaë Simmermacher (2014): &#34;Non qua servus est, sed qua homo.&#34; Der rechtliche Status von Sklaven bei Luis de Molina - Salamanca Working Paper Series (ISSN 2509-5080) No. 2014-02. urn:nbn:de:hebis:30:3-324038 (17.01.2023)." data-original-title="" data-content="Danaë Simmermacher (2014): &#34;Non qua servus est, sed qua homo.&#34; Der rechtliche Status von Sklaven bei Luis de Molina - Salamanca Working Paper Series (ISSN 2509-5080) No. 2014-02. urn:nbn:de:hebis:30:3-324038 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0002"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-02.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0002">No. 2014-01</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">The School of Salamanca: a digital collection of sources and a dictionary of its juridical-political language. The basic objectives and structure of a research project</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-324023</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger (2014): The School of Salamanca: a digital collection of sources and a dictionary of its juridical-political language. The basic objectives and structure of a research project - Salamanca Working Paper Series (ISSN 2509-5080) No. 2014-01. urn:nbn:de:hebis:30:3-324023 (17.01.2023)." data-original-title="" data-content="Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger (2014): The School of Salamanca: a digital collection of sources and a dictionary of its juridical-political language. The basic objectives and structure of a research project - Salamanca Working Paper Series (ISSN 2509-5080) No. 2014-01. urn:nbn:de:hebis:30:3-324023 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span><span data-template="templates:each" data-template-from="listOfWps" data-template-to="currentWp">
+                <div class="row-fluid">
+                    <table class="table table-hover borderless">
+                        <tr>
+                            <td class="col-md-2 hidden-xs hidden-sm">
+                                <span data-template="app:WPimg"><a href="workingPaper.html?wpid=WP0001"><img style="border: 0.5px solid #E7E7E7; width:90%; height: auto;" src="resources/images/wp_cover/WP-01.png"></a></span>
+                            </td>
+                            <td class="col-md-2 col-sm-3 col-xs-3">
+                                <span data-template="app:WPvol">
+                                <h4><a href="workingPaper.html?wpid=WP0001">No. 2013-01</a></h4></span>
+                            </td>
+                            <td class="col-md-8 xol-sm-9 col-xs-9">
+                                <span data-template="app:WPauthor">Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger</span>
+                                <br>
+                                <span class="lead">
+                                    <span data-template="app:WPtitle"><span style="text-align: justify;">Die Schule von Salamanca: eine digitale Quellensammlung und ein Wörterbuch ihrer juristisch-politischen Sprache. Zu Grundanliegen und Struktur eines Forschungsvorhabens</span></span>
+                                </span>
+                                <br>
+                                <br>
+                                <span data-template="app:citation"><span>
+                                                        <ref type="url">urn:nbn:de:hebis:30:3-324011</ref>  <button type="button" class="btn btn-link" data-container="body" data-toggle="popover" data-placement="bottom" title="Zitiervorschlag: Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger (2013): Die Schule von Salamanca: eine digitale Quellensammlung und ein Wörterbuch ihrer juristisch-politischen Sprache. Zu Grundanliegen und Struktur eines Forschungsvorhabens - Salamanca Working Paper Series (ISSN 2509-5080) No. 2013-01. urn:nbn:de:hebis:30:3-324011 (17.01.2023)." data-original-title="" data-content="Thomas Duve &amp; Matthias Lutz-Bachmann &amp; Christiane Birr &amp; Andreas Niederberger (2013): Die Schule von Salamanca: eine digitale Quellensammlung und ein Wörterbuch ihrer juristisch-politischen Sprache. Zu Grundanliegen und Struktur eines Forschungsvorhabens - Salamanca Working Paper Series (ISSN 2509-5080) No. 2013-01. urn:nbn:de:hebis:30:3-324011 (17.01.2023)."><i style="margin-bottom: 6px" class="fa fa-question-circle"></i></button></span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span>
+            </span>
         </div>
+    </div>`}}
 
-        <!-- ==== Core JavaScript ==== -->
-        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="resources/js/jquery.backTop.js"></script>
-        
-        <!-- ==== Back to top ==== -->
-        <a id="backTop"></a>
-        <script type="text/javascript">
-            $(document).ready( function() {
-                $('#backTop').backTop({
-                    'position' : 100,
-                    'speed' : 200,
-                    'color' : 'white',
-                });
-            });
-        </script>
-        
-        <!-- ==== Mobil-View: Hide opened collapsed menu after clicking elsewhere on page ==== -->
-        <script type="text/javascript">
-            $(document).on('click',function(){
-                $('.collapse').collapse('hide');
-            });
-        </script>
-        
-        <!-- ==== Mobil-View: scroll to last collapsed navbar item on mobile when there are many items ==== -->
-        <script type="text/javascript">
-            $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });
-        </script>
-        
-        <!-- ==== Popover for citation proposal ==== -->
-        <script type="text/javascript">
-            $('[data-toggle="popover"]').popover();
-            $('body').on('click', function (e) {
-                if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('.popover.in').length === 0) { 
-                    $('[data-toggle="popover"]').popover('hide');
-                }
-            });
-        </script>
+{{$info := dict "page" "workingPapers.html" "title" "Working Papers" "header" "Salamanca Working Paper Series (ISSN 2509-5080)" "description" "Überblick über die Working Papers zur Schule von Salamanca, die im Rahmen der vom Projekt veranstalteten Reihe erschienen sind" "content" $content}}
 
-        <div id="push"></div>
-
-        <h2></h2>
-
-{{include "resources/templates/template_footer.html"}}
-        
-        <!-- - - Piwik for visitor stats (modified to enable caching and compression) - - -->
-        <!--<script type="text/javascript">
-          var _paq = _paq || [];
-          _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-          _paq.push(["setCookieDomain", "*.{{$domain}}"]);
-          _paq.push(["setDomains", ["*.{{$domain}}"]]);
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u="//stats.adwmainz.net/";
-            _paq.push(['setTrackerUrl', u+'js/']);
-/*          _paq.push(['setTrackerUrl', u+'piwik.php']); */
-            _paq.push(['setSiteId', 20]);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.type='text/javascript'; g.async=true; g.defer=true;
-/*          g.src=u+'piwik.js'; */
-            g.src=u+'js/';
-            s.parentNode.insertBefore(g,s);
-          })();
-        </script>
-        <noscript>
-            <p>
-                <img src="//stats.adwmainz.net/piwik.php?idsite=20" style="border:0;" alt=""/>
-            </p>
-        </noscript>-->
-        <!-- End Piwik Code -->
-
-    </body>
-</html>
+{{include "/resources/templates/template_default.html" $info }}
