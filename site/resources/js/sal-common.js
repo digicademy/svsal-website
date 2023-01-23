@@ -54,3 +54,29 @@ function applyMode () {
     applyEditMode()
   }
 };
+
+jQuery('body').bind('click', function(e) {                                              // hide navbar when clicking anywhere
+  if(jQuery(e.target).closest('.navbar-collapse').length == 0) {
+      // click happened outside of .navbar, so hide
+      var opened = jQuery('.navbar-collapse').hasClass('in');
+      if ( opened === true ) {
+          jQuery('.navbar-collapse').collapse('hide');
+      }
+  }
+});
+
+$(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });  // set navbar height
+
+// interval is in milliseconds. 1000 = 1 second - so 1000 * 10 = 10 seconds
+  $('.carousel').carousel({
+    interval: 1500 * 10
+});
+
+$(document).ready(function () {
+  $("#content").css('padding-top', parseInt($('.alert').css("height")) + 2);
+  $('#backTop').backTop({                                                                 // Position Back-to-top arrow
+      'position' : 100,
+      'speed' : 200,
+      'color' : 'white',
+  });
+});

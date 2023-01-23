@@ -1,88 +1,88 @@
 {{$info := index .Args 0}}
 {{$domain := "test.salamanca.school"}}
 {{$page := $info.page}}
-
-		<div id="navbar" class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Navbar -->
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand hidden-xs" href="https://www.{{$domain}}/index.html">Die Schule von Salamanca</a>
-					<a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="https://www.{{$domain}}/index.html">Die Schule von Salamanca</a>
-				</div>
-				<div class="collapse navbar-collapse navbar-menubuilder">
-					<menu class="nav navbar-nav">
-						<li class="">
-							<a href="https://blog.{{$domain}}/?lang=de">
-								<span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;Blog
-							</a>
-						</li>
-						<li class="{{ if eq $page "project.html" }}active{{ end }}">
-							<a href="https://www.{{$domain}}/project.html">
-								<i class="fa fa-university" aria-hidden="true"></i>&nbsp;Projekt
-							</a>
-						</li>
-						<li class="{{ if eq $page "works.html" }}active{{ end }}">
-							<a href="https://www.{{$domain}}/works.html">
-								<span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Werke
-							</a>
-						</li>
-						<li class="{{ if eq $page "dictionary.html" }}active{{ end }}">
-							<a href="https://www.{{$domain}}/dictionary.html">
-								<span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Wörterbuch
-							</a>
-						</li>
-						<li class="{{ if eq $page "authors.html" }}active{{ end }}">
-							<a href="https://www.{{$domain}}/authors.html">
-								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Autoren
-							</a>
-						</li>
-						<li class="{{ if eq $page "workingPapers.html" }}active{{ end }}">
-							<a href="https://www.{{$domain}}/workingPapers.html">
-								<i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
-							</a>
-						</li>
-						<li class="{{ if eq $page "search.html" }}active{{ end }}">
-							<a href="https://www.{{$domain}}/search.html">
-								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Suche
-							</a>
-						</li>
-						<li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-								<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Sprache<span class="caret"></span>
-							</a>
-							<menu class="dropdown-menu">
-								<li class="hidden-lg">
-									<a href="https://www.{{$domain}}/{{$page}}?lang=de">
-										<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Deutsch
-									</a>
-								</li>
-								<li class="hidden-lg">
-									<a href="https://www.{{$domain}}/{{$page}}?lang=en">
-										<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Englisch
-									</a>
-								</li>
-								<li class="hidden-lg">
-									<a href="https://www.{{$domain}}/{{$page}}?lang=es">
-										<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanisch
-									</a>
-								</li>
-							</menu>
-						</li>
-					</menu>
-					<menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
-						<li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
-							<div class="btn-group" role="group" aria-label="...">
-								<a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/{{$page}}?lang=de">de</a>
-								<a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/{{$page}}?lang=en">en</a>
-								<a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/{{$page}}?lang=es">es</a>
-							</div>
-						</li>
-					</menu>
-				</div>
-			</div>
-		</div>
+            <!-- Header and Navbar -->
+            <div id="navbar" class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Navbar -->
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand hidden-xs" href="https://www.{{$domain}}/index.html">Die Schule von Salamanca</a>
+                        <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="https://www.{{$domain}}/index.html">Die Schule von Salamanca</a>
+                    </div>
+                    <div class="collapse navbar-collapse navbar-menubuilder">
+                        <menu class="nav navbar-nav">
+                            <li class="">
+                                <a href="https://blog.{{$domain}}/?lang=de">
+                                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;Blog
+                                </a>
+                            </li>
+                            <li class="{{ if eq $page "project.html" }}active{{ end }}">
+                                <a href="https://www.{{$domain}}/project.html">
+                                    <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Projekt
+                                </a>
+                            </li>
+                            <li class="{{ if eq $page "works.html" }}active{{ end }}">
+                                <a href="https://www.{{$domain}}/works.html">
+                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Werke
+                                </a>
+                            </li>
+                            <li class="{{ if eq $page "dictionary.html" }}active{{ end }}">
+                                <a href="https://www.{{$domain}}/dictionary.html">
+                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Wörterbuch
+                                </a>
+                            </li>
+                            <li class="{{ if eq $page "authors.html" }}active{{ end }}">
+                                <a href="https://www.{{$domain}}/authors.html">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Autoren
+                                </a>
+                            </li>
+                            <li class="{{ if eq $page "workingPapers.html" }}active{{ end }}">
+                                <a href="https://www.{{$domain}}/workingPapers.html">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
+                                </a>
+                            </li>
+                            <li class="{{ if eq $page "search.html" }}active{{ end }}">
+                                <a href="https://www.{{$domain}}/search.html">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Suche
+                                </a>
+                            </li>
+                            <li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Sprache<span class="caret"></span>
+                                </a>
+                                <menu class="dropdown-menu">
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/{{$page}}?lang=de">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Deutsch
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/{{$page}}?lang=en">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Englisch
+                                        </a>
+                                    </li>
+                                    <li class="hidden-lg">
+                                        <a href="https://www.{{$domain}}/{{$page}}?lang=es">
+                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanisch
+                                        </a>
+                                    </li>
+                                </menu>
+                            </li>
+                        </menu>
+                        <menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
+                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/{{$page}}?lang=de">de</a>
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/{{$page}}?lang=en">en</a>
+                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/{{$page}}?lang=es">es</a>
+                                </div>
+                            </li>
+                        </menu>
+                    </div>
+                </div>
+            </div>

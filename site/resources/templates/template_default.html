@@ -23,6 +23,13 @@
         <link rel="stylesheet" type="text/css" href="/resources/css/style_default.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
 
+        <!-- ==== Javascript ==== -->
+        <script type="text/javascript" src="/resources/js/jquery-1.js" defer></script>
+        <script type="text/javascript" src="/resources/js/bootstrap.js" defer></script>
+        <script type="text/javascript" src="/resources/js/jquery-ui.js" defer></script>
+        <script type="text/javascript" src="/resources/js/jquery.js" defer></script><!-- this is only the backTop function -->
+        <script type="text/javascript" src="/resources/js/sal-common.js" defer></script>
+
         <!-- ==== favIcon ==== -->
         <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="/resources/favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="/resources/favicons/apple-touch-icon-60x60.png">
@@ -46,14 +53,12 @@
     <body id="body">
         <div id="wrap">
 
-            <!-- Header and Navbar -->
 {{include "resources/templates/template_navbar.html" $info}}
-
 
             <!-- Main page area -->
             <div id="content" class="container-fluid">
 
-                <!-- Page title -->
+                {{if $info.header }}<!-- Page title -->
                 <div class="container">
                     <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
                         <span class="text-muted">
@@ -73,46 +78,14 @@
                             <hr>
                         </span>
                     </h2>
-                </div>
+                </div>{{end}}
 
-                <!-- Page content -->
-                {{ $info.content }}
-
+                <!-- Page content -->{{ $info.content }}
             </div>
-        </div>
-            
-        <!-- ==== Core JavaScript ==== -->
-        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
 
-        <script type="text/javascript" src="/resources/js/jquery-1.js"></script>
-        <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/resources/js/jquery-ui.js"></script>
-        <script type="text/javascript" src="/resources/js/jquery.js"></script><!-- this is only the backTop function -->
-
-        <script type="text/javascript">
-            jQuery('body').bind('click', function(e) {                                              // hide navbar when clicking anywhere
-                if(jQuery(e.target).closest('.navbar-collapse').length == 0) {
-                    // click happened outside of .navbar, so hide
-                    var opened = jQuery('.navbar-collapse').hasClass('in');
-                    if ( opened === true ) {
-                        jQuery('.navbar-collapse').collapse('hide');
-                    }
-                }
-            });
-
-            $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });  // set navbar height
-
-            $(document).ready(function () {
-                $("#content").css('padding-top', parseInt($('.alert').css("height")) + 2);
-                $('#backTop').backTop({                                                                 // Position Back-to-top arrow
-                    'position' : 100,
-                    'speed' : 200,
-                    'color' : 'white',
-                });
-            });
-        </script>
+            <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
 
 {{ include "/resources/templates/template_footer.html" }}
-
+        </div>
     </body>
 </html>
