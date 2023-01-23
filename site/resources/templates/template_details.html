@@ -1,6 +1,6 @@
 {{ $domain := "test.salamanca.school" }}
-{{ $work_info := index .Args 0 }}
-{{ $wid := $work_info.id }}
+{{ $info := index .Args 0 }}
+{{ $wid := $info.id }}
 
 <!DOCTYPE html>
 <html>
@@ -10,13 +10,13 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="">
-        <meta name="description" content="Bibliographical data for {{ $work_info.author_short }}: {{ $work_info.title_short }}">
-        <title>{{ $work_info.author_short }}: {{ $work_info.title_short }} - The School of Salamanca</title>
+        <meta name="description" content="Bibliographical data for {{ $info.author_short }}: {{ $info.title_short }}">
+        <title>{{ $info.author_short }}: {{ $info.title_short }} - The School of Salamanca</title>
 
-        <link rel="canonical" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}">
-        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=de">
-        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=en">
-        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=es">
+        <link rel="canonical" href="https://www.{{ $domain }}/{{ $info.page }}?wid={{ $wid }}">
+        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}?wid={{ $wid }}&lang=de">
+        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}?wid={{ $wid }}&lang=en">
+        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}?wid={{ $wid }}&lang=es">
 
         <!-- ==== CSS ==== -->
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
@@ -32,7 +32,7 @@
         <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="/resources/favicons/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="/resources/favicons/apple-touch-icon-76x76.png">
         <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="/resources/favicons/apple-touch-icon-114x114.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="/resources/favicons/apple-touch-icon-120x120.png">
+        <link rel="a                pple-touch-icon" type="image/png" sizes="120x120" href="/resources/favicons/apple-touch-icon-120x120.png">
         <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="/resources/favicons/apple-touch-icon-144x144.png">
         <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="/resources/favicons/apple-touch-icon-152x152.png">
         <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/resources/favicons/apple-touch-icon-180x180.png">
@@ -49,108 +49,34 @@
 
     <body id="body">
         <div id="wrap">
-            <div class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Header and Navbar -->
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
-                            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand hidden-xs" href="https://www.{{ $domain }}/index.html">The School of Salamanca</a>
-                        <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="https://www.{{ $domain }}/index.html">The School of Salamanca</a>
-                    </div>
-                    <div class="collapse navbar-collapse navbar-menubuilder" style="max-height: 569px;">
-                        <menu class="nav navbar-nav">
-                            <li class="">
-                                <a href="https://blog.{{ $domain }}/?lang=en">
-                                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;News
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{ $domain }}/project.html">
-                                    <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Project
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{ $domain }}/works.html">
-                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{ $domain }}/dictionary.html">
-                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Dictionary
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{ $domain }}/authors.html">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Authors
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{ $domain }}/workingPapers.html">
-                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="https://www.{{ $domain }}/search.html">
-                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search
-                                </a>
-                            </li>
-                            <li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Language<span class="caret"></span>
-                                </a>
-                                <menu class="dropdown-menu">
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=de">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;German
-                                        </a>
-                                    </li>
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=en">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;English
-                                        </a>
-                                    </li>
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=es">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanish
-                                        </a>
-                                    </li>
-                                </menu>
-                            </li>
-                        </menu>
-                        <menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
-                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <a class="btn navbar-btn btn-default" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=de">de</a>
-                                    <a class="btn navbar-btn btn-info" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=en">en</a>
-                                    <a class="btn navbar-btn btn-default" href="https://www.{{ $domain }}/workDetails.html?wid={{ $wid }}&lang=es">es</a>
-                                </div>
-                            </li>
-                        </menu>
-                    </div>
-                </div>
-            </div>
 
+            <!-- Header and Navbar -->
+{{include "resources/templates/template_navbar.html" $info}}
+
+            <!-- Main page area -->
             <div id="content" class="container-fluid">
 
-                <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
-                    <span class="text-muted"><span class="text-muted">{{ $work_info.author_full }}: </span>
-                                             <span class="text-muted">{{ $work_info.title_short }}</span>{{ if $work_info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
-                                             <hr>
-                    </span>
-                </h2>
-                <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
-                    <span class="text-muted"><span class="text-muted">{{ $work_info.author_full }}: </span>
-                                             <span class="text-muted">{{ $work_info.title_short }}</span>{{ if $work_info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
-                                             <hr>
-                    </span>
-                </h2>
-                <h2 class="hidden-lg hidden-md">
-                    <span class="text-muted"><span class="text-muted">{{ $work_info.author_full }}: </span>
-                                             <span class="text-muted">{{ $work_info.title_short }}</span>{{ if $work_info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
-                                             <hr>
-                    </span>
-                </h2>
+                <!-- Page title -->
+                <div class="container">
+                    <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+                        <span class="text-muted"><span class="text-muted">{{ $info.author_full }}: </span>
+                                                <span class="text-muted">{{ $info.title_short }}</span>{{ if $info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
+                                                <hr>
+                        </span>
+                    </h2>
+                    <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+                        <span class="text-muted"><span class="text-muted">{{ $info.author_full }}: </span>
+                                                <span class="text-muted">{{ $info.title_short }}</span>{{ if $info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
+                                                <hr>
+                        </span>
+                    </h2>
+                    <h2 class="hidden-lg hidden-md">
+                        <span class="text-muted"><span class="text-muted">{{ $info.author_full }}: </span>
+                                                <span class="text-muted">{{ $info.title_short }}</span>{{ if $info.volumes }}<span class="text-muted"> (Multivolume work) </span>{{ end }}
+                                                <hr>
+                        </span>
+                    </h2>
+                </div>
 
                 <div>
                     <div class="row"><!-- Main entry -->
@@ -162,23 +88,23 @@
                                         <tbody>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Citation title:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.title_short }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.title_short }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Author:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.author_full }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.author_full }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3">Electronic publication:</td>
-                                                <td class="col-md-9">{{ $work_info.el_publication_date }}</td>
+                                                <td class="col-md-9">{{ $info.el_publication_date }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3">Scholarly editing:</td>
-                                                <td class="col-md-9">{{ $work_info.schol_ed }}</td>
+                                                <td class="col-md-9">{{ $info.schol_ed }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3">Technical editing:</td>
-                                                <td class="col-md-9">{{ $work_info.tech_ed }}</td>
+                                                <td class="col-md-9">{{ $info.tech_ed }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3">Series:</td>
@@ -186,7 +112,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3">Series volume:</td>
-                                                <td class="col-md-9">{{ $work_info.series_num }}</td>
+                                                <td class="col-md-9">{{ $info.series_num }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3">Series directors:</td>
@@ -201,7 +127,7 @@
                                 </div>
                                 <div class="catalogue-citation">
                                     <span style="font-weight:bold">Proposed citation:</span><br>
-                                    <span class="cite-rec-body">{{ $work_info.author_short }}, {{ $work_info.title_short }} ({{ $work_info.el_publication_date }} [{{ $work_info.year }}]),
+                                    <span class="cite-rec-body">{{ $info.author_short }}, {{ $info.title_short }} ({{ $info.el_publication_date }} [{{ $info.year }}]),
                                                                 in: The School of Salamanca. A Digital Collection of Sources
                                                                 &lt;<a href="https://id.salamanca.school/texts/{{ $wid }}">https://id.salamanca.school/texts/{{ $wid }}</a>&gt;
                                     </span>
@@ -215,23 +141,23 @@
                                         <tbody>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Title:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.title_full }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.title_full }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Period of publication:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.src_publication_period }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.src_publication_period }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Publisher:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.printer_full }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.printer_full }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Publish place:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.place }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.place }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Language(s):</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $work_info.language }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.language }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -248,7 +174,7 @@
                                             <h5>Reading View:</h5>
                                             <div>
                                                 <a class="g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
-                                                    <img src="{{ $work_info.thumbnail }}" class="img-responsive thumbnail" alt="Titlepage{{ if $work_info.volumes }} Multivolume{{ end }}">
+                                                    <img src="{{ $info.thumbnail }}" class="img-responsive thumbnail" alt="Titlepage{{ if $info.volumes }} Multivolume{{ end }}">
                                                 </a>
                                                 <a class="btn btn-info button g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
                                                     <span class="glyphicon glyphicon-file"></span> Read
@@ -280,11 +206,11 @@
                         </div>
                     </div>
 
-{{ if $work_info.volumes }}
+{{ if $info.volumes }}
                     <div><!-- Individual Volumes -->
                         <hr>
-                        <h4>Volumes ({{ $work_info.volumes.number }})</h4>
-    {{ range $work_info.volumes.volumes }}
+                        <h4>Volumes ({{ $info.volumes.number }})</h4>
+    {{ range $info.volumes.volumes }}
                         <div class="row"><!-- Volume {{ .num }} -->
                             <div class="col-md-3"><!-- teaser -->
                                 <div class="catrecord-teaser">
@@ -305,7 +231,7 @@
                                         </tr>
                                         <tr>
                                             <td class="col-md-2" style="line-height: 1.2">Volume (original):</td>
-                                            <td class="col-md-10" style="line-height: 1.2">{{ .num }} of {{ $work_info.volumes.number }}</td>
+                                            <td class="col-md-10" style="line-height: 1.2">{{ .num }} of {{ $info.volumes.number }}</td>
                                         </tr>
                                         <tr>
                                             <td class="col-md-2" style="line-height: 1.2">Imprint:</td>

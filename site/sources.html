@@ -1,0 +1,268 @@
+{{$domain := "test.salamanca.school"}}
+
+{{$content := `
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel-group" id="accordion" role="tablist" style="margin-top:1em;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a href="#a">Textgruppe A&nbsp;&nbsp;</a></h4>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a href="#b">Textgruppe B&nbsp;&nbsp;</a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div><a name="a"></a>
+                    <h2 class="alignedGuidelines">Textgruppe A</h2>
+
+                    <p class="lead" style="text-align: justify" title="W0001">AVENDAÑO, Diego de: Thesaurus Indicus, seu generalis instructor pro regimini conscientiae, in iis quae ad indias spectant. 6 vols. Antwerpen 1-2(1668), 3-5(1675), 6(1686)</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0002">AZPILCUETA (Navarro), Martin de: Manual de confessores y penitentes. Salamanca 1556</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0003">BÁÑEZ, Domingo: De Iure et Iustitia Decissiones. Salamanca 1594</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0004">CASTILLO, Diego de: Tratado de cuentas. Burgos 1522</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0005">CASTILLO DE BOBADILLA, Jerónimo: Política para Corregidores y Señores de vasallos en tiempos de paz y guerra y para jueces ecclesiasticos y seglares. 2 vols. Madrid 1597</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0039">CLAVASIO, Angel de: Summa Angelica de casibus conscientiae. Lyon 1534</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0006">COVARRUBIAS Y LEYVA, Diego de: Omnia opera: quae hactenus extant, tribus tomis distincta. Frankfurt 1573, 1571</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0007">MERCADO, Tomás de: Suma de tratos y contratos de mercaderes dividido en seis libros. Salamanca 1569</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0008">MOLINA, Luis de: De Iustitia et Iure. 6 vols. vols. 1-3: Cuenca 1593, 1597, 1600; vols. 4-6: Antwerpen 1609</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0010">SOLÓRZANO PEREIRA, Juan de: Política indiana sacada en lengua castellana de los dos tomos del derecho y gobierno municipal de las Indias. Madrid 1648</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0011">SOTO, Domingo de: De Iustitia et Iure libri decem. Salamanca 1553</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0012">SUÁREZ, Francisco: Tractatus de Legibus ac Deo Legislatore in decem libros. Coimbra 1612</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0013">VITORIA, Francisco de: Theologicae Relectiones XII. Lyon 1557</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0014">VITORIA, Francisco de: Summa sacramentorum Ecclesiae. Valladolid 1561</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0015">VITORIA, Francisco de: Confesionario útil y provechoso. Santiago 1562</p>
+                </div>
+                <hr>
+                <div><a name="b"></a>
+                    <h2 class="alignedGuidelines">Textgruppe B</h2>
+                    
+                    <p class="lead" style="text-align: justify" title="W0016">ACOSTA, José de: De natura novi orbis libri duo, et De promulgatione Evangelii, apud barbaros, sive De procuranda Indorum salute libri sex. Salamanca 1589</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0017">ALBORNOZ, Bartolomé de: Arte de los contratos. Valencia 1573</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0018">ALCALÁ, Luis de: Tractado de los préstamos que passan entre mercaderes y tractantes y, por consiguiente, de los logros, cambios, compra adelantadas y ventas al fiado. Toledo 1543</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0019">ALFARO, Francisco de: Tractatus de officio fiscalis deque fiscalibus priuilegiis. Valladolid 1606</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0020">ARAGÓN, Pedro de: In Secundam secundae diui Thomae doctoris Angelici commentaria De Iustitia et Iure. Salamanca 1590</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0021">ARRIAGA, Rodrigo de: Disputationum theologicarum in primam secundae D. Thomae tomus secundus sive Universi cursus theologici tomus quartus: qui continet tractatus De legibus, De divina gratia, De iustificatione, De merito. Lyon 1647</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0022">AYALA, Balthasar: De iure et officiis bellicis et disciplina militari libri III. Douai 1582.</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0023">AZEVEDO, Alonso de: Commentariorum iuris civilis in hispaniae regias constitutiones. [Salamanca 1583-1599] Madrid 1612</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0024">AZOR, Juan: Institutiones morales in quibus universae quaestiones ad conscientiam recte aut prave factorum pertinentes, breviter tractantur. 3 vols. [Rom 1591] Köln 1608, 1612, 1613</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0025">BÁÑEZ, Domingo: De fide, spe &amp; charitate. Salamanca 1584</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0026">BARBOSA, Augustinus: Pastoralis solicitudinis, sive De officio et potestate Episcopi tripartita descriptio. Lyon 1628</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0027">BARBOSA, Augustinus: Iuris ecclesiastici universi libri tres. Lyon 1634</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0028">BECANUS, Martinus: Summa theologiae scholasticae [.] In quatuor partes distribute. Venedig 1628</p>
+                
+                    <p class="lead" style="text-align: justify" title="W0029">CABEDO DE VASCONCELLOS, Jorge: Prima pars Decisionum Senatus Regni Lusitaniae. Lissabon 1602</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0030">CANO, Melchor: Relectio De Poenitentia habita in Academia salmanticensis anno M.D.XK.VIII super 14. distinctione quarti sententiarum. Madrid 1558</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0031">CANO, Melchor: De locis theologicis libri duodecim. Salamanca 1563</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0032">CARRASCO DEL SAZ, Francisco: Interpretatio ad aliquas leges recopilationis regni Castellae. Sevilla 1620</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0033">CARRASCO DEL SAZ, Francisco: Tractatus de casibus curiae. Madrid 1630</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0034">CASAS, Bartolomé de las: Treinta proposiciones muy jurídicas. Sevilla 1552.</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0035">CASAS, Bartolomé de las: Tratdo comprobatorio del Imperio Soberano … que los reyes de Castilla y Leon tienen sobre las Indias. Sevilla 1553</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0036">CASAS, Bartolomé de las: De regia potestate e derecho de autodeterminación. Tübingen 1625</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0037">CASTILLO SOTOMAYOR, Juan de: Opera omnia, sive quotidianarum controversiarum iuris. 8 vols. Lyon 1658.</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0038">CASTRO PALAO, Fernando de: De Iustitia et Iure (Opus morale de virtutibus et vitiis contrariis, pars 7). Lyon 1651</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0040">CÓRDOBA, Antonio de: Quaestionarium Theologicum, sive Silva casuum conscientiae. Venedig 1569</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0041">DÍAZ DE LUGO, Juan Bernal: Practica criminalis canonica. Lyon 1543</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0042">DICASTILLO, Juan de: De iustitia et iure ceterisque cirtutibus cardinalibus libri duo. Antwerpen 1641</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0043">ESCOBAR Y MENDOZA, Antonio de: Universae Theologiae Moralis receptiores absque lite sententiae necnon problematicae disquisitiones. 6 vols. Lyon 1652-1663</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0044">FAGÚNDEZ, Esteban: De iustitia et contractibus et de acquisitione et translatione dominium, libri septem. Lyon 1641</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0045">FRASSO, Pedro: De Regio Patronatu Indiarum. 2 vols. Madrid 1677, 1679</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0046">FREITAS, Serafín de: De Iusto Imperio Lusitanorum Asiatico. Valladolid 1625</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0047">GARCÍA, Francisco: Parte primera [-segunda] del tratado utilísimo y muy general de todos los contractos, quantos en los negocios humanos se suelen ofrecer. Valencia 1583</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0048">GARCÍA DE PALACIO, Diego: Dialogos militares, de la formación, e información de personas, instrumentos, y cosas nescessarias para el buen uso de la guerra. México 1583</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0049">GÓMEZ, Antonio: Variarum resolutionum iuris civilis communis et regii, libri tres. Salamanca 1552</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0050">GÓMEZ DE SILVA, Domingo: Practica, y instruccion para albaceas, tutores, y curadores, que administran bienes de menores. Lima 1640</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0051">GONZÁLEZ TÉLLEZ, Manuel: Commentaria perpetua in singulos textus quinque librorum Decretalium Gregorii IX. 5 vols. Lyon 1663</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0052">HENRÍQUEZ, Enrique: Theologiae Moralis Summa. 2 vols. Salamanca 1591, 1593</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0053">[HERRERO, Alexo de]: Espejo de la conciencia que trata de todos los estados: como cada uno deue auerle para biuir con limpia y pura consciencia. Sevilla 1543</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0054">HEVIA BOLAÑOS, Juan de: Curia Philipica. Lima 1603</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0055">HURTADO, Gaspar: Tractatus de justitia et jure. Madrid 1637</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0056">IBARRA, Miguel de: Annuae relectiones ad Canonicae Iuris Explicationes in duas partes divisae. México 1675</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0057">LEDESMA, Martin de: Secunda quartae. Coimbra 1560</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0058">LEDESMA, Pedro de: Primera parte de la Suma, en la cual se cifra y suma todo lo que toca y pertenece a los sacramentos. Salamanca 1598.</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0059">LEDESMA, Pedro de: Segunda parte de la Suma, en la cual se cifra y suma toda la moral y casos de conciencia que no pertenecen a los sacramentos. Salamanca 1603</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0060">LEDESMA, Pedro de: Tractatus de magno matrimonii sacramento. Salamanca 1592</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0061">LEÓN PINELO, Antonio de: Tratado de confirmaciones reales de encomiendas e oficios. Madrid 1630</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0062">LESSIUS, Leonhard: De Iustitia et Iure caeterisque virtutibus cardinalibus libri 6. Leuven 1605</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0063">LÓPEZ, Gregorio: Las Siete Partidas del sabio Rey don Alonso el Nono nuevamente glosadas. Salamanca 1555</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0064">LORCA, Pedro de: Commentariorum et Disputationum in universam Primam Secundae Sancti Thomae. Madrid 1609</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0065">LÓPEZ, Luis: Tractatus de contractibus et negotiationibus. Lyon 1594</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0066">LUGO, Juan de: Disputatio de Iustita et Iure. 2 vols. Lyon 1642</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0067">MARIANA, Juan de: De rege et regis institutione libri III. Toledo 1599</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0068">MATIENZO, Juan de: Commentaria in librum quintum Recollectionis legum Hispaniae. Madrid 1580</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0069">MARTÍNEZ, Gregorio: Commentario super Primam Secundae Divi Thomae. Tomus tertius. Valladolid 1637</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0070">MARTÍNEZ DE OLANO, Juan: Concordia et nova reductio antinomiarum juris communis et regii in qua verae horum jurium differentia et quamplurimium legum regiarum communiumque intellectus et recepta praxis causarum forensium explicantur. Burgos 1575</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0071">MARTÍNEZ DE PRADO, Juan: De Justitia et Jure. Theologiae moralis quaestiones praecipuae. Tomus secundus. Alcalá 1656</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0072">MEDINA, Bartolomé de: Expositio in Primam Secundae Angelici Doctoris Divi Thomas Aquinatis [De Legibus]. Salamanca 1578</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0073">MEDINA, Juan de: Codex de restitutione et contractibus. Madrid 1546</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0074">MEDINA, Juan de: In titulum de poenitentia eiusque partibus commentarii. Salamanca 1550</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0075">MONTERROSO Y ALVARADO, Gabriel: Práctica civil y criminal y instrucción de escrivanos, dividida en nueve tratados. Valladolid 1566.</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0076">MORENO, Jerónimo: Reglas ciertas y precisamente necessarias para juezes y ministros de iusticia de las Indias y para sus confesores. México. 1637</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0077">NAVARRA, Pedro de: De ablatorum restitutione in foro conscientiae. Toledo 1585</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0078">NEBRIJA, Antonio de: Lexicon juris civilis contra quosdam insignes Accursii errores aeditum. Lyon 1537</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0079">NEBRIJA, Antonio de: Vocabularium utriusque juris. Lyon 1567</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0080">OÑATE, Pedro de: De contractibus in genere. 2 vols. Rom 1646-1647</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0081">OROZCO, Juan de: Ad responsa prudentum comentarii. Duo hi tomi in priores integrosque Digestorum duos libros sunt. Salamanca 1558</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0082">PALACIO, Miguel de: Praxis theologica de contractibus &amp; restitutionibus. Salamanca 1585</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0083">PEDRAZA, Juan de: Summa de casos de consciencia. Medina del Campo 1568</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0084">PEÑA MONTENEGRO, Alfonso de la: Itinerario para parochos de indios. Madrid 1668</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0085">PÉREZ, Antonio: Tractatus de Iustitia et Iure et Restitutione et de Poenitentia. Rom 1668</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0086">PÉREZ DE LARA, Alfonso: Compendio de las tres gracias de la Santa Cruzada, subsidio y excusado. Madrid 1610</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0087">PÉREZ DE SALAMANCA, Diego: Commentaria in IV priores libros ordinationum Regni Castellae. Salamanca 1575</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0088">PÉREZ DE SALAMANCA, Diego: Commentaria in quatuor posteriores libros ordinationum regni Castellae. Salamanca 1574</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0009">PRIERIAS, Silvester Mazzolino: Summa Summarum, que Sylvestrina dicitur. Strassburg 1518</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0089">QUESADA, Antonio de: Diversarum quaestionum iuris liber. Salamanca 1573</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0090">RODRÍGUEZ, Manuel: Summa de casos de consciencia. 2 vols. Salamanca 1597</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0091">SÁNCHEZ, Tomás: De sancto matrimonio sacramento disputationes. Madrid 1605</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0092">SALAS, Juan de: Tractatus de legibus, in primam secundae S. Thomae. Lyon 1611</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0093">SALGADO DE SOMOZA, Francisco: Tractatus de supplicatione ad Sanctissimum. Madrid 1639</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0094">SALÓN, Miguel Bartolomé: Commentariorum in disputationem de iustitia. 2 vols. Valentia 1591, 1598</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0095">SEPÚLVEDA, Juan Ginés de: Apologia pro libro de iustis belli causis Rom 1550</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0096">SOLÓRZANO PEREIRA, Juan de: De Indiarum Iure, sive de Iusta Indiarum Occidentalium Inquisitione, Acquisitione, et Retentiones Tribus Libris Comprehensum. 2 vols. Madrid 1629, 1639</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0097">SUÁREZ DE Paz, Gonzalo: Praxis ecclesiastica et saecularis cum actionum formulis et actis processum Hispano sermone compositis. Salamanca 1583</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0098">SUÁREZ, Francisco: Defensio fidei Catholicae et apostolicae adversus Anglicanae sectae errores. Coimbra 1613</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0099">TOLEDO, Francisco de: Summa casuum conscientiae sive instructio sacerdotum. Lyon 1599</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0100">TORQUEMADA, Juan de: Summa ecclesiastica. Salamanca 1560</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0101">TORRES, Luis de: Disputationes in Secundam Secundae D. Thomae de Fide, Spe et Charitate et Prudentia. Tomus unus. Lyon 1607</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0102">TORRES, Luis de: Disputationes in Secundam Secundae D. Thomae de Iustitia. Tomus alter. Lyon 1621</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0103">VACCA, Antonius: Expositiones locorum obscuriorum et Paratitulorum in Pandectas. Lyon 1554</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0104">VALDERAS, Francisco Arias de: De belli justitia et injustitia. (Tractatus universi juris, vol. 16). Rom 1533</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0105">VÁZQUEZ, Gabriel: Commentariorum theologicorum ac disputationum in primam secundae sancti Thomae. 2 vols. Ingolstadt 1606</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0106">VÁZQUEZ DE MENCHACA, Fernando: Controversiarum illustrium aliarumque usu frequen¬tium libri tres. Frankfurt 1572</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0107">VALENCIA, Gregorio de: De Legibus. Commentaria Theologica et Disputationes in Summam D. Thomae Aquinatis. 4 vols. Ingolstadt 1592, 1595, 1597</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0108">VEGA, Feliciano de la: Relectionum canonicarum in secundum Decretalium Librum. Lima 1633</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0109">VERA CRUZ, Alonso de la: Speculum coniugiorum. Salamanca 1562</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0110">VILLADIEGO VASCUÑANA Y MONTOYA, Alonso de: Instrucción política y practica iudicial, conforme al estilo de los consejos, audiencias y tribunales de corte y otros ordinarios del tiempo. Madrid 1612</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0111">VILLALOBOS, Juan Bautista de: Antinomia iuris regnis Hispaniarum ac civilis in qua practica forensium causarum versatur ac aerarium commune opinionum communium iuxta ordinem alphabeti. Salamanca 1569</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0112">VILLAROEL, Gaspar de: Govierno eclesiástico pacífico y Unión de los Cuchillo pontificio y regio. 2 vols. Madrid 1656, 1657</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0113">VILLALÓN, Cristóbal de: Provechoso tratado de cambios y contrataciones de mercaderes y reprovación de usura. Valladolid 1541</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0114">VIO (Cayetan), Tommaso de: Summula Caietani. Lyon 1567</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0115">YROLO CALAR, Nicolás de: Primera parte de la política de escripturas. México 1605</p>
+                    
+                    <p class="lead" style="text-align: justify" title="W0116">ZAPATA Y SANDOVAL, Juan: De Iustitia distributiva et acceptione personarum ei opposita. Valladolid 1609</p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+`}}
+
+{{$info := dict "page" "sources.html" "title" "Quellenliste der Digitalen Quellensammlung" "header" "Quellen der Digitalen Quellensammlung" "description" "Quellen, die zur Erschließung in der Digitalen Quellensammlung des Projekts &quot;Die Schule von Salamanca&quot; vorgesehen sind." "content" $content}}
+
+{{include "/resources/templates/template_default.html" $info }}

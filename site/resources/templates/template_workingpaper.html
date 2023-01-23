@@ -1,0 +1,337 @@
+{{ $domain := "test.salamanca.school" }}
+{{ $info := index .Args 0 }}
+{{ $id := $map.id }}
+{{ $title := $map.title }}
+{{ $author := $map.author }}
+{{ $year := $map.year }}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="">
+        <meta name="description" content="SvSal Working Paper No. 2021-01">
+        <title>Working Paper: No. 2021-01 - Die Schule von Salamanca</title>
+        <link rel="canonical" href="https://www.{{$domain}}/de/workingPaper.html?wpid=WP0015">
+        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/de/workingPaper.html?wpid=WP0015">
+        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/en/workingPaper.html?wpid=WP0015">
+        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/es/workingPaper.html?wpid=WP0015">
+        
+        <!-- ==== CSS ==== -->
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <!-- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/> -->
+        <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="resources/css/backTop.css"> 
+        <!--        <style>
+            /*Main stylesheet for Backtop jQuery Plugin */
+            #backTop{
+                width:35px;
+                height:35px;
+                padding:10px;
+                border-radius:4px;
+                text-indent:-9999px;
+                cursor:pointer;
+                z-index:999999999;
+            	display:none;
+            	box-sizing:content-box;
+            	-webkit-box-sizing:content-box;
+            }
+            #backTop.white{
+                 background:url('resources/images/css/backTop/uparr-48-b.png') no-repeat center center rgba(255,255,255,0.8);
+                border:1px solid #ccc;
+            }
+            #backTop.black{
+                 background:url('resources/images/css/backTop/uparr-48-w.png') no-repeat center center rgba(0,0,0,0.8); 
+                border:1px solid #ccc;
+            }
+            #backTop.red{
+                 background:url('resources/images/css/backTop/uparr-48-w.png') no-repeat center center rgba(217,97,81,0.9); 
+                border:1px solid #fff;
+            }
+            #backTop.green{
+                 background:url('resources/images/css/backTop/uparr-48-b.png') no-repeat center center rgba(81,217,187,0.9); 
+                border:1px solid #fff;
+            }
+        </style>
+-->
+        <link rel="stylesheet" type="text/css" href="resources/css/style_default.css">
+        
+        <!-- ==== Scripts ==== -->
+        <!-- - - Piwik for visitor stats (modified to enable caching and compression) - - -->
+        <!--<script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+          _paq.push(["setCookieDomain", "*.{{$domain}}"]);
+          _paq.push(["setDomains", ["*.{{$domain}}"]]);
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//stats.adwmainz.net/";
+            _paq.push(['setTrackerUrl', u+'js/']);
+/*          _paq.push(['setTrackerUrl', u+'piwik.php']); */
+            _paq.push(['setSiteId', 20]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true;
+/*          g.src=u+'piwik.js'; */
+            g.src=u+'js/';
+            s.parentNode.insertBefore(g,s);
+          })();
+        </script>-->
+        <!-- End Piwik Code -->
+        
+        <!-- ==== favIcon ==== -->
+        <link rel="apple-touch-icon" sizes="57x57" href="resources/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="resources/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="resources/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="resources/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="resources/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="resources/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="resources/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="resources/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="resources/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-194x194.png" sizes="194x194">
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="resources/favicons/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="resources/favicons/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+    <body id="body">
+        <div id="wrap">
+            <div id="content" class="container-fluid">
+        <div class="container">
+            <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+                <span class="text-muted">
+                    <span data-template="app:WPgoBack"><a title="zurück" href="workingPapers.html"><i class="fa fa-reply"></i>  </a></span>
+                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                    Salamanca Working Papers Series (ISSN 2509-5080), <span data-template="app:WPvolNoLink">No. 2021-01</span>
+                </span>
+                <hr>
+            </h2>
+            <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+                <span class="text-muted">
+                    <span data-template="app:WPgoBack"><a title="zurück" href="workingPapers.html"><i class="fa fa-reply"></i>  </a></span>
+                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                    Salamanca Working Papers Series (ISSN 2509-5080), <span data-template="app:WPvolNoLink">No. 2021-01</span>
+                </span>
+                <hr>
+            </h2>
+            <h2 class="hidden-lg hidden-md">
+                <span class="text-muted">
+                    <span data-template="app:WPgoBack"><a title="zurück" href="workingPapers.html"><i class="fa fa-reply"></i>  </a></span>
+                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                    Salamanca Working Papers Series (ISSN 2509-5080), <span data-template="app:WPvolNoLink">No. 2021-01</span>
+                </span>
+                <hr>
+            </h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <span data-template="app:cover"><img style="width:90%; border-style: solid; border-width:0.1px; border-color:#E7E7E7; height: auto;" src="resources/img/wp_cover/WP-15.png"></span>
+                </div>
+                <div class="col-md-8">
+                    <span class="lead">
+                        <span data-template="app:WPauthor">Luisa Brunori</span>:
+                        <span data-template="app:WPtitle"><span style="text-align: justify;">The First Doctrinal Consideration on "Transatlantic" Commercial Law: Tomás de Mercado’s Summa de tratos y contratos, 1569-1571</span></span>, SvSal WP <span data-template="app:WPvolNoLink">No. 2021-01</span>.
+                    </span>
+                    <br>
+                    <br>
+                    <h4>
+                        <!-- <i18n:text key="abstract">Abstract</i18n:text>-->
+                        Abstract
+                    </h4>
+                    <span data-template="app:WPabstract">
+                The "Suma de tratos y contratos" (1569-1571) by Tomás de Mercado is the first legal
+                treatise on trade that explicitly takes into account the specificities of Spanish trade with the Indias.
+                Tomás de Mercado was faced with very profound changes in trade: long distances, large convoy sizes, the
+                need for large amounts of funding, high risk, variations in prices and the value of money...
+                From a theological-legal point of view, these upheavals posed new and complex questions.
+                Mercado, advisor to the merchants of Seville and an excellent knowledge of New Spain,
+                analyses the sudden transformation of economic and juridical practice with finesse and realism. The 'Suma' is
+                thus an extraordinary real-time testimony to the profound transformations taking place in 16th century commerce.
+                Moreover, faced with fundamental questions of moral order and juridical legitimacy, Mercado proposes legal
+                solutions of high equilibrium in which theological imperatives are masterfully reconciled with the needs of
+                transatlantic commercial practice.
+            </span>
+                    <br>
+                    <h4>
+                        <!--<i18n:text key="keywords">Keywords</i18n:text>-->
+                        Keywords
+                    </h4>
+                    <span data-template="app:WPkeywords">Tomás de Mercado, Trade, Commercial Law, 16th century</span>
+                    <div class="row">
+                        <div class="col-md-4 bs-callout bs-callout-info">
+                            <h4>
+                                PDF
+                            </h4>
+                            <span data-template="app:WPpdf"><a href="http://publikationen.ub.uni-frankfurt.de/files/46525/SvSal_WP_2021-01.pdf"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> 
+                        Download </a></span>
+                        </div>
+                        <div class="col-md-4 bs-callout bs-callout-info">
+                            <h4>
+                                URN
+                            </h4>
+                            <span data-template="app:urn"><a href="http://nbn-resolving.de/urn/resolver.pl?urn:nbn:de:hebis:30:3-465252" target="_blank">
+                                            <ref type="url">urn:nbn:de:hebis:30:3-465252</ref> <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></span>
+                        </div>
+                        <div class="col-md-4 bs-callout bs-callout-info">
+                            <h4>
+                                Sprache
+                            </h4>
+                            <span data-template="app:WPlang">Englisch</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header"><button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand hidden-xs" href="index.html">Die Schule von Salamanca</a><a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="index.html">Die Schule von Salamanca</a></div>
+                    <div class="collapse navbar-collapse navbar-menubuilder">
+                        <menu class="nav navbar-nav">
+                            <li class=""><a href="https://blog.{{$domain}}/?lang=de"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> 
+                    Blog</a></li>
+                            <li class=""><a href="https://www.{{$domain}}/de/project.html"><i class="fa fa-university" aria-hidden="true"></i> 
+                    Projekt</a></li>
+                            <li class=""><a href="https://www.{{$domain}}/de/works.html"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> 
+                    Werke</a></li>
+                            <li class=""><a href="https://www.{{$domain}}/de/dictionary.html"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 
+                    Wörterbuch</a></li>
+                            <li class=""><a href="https://www.{{$domain}}/de/authors.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 
+                    Autoren</a></li>
+                            <li class="active"><a href="https://www.{{$domain}}/de/workingPapers.html"><i class="fas fa-pencil-alt" aria-hidden="true"></i> 
+                    Working Papers</a></li>
+                            <li class=""><a href="https://www.{{$domain}}/de/search.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
+                    Suche</a></li><!-- language-switch dropdown on not-so-large screens -->
+                            <li role="presentation" class="dropdown hidden-lg"><a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Sprache<span class="caret"></span></a>
+                                <menu class="dropdown-menu">
+                                    <li class="hidden-lg"><a href="https://www.{{$domain}}/de/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
+                            Deutsch</a></li>
+                                    <li class="hidden-lg"><a href="https://www.{{$domain}}/en/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
+                            Englisch</a></li>
+                                    <li class="hidden-lg"><a href="https://www.{{$domain}}/es/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
+                            Spanisch</a></li>
+                                </menu>
+                            </li>
+                        </menu><!-- language-switch buttons on large screens -->
+                        <menu class="nav navbar-nav">
+                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
+                                <div class="btn-group" role="group" aria-label="..."><a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/de/workingPaper.html?wpid=WP0015">de</a><a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/en/workingPaper.html?wpid=WP0015">en</a><a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/es/workingPaper.html?wpid=WP0015">es</a></div>
+                            </li>
+                        </menu>
+                    </div>
+                             
+                </div>
+            </div>
+            
+            <!-- ==== Core JavaScript ==== -->
+            <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+            <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+            <!-- <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"/> -->
+            <!-- <script async="async" type="text/javascript" src="resources/js/jquery.backTop.min.js"/>-->
+
+            <!-- Make sure content area is visible -->
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#content").css('padding-top', parseInt($('.alert').css("height")) + 2);
+                });
+            </script>
+            
+            <!-- ==== jQuery Back to top ==== -->
+            <a id="backTop"></a>
+            <script type="text/javascript">
+            ! function (o) {
+                o.fn.backTop = function (e) {
+                                    var n = this,
+                                        i = o.extend({
+                                                position: 400, speed: 500, color: "white"
+                                            }, e),
+                                        t = i.position,
+                                        c = i.speed,
+                                        d = i.color;
+                                    n.addClass("white" == d ? "white": "red" == d ? "red": "green" == d ? "green": "black"),
+                                    n.css({
+                                            right: 40, bottom: 40, position: "fixed"
+                                          }),
+                                    o(document).scroll(function () {
+                                                            var e = o(window).scrollTop();
+                                                            e >= t ? n.fadeIn(c): n.fadeOut(c)
+                                                       }),
+                                    n.click(function () {
+                                                o("html, body").animate({scrollTop: 0}, {duration: 1200})
+                                            })
+                                }
+            }
+            (jQuery);
+            </script>
+            <script type="text/javascript">
+            $(document).ready( function() {
+                $('#backTop').backTop({
+                    'position' : 100,
+                    'speed' : 200,
+                    'color' : 'white',
+                });
+            });
+            </script>
+            
+            <!-- ==== Mobil-View: Hide opened collapsed menu after clicking elsewhere on page ==== -->
+            <script type="text/javascript">
+                $(document).on('click',function(){
+                    $('.collapse').collapse('hide');
+                });
+            </script>
+            
+            <!-- ==== Mobil-View: scroll to last collapsed navbar item on mobile when there are many items ==== -->
+            <script type="text/javascript">
+            $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });
+            </script>
+            
+            <!-- - - once more piwik code, in case the browser does not support script - - --> 
+            <!-- <noscript>
+                <img src="//stats.adwmainz.net/piwik.php?idsite=20" style="border:0;" alt=""/>
+            </noscript>-->
+            
+            <div id="push"></div>
+        </div>
+        <h2></h2>
+        <div id="footer">
+            <div class="container">
+                <span>
+                    <div class="row"><!-- the Academy -->
+                        <div class="col-md-3 hidden-sm hidden-xs"><a href="http://www.adwmainz.de/"><img class="img-responsive" style="margin-top: 10%" src="resources/img/logos_misc/logo_akademie.png"></a></div>
+                        <div class="hidden-lg hidden-md col-sm-4" style="text-align: center; margin-top: 1%"><a href="http://www.adwmainz.de/">
+                                <p><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span> Akademie der Wissenschaften und der <br>Literatur | Mainz</p></a></div><!-- the University -->
+                        <div class="col-md-3 hidden-sm hidden-xs"><a href="http://www2.uni-frankfurt.de"><img style="margin-top: 3%" class="img-responsive" src="resources/img/logos_misc/goethe-uni-logo.gif"></a></div>
+                        <div class="hidden-lg hidden-md col-sm-4" style="text-align: center; margin-top: 1%"><a href="http://www2.uni-frankfurt.de">
+                                <p><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span> Goethe-Universität<br>Frankfurt<br>Institut für Philosphie</p></a></div><!-- the Institute -->
+                        <div class="col-md-3 hidden-sm hidden-xs"><a href="http://www.lhlt.mpg.de"><img class="img-responsive" style="margin-top: -7%; float: right; height: 140px;" src="resources/img/logos_misc/mpilhlt-small.svg"></a></div>
+                        <div class="hidden-lg hidden-md col-sm-4" style="text-align: center;margin-top: 1%"><a href="http://www.lhlt.mpg.de">
+                                <p><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span> Max-Planck-Institut<br>für Rechtsgeschichte<br>und Rechtstheorie</p></a></div><!-- powered by eXist -->
+                        <div class="col-md-3 hidden-sm hidden-xs"><a style="margin-top: 7%" id="poweredby" href="http://exist-db.org"></a></div>
+                    </div><br><!-- contact, information, privacy, version -->
+                    <div class="row">
+                        <div class="col-md-12 hidden-sm hidden-xs" style="text-align: center;"><br>
+                            <p style="font-size:1.2em"><a href="contact.html"><i class="far fa-envelope"></i>  Kontakt</a> 
+                    | <a href="legal.html"><i class="fa fa-balance-scale"></i>  Impressum &amp; Datenschutz</a></p>
+                            <p><span style="color:#92A4B1;"></span>   <i class="far fa-copyright"></i>  <span title="guest">Die Schule von Salamanca 2015-2020</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 hidden-lg hidden-md" style="text-align: center">
+                        <p><a href="contact.html"><i class="far fa-envelope"></i>  Kontakt</a>
+                    | <a href="legal.html"><i class="fa fa-balance-scale"></i>  Impressum &amp; Datenschutz</a></p>
+                        <p><span style="color:#92A4B1;"></span>   <i class="fa fa-copyright"></i>  <span title="guest">Die Schule von Salamanca 2015-2018</span></p>
+                    </div><!-- CC BY -->
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: center"><!--<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />-->Für die Daten des Projekts "Die Schule von Salamanca" gilt (falls nicht anders angegeben) eine <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Namensnennung 4.0 International Lizenz<span class="glyphicon glyphicon-new-window" style="padding-left:0.3em;"></span></a>.
+               </div>
+                    </div></span>
+            </div>
+        </div>
+        
+    </body>
+</html>

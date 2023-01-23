@@ -9,6 +9,7 @@
 {{$domain := "test.salamanca.school"}}
 {{$pages_file := (list "../../data/" $id "/html/" $id "_pages.html" | join "")}}
 {{$toc_file := (list "../../data/" $id "/html/" $id "_toc.html" | join "")}}
+{{$info := dict "page" "work.html" "title" "{{$author}} - {{$title}}" "header" "" "description" "" "domain" $domain}}
 
 <!DOCTYPE html>
 <html>
@@ -65,315 +66,231 @@
     </head>
 
     <body id="body">
+        <div id="wrap">
 
-        <!-- Top row with site navigation -->
-        <div id="main-menu" class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="navbar-header"><!-- SvSal-claim, Toggle Boxes, extended menu -->
-                <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand hidden-xs" href="/index.html">
-                    Die Schule von Salamanca
-                </a>
-                <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="/index.html">
-                    Die Schule von Salamanca
-                </a>
-            </div>
-            <div class="collapse navbar-collapse navbar-menubuilder" style="max-height: 882px;"><!-- General Menu (Works, Dictionary, Proj. description etc.) -->
-                <menu class="nav navbar-nav">
-                    <li class="">
-                        <a href="https://blog.{{$domain}}/?lang=de">
-                            <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;Aktuelles
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="/project.html">
-                            <span class="fa fa-university" aria-hidden="true"></span>&nbsp;Projekt
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="/works.html">
-                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Werke
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="/dictionary.html">
-                            <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Wörterbuch
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="/authors.html">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Autoren
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="/workingPapers.html">
-                            <span class="fas fa-pencil-alt" aria-hidden="true"></span>&nbsp;Working Papers
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="/search.html">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Suche
-                        </a>
-                    </li>
-                    <!-- language-switch dropdown on not-so-large screens -->
-                    <li role="presentation" class="dropdown hidden-lg">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Sprache<span class="caret"></span>
-                        </a>
-                        <menu class="dropdown-menu">
-                            <li class="hidden-lg">
-                                <a href="https://id.{{$domain}}/texts/{{$id}}?lang=de">
-                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Deutsch
-                                </a>
-                            </li>
-                            <li class="hidden-lg">
-                                <a href="https://id.{{$domain}}/texts/{{$id}}?lang=en">
-                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Englisch
-                                </a>
-                            </li>
-                            <li class="hidden-lg">
-                                <a href="https://id.{{$domain}}/texts/{{$id}}?lang=es">
-                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanisch
-                                </a>
-                            </li>
-                        </menu>
-                    </li>
-                </menu><!-- language-switch buttons on large screens -->
-                <menu class="nav navbar-nav">
-                    <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
-                        <div class="btn-group" role="group" aria-label="...">
-                            <a class="btn navbar-btn btn-info" href="https://id.{{$domain}}/texts/{{$id}}?lang=de">de</a>
-                            <a class="btn navbar-btn btn-default" href="https://id.{{$domain}}/texts/{{$id}}?lang=en">en</a>
-                            <a class="btn navbar-btn btn-default" href="https://id.{{$domain}}/texts/{{$id}}?lang=es">es</a>
-                        </div>
-                    </li>
-                </menu>
-            </div>
-        </div>
+            <!-- Header and Navbar -->
+{{include "resources/templates/template_navbar.html" $info}}
 
-        <!-- Work-UI (Toggle Boxes, extended menu) -->
-        <div class="navbar navbar-white navbar-fixed-top" style="z-index: 1; margin-top: 10px; padding-top: 49px;">
-            <div class="row-fluid" style="margin-top: 0.9%;">
-                <h4 style="margin-top: 5px;" class="pull-left messengers">
-                    <a href="/work.html?wid={{$id}}" title="(Gehe zum Anfang von) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}">
-                        <!-- &#xA0; -->
-                        {{abbrev 15 $author}}: {{abbrev 20 $title}}
-                    </a>
-                </h4>
-            </div>
-            <div class="row-fluid">
-                <div class="btn-toolbar pull-left">
-                    <div class="btn-group hidden-lg"><!-- Hamburger Icon, used in small and eXtra-small views only: substitutes textmode, register, print and export functions -->
-                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="fa fa-bars"></span>&nbsp;Mehr
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <!--<li class="disabled"><a><span class="glyphicon glyphicon-stats text-muted" aria-hidden="true"></span>&#xA0;<span class="text-muted"><i18n:text key="register">Register</i18n:text></span></a></li>-->
-                            <li>
-                                <a onclick="applyEditMode();" class="btn original unsichtbar" style="cursor: pointer;">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Konstituiert
-                                </a>
-                            </li>
-                            <li>
-                                <a onclick="applyOrigMode();" class="btn edited" style="cursor: pointer;">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatisch
-                                </a>
-                            </li>
-                            <li>
-                                <a class="btn btn-link" href="https://id.{{$domain}}/texts/{{$id}}?mode=details">
-                                    <span class="fas fa-file-alt"></span>&nbsp;Katalogeintrag
-                                </a>
-                            </li>
-                            <!--
-                                <li class="disabled">
-                                    <a>
-                                        <span class="glyphicon glyphicon-print text-muted" aria-hidden="true"></span>&#xA0;<span class="text-muted"><i18n:text key="print">Drucken</i18n:text></span>
-                                    </a>
-                                </li>
-                            -->
-                            <li>
-                                <a href="https://id.{{$domain}}/texts/{{$id}}" onclick="copyLink(this); return false;" title="Kopiert einen Hyperlink in die Zwischenablage">
-                                    <span class="messengers fas fa-link"></span>&nbsp;Link kopieren
-                                </a>
-                                <span class="cite-link" style="display:none;">https://id.{{$domain}}/texts/{{$id}}?format=html</span>
-                            </li>
-                            <li>
-                                <a href="https://id.{{$domain}}/texts/{{$id}}" onclick="copyCitRef(this); return false;" title="Kopiert eine Zitierempfehlung in die Zwischenablage">
-                                    <span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren
-                                </a>
-                                <span class="sal-cite-rec" style="display:none">
-                                    <span class="cite-rec-body">{{$author}}, {{$title}} (2019 [{{$year}}]), in:
-                                        Die Schule von Salamanca. Eine Digitale Quellensammlung
-                                        &lt;<a href="https://id.{{$domain}}/texts/{{$id}}">https://id.{{$domain}}/texts/{{$id}}</a>&gt;</span>
-                                </span>
-                            </li>
-                            <li>
-                                <a title="Download TEI/XML source file" href="https://id.{{$domain}}/texts/{{$id}}?format=tei">
-                                    <span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML
-                                </a>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a title="Plaintext Formate" href="https://id.{{$domain}}/texts/{{$id}}#">
-                                    <span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="https://id.{{$domain}}/texts/{{$id}}?format=txt&mode=edit">konstituiert</a></li>
-                                    <li><a href="https://id.{{$domain}}/texts/{{$id}}?format=txt&mode=orig">diplomatisch</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a title="Download RDF/XML data for this work" href="https://id.{{$domain}}/texts/{{$id}}?format=rdf">
-                                    <span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)
-                                </a>
-                            </li>
-                            <li class="disabled">
-                                <a title="Download PDF file for this work" href="https://id.{{$domain}}/texts/{{$id}}?format=pdf">
-                                    <span class="fas fa-file-pdf text-muted" aria-hidden="true"></span>&nbsp;PDF
-                                </a>
-                            </li>
-                            <li class="disabled">
-                                <a>
-                                    <span class="fas fa-book text-muted" aria-hidden="true"></span>&nbsp;<span class="text-muted">E-Book</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="btn-group"><!--Paginator dropdown-->
-                        <div class="dropdown">
-                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                <span class="fa fa-anchor"></span>&nbsp;Seite&nbsp;<span class="caret"></span>
+            <!-- Work-UI (Toggle Boxes, extended menu) -->
+            <div class="navbar navbar-white navbar-fixed-top" style="z-index: 1; margin-top: 10px; padding-top: 49px;">
+                <div class="row-fluid" style="margin-top: 0.9%;">
+                    <h4 style="margin-top: 5px;" class="pull-left messengers">
+                        <a href="/work.html?wid={{$id}}" title="(Gehe zum Anfang von) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}">
+                            <!-- &#xA0; -->
+                            {{abbrev 15 $author}}: {{abbrev 20 $title}}
+                        </a>
+                    </h4>
+                </div>
+                <div class="row-fluid">
+                    <div class="btn-toolbar pull-left">
+                        <div class="btn-group hidden-lg"><!-- Hamburger Icon, used in small and eXtra-small views only: substitutes textmode, register, print and export functions -->
+                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="fa fa-bars"></span>&nbsp;Mehr
                             </button>
-                            {{ include $pages_file }}
-                        </div>
-                    </div>
-                    <div class="btn-group"><!--TOC button-->
-                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
-                            <span class="fa fa-list-ul" aria-hidden="true"></span>&nbsp;Inhalt
-                        </button>
-                    </div>
-                    <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Details button-->
-                        <a class="btn btn-link" href="https://id.{{$domain}}/texts/{{$id}}?mode=details">
-                            <span class="fas fa-file-alt"></span>&nbsp;Katalogeintrag
-                        </a>
-                    </div>
-                    <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Textmode button-->
-                        <div>
-                            <section id="switchEditsSection">
-                                <span class="original unsichtbar" style="cursor: pointer;">
-                                    <a class="btn btn-link" onclick="applyEditMode();">
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatisch
-                                    </a>
-                                </span>
-                                <span class="edited" style="cursor: pointer;">
-                                    <a class="btn btn-link" onclick="applyOrigMode();">
+                            <ul class="dropdown-menu" role="menu">
+                                <!--<li class="disabled"><a><span class="glyphicon glyphicon-stats text-muted" aria-hidden="true"></span>&#xA0;<span class="text-muted"><i18n:text key="register">Register</i18n:text></span></a></li>-->
+                                <li>
+                                    <a onclick="applyEditMode();" class="btn original unsichtbar" style="cursor: pointer;">
                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Konstituiert
                                     </a>
-                                </span>
-                            </section>
+                                </li>
+                                <li>
+                                    <a onclick="applyOrigMode();" class="btn edited" style="cursor: pointer;">
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatisch
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="btn btn-link" href="https://id.{{$domain}}/texts/{{$id}}?mode=details">
+                                        <span class="fas fa-file-alt"></span>&nbsp;Katalogeintrag
+                                    </a>
+                                </li>
+                                <!--
+                                    <li class="disabled">
+                                        <a>
+                                            <span class="glyphicon glyphicon-print text-muted" aria-hidden="true"></span>&#xA0;<span class="text-muted"><i18n:text key="print">Drucken</i18n:text></span>
+                                        </a>
+                                    </li>
+                                -->
+                                <li>
+                                    <a href="https://id.{{$domain}}/texts/{{$id}}" onclick="copyLink(this); return false;" title="Kopiert einen Hyperlink in die Zwischenablage">
+                                        <span class="messengers fas fa-link"></span>&nbsp;Link kopieren
+                                    </a>
+                                    <span class="cite-link" style="display:none;">https://id.{{$domain}}/texts/{{$id}}?format=html</span>
+                                </li>
+                                <li>
+                                    <a href="https://id.{{$domain}}/texts/{{$id}}" onclick="copyCitRef(this); return false;" title="Kopiert eine Zitierempfehlung in die Zwischenablage">
+                                        <span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren
+                                    </a>
+                                    <span class="sal-cite-rec" style="display:none">
+                                        <span class="cite-rec-body">{{$author}}, {{$title}} (2019 [{{$year}}]), in:
+                                            Die Schule von Salamanca. Eine Digitale Quellensammlung
+                                            &lt;<a href="https://id.{{$domain}}/texts/{{$id}}">https://id.{{$domain}}/texts/{{$id}}</a>&gt;</span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <a title="Download TEI/XML source file" href="https://id.{{$domain}}/texts/{{$id}}?format=tei">
+                                        <span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML
+                                    </a>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a title="Plaintext Formate" href="https://id.{{$domain}}/texts/{{$id}}#">
+                                        <span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="https://id.{{$domain}}/texts/{{$id}}?format=txt&mode=edit">konstituiert</a></li>
+                                        <li><a href="https://id.{{$domain}}/texts/{{$id}}?format=txt&mode=orig">diplomatisch</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a title="Download RDF/XML data for this work" href="https://id.{{$domain}}/texts/{{$id}}?format=rdf">
+                                        <span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)
+                                    </a>
+                                </li>
+                                <li class="disabled">
+                                    <a title="Download PDF file for this work" href="https://id.{{$domain}}/texts/{{$id}}?format=pdf">
+                                        <span class="fas fa-file-pdf text-muted" aria-hidden="true"></span>&nbsp;PDF
+                                    </a>
+                                </li>
+                                <li class="disabled">
+                                    <a>
+                                        <span class="fas fa-book text-muted" aria-hidden="true"></span>&nbsp;<span class="text-muted">E-Book</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="btn-group hidden-md hidden-sm hidden-xs"><!-- Textmode, register, print and export functions, in largeish views -->
-                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><!--Textmode button-->
-                            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>&nbsp;Export&nbsp;<span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu export-options" role="menu"><!-- Export buttons -->
-                            <li><a onclick="copyLink(this); return false;" title="URL in die Zwischenablage kopieren"><span class="messengers fas fa-link"></span>&nbsp;Link kopieren</a><span class="cite-link" style="display:none;">https://id.{{$domain}}/texts/{{$id}}?format=html</span></li>
-                            <li><a onclick="copyCitRef(this); return false;" title="Zitierhinweis in die Zwischenablage kopieren"><span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren</a><span class="sal-cite-rec" style="display:none"><span class="cite-rec-body">Azpilcueta, Manual de Confessores y Penitentes (2019 [1556]), in: Die Schule von Salamanca. Eine Digitale Quellensammlung &lt;<a href="https://id.{{$domain}}/texts/{{$id}}">https://id.{{$domain}}/texts/{{$id}}</a>&gt;</span></span></li>
-                            <li><a title="Download TEI/XML source file" href="https://id.{{$domain}}/texts/{{$id}}?format=tei"><span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML</a></li>
-                            <li class="dropdown-submenu"><a title="Plaintext exportieren"><span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="https://id.{{$domain}}/texts/{{$id}}?format=txt&mode=edit">konstituiert</a></li>
-                                    <li><a href="https://id.{{$domain}}/texts/{{$id}}?format=txt&mode=orig">diplomatisch</a></li>
-                                </ul>
-                            </li>
-                            <li><a title="Download RDF/XML data for this work" href="https://id.{{$domain}}/texts/{{$id}}?format=rdf"><span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)</a></li>
-                            <li><a title="Download PDF file for this work" href="https://id.{{$domain}}/texts/{{$id}}?format=pdf"><span class="fas fa-file-pdf" aria-hidden="true"></span>&nbsp;PDF</a></li>
-                            <li class="disabled"><a><span class="fas fa-book text-muted" aria-hidden="true"></span>&nbsp;<span class="text-muted">E-Book</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="btn-group"><!-- Impressum button -->
-                        <a class="btn btn-link" href="/legal.html"><!--<span class="fa fa-info-circle"></span>-->
-                            <span class="fas fa-balance-scale"></span>&nbsp;Impressum & Datenschutz
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- MAIN WINDOW -->
-        <div class="container">
-            <p class="watermark-wip-text" data-template="app:watermark"></p>
-            <div id="findMe" class="row">
-                <!-- === TOC*** Modal Start === -->
-                <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">
-                                    <span aria-hidden="true">×</span>
-                                    <span class="sr-only">Close</span>
+                        <div class="btn-group"><!--Paginator dropdown-->
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                    <span class="fa fa-anchor"></span>&nbsp;Seite&nbsp;<span class="caret"></span>
                                 </button>
-                                <h4 class="modal-title" id="myModalLabel">Inhaltsverzeichnis
-                                    <button id="toggleButton" class="btn btn-link btn-lg expanded">
-                                        <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-                                    </button>
-                                </h4>
+                                {{ include $pages_file }}
                             </div>
-                            {{ include $toc_file }}
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                        </div>
+                        <div class="btn-group"><!--TOC button-->
+                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
+                                <span class="fa fa-list-ul" aria-hidden="true"></span>&nbsp;Inhalt
+                            </button>
+                        </div>
+                        <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Details button-->
+                            <a class="btn btn-link" href="https://id.{{$domain}}/texts/{{$id}}?mode=details">
+                                <span class="fas fa-file-alt"></span>&nbsp;Katalogeintrag
+                            </a>
+                        </div>
+                        <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Textmode button-->
+                            <div>
+                                <section id="switchEditsSection">
+                                    <span class="original unsichtbar" style="cursor: pointer;">
+                                        <a class="btn btn-link" onclick="applyEditMode();">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatisch
+                                        </a>
+                                    </span>
+                                    <span class="edited" style="cursor: pointer;">
+                                        <a class="btn btn-link" onclick="applyOrigMode();">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Konstituiert
+                                        </a>
+                                    </span>
+                                </section>
                             </div>
+                        </div>
+                        <div class="btn-group hidden-md hidden-sm hidden-xs"><!-- Textmode, register, print and export functions, in largeish views -->
+                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><!--Textmode button-->
+                                <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>&nbsp;Export&nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu export-options" role="menu"><!-- Export buttons -->
+                                <li><a onclick="copyLink(this); return false;" title="URL in die Zwischenablage kopieren"><span class="messengers fas fa-link"></span>&nbsp;Link kopieren</a><span class="cite-link" style="display:none;">https://id.{{$domain}}/texts/{{$id}}?format=html</span></li>
+                                <li><a onclick="copyCitRef(this); return false;" title="Zitierhinweis in die Zwischenablage kopieren"><span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren</a><span class="sal-cite-rec" style="display:none"><span class="cite-rec-body">Azpilcueta, Manual de Confessores y Penitentes (2019 [1556]), in: Die Schule von Salamanca. Eine Digitale Quellensammlung &lt;<a href="https://id.{{$domain}}/texts/{{$id}}">https://id.{{$domain}}/texts/{{$id}}</a>&gt;</span></span></li>
+                                <li><a title="Download TEI/XML source file" href="https://id.{{$domain}}/texts/{{$id}}?format=tei"><span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML</a></li>
+                                <li class="dropdown-submenu"><a title="Plaintext exportieren"><span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="https://id.{{$domain}}/texts/{{$id}}?format=txt&mode=edit">konstituiert</a></li>
+                                        <li><a href="https://id.{{$domain}}/texts/{{$id}}?format=txt&mode=orig">diplomatisch</a></li>
+                                    </ul>
+                                </li>
+                                <li><a title="Download RDF/XML data for this work" href="https://id.{{$domain}}/texts/{{$id}}?format=rdf"><span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)</a></li>
+                                <li><a title="Download PDF file for this work" href="https://id.{{$domain}}/texts/{{$id}}?format=pdf"><span class="fas fa-file-pdf" aria-hidden="true"></span>&nbsp;PDF</a></li>
+                                <li class="disabled"><a><span class="fas fa-book text-muted" aria-hidden="true"></span>&nbsp;<span class="text-muted">E-Book</span></a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group"><!-- Impressum button -->
+                            <a class="btn btn-link" href="/legal.html"><!--<span class="fa fa-info-circle"></span>-->
+                                <span class="fas fa-balance-scale"></span>&nbsp;Impressum & Datenschutz
+                            </a>
                         </div>
                     </div>
                 </div>
-                <!-- === TOC*** Modal End === -->
             </div>
-            <!-- Main text -->
-            <div id="wrapperWork"
-                class="col-lg-7 col-lg-offset-3 col-md-7 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-12"
-                style="padding-top: 17%">
-                <div class="row" xml:space="preserve">
-                    <!-- div id="iasSpinner1" class="iasSpinner" style="margin: auto; text-align: center; opacity: 0;">Loading...</div -->
-                    <div id="iasPagination1" class="iasPagination" style="margin: auto; text-align: center;">
-                        {{with $map.prev}}
-                        <a class="prev" href="{{.}}">zurück</a>
-                        {{end}}
-                        |
-                        {{with $map.top}}
-                        <a href="{{.}}">zum Anfang</a>
-                        {{end}}
-                        |
-                        {{with $map.next}}
-                        <a class="next" href="{{.}}">weiter</a>
-                        {{end}}
-                    </div>
-                    <div class="col-md-12">
-                        <div id="iasContainer">
-                            {{ $content }}
-                        </div>
-                    </div>
-                    <div id="iasSpinner2" class="iasSpinner" style="margin: auto; text-align: center; opacity: 0; height: 3em;">Lädt...</div>
-                    <div id="iasPagination2" class="iasPagination" style="margin: auto; text-align: center;">
-                        {{with $map.prev}}
-                        <a class="prev" href="{{.}}">zurück</a>
-                        {{end}}
-                        |
-                        {{with $map.top}}
-                        <a href="{{.}}">zum Anfang</a>
-                        {{end}}
-                        |
-                        {{with $map.next}}
-                        <a class="next" href="{{.}}">weiter</a>
-                        {{end}}
-                    </div>
-                </div>
-            </div>
-        </div>
 
+            <!-- MAIN WINDOW -->
+            <div class="container">
+                <p class="watermark-wip-text"></p>
+                <div id="findMe" class="row">
+                    <!-- === TOC*** Modal Start === -->
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">×</span>
+                                        <span class="sr-only">Close</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Inhaltsverzeichnis
+                                        <button id="toggleButton" class="btn btn-link btn-lg expanded">
+                                            <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                                        </button>
+                                    </h4>
+                                </div>
+                                {{ include $toc_file }}
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- === TOC*** Modal End === -->
+                </div>
+                <!-- Main text -->
+                <div id="wrapperWork"
+                    class="col-lg-7 col-lg-offset-3 col-md-7 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-12"
+                    style="padding-top: 17%">
+                    <div class="row" xml:space="preserve">
+                        <!-- div id="iasSpinner1" class="iasSpinner" style="margin: auto; text-align: center; opacity: 0;">Loading...</div -->
+                        <div id="iasPagination1" class="iasPagination" style="margin: auto; text-align: center;">
+                            {{with $map.prev}}
+                            <a class="prev" href="{{.}}">zurück</a>
+                            {{end}}
+                            |
+                            {{with $map.top}}
+                            <a href="{{.}}">zum Anfang</a>
+                            {{end}}
+                            |
+                            {{with $map.next}}
+                            <a class="next" href="{{.}}">weiter</a>
+                            {{end}}
+                        </div>
+                        <div class="col-md-12">
+                            <div id="iasContainer">
+                                {{ $content }}
+                            </div>
+                        </div>
+                        <div id="iasSpinner2" class="iasSpinner" style="margin: auto; text-align: center; opacity: 0; height: 3em;">Lädt...</div>
+                        <div id="iasPagination2" class="iasPagination" style="margin: auto; text-align: center;">
+                            {{with $map.prev}}
+                            <a class="prev" href="{{.}}">zurück</a>
+                            {{end}}
+                            |
+                            {{with $map.top}}
+                            <a href="{{.}}">zum Anfang</a>
+                            {{end}}
+                            |
+                            {{with $map.next}}
+                            <a class="next" href="{{.}}">weiter</a>
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         <!-- JAVASCRIPT -->
 

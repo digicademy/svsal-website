@@ -1,5 +1,6 @@
 {{$domain := "test.salamanca.school"}}
 {{$searchterm := placeholder "http.request.uri.query.q"}}
+{{$info := dict "page" "search.html" "title" "Suche" "header" "Suche" "description" "Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca." "domain" $domain}}
 
 <!DOCTYPE html>
 <html>
@@ -9,12 +10,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="">
-        <meta name="description" content="Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca.">
+        <meta name="description" content="{{ $info.description }}">
         <title>{{if $searchterm}}{{$searchterm}}{{else}}Search{{end}} - The School of Salamanca</title>
-        <link rel="canonical" href="https://www.{{$domain}}/search.html">
-        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/search_de.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
-        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/search_en.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
-        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/search_es.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
+        <link rel="canonical" href="https://www.{{$domain}}/{{$info.page}}">
+        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/{{$info.page}}?lang=de{{if $searchterm}}&q={{$searchterm}}{{end}}&field=corpus&action=Search">
+        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/{{$info.page}}?lang=en{{if $searchterm}}&q={{$searchterm}}{{end}}&field=corpus&action=Search">
+        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/{{$info.page}}?lang=es{{if $searchterm}}&q={{$searchterm}}{{end}}&field=corpus&action=Search">
 
         <!-- ==== CSS ==== -->
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
@@ -47,87 +48,9 @@
 
     <body id="body">
         <div id="wrap">
-            <div class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Header and Navbar -->
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
-                            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand hidden-xs" href="https://www.{{$domain}}/index.html">The School of Salamanca</a>
-                        <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="https://www.{{$domain}}/index.html">The School of Salamanca</a>
-                    </div>
-                    <div class="collapse navbar-collapse navbar-menubuilder" style="max-height: 569px;">
-                        <menu class="nav navbar-nav">
-                            <li class="">
-                                <a href="https://blog.{{$domain}}/?lang=en">
-                                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;News
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/project.html">
-                                    <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Project
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/works.html">
-                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/dictionary.html">
-                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Dictionary
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/authors.html">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Authors
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/workingPapers.html">
-                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="https://www.{{$domain}}/search.html">
-                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search
-                                </a>
-                            </li>
-                            <li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Language<span class="caret"></span>
-                                </a>
-                                <menu class="dropdown-menu">
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;German
-                                        </a>
-                                    </li>
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;English
-                                        </a>
-                                    </li>
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanish
-                                        </a>
-                                    </li>
-                                </menu>
-                            </li>
-                        </menu>
-                        <menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
-                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">de</a>
-                                    <a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">en</a>
-                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/search.html?{{if $searchterm}}q={{$searchterm}}&{{end}}field=corpus&action=Search">es</a>
-                                </div>
-                            </li>
-                        </menu>
-                    </div>
-                </div>
-            </div>
+
+{{include "resources/templates/template_navbar.html" $info}}
+
             <div id="content" class="container-fluid"><!-- Main area: Search form and results list -->
                 <div class="container">
                     <div><!-- Page Heading -->

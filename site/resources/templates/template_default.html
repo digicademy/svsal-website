@@ -1,0 +1,118 @@
+{{ $domain := "test.salamanca.school" }}
+{{ $info := index .Args 0 }}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="">
+        <meta name="description" content="{{ $info.description }}">
+        <title>{{ if $info.title }}{{ $info.title }} - {{ end }}The School of Salamanca</title>
+
+        <link rel="canonical" href="https://www.{{ $domain }}/{{ $info.page }}">
+        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}&lang=de">
+        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}&lang=en">
+        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}&lang=es">
+
+        <!-- ==== CSS ==== -->
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
+        <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/style_default.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
+
+        <!-- ==== favIcon ==== -->
+        <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="/resources/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="/resources/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="/resources/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="/resources/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="/resources/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="/resources/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="/resources/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="/resources/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/resources/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon"             type="image/png" sizes="32x32"   href="/resources/favicons/favicon-32x32.png">
+        <link rel="icon"             type="image/png" sizes="194x194" href="/resources/favicons/favicon-194x194.png">
+        <link rel="icon"             type="image/png" sizes="96x96"   href="/resources/favicons/favicon-96x96.png">
+        <link rel="icon"             type="image/png" sizes="192x192" href="/resources/favicons/android-chrome-192x192.png">
+        <link rel="icon"             type="image/png" sizes="16x16"   href="/resources/favicons/favicon-16x16.png">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/resources/favicons/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+
+    <body id="body">
+        <div id="wrap">
+
+            <!-- Header and Navbar -->
+{{include "resources/templates/template_navbar.html" $info}}
+
+
+            <!-- Main page area -->
+            <div id="content" class="container-fluid">
+
+                <!-- Page title -->
+                <div class="container">
+                    <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+                        <span class="text-muted">
+                            <span class="text-muted">{{ $info.header }}</span>
+                            <hr>
+                        </span>
+                    </h2>
+                    <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+                        <span class="text-muted">
+                            <span class="text-muted">{{ $info.header }}</span>
+                            <hr>
+                        </span>
+                    </h2>
+                    <h2 class="hidden-lg hidden-md">
+                        <span class="text-muted">
+                            <span class="text-muted">{{ $info.header }}</span>
+                            <hr>
+                        </span>
+                    </h2>
+                </div>
+
+                <!-- Page content -->
+                {{ $info.content }}
+
+            </div>
+        </div>
+            
+        <!-- ==== Core JavaScript ==== -->
+        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
+
+        <script type="text/javascript" src="/resources/js/jquery-1.js"></script>
+        <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/resources/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="/resources/js/jquery.js"></script><!-- this is only the backTop function -->
+
+        <script type="text/javascript">
+            jQuery('body').bind('click', function(e) {                                              // hide navbar when clicking anywhere
+                if(jQuery(e.target).closest('.navbar-collapse').length == 0) {
+                    // click happened outside of .navbar, so hide
+                    var opened = jQuery('.navbar-collapse').hasClass('in');
+                    if ( opened === true ) {
+                        jQuery('.navbar-collapse').collapse('hide');
+                    }
+                }
+            });
+
+            $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });  // set navbar height
+
+            $(document).ready(function () {
+                $("#content").css('padding-top', parseInt($('.alert').css("height")) + 2);
+                $('#backTop').backTop({                                                                 // Position Back-to-top arrow
+                    'position' : 100,
+                    'speed' : 200,
+                    'color' : 'white',
+                });
+            });
+        </script>
+
+{{ include "/resources/templates/template_footer.html" }}
+
+    </body>
+</html>

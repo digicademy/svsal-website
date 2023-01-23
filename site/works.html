@@ -1,4 +1,5 @@
 {{$domain := "test.salamanca.school"}}
+{{$info := dict "page" "works.html" "title" "Werke" "header" "Werke" "description" "Überblick über die Quellen, die im Rahmen der digitalen Quellenedition in Text und Bild verfügbar sind. Filter- und Sortierbar" "domain" $domain}}
 
 <!DOCTYPE html>
 <html>
@@ -7,12 +8,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="">
-        <meta name="description" content="Überblick über die Quellen, die im Rahmen der digitalen Quellenedition in Text und Bild verfügbar sind. Filter- und Sortierbar.">
-        <title>Works - The School of Salamanca</title>
-        <link rel="canonical" href="https://www.{{$domain}}/works.html">
-        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/works_de.html">
-        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/works_en.html">
-        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/works_es.html">
+        <meta name="description" content="{{$info.description}}">
+        <title>{{$info.title}} - The School of Salamanca</title>
+        <link rel="canonical" href="https://www.{{$domain}}/{{$info.page}}">
+        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/{{$info.page}}?lang=de">
+        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/{{$info.page}}?lang=en">
+        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/{{$info.page}}?lang=es">
 
         <!-- ==== CSS ==== -->
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -74,109 +75,23 @@
     <body id="body">
         <div id="wrap">
 
-            <div id="blue-one" class="navbar navbar-default navbar-fixed-top" role="navigation"><!-- Navbar -->
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand hidden-xs" href="index.html">Die Schule von Salamanca</a>
-                        <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="index.html">Die Schule von Salamanca</a>
-                    </div>
-                    <div class="collapse navbar-collapse navbar-menubuilder">
-                        <menu class="nav navbar-nav">
-                            <li class="">
-                                <a href="https://blog.{{$domain}}/?lang=de">
-                                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;Blog
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/project.html">
-                                    <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Projekt
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/works.html">
-                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Werke
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/dictionary.html">
-                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Wörterbuch
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/authors.html">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Autoren
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/workingPapers.html">
-                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="https://www.{{$domain}}/search.html">
-                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Suche
-                                </a>
-                            </li>
-                            <li role="presentation" class="dropdown hidden-lg"><!-- language-switch dropdown on not-so-large screens -->
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Sprache<span class="caret"></span>
-                                </a>
-                                <menu class="dropdown-menu">
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{$domain}}/index_de.html">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Deutsch
-                                        </a>
-                                    </li>
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{$domain}}/index_en.html">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Englisch
-                                        </a>
-                                    </li>
-                                    <li class="hidden-lg">
-                                        <a href="https://www.{{$domain}}/index_es.html">
-                                            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanisch
-                                        </a>
-                                    </li>
-                                </menu>
-                            </li>
-                        </menu>
-                        <menu class="nav navbar-nav"><!-- language-switch buttons on large screens -->
-                            <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/index_de.html">de</a>
-                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/index_en.html">en</a>
-                                    <a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/index_es.html">es</a>
-                                </div>
-                            </li>
-                        </menu>
-                    </div>
-                </div>
-            </div>
+{{include "resources/templates/template_navbar.html" $info}}
 
             <div id="content" class="container-fluid">
                 <div class="container">
                     <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
                         <span class="text-muted">
-                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
-                        </span>
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
                         <hr>
                     </h2>
                     <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
                         <span class="text-muted">
-                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
-                        </span>
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
                         <hr>
                     </h2>
                     <h2 class="hidden-lg hidden-md">
                         <span class="text-muted">
-                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
-                        </span>
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
                         <hr>
                     </h2>
                     <div style="margin-bottom:1em;border:1px solid gray;border-radius:5px;"><!-- introductory note -->
@@ -363,7 +278,7 @@
                             '</div>' +
                         '</div>' +
                     '</div>'
-                settings = {
+                var settings = {
                     items            : works_items,
                     facets           : {
                                         'nameFacet'         : 'Author',
@@ -419,8 +334,7 @@
             });
         </script>
 
-        <!-- ==== Piwik for visitor stats ==== -->
-        <!-- - - Piwik for visitor stats (modified to enable caching and compression) - - -->
+        <!-- ==== Piwik for visitor stats (modified to enable caching and compression) ==== -->
         <!--<script type="text/javascript">
           var _paq = _paq || [];
           _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
@@ -431,16 +345,20 @@
           (function() {
             var u="//stats.adwmainz.net/";
             _paq.push(['setTrackerUrl', u+'js/']);
-/*          _paq.push(['setTrackerUrl', u+'piwik.php']); */
+            /* _paq.push(['setTrackerUrl', u+'piwik.php']); */
             _paq.push(['setSiteId', 20]);
             var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
             g.type='text/javascript'; g.async=true; g.defer=true;
-/*          g.src=u+'piwik.js'; */
+            /* g.src=u+'piwik.js'; */
             g.src=u+'js/';
             s.parentNode.insertBefore(g,s);
           })();
         </script>
-        <noscript><p><img src="//stats.adwmainz.net/piwik.php?idsite=20" style="border:0;" alt=""/></p></noscript>-->
+        <noscript>
+            <p>
+                <img src="//stats.adwmainz.net/piwik.php?idsite=20" style="border:0;" alt=""/>
+            </p>
+        </noscript>-->
         <!-- End Piwik Code -->
 
     </body>

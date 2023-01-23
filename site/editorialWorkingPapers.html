@@ -1,0 +1,49 @@
+{{$content := `
+    <div class="container">
+        <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+            <span class="text-muted">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                Editionsrichtlinien für die Erstellung eines Working Papers
+            </span>
+            <hr>
+        </h2>
+        <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+            <span class="text-muted">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                Editionsrichtlinien für die Erstellung eines Working Papers
+            </span>
+            <hr>
+        </h2>
+        <h2 class="hidden-lg hidden-md">
+            <span class="text-muted">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                Editionsrichtlinien für die Erstellung eines Working Papers
+            </span>
+            <hr>
+        </h2>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="lead">
+                    Die Salamanca Working Papers Series ist eine interdisziplinäre
+                        Reihe von Beiträgen, die Themen aus den philosophischen, juristischen und theologischen
+                        Wissenschaften bearbeiten. Die Reihe begleitet die Projektarbeit, ist aber auch für
+                        externe Beiträge offen. Eingereichte Beiträge durchlaufen ein peer
+                        review-Verfahren. Gern nehmen wir Vorschläge unter dieser Adresse entgegen:
+                    <a href="mailto:info.salamanca@adwmainz.de">info.salamanca@adwmainz.de</a>
+                </span>
+            </div>
+        </div>
+        <br>
+        <!--<div class="row">
+            <div class="col-md-8">
+                <p class="lead">
+                    <i18n:text key="WpGuidelinesDelayed">Weitere Hinweise für Autoren folgen in Kürze.</i18n:text>
+                </p>
+            </div>
+        </div>-->
+    </div>
+`}}
+
+{{$info := dict "page" "editorialWorkingPapers.html" "title" "Über die WP Reihe" "header" "" "description" "Richtlinien und Vorgaben für die Einreichung von Vorschlägen für die Working Paper Reihe des Projekts &quot;Die Schule von Salamanca&quot;." "content" $content}}
+
+{{include "/resources/templates/template_default.html" $info }}
