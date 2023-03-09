@@ -1,229 +1,56 @@
-{{$domain := "test.salamanca.school"}}
 {{$searchterm := placeholder "http.request.uri.query.q"}}
-{{$info := dict "page" "search.html" "title" "Suche" "header" "Suche" "description" "Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca." "domain" $domain}}
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="">
-        <meta name="description" content="{{ $info.description }}">
-        <title>{{if $searchterm}}{{$searchterm}}{{else}}Search{{end}} - The School of Salamanca</title>
-        <link rel="canonical" href="https://www.{{$domain}}/{{$info.page}}">
-        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/{{$info.page}}?lang=de{{if $searchterm}}&q={{$searchterm}}{{end}}&field=corpus&action=Search">
-        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/{{$info.page}}?lang=en{{if $searchterm}}&q={{$searchterm}}{{end}}&field=corpus&action=Search">
-        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/{{$info.page}}?lang=es{{if $searchterm}}&q={{$searchterm}}{{end}}&field=corpus&action=Search">
+{{$content := `
+    <div class="container" style="margin-top:3em;">
+        <form class="col-md-12 form-group" name="f-query" role="form" action="search.html" method="get"><!-- Search Form -->
+            <div class="col-md-4 col-sm-5 col-xs-5">
+                <select class="span12 form-control templates:form-control" name="field" id="field" data-template="form-control">
+                    <option value="everything" accesskey="1" title="everything" disabled="disabled">All data sources</option>
+                    <option value="corpus" accesskey="2" title="corpus" selected="selected">Works: full text</option>
+                    <option value="headings" accesskey="3" title="corpus, headings only" disabled="disabled">Works: headings</option>
+                    <option value="notes" accesskey="4" title="corpus, notes only" disabled="disabled">Works: notes</option>
+                    <option value="nonotes" accesskey="5" title="corpus, without the notes" disabled="disabled">Works: without notes</option>
+                    <option value="wp" accesskey="a" title="working papers" disabled="disabled">Working Papers: abstract, keywords, etc.</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-5 col-xs-5">
+                <input class="templates:form-control form-control" id="q" name="q" placeholder="search" value="">
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2">
+                <button class="btn btn-default" name="action" id="doSearch" value="Search">
+                    &nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;
+                </button>
+            </div>
+            <a style="font-size:1.05em;" class="btn btn-link" id="toggleHelp" target="#">
+                <i class="glyphicon glyphicon-info-sign"></i> Need help?
+            </a>
+            <input type="hidden" name="lang" value="en">
+        </form>
 
-        <!-- ==== CSS ==== -->
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
-        <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
-        <link rel="stylesheet" type="text/css" href="resources/css/style_default.css"/>
-        <link rel="stylesheet" type="text/css" href="resources/css/tooltipster.css"/>
-        <link rel="stylesheet" type="text/css" href="resources/css/ispinner.prefixed.css">
-
-        <!-- ==== favIcon ==== -->
-        <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="resources/favicons/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="resources/favicons/apple-touch-icon-60x60.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="resources/favicons/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="resources/favicons/apple-touch-icon-76x76.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="resources/favicons/apple-touch-icon-114x114.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="resources/favicons/apple-touch-icon-120x120.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="resources/favicons/apple-touch-icon-144x144.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="resources/favicons/apple-touch-icon-152x152.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="resources/favicons/apple-touch-icon-180x180.png">
-        <link rel="icon"             type="image/png" sizes="32x32"   href="resources/favicons/favicon-32x32.png">
-        <link rel="icon"             type="image/png" sizes="194x194" href="resources/favicons/favicon-194x194.png">
-        <link rel="icon"             type="image/png" sizes="96x96"   href="resources/favicons/favicon-96x96.png">
-        <link rel="icon"             type="image/png" sizes="192x192" href="resources/favicons/android-chrome-192x192.png">
-        <link rel="icon"             type="image/png" sizes="16x16"   href="resources/favicons/favicon-16x16.png">
-        <link rel="manifest" href="resources/favicons/manifest.json">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png">
-        <meta name="theme-color" content="#ffffff">
-    </head>
-
-    <body id="body">
-        <div id="wrap">
-
-{{include "resources/templates/template_navbar.html" $info}}
-
-            <div id="content" class="container-fluid"><!-- Main area: Search form and results list -->
-                <div class="container">
-                    <div><!-- Page Heading -->
-                        <h2 class="hidden-md hidden-sm hidden-xs" style="margin-top: 3%">
-                            <span class="text-muted">
-                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search
-                            </span>
-                        </h2>
-                        <h2 class="hidden-lg hidden-sm hidden-xs" style="margin-top: 2%">
-                            <span class="text-muted">
-                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search
-                            </span>
-                        </h2>
-                        <h2 class="hidden-lg hidden-md">
-                            <span class="text-muted">
-                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search
-                            </span>
-                        </h2>
-                    </div>
-                    <br>
-
-                    <form class="col-md-12 form-group" name="f-query" role="form" action="search.html" method="get"><!-- Search Form -->
-                        <div class="col-md-4 col-sm-5 col-xs-5">
-                            <select class="span12 form-control templates:form-control" name="field" id="field" data-template="form-control">
-                                <option value="everything" accesskey="1" title="everything" disabled="disabled">All data sources</option>
-                                <option value="corpus" accesskey="2" title="corpus" selected="selected">Works: full text</option>
-                                <option value="headings" accesskey="3" title="corpus, headings only" disabled="disabled">Works: headings</option>
-                                <option value="notes" accesskey="4" title="corpus, notes only" disabled="disabled">Works: notes</option>
-                                <option value="nonotes" accesskey="5" title="corpus, without the notes" disabled="disabled">Works: without notes</option>
-                                <option value="wp" accesskey="a" title="working papers" disabled="disabled">Working Papers: abstract, keywords, etc.</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 col-sm-5 col-xs-5">
-                            <input class="templates:form-control form-control" id="q" name="q" placeholder="search" value="">
-                        </div>
-                        <div class="col-md-1 col-sm-2 col-xs-2">
-                            <button class="btn btn-default" name="action" id="doSearch" value="Search">
-                                &nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;
-                            </button>
-                        </div>
-                        <a style="font-size:1.05em;" class="btn btn-link" id="toggleHelp" target="#">
-                            <i class="glyphicon glyphicon-info-sign"></i> Need help?
-                        </a>
-                        <input type="hidden" name="lang" value="en">
-                    </form>
-
-                    <div class="col-md-9 col-sm-12 searchResults"><!-- Results List -->
-                        <p id="searchInfo" style="visibility: hidden;">
-                            Search for: <span id="searchterm"></span><br>
-                            <span id="searchSummary" style="visibility: hidden;">
-                                found:&nbsp;<strong><span id="resultDocs"></span>&nbsp;Works.</strong>&nbsp;
-                                display:&nbsp;<span id="currentPaging"></span>
-                            </span>
-                        </p>
-                        <p id="docPagingTop" class="paging-doc"></p>
-                        <div id="spinner-total" class="ispinner ispinner-large">
-                            <div class="spinner-container">
-                                <div class="ispinner-blade"></div>
-                                <div class="ispinner-blade"></div>
-                                <div class="ispinner-blade"></div>
-                                <div class="ispinner-blade"></div>
-                                <div class="ispinner-blade"></div>
-                                <div class="ispinner-blade"></div>
-                                <div class="ispinner-blade"></div>
-                                <div class="ispinner-blade"></div>
-                            </div>
-                        </div>
-                        <ul id="resultsList" class="resultsList"></ul>
-                        <p id="docPagingBottom" class="paging-doc"></p>
-                    </div>
-
+        <div class="col-md-9 col-sm-12 searchResults"><!-- Results List -->
+            <p id="searchInfo" style="visibility: hidden;">
+                Search for: <span id="searchterm"></span><br>
+                <span id="searchSummary" style="visibility: hidden;">
+                    found:&nbsp;<strong><span id="resultDocs"></span>&nbsp;Works.</strong>&nbsp;
+                    display:&nbsp;<span id="currentPaging"></span>
+                </span>
+            </p>
+            <p id="docPagingTop" class="paging-doc"></p>
+            <div id="spinner-total" class="ispinner ispinner-large">
+                <div class="spinner-container">
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
                 </div>
             </div>
-            <div id="push"></div>
+            <ul id="resultsList" class="resultsList"></ul>
+            <p id="docPagingBottom" class="paging-doc"></p>
         </div>
-
-        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
-
-        <script type="text/javascript" src="resources/js/jquery-1.js"></script>
-        <script type="text/javascript" src="resources/js/bootstrap.js"></script>
-        <script type="text/javascript" src="resources/js/jquery-ui.js"></script>
-        <script type="text/javascript" src="resources/js/jquery.js"></script><!-- this is only the backTop function -->
-        <script type="text/javascript" src="resources/js/sal-search.js"></script><!-- this contains the actual search functions -->
-
-        <script type="text/javascript">
-            jQuery('body').bind('click', function(e) {                                              // hide navbar when clicking anywhere
-                if(jQuery(e.target).closest('.navbar-collapse').length == 0) {
-                    // click happened outside of .navbar, so hide
-                    var opened = jQuery('.navbar-collapse').hasClass('in');
-                    if ( opened === true ) {
-                        jQuery('.navbar-collapse').collapse('hide');
-                    }
-                }
-            });
-            $(document).on('click',function(){
-                $('.collapse .navbar-collapse').collapse('hide');
-            });
-            $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });  // set navbar height
-        </script>
-        <script type="text/javascript"> // trigger search functions
-            $("#doSearch").click(function (event) {                                             // Do the Search!
-                let field = document.getElementById('field').value
-                let searchterm = document.getElementById('q').value
-                let params = (new URL(window.location.href)).searchParams
-                let page = params.has('offset') ? params.get('offset') : 0
-                let limit = params.has('limit') ? params.get('limit') : 10
-                window.history.replaceState('', '', updateURLParameter(window.location.href, "q", searchterm))
-                document.title = searchterm + ' - The School of Salamanca'
-                mainSearch(field, searchterm, "resultsList", page, limit)
-                event.stopImmediatePropagation()
-                event.preventDefault()
-            });
-            document.querySelector("#resultsList").addEventListener('click', async function(e) {      // Call details handling
-                // Since details are not available on document load, we have to listen to events on the ancestor
-                // The clicked element then is in `e.target`.
-                /* If querying excerpts right on loading the main query is too much overhead, we can re-enable this and defer excerpting to here...
-                    if (e.target.classList.contains('toggle-details')) {
-                        let workId = e.target.getAttribute('data-wid')
-                        let searchterm = document.getElementById('q').value
-                        for (let [pos, item] of Array.from(e.target.nextElementSibling.getElementsByClassName('details_td')).entries()) {
-                            if (item.getElementsByClassName('result__snippet')[0].hasAttribute('data-orig')) {
-                                let index   = item.getAttribute('data-index')
-                                let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
-                                let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
-                                excerptsSearch(workId, index, searchterm, docOrig, docEdit)
-                            }
-                        }
-                    }
-                */
-                if (e.target.classList.contains('paging-details')) {
-                    let workId = e.target.getAttribute('data-wid')
-                    let oldPage = parseInt(e.target.getAttribute('data-current-page'))
-                    let limit = parseInt(e.target.getAttribute('data-limit'))
-                    let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
-                    let searchterm = document.getElementById('q').value
-                    await detailsSearch (workId, newPage, 5, searchterm)
-                    for (let [pos, item] of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
-                        let index   = item.getAttribute('data-index')
-                        let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
-                        let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
-                        excerptsSearch(workId, index, searchterm, docOrig, docEdit)
-                    }
-
-                    event.stopImmediatePropagation()
-                    event.preventDefault()
-                }
-            });
-            $(document).ready(function(){                                                       // Prepare page: fill fields, position backtotop, prevent defaultactions
-                let params = (new URL(window.location.href)).searchParams
-                let page = params.has('offset') ? params.get('offset') : 0
-                let limit = params.has('limit') ? params.get('limit') : 0
-                let field = params.has('field') ? params.get('field') : 'corpus'
-                let searchterm = params.has('q') ? params.get('q') : ''
-
-                document.getElementById('field').value = field                                          // Prepopulate fields based on url paramaters
-                document.getElementById('q').value = searchterm
-                if (searchterm.length > 0) {
-                    document.getElementById('q').value = searchterm
-                    mainSearch(field, searchterm, "resultsList", page, limit)                           // immediately call search function if "q" parameter given
-                }
-
-                $(".toggle-details").on('click', function (e) { e.preventDefault(); })                  // prevent default action on .toggle-details
-
-                $('#backTop').backTop({                                                                 // Position Back-to-top arrow
-                    'position' : 100,
-                    'speed' : 200,
-                    'color' : 'white',
-                });
-            });
-        </script>
-
-{{include "resources/templates/template_footer.html"}}
-
         <!-- Help window -->
         <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" style="display: none; position: fixed;" tabindex="-1" role="dialog" aria-describedby="helpBox2" aria-labelledby="ui-id-1">
             <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">
@@ -406,46 +233,6 @@
                         </div>
                     </div>
                 </div>
-
-            <script type="text/javascript">
-                $(document).ready(function(){
-                    $('#helpBox2').dialog({
-                                autoOpen:   false,
-                                //position:   {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
-                                
-                                height:     $(window).height()* 0.6,
-                                maxHeight:  $(window).height()* 0.95,
-                                width:      $(window).width() * 0.45,
-                                create:     function(event, ui) {
-                                                $(event.target).parent().css('position', 'fixed');
-                                            },
-                                resizeStop: function(event, ui) {
-                                                var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
-                                                                 (Math.floor(ui.position.top) - $(window).scrollTop())];
-                                                $(event.target).parent().css('position', 'fixed');
-                                                $(dlg).dialog('option','position',position);
-                                            },
-                                beforeClose: function( event, ui ) {
-                                                $("#showHelp").show();
-                                             }
-                    });
-                });
-                $(document).on('click', '#toggleHelp',  function(event) {
-                    if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close'); } else { $('#helpBox2').dialog('open'); }
-                    event.preventDefault();
-                });
-                $(document).on('click', 'a[href^="#option"]',  function(event) {
-                    $('option:selected', 'select[name="field"]').removeAttr('selected');
-                    var optionNumber = $(this).attr('href').substring(7);
-                    $('option[accesskey="' + optionNumber +'"]').prop('selected',true);
-                    event.preventDefault();
-                });
-                $(document).on('click', 'a[href^="#div_"]',  function(event) {
-                    var target = $(this).attr('href');
-                    $('#helpBox2').scrollTop($(target).position().top);
-                    event.preventDefault();
-                });
-            </script>
             </div>
             <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
             <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div>
@@ -456,6 +243,8 @@
             <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div>
             <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div>
         </div>
+    </div>`}}
 
-    </body>
-</html>
+{{$info := dict "page" "search.html" "title" "Suche" "header" "Suche" "description" "Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca." "content" $content "searchterm" $searchterm}}
+
+{{include "/resources/templates/template_default.html" $info }}
