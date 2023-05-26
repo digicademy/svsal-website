@@ -1,4 +1,5 @@
 /* eslint-env browser */
+
 /*
  * mainSearch - performs a search for a searchterm
  *              It does not return a value but instead manipulates the dom tree to reflect its results.
@@ -338,36 +339,20 @@ function hideSpinnerDetails (id) {
   document.getElementById(id).classList.remove('show');
 };
 
-jQuery('body').bind('click', function (e) {                                              // hide navbar when clicking anywhere
-  if (jQuery(e.target).closest('.navbar-collapse').length === 0) {
-    // click happened outside of .navbar, so hide
-    var opened = jQuery('.navbar-collapse').hasClass('in')
-    if (opened === true) {
-      jQuery('.navbar-collapse').collapse('hide')
-    }
-  }
-})
-
-$(document).on('click', function () {
-  $('.collapse .navbar-collapse').collapse('hide')
-})
-
-$('.navbar-collapse').css({ maxHeight: $(window).height() - $('.navbar-header').height() + 'px' }) // set navbar height
-
-$('#doSearch').click(function (event) {                                             // Do the Search!
+$("#doSearch").click(function (event) {                                             // Do the Search!
   let field = document.getElementById('field').value
   let searchterm = document.getElementById('q').value
   let params = (new URL(window.location.href)).searchParams
   let page = params.has('offset') ? params.get('offset') : 0
   let limit = params.has('limit') ? params.get('limit') : 10
-  window.history.replaceState('', '', updateURLParameter(window.location.href, 'q', searchterm))
+  window.history.replaceState('', '', updateURLParameter(window.location.href, "q", searchterm))
   document.title = searchterm + ' - The School of Salamanca'
-  mainSearch(field, searchterm, 'resultsList', page, limit)
+  mainSearch(field, searchterm, "resultsList", page, limit)
   event.stopImmediatePropagation()
   event.preventDefault()
-})
+});
 
-document.querySelector('#resultsList').addEventListener('click', async function (e) { // Call details handling
+document.querySelector("#resultsList").addEventListener('click', async function(e) {      // Call details handling
   // Since details are not available on document load, we have to listen to events on the ancestor
   // The clicked element then is in `e.target`.
   /* If querying excerpts right on loading the main query is too much overhead, we can re-enable this and defer excerpting to here...
@@ -385,25 +370,25 @@ document.querySelector('#resultsList').addEventListener('click', async function 
       }
   */
   if (e.target.classList.contains('paging-details')) {
-    let workId = e.target.getAttribute('data-wid')
-    let oldPage = parseInt(e.target.getAttribute('data-current-page'))
-    let limit = parseInt(e.target.getAttribute('data-limit'))
-    let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
-    let searchterm = document.getElementById('q').value
-    await detailsSearch (workId, newPage, 5, searchterm)
-    for (let [pos, item] of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
-      let index   = item.getAttribute('data-index')
-      let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
-      let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
-      excerptsSearch(workId, index, searchterm, docOrig, docEdit)
-    }
+      let workId = e.target.getAttribute('data-wid')
+      let oldPage = parseInt(e.target.getAttribute('data-current-page'))
+      let limit = parseInt(e.target.getAttribute('data-limit'))
+      let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
+      let searchterm = document.getElementById('q').value
+      await detailsSearch (workId, newPage, 5, searchterm)
+      for (let [pos, item] of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
+          let index   = item.getAttribute('data-index')
+          let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
+          let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
+          excerptsSearch(workId, index, searchterm, docOrig, docEdit)
+      }
 
-    event.stopImmediatePropagation()
-    event.preventDefault()
+      event.stopImmediatePropagation()
+      event.preventDefault()
   }
-})
+});
 
-$(document).ready(function () {                                                       // Prepare page: fill fields, position backtotop, prevent defaultactions
+$(document).ready(function(){                                                       // Prepare page: fill fields, position backtotop, prevent defaultactions
   let params = (new URL(window.location.href)).searchParams
   let page = params.has('offset') ? params.get('offset') : 0
   let limit = params.has('limit') ? params.get('limit') : 0
@@ -413,56 +398,56 @@ $(document).ready(function () {                                                 
   document.getElementById('field').value = field                                          // Prepopulate fields based on url paramaters
   document.getElementById('q').value = searchterm
   if (searchterm.length > 0) {
-    document.getElementById('q').value = searchterm
-    mainSearch(field, searchterm, 'resultsList', page, limit)                            // immediately call search function if "q" parameter given
+      document.getElementById('q').value = searchterm
+      mainSearch(field, searchterm, "resultsList", page, limit)                           // immediately call search function if "q" parameter given
   }
 
-  $('.toggle-details').on('click', function (e) { e.preventDefault() })                  // prevent default action on .toggle-details
+  $(".toggle-details").on('click', function (e) { e.preventDefault(); })                  // prevent default action on .toggle-details
 
-  $('#backTop').backTop({                                                                // Position Back-to-top arrow
-    'position': 100,
-    'speed': 200,
-    'color': 'white'
-  })
-})
+  $('#backTop').backTop({                                                                 // Position Back-to-top arrow
+      'position' : 100,
+      'speed' : 200,
+      'color' : 'white',
+  });
+});
 
-$(document).ready(function () {
+$(document).ready(function(){
   $('#helpBox2').dialog({
-    autoOpen: false,
-    // position:   {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
+              autoOpen:   false,
+              //position:   {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
+              
+              height:     $(window).height()* 0.6,
+              maxHeight:  $(window).height()* 0.95,
+              width:      $(window).width() * 0.45,
+              create:     function(event, ui) {
+                              $(event.target).parent().css('position', 'fixed');
+                          },
+              resizeStop: function(event, ui) {
+                              var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
+                                               (Math.floor(ui.position.top) - $(window).scrollTop())];
+                              $(event.target).parent().css('position', 'fixed');
+                              $(dlg).dialog('option','position',position);
+                          },
+              beforeClose: function( event, ui ) {
+                              $("#showHelp").show();
+                           }
+  });
+});
 
-    height: $(window).height() * 0.6,
-    maxHeight: $(window).height() * 0.95,
-    width: $(window).width()  * 0.45,
-    create: function (event, ui) {
-      $(event.target).parent().css('position', 'fixed');
-    },
-    resizeStop: function (event, ui) {
-      var position = [(Math.floor(ui.position.left) - $(window).scrollLeft())
-        (Math.floor(ui.position.top) - $(window).scrollTop())]
-      $(event.target).parent().css('position', 'fixed')
-      $(dlg).dialog('option', 'position', position)
-    },
-    beforeClose: function (event, ui) {
-      $('#showHelp').show()
-    }
-  })
-})
+$(document).on('click', '#toggleHelp',  function(event) {
+  if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close'); } else { $('#helpBox2').dialog('open'); }
+  event.preventDefault();
+});
 
-$(document).on('click', '#toggleHelp', function (event) {
-  if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close'); } else { $('#helpBox2').dialog('open') }
-  event.preventDefault()
-})
+$(document).on('click', 'a[href^="#option"]',  function(event) {
+  $('option:selected', 'select[name="field"]').removeAttr('selected');
+  var optionNumber = $(this).attr('href').substring(7);
+  $('option[accesskey="' + optionNumber +'"]').prop('selected',true);
+  event.preventDefault();
+});
 
-$(document).on('click', 'a[href^="#option"]', function(event) {
-  $('option:selected', 'select[name="field"]').removeAttr('selected')
-  var optionNumber = $(this).attr('href').substring(7)
-  $('option[accesskey="' + optionNumber + '"]').prop('selected', true)
-  event.preventDefault()
-})
-
-$(document).on('click', 'a[href^="#div_"]', function (event) {
-  var target = $(this).attr('href')
-  $('#helpBox2').scrollTop($(target).position().top)
-  event.preventDefault()
-})
+$(document).on('click', 'a[href^="#div_"]',  function(event) {
+  var target = $(this).attr('href');
+  $('#helpBox2').scrollTop($(target).position().top);
+  event.preventDefault();
+});

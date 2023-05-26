@@ -1,0 +1,81 @@
+{{$id := placeholder "http.request.uri.query.wid" }}
+{{$domain := "test.salamanca.school" }}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SvSal Image Viewer</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css" rel="stylesheet">
+
+        <!-- ==== favIcon ==== -->
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-32x32.png" sizes="32x32"/>
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-194x194.png" sizes="194x194"/>
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-96x96.png" sizes="96x96"/>
+        <link rel="icon" type="image/png" href="resources/favicons/android-chrome-192x192.png" sizes="192x192"/>
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-16x16.png" sizes="16x16"/>
+        <link rel="manifest" href="resources/favicons/manifest.json"/>
+        <meta name="msapplication-TileColor" content="#ffffff"/>
+        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png"/>
+        <meta name="theme-color" content="#ffffff"/>
+    </head>
+    
+    <body id="body">
+        <div id="Viewer" title="Image Viewer" style="height: 98vh;"></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.js"></script>
+        <script type="text/javascript">
+
+            function getUrlParams( prop ) {
+                var params = {};
+                var search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
+                var definitions = search.split( '&' );
+        
+                definitions.forEach( function( val, key ) {
+                    var parts = val.split( '=', 2 );
+                    params[ parts[ 0 ] ] = parts[ 1 ];
+                });
+                return ( prop && prop in params ) ? params[ prop ] : params;
+            };
+
+            function getLang() {
+                if (getUrlParams('lang').length > 0)
+                    return getUrlParams('lang')
+                else if (window.location.href.indexOf("_es") > -1)
+                    return 'es'
+                else if (window.location.href.indexOf("_de") > -1)
+                    return 'de'
+                else
+                    return 'en'
+            };
+
+            /*
+            function setZipUrl() {
+                document.getElementById('downloadImages').href = "https://c104-131.cloud.gwdg.de/sal-facs/" + getUrlParams( 'wid' ) + "/" + getUrlParams( 'wid' ) + ".zip";  // update Download button
+                // $('#viewer')[0].getElementById('downloadImages').href = "http://facs.salamanca.school/" + getUrlParams( 'wid' ) + "/" + getUrlParams( 'wid' ) + ".zip";  // update Download button
+                document.getElementById('downloadImages').setAttribute('download', getUrlParams( 'wid' ) + ".zip");  // update Download button
+            };
+            */
+
+            let tifyOptions = {
+                container: '#Viewer',
+                // filters: { brightness: 0.5, contrast: 0.5, saturation: 2.3 },
+                language: getLang(),
+                // manifestUrl: 'https://id.{{$domain}}/texts/{{$id}}?format=iiif',       // https://example.com/iiif/manifest.json',
+                // manifestUrl: 'https://www.salamanca.school/de/iiif-out.xql?wid={{$id}}',  // https://example.com/iiif/manifest.json',
+                manifestUrl: 'https://www.{{$domain}}/data/{{$id}}/{{$id}}.json',       // https://example.com/iiif/manifest.json',
+                pageLabelFormat: 'P', // P: physical page number, L: logical page number
+                // pages: [0, 3], // default: null. The page(s) to display initially. If null, the initial page is determined by the manifest’s startCanvas
+                // pan: { x: .45, y: .6 }, // Initial pan. By default, the image is centered
+                // urlQueryKey: 'salView1', // Specify instance to manipulate via query parameters
+                // urlQueryParams: [], // Which settings can be manipulated via query parameters? Default: ['filters', 'pages', 'pan', 'rotation', 'view', 'zoom'] 
+                // view: '', // Default: ''. The initially displayed view (panel); scan, fulltext, thumbnails, toc, info, help, or empty (same as scan).
+                // viewer: {}, // An object with options for OpenSeadragon
+                zoom: null,
+            };
+            myViewer = new Tify(tifyOptions);
+
+        </script>
+    </body>
+</html>

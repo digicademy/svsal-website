@@ -1,5 +1,6 @@
 {{ $domain := "test.salamanca.school" }}
 {{ $info := index .Args 0 }}
+{{ $searchterm := placeholder "http.request.uri.query.q" }}
 
 <!DOCTYPE html>
 <html>
@@ -8,50 +9,66 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ if $info.title }}{{ $info.title }} - {{ end }}{{ if $searchterm }}{{ $searchterm }} - {{ end }}Die Schule von Salamanca</title>
         <meta name="author" content="">
         <meta name="description" content="{{ $info.description }}">
-        <title>{{ if $info.title }}{{ $info.title }} - {{ end }}The School of Salamanca</title>
 
-        <link rel="canonical" href="https://www.{{ $domain }}/{{ $info.page }}">
-        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}?lang=de">
-        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}?lang=en">
-        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}?lang=es">
+        <link rel="canonical"               href="https://www.{{ $domain }}/{{ $info.page }}">
+        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}?lang=de{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}">
+        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}?lang=en{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}">
+        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}?lang=es{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}">
 
         <!-- ==== CSS ==== -->
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
         <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" href="/resources/css/style_default.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/style_default.css"/>
+    {{ if eq $info.page "guidelines.html" }}<!-- For Guidelines page -->
         <link rel="stylesheet" type="text/css" href="/resources/css/shCoreDefault.css"/>
+    {{ end }}
+    {{ if eq $info.page "search.html" }}<!-- For Search page -->
+        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/ispinner.prefixed.css"/>
+    {{ end }}
+    {{ if eq $info.page "work.html" }}<!-- For Work page -->
+        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css"/>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css">
+        <link rel="stylesheet" type="text/css" href="/resources/css/style_work.css"/>
+    {{ end }}
+    {{ if eq $info.page "works.html" }}<!-- For Works overview page -->
+    {{ end }}
 
         <!-- ==== Javascript ==== -->
         <script type="text/javascript" src="/resources/js/jquery-1.js" defer></script>
         <script type="text/javascript" src="/resources/js/bootstrap.js" defer></script>
         <script type="text/javascript" src="/resources/js/jquery-ui.js" defer></script>
         <script type="text/javascript" src="/resources/js/jquery.js" defer></script><!-- this is only the backTop function -->
+    {{ if eq $info.page "guidelines.html" }}<!-- For Guidelines page -->
         <script type="text/javascript" src="/resources/js/shCore.js" defer></script>
         <script type="text/javascript" src="/resources/js/shBrushXml.js" defer></script>
+    {{ end }}
+    {{ if eq $info.page "search.html" }}<!-- For Search page -->
+        <script type="text/javascript" src="/resources/js/sal-search.js" defer></script>
+    {{ end }}
+    {{ if eq $info.page "work.html" }}<!-- For Work page -->
+        <script type="text/javascript" src="/resources/js/jquery.bootstrap-autohidingnavbar.js" defer></script>
+        <script type="text/javascript" src="/resources/js/jquery.tooltipster.js" defer></script>
+        <script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@3.1.0-beta.1/dist/infinite-ajax-scroll.min.js" defer></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.9/jstree.min.js" defer></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.js"></script>
+        <script type="text/javascript" src="/resources/js/sal-work.js" defer></script>
+    {{ end }}
+    {{ if eq $info.page "works.html" }}<!-- For Works page -->
+        <script type="text/javascript" src="/resources/js/underscore-1.1.7.js" defer></script>
+        <script type="text/javascript" src="/resources/js/facetedsearchWrks.js" defer></script>
+        <script type="text/javascript" src="/resources/js/sal-works.js" defer></script>
+    {{ end }}
+
         <script type="text/javascript" src="/resources/js/sal-common.js" defer></script>
 
-        <!-- ==== favIcon ==== -->
-        <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="/resources/favicons/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="/resources/favicons/apple-touch-icon-60x60.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="/resources/favicons/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="/resources/favicons/apple-touch-icon-76x76.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="/resources/favicons/apple-touch-icon-114x114.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="/resources/favicons/apple-touch-icon-120x120.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="/resources/favicons/apple-touch-icon-144x144.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="/resources/favicons/apple-touch-icon-152x152.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/resources/favicons/apple-touch-icon-180x180.png">
-        <link rel="icon"             type="image/png" sizes="32x32"   href="/resources/favicons/favicon-32x32.png">
-        <link rel="icon"             type="image/png" sizes="194x194" href="/resources/favicons/favicon-194x194.png">
-        <link rel="icon"             type="image/png" sizes="96x96"   href="/resources/favicons/favicon-96x96.png">
-        <link rel="icon"             type="image/png" sizes="192x192" href="/resources/favicons/android-chrome-192x192.png">
-        <link rel="icon"             type="image/png" sizes="16x16"   href="/resources/favicons/favicon-16x16.png">
-        <link rel="manifest" href="resources/favicons/manifest.json">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="/resources/favicons/mstile-144x144.png">
-        <meta name="theme-color" content="#ffffff">
+        {{- include "resources/partials/favicons.html" .}}
+
         <meta name="google-site-verification" content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M">
     </head>
 

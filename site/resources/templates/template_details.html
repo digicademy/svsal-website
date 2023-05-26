@@ -3,6 +3,7 @@
 {{ $wid := $info.id }}
 
 <!DOCTYPE html>
+<!-- TODO: Check if $wid contains a volume identifier, then parse and handle accordingly... -->
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -181,7 +182,7 @@
                                                 </a>
                                             </div>
                                         </li>
-                                        <li><a href="viewer_standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimiles</a></li>
+                                        <li><a href="https://www.{{ $domain }}/viewer_standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimiles</a></li>
                                     </ul>
                                 </div>
                                 <hr>
@@ -243,7 +244,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <span><a href="workDetails.html?wid={{ .id }}"><span class="fa fa-arrow-right"></span> Full catalogue record</a></span><br>
+                                <span><a href="https://id.{{ $domain }}/texts/{{ $wid }}:vol{{ .num }}?mode=details"><span class="fa fa-arrow-right"></span> Full catalogue record</a></span><br>
                                 <span><a href="viewer_standalone.html?wid={{ .id }}" target="_blank" rel="noopener noreferrer"><span class="fa fa-arrow-right"></span> Facsimiles</a></span>
                             </div>
                         </div>
@@ -252,6 +253,9 @@
 {{ end }}
                 </div>
             </div>
+
+{{ include "/resources/templates/template_footer.html" }}
+
         </div>
             
         <!-- ==== Core JavaScript ==== -->
@@ -284,8 +288,6 @@
                 });
             });
         </script>
-
-{{ include "/resources/templates/template_footer.html" }}
 
     </body>
 </html>

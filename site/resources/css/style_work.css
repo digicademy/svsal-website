@@ -189,6 +189,7 @@
 html, body {
     height: 100%;
     width: 100%;
+    scroll-behavior: smooth;
 }
 
 /*body and html adjusted for the "dialog off screen functionality"*/
