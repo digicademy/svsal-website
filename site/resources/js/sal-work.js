@@ -55,7 +55,7 @@ function applyMode () {
 }
 
 // Scroll an anchor into view if we have one
-function myScrollIntoView(targetId) {
+function myScrollIntoView (targetId) {
   offset = $('#' + targetId).offset().top
   // console.log(`$('#${targetId}').offset().top = ${offset}.`)
   goHere = offset - parseInt($('div.navbar-white').css('height')) - 15
@@ -65,7 +65,7 @@ function myScrollIntoView(targetId) {
   })
 }
 
-$('a[href*="#"]').click(function(event){
+$('a[href*="#"]').click(function (event) {
   z = $(this).attr('href').slice($(this).attr('href').indexOf('#') + 1)
   if ($(z).length != 0) {
     console.log(`Going locally to ${ z } ...`)
@@ -81,25 +81,25 @@ $(document).ready(function () {
 })
 
 // Load Paginator content when clicking on dropdown-menu
-function loadPaginatorContent() {
+function loadPaginatorContent () {
   var $self = `<span data-template="app:loadWRKpagination"></span>`;
   $('#loadMeLast').innerHtml = ($self + '#later li'); 
 }
 
 // TOC tree
-var tree = $('#tableOfConts');
+var tree = $('#tableOfConts')
 tree.bind('loaded.jstree', function (event, data) {
   tree.jstree(true).open_node($('#tableOfConts').find('li').first());;
-});
+})
 $('#tableOfConts').jstree({
   'core': { }
 }).bind('select_node.jstree', function (e, data) {
   var href = data.node.a_attr.href;
   document.location.href = href;
-});
+})
 
 // toggle TOC tree
-$(function() {
+$(function () {
   $('#toggleButton').click(function() {
       if ($('button[id="toggleButton"]').hasClass('expanded')) {
           $('#tableOfConts').jstree('close_all');
@@ -112,32 +112,32 @@ $(function() {
           $('span[class="glyphicon glyphicon-fullscreen"]').removeClass('glyphicon glyphicon-fullscreen').addClass('glyphicon glyphicon-resize-small');
       }
   });
-});
+})
 
 // Close Modal on Clicking a TOC link
-$('.hideMe').click(function(){
+$('.hideMe').click(function () {
   // 'this' would reference the anchor that was clicked
   $('#myModal').modal('hide');
-});
+})
 
 // Do not close export menu on click
 $(document).on('click', '.dropdown-menu.export-options', function (e) {
   e.stopPropagation();
-});
+})
 
 // Remember current position on Clicking a language link
-function replaceQueryParam(param, newval, search) {
+function replaceQueryParam (param, newval, search) {
   var regex = new RegExp('([?;&])' + param + '[^&;]*[;&]?');
   var query = search.replace(regex, '$1').replace(/&$/, '');
   return (query.length > 2 ? query + '&' : '?') + (newval ? param + '=' + newval : '');
 }
-$('.lang-switch').click(function(event){
+$('.lang-switch').click(function (event) {
   var str = window.location.search
   str = replaceQueryParam('lang', $(this).text(), str)
   window.location = window.location.pathname + str + window.location.hash
   // alert(window.location)
   event.preventDefault()
-});
+})
 
 // Paragraph popup with link, refresh and print icons
 $('[data-rel="popover"]').popover({
@@ -153,7 +153,7 @@ $('[data-rel="popover"]').popover({
             return $(this).siblings('.sal-toolbox-body').html()
         }
         // close popup by clicking outside
-    }).click(function(event) {event.preventDefault();}); // don't jump around to the anchor associated with the span
+}).click(function (event) { event.preventDefault() }) // don't jump around to the anchor associated with the span
 $('body').on('click', function (event) {
     $('[data-rel="popover"]').each(function() {
         event.preventDefault;
@@ -164,8 +164,8 @@ $('body').on('click', function (event) {
             $(this).popover('hide');
         }
     });
-});
-function toolboxHighlight(elem, mode) {
+})
+function toolboxHighlight (elem, mode) {
     var target = elem.parentElement.nextElementSibling;
     if (mode === 'on') {
         if (elem.parentElement.className === 'sal-toolbox-marginal') {
@@ -183,7 +183,7 @@ function toolboxHighlight(elem, mode) {
 }
 
 // Toolboxes: highlighting and copy functions
-function copyLink(elem) {
+function copyLink (elem) {
     var target = elem.parentElement.getElementsByClassName('cite-link')[0];
     var input = document.createElement('textarea');
     input.setAttribute('style', 'width:0;height:0;opacity:0;'); // hidden
@@ -194,7 +194,7 @@ function copyLink(elem) {
     copyNotify(elem);
     document.body.removeChild(input);
 }
-function copyCitRef(elem) {
+function copyCitRef (elem) {
     var target = elem.parentElement.getElementsByClassName('sal-cite-rec')[0];
     var input = document.createElement('textarea');
     input.setAttribute('style', 'display:block; width:0; height:0; opacity: 0;');
@@ -209,9 +209,8 @@ function copyCitRef(elem) {
     document.body.removeChild(input);
 }
 
-
 // Image Viewer
-function getI18nAccessString() {
+function getI18nAccessString () {
     var accessed;
     var date;
     var lang = getLang();
@@ -230,7 +229,7 @@ function getI18nAccessString() {
     }
     return '(' + accessed + ' ' + date + ')';
 }
-function copyNotify(elem) {
+function copyNotify (elem) {
     var del = elem.parentElement.getElementsByClassName('.copy-alert')[0];
     if (typeof variable !== 'undefined' && variable !== null) {
         elem.parentElement.removeChild(del);
@@ -254,7 +253,7 @@ function copyNotify(elem) {
     }, 1500);
 }
 
-function getUrlParams( prop ) {
+function getUrlParams (prop) {
     var params = {};
     var search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
     var definitions = search.split( '&' );
@@ -265,9 +264,9 @@ function getUrlParams( prop ) {
     } );
 
     return ( prop && prop in params ) ? params[ prop ] : params;
-};
+}
 
-function getLang() {
+function getLang () {
     if (getUrlParams('lang').length > 0 
             && ['de','en','es'].indexOf(getUrlParams('lang').substring(0,2)) >= 0) {
         return getUrlParams('lang').substring(0,2);
@@ -275,10 +274,10 @@ function getLang() {
     else if (window.location.href.indexOf('/de/') != -1) return 'de';
     else if (window.location.href.indexOf('/es/') != -1) return 'es';
     else return 'en';
-};
+}
 
-let domain = document.getElementById("Viewer").dataset.domain;
-let wid    = document.getElementById("Viewer").dataset.wid;
+let domain = document.getElementById('Viewer').dataset.domain
+let wid = document.getElementById('Viewer').dataset.wid
 
 let tifyOptions = {
     container: '#Viewer',
@@ -295,40 +294,40 @@ let tifyOptions = {
     // view: '', // Default: ''. The initially displayed view (panel); scan, fulltext, thumbnails, toc, info, help, or empty (same as scan).
     // viewer: {}, // An object with options for OpenSeadragon
     zoom: null,
-};
-myViewer = new Tify(tifyOptions);
+}
+let myViewer = new Tify (tifyOptions)
 // myViewer.mount('#Viewer');
 
 function setTifyPage (canvasId, title) {
-    var targetPage = myViewer.app.canvases.find(x => x['@id'] == canvasId).page;
-    myViewer.ready.then(() => {
-        myViewer.setPage([targetPage])
-    });
-    // Update some values of the dialog popup window
-    $('#parent small').text(title);         // update Viewer Heading
-    $('#parent div').attr('title', title);  // update Viewer Title
-    // $('#Viewer')[0].contentDocument.getElementById('downloadImages').href = 'https://c104-131.cloud.gwdg.de/sal-facs/{{$id}}/{{$id}}.zip';  // update Download button
+  var targetPage = myViewer.app.canvases.find(x => x['@id'] == canvasId).page
+  myViewer.ready.then(() => {
+    myViewer.setPage([targetPage])
+  })
+  // Update some values of the dialog popup window
+  $('#parent small').text(title)         // update Viewer Heading
+  $('#parent div').attr('title', title)  // update Viewer Title
+  // $('#Viewer')[0].contentDocument.getElementById('downloadImages').href = 'https://c104-131.cloud.gwdg.de/sal-facs/{{$id}}/{{$id}}.zip';  // update Download button
     // // $('#Viewer')[0].contentDocument.getElementById('downloadImages').href = 'http://facs.salamanca.school/{{$id}}/{{$id}}.zip';  // update Download button
     // $('#Viewer')[0].contentDocument.getElementById('downloadImages').setAttribute('download', '{{$id}}.zip');  // update Download button
 };
 
 // Bind click event for opening viewer popup
-$(document).on('click', '.pageNo', function(event){
-    event.preventDefault(); // do not actually go to this url - or go there if javascript is disabled
-    $(this).blur();
+$(document).on('click', '.pageNo', function (event) {
+  event.preventDefault() // do not actually go to this url - or go there if javascript is disabled
+  $(this).blur()
 
-    // Configure viewer to go to the correct canvas
-    var targetCanvasID = $(this).attr('data-canvas');
-    setTifyPage(targetCanvasID, targetCanvasID);
+  // Configure viewer to go to the correct canvas
+  var targetCanvasID = $(this).attr('data-canvas')
+  setTifyPage(targetCanvasID, targetCanvasID)
 
-    // Open the dialog window with jquery-ui Dialog method
-    $('#parent').dialog('open');
+  // Open the dialog window with jquery-ui Dialog method
+  $('#parent').dialog('open')
 
-    // Reflect viewer status in url
-    params = new URLSearchParams(window.location.search) ;
-    params.set('viewer', targetCanvasID);
-    window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash);
-});
+  // Reflect viewer status in url
+  let params = new URLSearchParams(window.location.search)
+  params.set('viewer', targetCanvasID)
+  window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
+})
 
 // Update url when paging in viewer (a bit clumsy but it's working)
 function viewObsCallback (mutations) {
@@ -341,15 +340,15 @@ function viewObsCallback (mutations) {
         params.set('viewer', id);
         window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash);
     });
-};
-var viewerObserver = new MutationObserver(viewObsCallback);
+}
+var viewerObserver = new MutationObserver (viewObsCallback)
 var observerOptions = {
     childList: false,
     attributes: false,
     characterData: true,
     subtree: true,
-};
-viewerObserver.observe(document.getElementById('Viewer'), observerOptions);
+}
+viewerObserver.observe(document.getElementById('Viewer'), observerOptions)
 
 // Bind click event for syncing/scrolling text area
 /* $('#Viewer').contents().find('#sync').on('click', function(){
@@ -377,19 +376,17 @@ viewerObserver.observe(document.getElementById('Viewer'), observerOptions);
 });
 */
 
-
-
 // Mobil-View: Hide opened collapsed menu after clicking elsewhere on page
-$(document).on('click',function(){
+$(document).on('click', function () {
   $('.collapse .navbar-collapse').collapse('hide');
-});
+})
 
 // Mobil-View: scroll to last collapsed navbar item on mobile when there are many items
-$('.navbar-collapse').css({ maxHeight: $(window).height() - $('.navbar-header').height() + 'px' });
+$('.navbar-collapse').css({ maxHeight: $(window).height() - $('.navbar-header').height() + 'px' })
 
 // One document.ready function collecting init for all of the above...
 // document.DOMContentLoaded triggers when DOM has been completely parsed (no images, styles and async scripts), window.load event triggers when *everything* has been loaded. -->
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', function (event) {
     // Init backTop
     $('#backTop').backTop({position: 100, speed: 200, color: 'white' });
     // apply constituted/diplomatic mode
@@ -427,7 +424,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
                         return false;
                     }
     });
-});
+})
 window.addEventListener('load', (event) => {
     // move to anchor if we have one in our url
     let searchId = window.location.hash.slice(1);
@@ -451,8 +448,7 @@ window.addEventListener('load', (event) => {
         params.set('viewer', targetCanvasID);
         window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash);
     }
-});
-
+})
 
 // InfiniteAjaxScroll stuff
 let validParams = ['mode', 'q', 'format', 'viewer']
@@ -465,7 +461,7 @@ let ias = new InfiniteAjaxScroll('#iasContainer', {
     spinner:    '.iasSpinner',
     logger:     false               // don't clobber the console
     // negativeMargin: 400          // when to start loading new items (before reaching the very bottom),
-});
+})
 ias.on('page', (event) => {             // update the url to reflect the new page we've just scrolled to
     let target = new URL(event.url, location.protocol + '//' + location.hostname + '/'); // event.url is a string, but we want to use URL methods (second parameter is basename)
     let loadParams = new URLSearchParams(location.search);
@@ -478,14 +474,14 @@ ias.on('page', (event) => {             // update the url to reflect the new pag
     let newParams = loadParams ? '?' + loadParams : '';
     newUrl = target.pathname.substr(target.pathname.lastIndexOf('/') + 1) + newParams + target.hash;
     history.replaceState(history.state, '', newUrl);
-});
+})
 ias.on('nexted', (event) => {           // apply original/edited mode to newly added elements
     applyMode();
-});
+})
 ias.on('preved', (event) => {           // apply original/edited mode to newly added elements
     applyMode();
-});
-ias.on('appended', function(items) {    // add functionality to newly loaded elements (those functions are mostly copied from below)
+})
+ias.on('appended', function (items) {   // add functionality to newly loaded elements (those functions are mostly copied from below)
     // 1. Refresh Popover Boxes to have a function on click ...
     $('[data-rel="popover"]').popover({
         trigger:    'click',
@@ -515,4 +511,4 @@ ias.on('appended', function(items) {    // add functionality to newly loaded ele
         $( this ).click();                                          // this disables highlighting
         $( this ).click();                                          // this re-enables it
     });
-});
+})
