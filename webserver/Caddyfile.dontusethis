@@ -79,13 +79,22 @@ id.foo.com {
 		default "foo.com"
 	}
 
+	# If a details view (catalogue page) is requested, encode this in an artificial {path}
+	map {query.mode} {full_path} {
+		"details" "{path}_details"
+		default "{path}"
+	}
+
 	# Prepare another map variable to hold passage id ←→ html fragment file associations
-	map {path} {myfile} {online} {
-		#   PATH                 FILE                                                               ONLINE
-		# ------------------------------------------------------------------------------------------------------
-		# /texts/W0004:frontmatter W0004/00001_W0004-00-0005-fm-03e8.html#W0004-00-0005-fm-03e8       yes
-		# /texts/W0013:vol1.4 W0013/00011_W0013-01-0215-d1-03fc.html#W0013-01-0215-d1-03fc            yes
-		# /texts/W0002:frontmatter W0002/00001_W0002-00-0004-fm-03e8.html#W0002-00-0004-fm-03e8       yes
+	map {full_path} {myfile} {online} {
+		#   PATH                           FILE                                                                 ONLINE
+		# ------------------------------------------------------------------------------------------------------------
+		# /texts/W0004:1                   W0004/html/00003_W0004-00-0009-d1-03e9#W0004-00-0009-d1-03e9         yes
+		# /texts/W0014:frontmatter.2       W0014/html/00001_W0014-00-0006-fm-03e8.html#W0014-00-0010-d1-03e9    yes
+		# /texts/W0013:vol2.backmatter.3.1 W0013/html/00038_W0013-02-0892-bm-03e8.html#W0013-02-0930-pa-044d    yes
+		# /texts/W0013:vol2_details        W0013/html/W0013_Vol02_details.html                                  yes
+		# etc. (See how the last entry uses the info about a details view being requested that is encoded in the full_path variable
+		# This is being populated by API calls during runtime rather than hard-configured here.
 	}
 
 	# ===== We need (lots of) named matchers... =====
@@ -102,14 +111,6 @@ id.foo.com {
 		conneg {
 			match_types text/html
 			force_type_query_string format
-		}
-	}
-	@details {
-		query mode=details
-	}
-	@not_details {
-		not {
-			query mode=details
 		}
 	}
 	@tei {
@@ -155,16 +156,11 @@ id.foo.com {
 
 	# HTML is always served via mapped file fragments
 	handle @html {
-		handle @not_details {
-			redir /texts/* https://www.{mydomain}/data/{myfile} 302
-		}
-		handle @details {
-			redir @work_id https://www.{mydomain}/data/{re.wid.1}/html/{re.wid.1}_details.html 302
-		}
+		redir /texts/* https://www.{mydomain}/data/{myfile} 302
 	}
 
 	# For other types, if a full work is requested, we have that prepared
-	# in the filesystem.
+	# and can serve it from the filesystem.
 	handle @not_a_passage {
 		handle @tei {
 			redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.xml 302
