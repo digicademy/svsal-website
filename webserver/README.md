@@ -1,6 +1,6 @@
 # Web server for the project "The School of Salamanca"
 
-We are using the [caddy](https://caddyserver.com/) web server for hosting our website at <https://test.salamanca.school>. It listens to various subdomain names such as <https://api.test.salamanca.school/>, <https://id.test.salamanca.school/>, <https://search.test.salamanca.school/>, and behaves differently depending on which subdomain an incoming request was addressed at.
+We are using the [caddy](https://caddyserver.com/) web server for hosting our website at <https://{{$domain}}>. It listens to various subdomain names such as <https://api.{{$domain}}/>, <https://id.{{$domain}}/>, <https://search.{{$domain}}/>, and behaves differently depending on which subdomain an incoming request was addressed at.
 
 Besides core features such as [serving files from the filesystem](https://caddyserver.com/docs/caddyfile/directives/file_server) and [reverse proxying](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy), and general advantages such as easy configuration (with sensible defaults), [automatic https encryption and certificate handling](https://caddyserver.com/docs/automatic-https), good performance and [plug-in architecture](https://caddyserver.com/docs/modules/), our site is drawing on these things in particular:
 
@@ -66,9 +66,9 @@ However, this is made more complex by our ambition to provide persistent identif
 
 #### Routing
 
-So let's assume a request for an "id url" as we recommend our files to be referenced, say a request for <https://id.test.salamanca.school/texts/W0034:8>, comes in...
+So let's assume a request for an "id url" as we recommend our files to be referenced, say a request for <https://id.{{$domain}}/texts/W0034:8>, comes in...
 
-1. The subdomain specified in the request (`id.test.salamanca.school`) tells caddy to proceed with the directives in the respective section
+1. The subdomain specified in the request (`id.{{$domain}}`) tells caddy to proceed with the directives in the respective section
 2. tbc ...
 
 #### Interacting with the (Routing) Configuration

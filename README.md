@@ -1,6 +1,6 @@
 # Website for the project "The School of Salamanca"
 
-Code for the [salamanca.school](https://salamanca.school/) website (beyond XQuery). HTML/JS/CSS, templating, routing, config etc.
+Code for the [salamanca.school](https://{{$domain}}/) website (beyond XQuery). HTML/JS/CSS, templating, routing, config etc.
 
 This is the development version (see [test.salamanca.school](https://test.salamanca.school/)). Our current approach here is to create static data with XQuery/in exist-db as much as possible and then keep XQuery/exist-db out of the actual shipping of the data. Thus, most of the processing is done clientside in javascript and in the caddy webserver, which provides us with fast routing, content negotiation, and templating ... and some other good stuff like automatic https, HTTP3 etc.
 

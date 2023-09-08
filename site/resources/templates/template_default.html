@@ -1,7 +1,6 @@
-{{ $domain := "test.salamanca.school" }}
+{{ include "domainname.html" }}
 {{ $info := index .Args 0 }}
 {{ $searchterm := placeholder "http.request.uri.query.q" }}
-
 <!DOCTYPE html>
 <html>
     <head>

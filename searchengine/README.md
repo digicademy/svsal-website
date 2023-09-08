@@ -1,6 +1,6 @@
 # SvSal Search Engine
 
-We are using the [sphinxsearch](http://sphinxsearch.com/) search engine hosted at <https://search.test.salamanca.school>. It is accessed via an [OpenSearch API](https://github.com/dewitt/opensearch) (the A9, 2005 one) provided by digicademy's [open-sphinxsearch](https://github.com/digicademy/open-sphinxsearch) php software.
+We are using the [sphinxsearch](http://sphinxsearch.com/) search engine hosted at <https://search.{{$domain}}>. It is accessed via an [OpenSearch API](https://github.com/dewitt/opensearch) (the A9, 2005 one) provided by digicademy's [open-sphinxsearch](https://github.com/digicademy/open-sphinxsearch) php software.
 
 This is the development version which has some changes facilitating client-side processing (see [test.salamanca.school](https://test.salamanca.school/)).
 
@@ -12,7 +12,7 @@ The subfolder [sphinxsearch-config](./sphinxsearch-config) contains various conf
   - when sphinxsearch starts, it reads [sphinx.conf](./sphinxsearch-config/sphinx.conf), which reads the following two files, in order:
   - [base.conf](./sphinxsearch-config/base.conf) with config for the server (logging, port, etc.) and some settings for the indexer (memory limits)
   - [index-svsal.conf](./sphinxsearch-config/index-svsal.conf), which contains settings for the (raw and lemmatized) indices for the salamanca project (how to feed the indexer, charsets and wordlists)
-- `*.txt` wordlists contain stopwords or wordform-lemma associations (like `&ntonç > entonces` or `eglesja > iglesia`). This is what enables the [search form on our webapp](https://www.test.salamanca.school/search.html) to respond to different wordforms and historical orthography with all forms of the (hopefully) corresponding lemma.
+- `*.txt` wordlists contain stopwords or wordform-lemma associations (like `&ntonç > entonces` or `eglesja > iglesia`). This is what enables the [search form on our webapp](https://www.{{$domain}}/search.html) to respond to different wordforms and historical orthography with all forms of the (hopefully) corresponding lemma.
 - `*.sh` shell scripts:
   - [index-all.sh](./sphinxsearch-config/index-all.sh) is called (with `sudo`) when the index needs to be repopulated (e.g. when a new work has been added). It finds all search snippets in `/var/data/existdb/data/export`, manipulates a namespace field and then calls the indexer with `sudo -u sphinxsearch indexer --all --rotate`. It also suppresses warnings (e.g. about duplicate entries in the wordlists that we have to clean when there is some time to spare for this) being printed on the console. Everything is logged though, so no worries.
   - [xmlpipe.sh](./sphinxsearch-config/xmlpipe.sh) is called from sphinxsearch indexer (as it is configured as providing the data source for the salamanca indices in `index-svsal.conf`). It adds an xml doctype tag and wraps the schema (see below) and all the snippets that it then reads from `/var/data/existdb/data/export` in a `<sphinx:docset>` element
@@ -20,10 +20,10 @@ The subfolder [sphinxsearch-config](./sphinxsearch-config) contains various conf
 
 ## Open-Sphinxsearch configuration
 
-Our instance of open-sphinxsearch is installed in `/opt/opensphinxsearch`, and referenced in our [caddy webserver](../webserver/README.md) as root of the `search.test.salamanca.school` subdomain, served via `php_fastcgi`:
+Our instance of open-sphinxsearch is installed in `/opt/opensphinxsearch`, and referenced in our [caddy webserver](../webserver/README.md) as root of the `search.{{$domain}}` subdomain, served via `php_fastcgi`:
 
 ```caddy
-search.salamanca.school {
+search.{{$domain}} {
 	# there are more settings here, this is just to mention the main php/open-sphinxsearch settings:
 	root * /opt/opensphinxsearch/public
 	php_fastcgi unix//run/php/php-fpm.sock

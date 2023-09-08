@@ -1,16 +1,16 @@
-{{$map := index .Args 0}}
-{{$wid := $map.id}}
-{{$title := $map.title}}
-{{$author := $map.author}}
-{{$content := $map.content}}
-{{$place := $map.place}}
-{{$printer := $map.printer}}
-{{$year := $map.year}}
-{{$searchterm := placeholder "http.request.uri.query.q"}}
-{{$domain := "test.salamanca.school"}}
-{{$pages_file := (list "../../data/" $wid "/html/" $wid "_pages.html" | join "")}}
-{{$toc_file := (list "../../data/" $wid "/html/" $wid "_toc.html" | join "")}}
-{{$info := dict "page" "work.html" "title" "{{$author}} - {{$title}}" "header" "" "description" "" "domain" $domain}}
+{{ include "domainname.html" }}
+{{ $map := index .Args 0 }}
+{{ $wid := $map.id }}
+{{ $title := $map.title }}
+{{ $author := $map.author }}
+{{ $content := $map.content }}
+{{ $place := $map.place }}
+{{ $printer := $map.printer }}
+{{ $year := $map.year }}
+{{ $searchterm := placeholder "http.request.uri.query.q" }}
+{{ $pages_file := (list "../../data/" $wid "/html/" $wid "_pages.html" | join "") }}
+{{ $toc_file := (list "../../data/" $wid "/html/" $wid "_toc.html" | join "") }}
+{{ $info := dict "page" "work.html" "title" "{{$author}} - {{$title}}" "header" "" "description" "" "domain" $domain }}
 
 <!DOCTYPE html>
 <html>
