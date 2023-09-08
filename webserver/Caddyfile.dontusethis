@@ -34,7 +34,7 @@ www.foo.com {
 	redir /workDetails.html https://id.{mydomain}/texts/{query.wid}?mode=details 301
 
 	# Templates give static sites some dynamic features
-	templates
+	templates text/plain text/html text/javascript text/markdown text/xml application/xml application/json 
 
 	# Serve everything else from the file system
 	root * /var/data/caddy/site
