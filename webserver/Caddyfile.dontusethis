@@ -31,7 +31,16 @@ www.foo.com {
 	# The following permanent redirection is for backwards compatibility only
 	# (we now access details at https://id.{mydomain}/texts/{wid}?mode=details
 	#  whereas earlier it was at https://www.{mydomain}/workDetails.html?wid={wid}
-	redir /workDetails.html https://id.{mydomain}/texts/{query.wid}?mode=details 301
+        # More precisely, we need to translate this:
+        #    https://www.salamanca.school/workDetails.html?wid=W0037_Vol04
+        # to this:
+        #    https://id.salamanca.school/texts/W0037:vol4?mode=details
+
+        map /workDetails.html {query.wid} {id} {
+           ~([^_]+)_[vV][oO][lL]0*([1-9]+0*)$ ${1}:vol${2}
+           ~([^_]+) ${1}
+        }
+        redir /workDetails.html https://id.{mydomain}/texts/{id}?mode=details 301
 
 	# Templates give static sites some dynamic features
 	templates text/plain text/html text/javascript text/markdown text/xml application/xml application/json 
