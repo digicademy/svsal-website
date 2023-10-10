@@ -1,0 +1,682 @@
+/*
+Theme Name:     Twenty Sixteen SvSal Child
+Theme URI:      http: //blog.salamanca.school/
+Description:    Child Theme for the Twenty Sixteen theme
+Author:         Andreas Wagner
+Author URI:     http: //salamanca.school/
+Template:       twentysixteen
+Version:        1.0
+*/
+
+/* FONTS */
+/* 1. Cardo (Bembo Variante, Hausschrift der ADW) 
+      URL: http://scholarsfonts.net/cardofnt.html
+*/
+@font-face {
+    font-family:Cardo;
+    src: url('fonts/cardo/cardo104s-webfont.eot'); /* Embedded font type required by IE 8 */
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family:Cardo;
+    src: url('fonts/cardo/cardo104s-webfont.woff'); /* Embedded font type used by other browsers */
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family:Cardo;
+    src: url('fonts/cardo/cardob101-webfont.eot');
+    font-weight: bold;
+}
+@font-face {
+    font-family:Cardo;
+    src: url('fonts/cardo/cardob101-webfont.woff');
+    font-weight: bold;
+}
+@font-face {
+    font-family:Cardo;
+    src: url('fonts/cardo/cardoi99-webfont.eot');
+    font-style: italic;
+}
+@font-face {
+    font-family:Cardo;
+    src: url('fonts/cardo/cardoi99-webfont.woff');
+    font-style: italic;
+}
+/* 2. Junicode
+      URL: http://junicode.sourceforge.net/
+*/
+@font-face{
+    font-family:Junicode;
+    src:url("fonts/junicode/junicode.eot");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("fonts/junicode/junicode.woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("fonts/junicode/junicode-bold.eot");
+    font-weight:bold;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("fonts/junicode/junicode-bold.woff");
+    font-weight:bold;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("fonts/junicode/junicode-italic.eot");
+    font-style:italic;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("fonts/junicode/junicode-italic.woff");
+    font-style:italic;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("fonts/junicode/junicode-bolditalic.eot");
+    font-weight:bold;
+    font-style:italic;
+}
+@font-face{
+    font-family:Junicode;
+    src:url("fonts/junicode/junicode-bolditalic.woff");
+    font-weight:bold;
+    font-style:italic;
+}
+/* 3. Andron (A. Stötzner, Koop. m. MUFI)
+      URL: http://www.mufi.info/fonts/#Andron
+*/
+@font-face{
+    font-family:Andron;
+    src:url("fonts/andron/andron-scriptor-web.eot");
+}
+@font-face{
+    font-family:Andron;
+    src:url("fonts/andron/andron-scriptor-web.woff");
+}
+
+
+
+
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('genericons/glyphicons-halflings-regular.eot');
+  src: url('genericons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+       url('genericons/glyphicons-halflings-regular.woff') format('woff'),
+       url('genericons/glyphicons-halflings-regular.ttf') format('truetype'),
+       url('genericons/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('genericons/fontawesome-webfont.eot');
+  src: url('genericons/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+       url('genericons/fontawesome-webfont.woff') format('woff'),
+       url('genericons/fontawesome-webfont.ttf') format('truetype'),
+       url('genericons/fontawesome-webfont.svg#fontawesomeregular') format('svg');
+}
+
+
+body:not(.custom-background-image)::before,
+body:not(.custom-background-image)::after {
+	height: 0;
+	display: none;
+	content: "";
+}
+
+body {
+/*    font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif; */
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+
+div.site {
+    margin: 0 0;
+}
+
+div.site-inner {
+    margin: 0 0;
+    max-width: 100%
+}
+
+header#masthead {
+    padding: 0 0 0 0;
+}
+
+.header-image {
+    margin: 0 0;
+}
+
+div.site-header-main {
+    color: #DEDFE7;
+    background-color: #102873;
+    font-size: 14px;
+    display: block;
+    margin: 0 auto;
+    padding: 0 15px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #39529B;
+}
+
+div.site-branding {
+    display:none;
+}
+
+div#site-header-menu {
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+nav#site-navigation {
+}
+
+/* @media (min-width: 1220px) */
+div.menu-site-navigation-container {
+    /* width: 1220px; */
+    width: 100%;
+    margin: 0 auto;
+}
+
+ul#menu-site-navigation {
+    margin: 0 auto;
+}
+
+/* Current page + current language */
+.main-navigation .current-menu-item > a,
+.main-navigation .current-menu-ancestor > a {
+    color: #DEDFE7;
+    background-color: #081D5C;
+    /* font-weight: 700; */
+}
+
+#site-navigation a:hover {
+    background: -webkit-linear-gradient(#102873 0%, #081D5C 100%);
+    background: -o-linear-gradient(#102873 0%, #081D5C 100%);
+    background: linear-gradient(#102873 0%, #081D5C 100%);
+}
+
+#site-navigation a {
+    color: #DEDFE7;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    display: block;
+    position: relative;
+    display: block;
+    padding: 15px 15px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+#site-navigation li {
+    vertical-align: middle;
+    display: block;
+}
+
+#site-navigation li:first-of-type a {
+    font-size: 18px;
+}
+
+/* Hand icon before "News" nav option */
+#site-navigation li:nth-child(2) a:before {
+    font-family: 'Glyphicons Halflings';
+    content: "\e127";
+    margin-right: 9px;
+									/* line-height: 20px; */
+									position: relative;
+								    top: 1px;
+								    line-height: 1;
+								    display: inline-block;
+								    font-style: normal;
+								    font-weight: 400;
+								    -webkit-font-smoothing: antialiased;
+								    -moz-osx-font-smoothing: grayscale;
+								}
+
+								/* Academy icon before "Project" nav option */
+								#site-navigation li:nth-child(3) a:before {
+									font-family: 'FontAwesome';
+									content: "\f19c";
+									font-size: 1.2em;
+									margin-right: 9px;
+									/* line-height: 20px; */
+									position: relative;
+								    top: 0px;
+								    line-height: 1;
+								    display: inline-block;
+								    font-style: normal;
+								    font-weight: 400;
+								    -webkit-font-smoothing: antialiased;
+								    -moz-osx-font-smoothing: grayscale;
+								}
+
+								/* Page icon before "Sources" nav option */
+								#site-navigation li:nth-child(4) a:before {
+									font-family: 'Glyphicons Halflings';
+									content: "\e022";
+									margin-right: 9px;
+									/* line-height: 20px; */
+									position: relative;
+								    top: 1px;
+								    line-height: 1;
+								    display: inline-block;
+								    font-style: normal;
+								    font-weight: 400;
+								    -webkit-font-smoothing: antialiased;
+								    -moz-osx-font-smoothing: grayscale;
+								}
+
+								/* Book icon before "Dictionary" nav option */
+								#site-navigation li:nth-child(5) a:before {
+									font-family: 'Glyphicons Halflings';
+									content: "\e043";
+									margin-right: 9px;
+									/* line-height: 20px; */
+									position: relative;
+								    top: 1px;
+								    line-height: 1;
+								    display: inline-block;
+								    font-style: normal;
+								    font-weight: 400;
+								    -webkit-font-smoothing: antialiased;
+								    -moz-osx-font-smoothing: grayscale;
+								}
+
+								/* Person icon before "Authors" nav option */
+								#site-navigation li:nth-child(6) a:before {
+									font-family: 'Glyphicons Halflings';
+									content: "\e008";
+									margin-right: 9px;
+									/* line-height: 20px; */
+									position: relative;
+								    top: 1px;
+								    line-height: 1;
+								    display: inline-block;
+								    font-style: normal;
+								    font-weight: 400;
+								    -webkit-font-smoothing: antialiased;
+								    -moz-osx-font-smoothing: grayscale;
+								}
+
+								/* Pencil icon before "Working Papers" nav option */
+								#site-navigation li:nth-child(7) a:before {
+									font-family: 'FontAwesome';
+									content: "\f040";
+									font-size:  1.2em;
+									margin-right: 10px;
+									/* line-height: 20px; */
+									position: relative;
+								    top: 0px;
+								    line-height: 1;
+								    display: inline-block;
+								    font-style: normal;
+								    font-weight: 400;
+								    -webkit-font-smoothing: antialiased;
+								    -moz-osx-font-smoothing: grayscale;
+								}
+
+								/* Magnifying glass icon before "Search" nav option */
+								#site-navigation li:nth-child(8) a:before {
+									font-family: 'Glyphicons Halflings';
+									content: "\e003";
+									margin-right: 10px;
+									margin-left: -1px;
+									/* line-height: 20px; */
+									position: relative;
+								    top: 1px;
+								    line-height: 1;
+								    display: inline-block;
+								    font-style: normal;
+								    font-weight: 400;
+								    -webkit-font-smoothing: antialiased;
+								    -moz-osx-font-smoothing: grayscale;
+								}
+
+								#site-navigation li.current-menu-item:nth-child(9) a,
+								#site-navigation li.current-menu-item:nth-child(10) a,
+								#site-navigation li.current-menu-item:nth-child(11) a {
+								    border: 3px solid #DEDFE7;
+								    z-index: 5;
+								    max-height: 34px;
+								    padding: 4px 10px;
+								}
+
+
+								/* First language selection option: "de" */
+								div#site-header-menu:not(.toggled-on) #site-navigation li:nth-child(8) {
+									margin-left: 20px;
+								}
+
+								#site-navigation li:nth-child(9) a {
+									border-radius: 0;
+    								border: 1px solid #39529B;
+    								padding: 6px 12px;
+    								margin-top:  8px;
+    								margin-bottom: 8px;
+    								font-size: 14px;
+								}
+
+								/* Second language selection option: "en" */
+								#site-navigation li:nth-child(10) a {
+									border-radius: 0;
+    								border: 1px solid #39529B;
+    								padding: 6px 12px;
+    								margin-left: -1px;
+    								margin-top:  8px;
+    								margin-bottom: 8px;
+    							}
+
+								/* Third language selection option: "es" */
+								#site-navigation li:nth-child(11) a {
+									border-radius: 0;
+    								border: 1px solid #39529B;
+    								padding: 6px 12px;
+    								margin-left: -1px;
+    								margin-top:  8px;
+    								margin-bottom: 8px;
+								}
+
+div#content {
+}
+
+div#primary {
+    padding-top: 10px;
+}
+
+.site-main .page-header {
+    border: 0px solid currentcolor;
+}
+
+.entry-title {
+    font-size: 1.2rem;
+}
+
+aside#secondary {
+}
+
+footer#colophon {
+}
+
+.textwidget a,
+.entry-content a {
+    box-shadow: none;
+}
+
+.textwidget a:hover,
+.widget a:hover,
+.entry-header a:hover,
+.entry-content a:hover {
+    box-shadow: 0 1px 0 0 currentColor;
+}
+
+
+.widget:first-of-type {
+	border-top: none;
+}
+
+.menu-toggle, .menu-toggle:hover, .menu-toggle:focus {
+ 	color: #DEDFE7;
+}
+
+.site-main > article {
+    border-top: 1px solid #333;
+    padding: 1em 1em 1em 1em;
+    margin-bottom: 1.2em;
+}
+
+.site-main > article:first-of-type {
+    border-top: none;
+}
+
+/* Clearfix */
+.entry-header:after {
+    content: "";
+    display: table;
+    clear:  both;
+}
+
+.entry-title {
+    margin-bottom: 0.4em !important;
+}
+
+.entry-title a {
+    color: #007acc;
+}
+
+.entry-header {
+    margin-bottom: 10px;
+}
+
+.post-thumbnail {
+    float:  left;
+    clear: left;
+    margin: 5px 2em 10px 5px;
+    text-decoration: none;
+    box-shadow: 0 0 0 0 !important;
+}
+
+body:not(.search-results) article:not(.type-page) .entry-content {
+    float: none;
+    width: 100%;
+    counter-reset: section;
+}
+
+body.single div.entry-content > p:before,
+body.single div.entry-content > ol:before,
+body.single div.entry-content > ul:before {
+    position: absolute;
+    margin-left: -2.4em;
+    color: #999;
+    content: "§ " counter(section);
+    counter-increment: section;
+}
+
+@media print {
+    body.single div.entry-content > p:before,
+    body.single div.entry-content > ol:before,
+    body.single div.entry-content > ul:before {
+        position: absolute;
+        margin-left: -2.4em;
+        color: #999;
+        content: "§ " counter(section);
+        counter-increment: section;
+    }
+
+    body.single div.entry-content > p+p {
+        text-indent: 2em;
+        margin-top: -1.5em;
+    }
+
+    
+    body.single div.entry-content > ol,
+    body.single div.entry-content > ul {
+        margin-top: 0.5em;
+    }
+
+    body.single div.entry-content > p+p:before {
+        position: absolute;
+        margin-left: -6.4em;
+        color: #999;
+        content: "§ " counter(section);
+        counter-increment: section;
+    }
+
+    body.single div.entry-content > p,
+    body.single div.entry-content > pre,
+    body.single div.entry-content > h4,
+    body.single div.entry-content > h5,
+    body.single div.entry-content > ol,
+    body.single div.entry-content > ul {
+        margin-left: 3em;
+    }
+
+    * {
+        font-family: "times new roman",times,serif;
+        text-align: justify;
+        quotes: "\201E" "\201C" "\201A" "\2018";
+    }
+
+    body.single div.entry-content > pre {
+        text-align: left;
+        padding: 0.7em;
+        font-size: 85%;
+    }
+
+    body.single img[alt="↩"],
+    body.single img.emoji,
+    body.single span.ez-toc-title-toggle,
+    body.single span#scrollup-master,
+    body.single svg.scrollup-svg-icon {
+        display: none;
+    }
+
+    body.single a {
+        color: #888;
+/*      text-decoration: underline; */
+        text-decoration: none !important;
+        word-wrap: break-word;
+    }
+
+    :link, :visited {
+        text-decoration: none;
+        word-wrap: break-word;
+    }
+
+    body.single a[href^="http://"]:after,
+    body.single a[href^="https://"]:after {
+        content: " ("attr(href)")";
+        color: #888;
+        background-color: inherit;
+        font-style: italic;
+        size: 80%;
+    }
+
+    body.single div.entry-content div.wpcp {
+        background: silver;
+        border: 1pt solid;
+    }
+
+    body.single div.entry-content > h1,
+    body.single div.entry-content > h2,
+    body.single div.entry-content > h3,
+    body.single div.entry-content > h4,
+    body.single div.entry-content > h5 {
+        page-break-after:avoid;
+    }
+
+    body.single div.entry-content > h2 {
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+    }
+
+    body.single q:before,
+    body.single blockquote:before {
+        content:open-quote;
+    }   
+
+    body.single q:after,
+    body.single blockquote:after {
+        content:close-quote;
+    }
+
+}
+
+body.single div.entry-content > p,
+body.single div.entry-content > ol,
+body.single div.entry-content > ul {
+    font-size: 0.8rem;
+}
+
+div.entry-content ol,
+div.entry-content ul {
+    list-style-position: outside;
+}
+
+div.entry-content li {
+    padding-left: 0.2em;
+    margin-left: 1em;
+}
+
+.post-thumbnail img {
+    vertical-align: top;
+}
+
+body:not(.search-results) article:not(.type-page) .entry-footer {
+    clear: right;
+    width: 100%;
+    text-align: justify;
+}
+
+body:not(.search-results) .tags-links,
+body:not(.search-results) article:not(.type-page) .comments-link,
+/* body:not(.search-results) article:not(.sticky) */  .posted-on,
+.byline address {
+    display: inline;
+    font-style: normal;
+}
+
+.byline address {
+    float: left;
+}
+
+a.post-edit-link {
+    display: block;
+    float: right;
+    clear: right;
+    font-weight: bold;
+}
+
+/* body:not(.search-results) article:not(.sticky) */ .posted-on {
+    float:  right;
+}
+
+body:not(.search-results) article:not(.type-page) .entry-footer {
+    margin-top: 1em;
+}
+
+.entry-footer .avatar {
+    height: 100px;
+    margin: 0 0;
+    width: 100px
+}
+
+.post-navigation .post-title {
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.comments-title,
+.comment-reply-title {
+    font-size:  1rem;
+}
+
+.comment-form .submit {
+    font-size: 0.8rem;
+}
+
+#ssba_widget-2 {
+    display: none;
+}
+
+p.qtranxs-available-languages-message {
+    background: silver;
+    border: 1pt solid;
+}
+
+body.single div.entry-content > p.qtranxs-available-languages-message:before {
+    counter-increment: none;
+    content: "";
+}
+

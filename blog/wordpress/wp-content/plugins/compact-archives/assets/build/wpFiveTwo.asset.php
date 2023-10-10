@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('wp-block-editor', 'wp-polyfill'), 'version' => 'b3c71b80775f3a8fb87e4c33a2731227');
