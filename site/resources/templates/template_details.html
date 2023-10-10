@@ -1,4 +1,4 @@
-{{ include "domainname.html" }}
+{{ $domain := "salamanca.school" }}
 {{ $info := index .Args 0 }}
 {{ $wid := $info.id }}
 
@@ -130,7 +130,7 @@
                                     <span style="font-weight:bold">Proposed citation:</span><br>
                                     <span class="cite-rec-body">{{ $info.author_short }}, {{ $info.title_short }} ({{ $info.el_publication_date }} [{{ $info.year }}]),
                                                                 in: The School of Salamanca. A Digital Collection of Sources
-                                                                &lt;<a href="https://id.{{$domain}}/texts/{{ $wid }}">https://id.{{$domain}}/texts/{{ $wid }}</a>&gt;
+                                                                &lt;<a href="https://id.{{ $domain }}/texts/{{ $wid }}">https://id.{{ $domain }}/texts/{{ $wid }}</a>&gt;
                                     </span>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                     <ul>
                                         <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=tei&amp;mode=meta">TEI Header</a></li>
                                         <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=rdf">RDF</a></li>
-                                        <li><a href="https://facs.{{$domain}}/iiif/presentation/collection/{{ $wid }}">IIIF Collection</a></li>
+                                        <li><a href="https://facs.{{ $domain }}/iiif/presentation/collection/{{ $wid }}">IIIF Collection</a></li>
                                     </ul>
                                 </div>
                                 <div>

@@ -1,4 +1,4 @@
-{{ include "domainname.html" }}
+{{ $domain := "salamanca.school" }}
 {{ $info := index .Args 0 }}
 {{ $id := $map.id }}
 {{ $title := $map.title }}
@@ -14,10 +14,10 @@
         <meta name="author" content="">
         <meta name="description" content="SvSal Working Paper No. 2021-01">
         <title>Working Paper: No. 2021-01 - Die Schule von Salamanca</title>
-        <link rel="canonical" href="https://www.{{$domain}}/de/workingPaper.html?wpid=WP0015">
-        <link rel="alternate" hreflang="de" href="https://www.{{$domain}}/de/workingPaper.html?wpid=WP0015">
-        <link rel="alternate" hreflang="en" href="https://www.{{$domain}}/en/workingPaper.html?wpid=WP0015">
-        <link rel="alternate" hreflang="es" href="https://www.{{$domain}}/es/workingPaper.html?wpid=WP0015">
+        <link rel="canonical" href="https://www.{{ $domain }}/de/workingPaper.html?wpid=WP0015">
+        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/de/workingPaper.html?wpid=WP0015">
+        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/en/workingPaper.html?wpid=WP0015">
+        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/es/workingPaper.html?wpid=WP0015">
         
         <!-- ==== CSS ==== -->
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -63,8 +63,8 @@
         <!--<script type="text/javascript">
           var _paq = _paq || [];
           _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-          _paq.push(["setCookieDomain", "*.{{$domain}}"]);
-          _paq.push(["setDomains", ["*.{{$domain}}"]]);
+          _paq.push(["setCookieDomain", "*.{{ $domain }}"]);
+          _paq.push(["setDomains", ["*.{{ $domain }}"]]);
           _paq.push(['trackPageView']);
           _paq.push(['enableLinkTracking']);
           (function() {
@@ -194,34 +194,34 @@
                     <div class="navbar-header"><button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand hidden-xs" href="index.html">Die Schule von Salamanca</a><a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav" href="index.html">Die Schule von Salamanca</a></div>
                     <div class="collapse navbar-collapse navbar-menubuilder">
                         <menu class="nav navbar-nav">
-                            <li class=""><a href="https://blog.{{$domain}}/?lang=de"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> 
+                            <li class=""><a href="https://blog.{{ $domain }}/?lang=de"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> 
                     Blog</a></li>
-                            <li class=""><a href="https://www.{{$domain}}/de/project.html"><i class="fa fa-university" aria-hidden="true"></i> 
+                            <li class=""><a href="https://www.{{ $domain }}/de/project.html"><i class="fa fa-university" aria-hidden="true"></i> 
                     Projekt</a></li>
-                            <li class=""><a href="https://www.{{$domain}}/de/works.html"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> 
+                            <li class=""><a href="https://www.{{ $domain }}/de/works.html"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> 
                     Werke</a></li>
-                            <li class=""><a href="https://www.{{$domain}}/de/dictionary.html"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 
+                            <li class=""><a href="https://www.{{ $domain }}/de/dictionary.html"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 
                     Wörterbuch</a></li>
-                            <li class=""><a href="https://www.{{$domain}}/de/authors.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 
+                            <li class=""><a href="https://www.{{ $domain }}/de/authors.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 
                     Autoren</a></li>
-                            <li class="active"><a href="https://www.{{$domain}}/de/workingPapers.html"><i class="fas fa-pencil-alt" aria-hidden="true"></i> 
+                            <li class="active"><a href="https://www.{{ $domain }}/de/workingPapers.html"><i class="fas fa-pencil-alt" aria-hidden="true"></i> 
                     Working Papers</a></li>
-                            <li class=""><a href="https://www.{{$domain}}/de/search.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
+                            <li class=""><a href="https://www.{{ $domain }}/de/search.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
                     Suche</a></li><!-- language-switch dropdown on not-so-large screens -->
                             <li role="presentation" class="dropdown hidden-lg"><a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Sprache<span class="caret"></span></a>
                                 <menu class="dropdown-menu">
-                                    <li class="hidden-lg"><a href="https://www.{{$domain}}/de/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
+                                    <li class="hidden-lg"><a href="https://www.{{ $domain }}/de/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
                             Deutsch</a></li>
-                                    <li class="hidden-lg"><a href="https://www.{{$domain}}/en/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
+                                    <li class="hidden-lg"><a href="https://www.{{ $domain }}/en/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
                             Englisch</a></li>
-                                    <li class="hidden-lg"><a href="https://www.{{$domain}}/es/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
+                                    <li class="hidden-lg"><a href="https://www.{{ $domain }}/es/workingPaper.html?wpid=WP0015"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> 
                             Spanisch</a></li>
                                 </menu>
                             </li>
                         </menu><!-- language-switch buttons on large screens -->
                         <menu class="nav navbar-nav">
                             <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
-                                <div class="btn-group" role="group" aria-label="..."><a class="btn navbar-btn btn-info" href="https://www.{{$domain}}/de/workingPaper.html?wpid=WP0015">de</a><a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/en/workingPaper.html?wpid=WP0015">en</a><a class="btn navbar-btn btn-default" href="https://www.{{$domain}}/es/workingPaper.html?wpid=WP0015">es</a></div>
+                                <div class="btn-group" role="group" aria-label="..."><a class="btn navbar-btn btn-info" href="https://www.{{ $domain }}/de/workingPaper.html?wpid=WP0015">de</a><a class="btn navbar-btn btn-default" href="https://www.{{ $domain }}/en/workingPaper.html?wpid=WP0015">en</a><a class="btn navbar-btn btn-default" href="https://www.{{ $domain }}/es/workingPaper.html?wpid=WP0015">es</a></div>
                             </li>
                         </menu>
                     </div>

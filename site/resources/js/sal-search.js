@@ -12,7 +12,7 @@
  */
 async function mainSearch (field, st, targetListId, page, limit) {
   // Build request
-  const endpoint = 'https://search.{{$domain}}/lemmatized/search'
+  const endpoint = 'https://search.salamanca.school/lemmatized/search'
   const docFilter = '@sphinx_work ^W0*'
   const alsoAuthor = 'sphinx_author,'
   const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
@@ -112,7 +112,7 @@ async function mainSearch (field, st, targetListId, page, limit) {
  */
 async function detailsSearch (workId, page, limit, searchterm) {
   // Build request
-  const endpoint = 'https://search.{{$domain}}/lemmatized/search?q='
+  const endpoint = 'https://search.salamanca.school/lemmatized/search?q='
   const alsoAuthor = 'sphinx_author,'
   const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
   const docFilter = '@sphinx_work ^' + workId
@@ -219,7 +219,7 @@ async function detailsSearch (workId, page, limit, searchterm) {
  */
 async function excerptsSearch (workId, index, searchterm, string1, string2) {
   // Build request
-  const endpoint = 'https://search.{{$domain}}/lemmatized/excerpts'
+  const endpoint = 'https://search.salamanca.school/lemmatized/excerpts'
   const myFormData = new FormData()
   myFormData.append('opts[\'limit\']', '750')
   myFormData.append('opts[\'html_strip_mode\']', 'strip')

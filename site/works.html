@@ -1,4 +1,4 @@
-{{ include "domainname.html" }}
+{{ $domain := "salamanca.school" }}
 {{ $info := dict "page" "works.html" "title" "Werke" "header" "Werke" "description" "Überblick über die Quellen, die im Rahmen der digitalen Quellenedition in Text und Bild verfügbar sind. Filter- und Sortierbar" "domain" $domain}}
 
 <!DOCTYPE html>
@@ -110,12 +110,12 @@
                                 <p>Download the complete corpus:</p>
                                 <ul>
                                     <li>
-                                        <a href="https://id.{{$domain}}/texts?format=tei">
+                                        <a href="https://id.{{ $domain }}/texts?format=tei">
                                             <span class="glyphicon glyphicon-download-alt"></span>&nbsp;TEI XML
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://id.{{$domain}}/texts?format=txt">
+                                        <a href="https://id.{{ $domain }}/texts?format=txt">
                                             <span class="glyphicon glyphicon-download-alt"></span>&nbsp;Plain text (TXT)
                                         </a>
                                     </li>

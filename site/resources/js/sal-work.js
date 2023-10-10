@@ -63,6 +63,9 @@ function myScrollIntoView (targetId) {
   $('html, body').animate({scrollTop: goHere}, 800, 'swing', function () {
     $('#' + targetId).effect( 'highlight', {color:'LightSkyBlue'}, 1200 )
   })
+  $('html, body').animate({scrollTop: goHere}, 800, 'swing', function () {
+    $('#' + targetId).effect( 'highlight', {color:'LightSkyBlue'}, 1200 )
+  })
 }
 
 $('a[href*="#"]').click(function (event) {
@@ -283,8 +286,8 @@ let tifyOptions = {
     container: '#Viewer',
     // filters: { brightness: 0.5, contrast: 0.5, saturation: 2.3 },
     language: getLang(),
-    // manifestUrl: 'https://id.{{$domain}}/texts/{{$wid}}?format=iiif',       // https://example.com/iiif/manifest.json',
-    // manifestUrl: 'https://www.salamanca.school/de/iiif-out.xql?wid={{$wid}}',  // https://example.com/iiif/manifest.json',
+    // manifestUrl: 'https://id.salamanca.school/texts/<< $wid >>?format=iiif',       // https://example.com/iiif/manifest.json',
+    // manifestUrl: 'https://www.salamanca.school/de/iiif-out.xql?wid=<< $wid >>',  // https://example.com/iiif/manifest.json',
     manifestUrl: 'https://www.' + domain + '/data/' + wid + '/' + wid + '.json',       // https://example.com/iiif/manifest.json',
     pageLabelFormat: 'P', // P: physical page number, L: logical page number
     // pages: [0, 3], // default: null. The page(s) to display initially. If null, the initial page is determined by the manifest’s startCanvas
@@ -385,7 +388,9 @@ $(document).on('click', function () {
 $('.navbar-collapse').css({ maxHeight: $(window).height() - $('.navbar-header').height() + 'px' })
 
 // One document.ready function collecting init for all of the above...
-// document.DOMContentLoaded triggers when DOM has been completely parsed (no images, styles and async scripts), window.load event triggers when *everything* has been loaded. -->
+// document.DOMContentLoaded triggers when DOM has been completely parsed
+// (no images, styles and async scripts),
+// window.load event triggers when *everything* has been loaded.
 document.addEventListener('DOMContentLoaded', function (event) {
     // Init backTop
     $('#backTop').backTop({position: 100, speed: 200, color: 'white' });
@@ -459,7 +464,8 @@ let ias = new InfiniteAjaxScroll('#iasContainer', {
     prev:       '.prev',
     pagination: '.iasPagination',
     spinner:    '.iasSpinner',
-    logger:     false               // don't clobber the console
+    prefill:    false,
+    logger:     true               // don't clobber the console
     // negativeMargin: 400          // when to start loading new items (before reaching the very bottom),
 })
 ias.on('page', (event) => {             // update the url to reflect the new page we've just scrolled to
@@ -472,7 +478,8 @@ ias.on('page', (event) => {             // update the url to reflect the new pag
         if (validParams.indexOf(key) === -1) { loadParams.delete(key) };
     });
     let newParams = loadParams ? '?' + loadParams : '';
-    newUrl = target.pathname.substr(target.pathname.lastIndexOf('/') + 1) + newParams + target.hash;
+    // let fragment = window.location.hash;
+    newUrl = target.pathname.substr(target.pathname.lastIndexOf('/') + 1) + newParams;
     history.replaceState(history.state, '', newUrl);
 })
 ias.on('nexted', (event) => {           // apply original/edited mode to newly added elements
@@ -481,6 +488,10 @@ ias.on('nexted', (event) => {           // apply original/edited mode to newly a
 ias.on('preved', (event) => {           // apply original/edited mode to newly added elements
     applyMode();
 })
+ias.on('prefilled', (event) => {
+    console.log('prefilled');
+})
+
 ias.on('appended', function (items) {   // add functionality to newly loaded elements (those functions are mostly copied from below)
     // 1. Refresh Popover Boxes to have a function on click ...
     $('[data-rel="popover"]').popover({

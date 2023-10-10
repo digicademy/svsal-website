@@ -1,4 +1,4 @@
-{{ include "domainname.html" }}
+{{ $domain := "salamanca.school" }}
 {{ $map := index .Args 0 }}
 {{ $wid := $map.id }}
 {{ $title := $map.title }}
@@ -23,10 +23,10 @@
         <meta name="author"      content="{{$author}}"/>
         <meta name="description" content="Reading view of {{$author}}: {{$title}}"/>
 
-        <link rel="canonical"                  href="https://id.{{$domain}}/texts/{{$wid}}"/>
-        <link rel="alternate"    hreflang="de" href="https://id.{{$domain}}/texts/{{$wid}}?lang=de{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
-        <link rel="alternate"    hreflang="en" href="https://id.{{$domain}}/texts/{{$wid}}?lang=en{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
-        <link rel="alternate"    hreflang="es" href="https://id.{{$domain}}/texts/{{$wid}}?lang=es{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
+        <link rel="canonical"                  href="https://id.{{ $domain }}/texts/{{$wid}}"/>
+        <link rel="alternate"    hreflang="de" href="https://id.{{ $domain }}/texts/{{$wid}}?lang=de{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
+        <link rel="alternate"    hreflang="en" href="https://id.{{ $domain }}/texts/{{$wid}}?lang=en{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
+        <link rel="alternate"    hreflang="es" href="https://id.{{ $domain }}/texts/{{$wid}}?lang=es{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
 
     {{- with $map.first}}
         <link rel="first"    href="{{.}}"/>
@@ -37,8 +37,8 @@
     {{- with $map.next}}
         <link rel="next"     href="{{.}}"/>
     {{end}}
-        <link rel="meta"     type="application/rdf+xml" href="https://data.{{$domain}}/{{$wid}}.rdf"/>
-        <link rel="meta"     type="application/ld+json;profile=&#39;http://iiif.io/api/presentation/2/context.json&#39;" href="https://id.{{$domain}}/texts/{{$wid}}?format=iiif"/>
+        <link rel="meta"     type="application/rdf+xml" href="https://data.{{ $domain }}/{{$wid}}.rdf"/>
+        <link rel="meta"     type="application/ld+json;profile=&#39;http://iiif.io/api/presentation/2/context.json&#39;" href="https://id.{{ $domain }}/texts/{{$wid}}?format=iiif"/>
 
         <!-- ==== CSS ==== -->
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
@@ -59,7 +59,8 @@
         <script type="text/javascript" src="/resources/js/jquery.bootstrap-autohidingnavbar.js"          defer></script>
         <script type="text/javascript" src="/resources/js/jquery.tooltipster.js"                         defer></script>
         <!-- script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@3.1.0-beta.1/dist/infinite-ajax-scroll.min.js" defer></script -->
-        <script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll/dist/infinite-ajax-scroll.min.js" defer></script>
+        <!-- script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll/dist/infinite-ajax-scroll.min.js" defer></script -->
+        <script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@^3/dist/infinite-ajax-scroll.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.9/jstree.min.js" defer></script>
         <!-- script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.js"             defer></script -->
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.js"             defer></script>
@@ -79,7 +80,7 @@
             <div class="navbar navbar-white navbar-fixed-top" style="z-index: 1; margin-top: 10px; padding-top: 49px;">
                 <div class="row-fluid" style="margin-top: 0.9%;">
                     <h4 style="margin-top: 5px;" class="pull-left messengers">
-                        <a href="https://id.{{$domain}}/texts/{{$wid}}" title="(Gehe zum Anfang von) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}">
+                        <a href="https://id.{{ $domain }}/texts/{{$wid}}" title="(Gehe zum Anfang von) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}">
                             <!-- &#xA0; -->
                             {{abbrev 15 $author}}: {{abbrev 20 $title}}
                         </a>
@@ -104,7 +105,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="btn btn-link" href="https://id.{{$domain}}/texts/{{$wid}}?mode=details">
+                                    <a class="btn btn-link" href="https://id.{{ $domain }}/texts/{{$wid}}?mode=details">
                                         <span class="fas fa-file-alt"></span>&nbsp;Katalogeintrag
                                     </a>
                                 </li>
@@ -116,42 +117,42 @@
                                     </li>
                                 -->
                                 <li>
-                                    <a href="https://id.{{$domain}}/texts/{{$wid}}" onclick="copyLink(this); return false;" title="Kopiert einen Hyperlink in die Zwischenablage">
+                                    <a href="https://id.{{ $domain }}/texts/{{$wid}}" onclick="copyLink(this); return false;" title="Kopiert einen Hyperlink in die Zwischenablage">
                                         <span class="messengers fas fa-link"></span>&nbsp;Link kopieren
                                     </a>
-                                    <span class="cite-link" style="display:none;">https://id.{{$domain}}/texts/{{$wid}}?format=html</span>
+                                    <span class="cite-link" style="display:none;">https://id.{{ $domain }}/texts/{{$wid}}?format=html</span>
                                 </li>
                                 <li>
-                                    <a href="https://id.{{$domain}}/texts/{{$wid}}" onclick="copyCitRef(this); return false;" title="Kopiert eine Zitierempfehlung in die Zwischenablage">
+                                    <a href="https://id.{{ $domain }}/texts/{{$wid}}" onclick="copyCitRef(this); return false;" title="Kopiert eine Zitierempfehlung in die Zwischenablage">
                                         <span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren
                                     </a>
                                     <span class="sal-cite-rec" style="display:none">
                                         <span class="cite-rec-body">{{$author}}, {{$title}} (2019 [{{$year}}]), in:
                                             Die Schule von Salamanca. Eine Digitale Quellensammlung
-                                            &lt;<a href="https://id.{{$domain}}/texts/{{$wid}}">https://id.{{$domain}}/texts/{{$wid}}</a>&gt;</span>
+                                            &lt;<a href="https://id.{{ $domain }}/texts/{{$wid}}">https://id.{{ $domain }}/texts/{{$wid}}</a>&gt;</span>
                                     </span>
                                 </li>
                                 <li>
-                                    <a title="Download TEI/XML source file" href="https://id.{{$domain}}/texts/{{$wid}}?format=tei">
+                                    <a title="Download TEI/XML source file" href="https://id.{{ $domain }}/texts/{{$wid}}?format=tei">
                                         <span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML
                                     </a>
                                 </li>
                                 <li class="dropdown-submenu">
-                                    <a title="Plaintext Formate" href="https://id.{{$domain}}/texts/{{$wid}}#">
+                                    <a title="Plaintext Formate" href="https://id.{{ $domain }}/texts/{{$wid}}#">
                                         <span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="https://id.{{$domain}}/texts/{{$wid}}?format=txt&mode=edit">konstituiert</a></li>
-                                        <li><a href="https://id.{{$domain}}/texts/{{$wid}}?format=txt&mode=orig">diplomatisch</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=edit">konstituiert</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatisch</a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a title="Download RDF/XML data for this work" href="https://id.{{$domain}}/texts/{{$wid}}?format=rdf">
+                                    <a title="Download RDF/XML data for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=rdf">
                                         <span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)
                                     </a>
                                 </li>
                                 <li class="disabled">
-                                    <a title="Download PDF file for this work" href="https://id.{{$domain}}/texts/{{$wid}}?format=pdf">
+                                    <a title="Download PDF file for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=pdf">
                                         <span class="fas fa-file-pdf text-muted" aria-hidden="true"></span>&nbsp;PDF
                                     </a>
                                 </li>
@@ -176,7 +177,7 @@
                             </button>
                         </div>
                         <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Details button-->
-                            <a class="btn btn-link" href="https://id.{{$domain}}/texts/{{$wid}}?mode=details">
+                            <a class="btn btn-link" href="https://id.{{ $domain }}/texts/{{$wid}}?mode=details">
                                 <span class="fas fa-file-alt"></span>&nbsp;Katalogeintrag
                             </a>
                         </div>
@@ -201,17 +202,17 @@
                                 <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>&nbsp;Export&nbsp;<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu export-options" role="menu"><!-- Export buttons -->
-                                <li><a onclick="copyLink(this); return false;" title="URL in die Zwischenablage kopieren"><span class="messengers fas fa-link"></span>&nbsp;Link kopieren</a><span class="cite-link" style="display:none;">https://id.{{$domain}}/texts/{{$wid}}?format=html</span></li>
-                                <li><a onclick="copyCitRef(this); return false;" title="Zitierhinweis in die Zwischenablage kopieren"><span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren</a><span class="sal-cite-rec" style="display:none"><span class="cite-rec-body">Azpilcueta, Manual de Confessores y Penitentes (2019 [1556]), in: Die Schule von Salamanca. Eine Digitale Quellensammlung &lt;<a href="https://id.{{$domain}}/texts/{{$wid}}">https://id.{{$domain}}/texts/{{$wid}}</a>&gt;</span></span></li>
-                                <li><a title="Download TEI/XML source file" href="https://id.{{$domain}}/texts/{{$wid}}?format=tei"><span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML</a></li>
+                                <li><a onclick="copyLink(this); return false;" title="URL in die Zwischenablage kopieren"><span class="messengers fas fa-link"></span>&nbsp;Link kopieren</a><span class="cite-link" style="display:none;">https://id.{{ $domain }}/texts/{{$wid}}?format=html</span></li>
+                                <li><a onclick="copyCitRef(this); return false;" title="Zitierhinweis in die Zwischenablage kopieren"><span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren</a><span class="sal-cite-rec" style="display:none"><span class="cite-rec-body">Azpilcueta, Manual de Confessores y Penitentes (2019 [1556]), in: Die Schule von Salamanca. Eine Digitale Quellensammlung &lt;<a href="https://id.{{ $domain }}/texts/{{$wid}}">https://id.{{ $domain }}/texts/{{$wid}}</a>&gt;</span></span></li>
+                                <li><a title="Download TEI/XML source file" href="https://id.{{ $domain }}/texts/{{$wid}}?format=tei"><span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML</a></li>
                                 <li class="dropdown-submenu"><a title="Plaintext exportieren"><span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="https://id.{{$domain}}/texts/{{$wid}}?format=txt&mode=edit">konstituiert</a></li>
-                                        <li><a href="https://id.{{$domain}}/texts/{{$wid}}?format=txt&mode=orig">diplomatisch</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=edit">konstituiert</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatisch</a></li>
                                     </ul>
                                 </li>
-                                <li><a title="Download RDF/XML data for this work" href="https://id.{{$domain}}/texts/{{$wid}}?format=rdf"><span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)</a></li>
-                                <li><a title="Download PDF file for this work" href="https://id.{{$domain}}/texts/{{$wid}}?format=pdf"><span class="fas fa-file-pdf" aria-hidden="true"></span>&nbsp;PDF</a></li>
+                                <li><a title="Download RDF/XML data for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=rdf"><span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)</a></li>
+                                <li><a title="Download PDF file for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=pdf"><span class="fas fa-file-pdf" aria-hidden="true"></span>&nbsp;PDF</a></li>
                                 <li class="disabled"><a><span class="fas fa-book text-muted" aria-hidden="true"></span>&nbsp;<span class="text-muted">E-Book</span></a></li>
                             </ul>
                         </div>
@@ -302,7 +303,7 @@
         <!-- Imageviewer -->
         <div id="parent">
             <!-- iframe id="Viewer" title="Image Viewer" src="/viewer.html?wid={{$wid}}" allowfullscreen="" style="min-width: 99%;height:99%;"></iframe -->
-            <div id="Viewer" title="Image Viewer" style="height: 640px" data-domain="{{$domain}}" data-wid="{{$wid}}"></div>
+            <div id="Viewer" title="Image Viewer" style="height: 640px" data-domain="{{ $domain }}" data-wid="{{ $wid }}"></div>
         </div>
 
     </body>

@@ -1,4 +1,5 @@
-{{$content := `
+{{ $domain := "salamanca.school" }}
+{{ $content := `
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -10,7 +11,7 @@
                                             <div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=TD">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=TD">
                                 Prof. Dr. Thomas Duve
                             </a></h3>
                                                         <div>
@@ -41,7 +42,7 @@
                                                     </div><img class="col-md-4" src="./resources/images/participants/TD.jpg" style="width:230px;padding:2em;"></div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=MLB">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=MLB">
                                 Prof. Dr. Dr. Matthias Lutz-Bachmann
                             </a></h3>
                                                         <div>
@@ -98,7 +99,7 @@
                                             <div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=CB">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=CB">
                                 PD Dr. Christiane Birr
                             </a></h3>
                                                         <div>
@@ -129,7 +130,7 @@
                                                     </div><img class="col-md-4" src="./resources/images/participants/CB.jpg" style="width:230px;padding:2em;"></div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=AC">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=AC">
                         Alba Cilberti, M.A.
                      </a></h3>
                                                         <div>
@@ -163,7 +164,7 @@
                                                     </div><img class="col-md-4" src="./resources/images/participants/AC.jpg" style="width:230px;padding:2em;"></div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=JLE">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=JLE">
                                 Dr. José Luis Egío
                             </a></h3>
                                                         <div>
@@ -210,7 +211,7 @@
                                                     </div><img class="col-md-4" src="./resources/images/participants/JLE.jpg" style="width:230px;padding:2em;"></div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=MAH">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=MAH">
                         Marie-Astrid Hugel, M.A.
                      </a></h3>
                                                         <div>
@@ -253,7 +254,7 @@
                                                     </div><img class="col-md-4" src="./resources/images/participants/MAH.jpg" style="width:230px;padding:2em;"></div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=CR">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=CR">
                                 Cindy Rico Carmona, M.A.
                             </a></h3>
                                                         <div>
@@ -288,7 +289,7 @@
                                                     </div><img class="col-md-4" src="./resources/images/participants/CR.jpg" style="width:230px;padding:2em;"></div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=PS">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=PS">
                          Polina Solonets, M.A.
                      </a></h3>
                                                         <div>
@@ -324,7 +325,7 @@
                                                     </div><img class="col-md-4" src="./resources/images/participants/PS.jpg" style="width:230px;padding:2em;"></div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=AW">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=AW">
                                 Dr. Andreas Wagner
                             </a></h3>
                                                         <div>
@@ -362,7 +363,7 @@
                                                     </div><img class="col-md-4" src="./resources/images/participants/AW.jpg" style="width:230px;padding:2em;"></div>
                                                 <div class="row">
                                                     <div class="col-md-8">
-                                                        <h3><a href="https://www.{{$domain}}/de/participants.html?id=MNK">
+                                                        <h3><a href="https://www.{{ $domain }}/de/participants.html?id=MNK">
                         Dr. Maxim N. Kupreyev
                      </a></h3>
                                                         <div>
@@ -556,6 +557,6 @@
     </div>
 `}}
 
-{{$info := dict "page" "participants.html" "title" "Projektbeteiligte" "header" "Projektbeteiligte" "description" "Beteiligte am Projekt &#34;Die Schule von Salamanca&#34;" "content" $content}}
+{{ $info := dict "page" "participants.html" "title" "Projektbeteiligte" "header" "Projektbeteiligte" "description" "Beteiligte am Projekt &#34;Die Schule von Salamanca&#34;" "content" $content }}
 
-{{include "/resources/templates/template_default.html" $info }}
+{{ include "/resources/templates/template_default.html" $info }}

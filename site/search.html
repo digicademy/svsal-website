@@ -1,4 +1,5 @@
-{{$content := `
+{{ $domain := "salamanca.school" }}
+{{ $content := `
     <div class="container" style="margin-top:3em;">
         <form class="col-md-12 form-group" name="f-query" role="form" action="search.html" method="get"><!-- Search Form -->
             <div class="col-md-4 col-sm-5 col-xs-5">
@@ -79,7 +80,7 @@
                     <div id="div_searchHelp_en">
                         <div id="div_modi_en">
                             <h3 id="head_modi_en">
-                                <a class="anchorjs-link" id="div_modi_en" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_modi_en">
+                                <a class="anchorjs-link" id="div_modi_en" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_modi_en">
                                     <span class="anchorjs-icon"></span>
                                 </a>Search Modes
                             </h3>
@@ -119,7 +120,7 @@
                         </div>
                         <div id="div_terms">
                             <h3 id="head_searchTerms">
-                                <a class="anchorjs-link" id="div_terms" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_terms">
+                                <a class="anchorjs-link" id="div_terms" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_terms">
                                     <span class="anchorjs-icon"></span>
                                 </a>
                                 How the Search Syntax Works
@@ -138,7 +139,7 @@
                         </div>
                         <div id="div_multiple">
                             <h3 id="head_multipleTerms">
-                                <a class="anchorjs-link" id="div_multiple" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_multiple">
+                                <a class="anchorjs-link" id="div_multiple" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_multiple">
                                     <span class="anchorjs-icon"></span>
                                 </a>
                                 How the Multiple-Term Search Works
@@ -173,7 +174,7 @@
                         </div>
                         <div id="div_single_work_en">
                             <h3 id="head_single_work_en">
-                                <a class="anchorjs-link" id="div_single_work_en" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_single_work_en">
+                                <a class="anchorjs-link" id="div_single_work_en" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_single_work_en">
                                     <span class="anchorjs-icon"></span>
                                 </a>
                                 Search within Single Works
@@ -193,7 +194,7 @@
                             work-specific views (such as the reading view or the catalogue entry for
                             a work) in the "wid=" parameter; alternatively, the citation proposal 
                             for a work, to be found in its catalogue entry, contains the work id in 
-                            its URL: "https://id.{{$domain}}/texts/[work id]". </p>
+                            its URL: "https://id.{{ $domain }}/texts/[work id]". </p>
                             <p class="hauptText" id="p_oijsdfsi">Once
                             the respective work's id has been identified, the search can be limited
                             to this work through the field operator in the following way:</p>
@@ -207,7 +208,7 @@
                         </div>
                         <div id="div_more_info_en">
                             <h3 id="head_more_info_en">
-                                <a class="anchorjs-link" id="div_more_info_en" href="https://www.{{$domain}}/work.html?wid=TechSearchHelp#div_more_info_en">
+                                <a class="anchorjs-link" id="div_more_info_en" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_more_info_en">
                                     <span class="anchorjs-icon"></span>
                                 </a>
                                 Where to Find more Information
@@ -243,6 +244,6 @@
         </div>
     </div>`}}
 
-{{$info := dict "page" "search.html" "title" "Suche" "header" "Suche" "description" "Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca." "content" $content }}
+{{ $info := dict "page" "search.html" "title" "Suche" "header" "Suche" "description" "Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca." "content" $content }}
 
-{{include "/resources/templates/template_default.html" $info }}
+{{ include "/resources/templates/template_default.html" $info }}

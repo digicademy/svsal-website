@@ -91,6 +91,9 @@
     border:1px solid #fff;
 }
 
+#myCarousel{
+width: 100vw;
+}
 
 /*! Color scheme:
     Dark Blue:  #102873
