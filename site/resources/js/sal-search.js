@@ -60,8 +60,8 @@ async function mainSearch (field, st, targetListId, page, limit) {
       document.getElementById('currentPaging').innerText = startIndex + '-' + (startIndex + items.length - 1)
 
       // Results paging
-      let pagingHTML = [(startIndex > 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Math.max(page - limit, 0)}&limit=${limit}">previous page</a> ` : ' '),
-        (totalResults > startIndex + itemsPerPage - 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${page + limit}&limit=${limit}">next page</a>` : '')
+      let pagingHTML = [(startIndex > 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Math.max(Number(page) - Number(limit), 0)}&limit=${limit}">previous page</a> ` : ' '),
+        (totalResults > startIndex + itemsPerPage - 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Number(page) + Number(limit)}&limit=${limit}">next page</a>` : '')
       ].join(' ')
       document.getElementById('docPagingTop').innerHTML = pagingHTML
       document.getElementById('docPagingBottom').innerHTML = pagingHTML

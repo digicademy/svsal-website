@@ -286,8 +286,6 @@ let tifyOptions = {
     container: '#Viewer',
     // filters: { brightness: 0.5, contrast: 0.5, saturation: 2.3 },
     language: getLang(),
-    // manifestUrl: 'https://id.salamanca.school/texts/<< $wid >>?format=iiif',       // https://example.com/iiif/manifest.json',
-    // manifestUrl: 'https://www.salamanca.school/de/iiif-out.xql?wid=<< $wid >>',  // https://example.com/iiif/manifest.json',
     manifestUrl: 'https://www.' + domain + '/data/' + wid + '/' + wid + '.json',       // https://example.com/iiif/manifest.json',
     pageLabelFormat: 'P', // P: physical page number, L: logical page number
     // pages: [0, 3], // default: null. The page(s) to display initially. If null, the initial page is determined by the manifest’s startCanvas
@@ -302,16 +300,24 @@ let myViewer = new Tify (tifyOptions)
 // myViewer.mount('#Viewer');
 
 function setTifyPage (canvasId, title) {
-  var targetPage = myViewer.app.canvases.find(x => x['@id'] == canvasId).page
-  myViewer.ready.then(() => {
-    myViewer.setPage([targetPage])
-  })
-  // Update some values of the dialog popup window
-  $('#parent small').text(title)         // update Viewer Heading
-  $('#parent div').attr('title', title)  // update Viewer Title
-  // $('#Viewer')[0].contentDocument.getElementById('downloadImages').href = 'https://c104-131.cloud.gwdg.de/sal-facs/{{$id}}/{{$id}}.zip';  // update Download button
+  var canvases = myViewer.app.canvases;
+  // console.log(canvases);
+  // console.log(`search canvases for @id === ${canvasId} ...`);
+  var targetCanvas = canvases.find((x) => x['@id'] === canvasId);
+  // console.log(`found canvas:`);
+  // console.log(targetCanvas);
+  if (typeof targetCanvas !== "undefined") {
+    var targetPage = targetCanvas.page;
+    // console.log(`found page number ${targetPage}.`);
+    myViewer.ready.then(() => {
+      myViewer.setPage([targetPage])
+    })
+    // Update some values of the dialog popup window
+    $('#parent small').text(title)         // update Viewer Heading
+    $('#parent div').attr('title', title)  // update Viewer Title
     // // $('#Viewer')[0].contentDocument.getElementById('downloadImages').href = 'http://facs.salamanca.school/{{$id}}/{{$id}}.zip';  // update Download button
     // $('#Viewer')[0].contentDocument.getElementById('downloadImages').setAttribute('download', '{{$id}}.zip');  // update Download button
+  }
 };
 
 // Bind click event for opening viewer popup
