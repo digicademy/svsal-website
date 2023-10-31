@@ -7,8 +7,9 @@
         <title>SvSal Image Viewer</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <!-- link href="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css" rel="stylesheet" -->
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.css">
+        <!-- link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css" -->
+        <!-- link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.css" -->
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.29.2/dist/tify.css">
 
         <!-- ==== favIcon ==== -->
         <link rel="icon" type="image/png" href="resources/favicons/favicon-32x32.png" sizes="32x32"/>
@@ -26,7 +27,8 @@
         <div id="Viewer" title="Image Viewer" style="height: 98vh;"></div>
 
         <!-- script src="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.js"></script -->
-        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.js"></script>
+        <!-- script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.js"></script -->
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.29.2/dist/tify.js"></script>
         <script type="text/javascript">
 
             function getUrlParams( prop ) {
@@ -59,14 +61,14 @@
                 document.getElementById('downloadImages').setAttribute('download', getUrlParams( 'wid' ) + ".zip");  // update Download button
             };
             */
-
+            let [ wid, loc ] = getUrlParams('wid').split(':')
             let tifyOptions = {
                 container: '#Viewer',
                 // filters: { brightness: 0.5, contrast: 0.5, saturation: 2.3 },
                 language: getLang(),
                 // manifestUrl: 'https://id.{{ $domain }}/texts/{{$id}}?format=iiif',       // https://example.com/iiif/manifest.json',
-                // manifestUrl: 'https://www.{{ $domain }}/de/iiif-out.xql?wid={{$id}}',  // https://example.com/iiif/manifest.json',
-                manifestUrl: 'https://www.{{ $domain }}/data/{{$id}}/{{$id}}.json',       // https://example.com/iiif/manifest.json',
+                // manifestUrl: 'https://www.{{ $domain }}/de/iiif-out.xql?wid={{$id}}',    // https://example.com/iiif/manifest.json',
+                manifestUrl: `https://www.{{ $domain }}/data/${wid}/${wid}.json`,           // https://example.com/iiif/manifest.json',
                 pageLabelFormat: 'P', // P: physical page number, L: logical page number
                 // pages: [0, 3], // default: null. The page(s) to display initially. If null, the initial page is determined by the manifest’s startCanvas
                 // pan: { x: .45, y: .6 }, // Initial pan. By default, the image is centered

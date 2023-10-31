@@ -57,19 +57,19 @@
                 document.getElementById('downloadImages').setAttribute('download', getUrlParams( 'wid' ) + ".zip");  // update Download button
             };
             */
-
+           let [ wid, loc ] = getUrlParams('wid').split(':')
             let tifyOptions = {
                 container: '#Viewer',
                 // filters: { brightness: 0.5, contrast: 0.5, saturation: 2.3 },
                 language: getLang(),
                 // manifestUrl: 'https://id.{{ $domain }}/texts/{{$id}}?format=iiif',       // https://example.com/iiif/manifest.json',
-                // manifestUrl: 'https://www.{{ $domain }}/de/iiif-out.xql?wid={{$id}}',  // https://example.com/iiif/manifest.json',
-                manifestUrl: 'https://www.{{ $domain }}/data/{{$id}}/{{$id}}.json',       // https://example.com/iiif/manifest.json',
+                // manifestUrl: 'https://www.{{ $domain }}/de/iiif-out.xql?wid={{$id}}',    // https://example.com/iiif/manifest.json',
+                manifestUrl: `https://www.{{ $domain }}/data/${wid}/${wid}.json`,           // https://example.com/iiif/manifest.json',
                 pageLabelFormat: 'P', // P: physical page number, L: logical page number
                 // pages: [0, 3], // default: null. The page(s) to display initially. If null, the initial page is determined by the manifest’s startCanvas
                 // pan: { x: .45, y: .6 }, // Initial pan. By default, the image is centered
                 // urlQueryKey: 'salView1', // Specify instance to manipulate via query parameters
-                // urlQueryParams: [], // Which settings can be manipulated via query parameters? Default: ['filters', 'pages', 'pan', 'rotation', 'view', 'zoom'] 
+                // urlQueryParams: [], // Which settings can be manipulated via query parameters? Default: ['filters', 'pages', 'pan', 'rotation', 'view', 'zoom']
                 // view: '', // Default: ''. The initially displayed view (panel); scan, fulltext, thumbnails, toc, info, help, or empty (same as scan).
                 // viewer: {}, // An object with options for OpenSeadragon
                 zoom: null,

@@ -1,5 +1,9 @@
 {{ $domain := "salamanca.school" }}
-{{ $content := `
+{{/* The main body going in the '$content' variable  contains variables in turn. As caddy cannot parse nested variables,
+     we create a list of strings and pipe them to sprig's join command. See the breaks between the list items in
+     lines 200, 212, 217, 223, 225, 469, 472, 478, 479, 1473, 1481.
+*/}}
+{{ $content := list `
             <div class="container">
                 <div class="row">
                     <div class="col-md-4" style="margin-top:1em;">
@@ -193,7 +197,7 @@
                                     unter anderem auf, wie Sonderzeichen wiedergegeben werden oder wie
                                     Lemma-, Autoren- und Werkverweise mit XML-Markup versehen werden.</p>
                                 <p class="textGuidelines">Neben den im Folgenden genannten Beispielen
-                                        lassen sich auf unserer <a href="https://api.{{ $domain }}/v1/codesharing/codesharing.html">"Codesharing"-Seite</a> 
+                                        lassen sich auf unserer <a href="https://api.` $domain `/v1/codesharing/codesharing.html">"Codesharing"-Seite</a> 
                                         zu allen Elementen und Attributen beispielhafte Verwendungen
                                         automatisch aus unseren Texten exzerpieren. Dazu haben wir den sehr komfortablen, von
                                         <a href="http://www.mholmes.com/">Martin Holmes</a>
@@ -205,20 +209,20 @@
                                     abrufbar:</p>
                                 <ul class="textGuidelines">
                                     <li style="list-style-type: square; margin-left: 20px;">
-                                        <a href="http://files.{{ $domain }}/saltei.xml">.odd</a> (All-In-One XML-Definition des SalTEI-Schemas)
+                                        <a href="https://files.` $domain `/saltei.xml">.odd</a> (All-In-One XML-Definition des SalTEI-Schemas)
                                     </li>
                                     
                                     
                                     <li style="list-style-type: square; margin-left: 20px;">
-                                        <a href="http://files.{{ $domain }}/saltei.rng">.rng</a> (SalTEI-Schema im RELAX NG Format)
+                                        <a href="https://files.` $domain `/saltei.rng">.rng</a> (SalTEI-Schema im RELAX NG Format)
                                     </li>
                                 </ul>
                                 <p class="textGuidelines">Darüber hinaus werden hier folgende Dateien als Download angeboten:</p>
                                 <ul class="textGuidelines">
                                     <li style="list-style-type: square; margin-left: 20px;">
-                                        <a href="http://files.{{ $domain }}/works-general.xml">.xml</a> (Diese Dokumentationsdatei)</li>
+                                        <a href="https://files.` $domain `/works-general.xml">.xml</a> (Diese Dokumentationsdatei)</li>
                                     <li style="list-style-type: square; margin-left: 20px;">
-                                        <a href="http://facs.{{ $domain }}/docs/transcription/sal-char-encoding-table.pdf">.pdf</a> 
+                                        <a href="https://facs.` $domain `/docs/transcription/sal-char-encoding-table.pdf">.pdf</a> 
                                         (Übersicht der verwendeten Sonderzeichen, engl.)</li>
                                 </ul>
                             </div>
@@ -462,17 +466,17 @@
                                     </div>
                                     <div><a name="codecharts"><h5 class="alignedGuidelines">3.2.2.1. Sonderzeichen-Dokumentation</h5></a>
                                         <p class="textGuidelines">Sämtliche im Rahmen der digitalen Edition bisher erfassten Sonderzeichen und deren jeweilige Kodierung sind 
-                                            im <a href="http://facs.{{ $domain }}/docs/transcription/sal-char-encoding-table.pdf">Encoding Table of (Non-Standard) Characters</a> (engl.) verzeichnet.</p>
+                                            im <a href="http://facs.` $domain `/docs/transcription/sal-char-encoding-table.pdf">Encoding Table of (Non-Standard) Characters</a> (engl.) verzeichnet.</p>
                                         <p class="textGuidelines">Die oben genannten XML-Deklarationen zu allen bisher erfassten Sonderzeichen 
                                             finden sich in der Datei 
-                                            <a href="https://files.{{ $domain }}/specialchars.xml">specialchars.xml</a> 
+                                            <a href="https://files.` $domain `/specialchars.xml">specialchars.xml</a> 
                                             (deren <code style="color:black;">encodingDesc</code> 
                                             stets Teil des <code style="color:black;">teiHeader</code>s eines TEI-Datensatzes zu einem Band/Werk ist).
                                         </p>
                                         <p class="textGuidelines">Zur Kodierung von Sonderzeichen, Abkürzungen und Ligaturen 
                                             vgl. auch <a href="#stillschweigend">oben</a> sowie für die (auch "historische") Praxis der Sonderzeichenerfassung im Projekt die 
-                                            jeweils <a href="http://facs.{{ $domain }}/docs/transcription/guidelines/general/">allgemeinen</a> und 
-                                            <a href="http://facs.{{ $domain }}/docs/transcription/guidelines/specific/">werksbezogenen Erfassungsanweisungen</a>. </p>
+                                            jeweils <a href="https://facs.` $domain `/docs/transcription/guidelines/general/">allgemeinen</a> und 
+                                            <a href="https://facs.` $domain `/docs/transcription/guidelines/specific/">werksbezogenen Erfassungsanweisungen</a>. </p>
                                     </div>
                                 </div>
                                 <div><a name="NummerierungsNormalisierung"><h4 class="alignedGuidelines">3.2.3. Nummerierungen</h4></a>
@@ -1466,7 +1470,7 @@
 
                         <div><a name="de_Header"><h2 class="alignedGuidelines">5. Metadaten im Dateikopf</h2></a>
                             <p class="textGuidelines">Im <code style="color:black;">teiHeader</code> der Werke werden stets identische Angaben über <code style="color:black;">xi:include</code> 
-                                Anweisungen generiert. Diese werden über <code style="color:black;">xi:include</code> aus der <a href="https://files.{{ $domain }}/works-general.xml">
+                                Anweisungen generiert. Diese werden über <code style="color:black;">xi:include</code> aus der <a href="https://files.` $domain `/works-general.xml">
                                 Dokumentationsdatei zu den TEI-Metadaten des Projekts</a> bezogen. Hierzu zählen folgende Statements des <code style="color:black;">teiHeader</code>s:</p>
                             <ul class="textGuidelines">
                                 <li style="list-style-type: square; margin-left: 20px;"><code style="color:black;">editionStmt</code></li>
@@ -1474,7 +1478,7 @@
                                 <li style="list-style-type: square; margin-left: 20px;"><code style="color:black;">encodingDesc</code></li>
                             </ul>
                             <p class="textGuidelines">Innerhalb der Dokumentationsdatei werden die für die <code style="color:black;">charDecl</code> verwendeten Sonderzeichen wiederum über <code style="color:black;">xi:include</code>
-                                aus der <a href="https://files.{{ $domain }}/specialchars.xml">Sonderzeichen-TEI-Datei</a> 
+                                aus der <a href="https://files.` $domain `/specialchars.xml">Sonderzeichen-TEI-Datei</a> 
                                 eingebunden.</p>
                             <p class="textGuidelines">Gegenüber den generisch für alle Werke geltenden Angaben (s.o.) werden folgende Daten auf Werksebene ausgezeichnet:</p>
                             <ul class="textGuidelines">
@@ -1583,7 +1587,7 @@
 
                     </div>
                 </div>
-            </div>`}}
+            </div>` | join "" }}
 
 {{ $info := dict "page" "guidelines.html" "title" "Editionsrichtlinien" "header" "" "description" "Editionsrichtlinien der Erstellung der digitalen Quellenedition des Projekts &#34;Die Schule von Salamanca&#34;" "content" $content }}
 
