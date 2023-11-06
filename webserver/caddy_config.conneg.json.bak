@@ -349,54 +349,37 @@
 											]
 										},
 
-										{
-											"handle": [
-												{
-													"handler": "rewrite",
-													"strip_path_prefix": "/de"
-												},
-												{
-													"handler": "rewrite",
-													"strip_path_prefix": "/en"
-												},
-												{
-													"handler": "rewrite",
-													"strip_path_prefix": "/es"
-												}
-											]
-										},
-
-										{
-											"match": [
-												{
-													"path": [ "/workDetails.html" ]
-												}
-											],
-											"handle": [
-												{
-													"handler": "map",
-													"source": "{http.request.uri.query.wid}",
-													"destinations": [ "{id}" ],
-													"mappings": [
-														{
-															"input_regexp": "([^_]+)_[vV][oO][lL]0*([1-9]+0*)$",
-															"outputs": [ "${1}:vol${2}" ]
-														},
-														{
-															"input_regexp": "([^_]+)",
-															"outputs": [ "${1}" ]
-														}
-													]
-												},
-												{
-													"handler": "static_response",
-													"headers": {
-														"Location": [ "https://id.{mydomain}/texts/{id}?mode=details" ]
-													},
-													"status_code": 301
-												}
-											]
-										},
+                                                                                {
+                                                                                      "match": [
+                                                                                        {
+                                                                                          "path": [ "/workDetails.html" ]
+                                                                                        }
+                                                                                      ],
+                                                                                      "handle": [
+                                                                                        {
+                                                                                          "handler": "map",
+                                                                                          "source": "{http.request.uri.query.wid}",
+                                                                                          "destinations": [ "{id}" ],
+                                                                                          "mappings": [
+                                                                                            {
+                                                                                              "input_regexp": "([^_]+)_[vV][oO][lL]0*([1-9]+0*)$",
+                                                                                              "outputs": [ "${1}:vol${2}" ]
+                                                                                            },
+                                                                                            {
+                                                                                              "input_regexp": "([^_]+)",
+                                                                                              "outputs": [ "${1}" ]
+                                                                                            }
+                                                                                          ]
+                                                                                        },
+                                                                                        {
+                                                                                          "handler": "static_response",
+                                                                                          "headers": {
+                                                                                            "Location": [ "https://id.{mydomain}/texts/{id}?mode=details" ]
+                                                                                          },
+                                                                                          "status_code": 301
+                                                                                        }
+                                                                                      ]
+                                                                                },
 
 										{
 											"handle": [
