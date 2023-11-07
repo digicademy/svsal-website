@@ -145,20 +145,28 @@
                                                 <td class="col-md-9" style="line-height: 1.2">{{ $info.title_full }}</td>
                                             </tr>
                                             <tr>
-                                                <td class="col-md-3" style="line-height: 1.2">Period of publication:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.src_publication_period }}</td>
+                                                <td class="col-md-3" style="line-height: 1.2">Publish place:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.place }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Publisher:</td>
                                                 <td class="col-md-9" style="line-height: 1.2">{{ $info.printer_full }}</td>
                                             </tr>
                                             <tr>
-                                                <td class="col-md-3" style="line-height: 1.2">Publish place:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.place }}</td>
+                                                <td class="col-md-3" style="line-height: 1.2">Publication date:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.src_publication_period }}{{ $info.year }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Language(s):</td>
                                                 <td class="col-md-9" style="line-height: 1.2">{{ $info.language }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Holding library:</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.hold_library }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-3" style="line-height: 1.2">Library link:</td>
+                                                <td class="col-md-9" style="line-height: 1.2"><a href="{{ $info.hold_idno }}">{{ $info.hold_idno }}</a></td>
                                             </tr>
                                         </tbody>
                                     </table>
