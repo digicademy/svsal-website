@@ -154,7 +154,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Publication date:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.src_publication_period }}{{ $info.year }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">{{ if $info.src_publication_period }}{{ $info.src_publication_period }}{{ else }}{{ $info.year }}{{ end }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Language(s):</td>
