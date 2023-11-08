@@ -307,6 +307,35 @@
 							"match": [
 								{
 									"host": [
+										"salamanca.school"
+									]
+								}
+							],
+							"handle": [
+								{
+									"handler": "subroute",
+									"routes": [
+										{
+											"handle": [
+												{
+													"handler": "static_response",
+													"headers":
+														{
+															"Location": [ "https://www.salamanca.school{http.request.uri}" ]
+														},
+													"status_code": 302
+												}
+											]
+										}
+									]
+								}
+							],
+							"terminal":true
+						},
+						{
+							"match": [
+								{
+									"host": [
 										"c100-101.cloud.gwdg.de",
 										"salamanca.school",
 										"www.salamanca.school"
