@@ -1,0 +1,134 @@
+{{ $domain := "salamanca.school" }}
+{{ $map := index .Args 0 }}
+{{ $id := $map.id }}
+{{ $title := $map.title }}
+{{ $author := $map.author }}
+{{ $abstract := $map.abstract }}
+{{ $keywords := $map.keywords }}
+{{ $language := $map.language }}
+{{ $year := $map.year }}
+{{ $wpserno := $map.serialnumber }}
+{{ $wpurn := $map.urn }}
+{{ $pdfurl := $map.pdfurl }}
+{{ $image_filename := $map.image_filename }}
+{{ $searchterm := placeholder "http.request.uri.query.q" }}
+{{ $info := dict "page" "workingpaper.html" "title" "{{ $author }} - {{ $title }}. Salamanca Working Paper No. {{ $wpserno }}" "header" "" "description" "" "domain" $domain }}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ $author }} - {{ $title }}. Salamanca Working Paper No. {{ $wpserno }}</title>
+        <meta name="author" content="{{ $author }}">
+        <meta name="description" content="Salamanca Working Paper No. {{ $wpserno }}">
+
+        <link rel="canonical"                  href="https://id.{{ $domain }}/workingpapers/{{$id}}"/>
+        <link rel="alternate"    hreflang="de" href="https://id.{{ $domain }}/workingpapers/{{$id}}?lang=de{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
+        <link rel="alternate"    hreflang="en" href="https://id.{{ $domain }}/workingpapers/{{$id}}?lang=en{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
+        <link rel="alternate"    hreflang="es" href="https://id.{{ $domain }}/workingpapers/{{$id}}?lang=es{{ if $searchterm }}&q={{ $searchterm }}{{ end }}">
+        
+        <!-- ==== CSS ==== -->
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="/resources/css/backTop.css"> 
+        <link rel="stylesheet" type="text/css" href="/resources/css/style-default.css">
+        
+        <!-- ==== Scripts ==== -->
+        <script type="text/javascript" src="/resources/js/jquery-1.js"                                   defer></script>
+        <script type="text/javascript" src="/resources/js/bootstrap.js"                                  defer></script>
+        <script type="text/javascript" src="/resources/js/jquery-ui.js"                                  defer></script>
+        <script type="text/javascript" src="/resources/js/jquery.js"                                     defer></script><!-- this is only the backTop function -->
+        <script type="text/javascript" src="/resources/js/jquery.tooltipster.js"                         defer></script>
+        <script type="text/javascript" src="/resources/js/sal-common.js"                                 defer></script>
+        
+        {{- include "/resources/partials/favicons.html" .}}
+    </head>
+
+    <body id="body">
+
+        <!-- Header and Navbar -->
+{{- include "/resources/templates/template-navbar.html" $info}}
+
+        <!-- Main page area -->
+        <div id="content" class="container-fluid">
+
+            <!-- Heading -->
+            <div class="container">
+                <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+                    <span class="text-muted">
+                        <a title="zurück" href="/workingpapers.html"><i class="fa fa-reply"></i></a>
+                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        Salamanca Working Papers Series (ISSN 2509-5080), No. {{ $wpserno }}
+                        <hr>
+                    </span>
+                </h2>
+                <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+                    <span class="text-muted">
+                        <a title="zurück" href="/workingpapers.html"><i class="fa fa-reply"></i></a>
+                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        Salamanca Working Papers Series (ISSN 2509-5080), No. {{ $wpserno }}
+                        <hr>
+                    </span>
+                </h2>
+                <h2 class="hidden-lg hidden-md">
+                    <span class="text-muted">
+                        <a title="zurück" href="/workingpapers.html"><i class="fa fa-reply"></i></a>
+                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        Salamanca Working Papers Series (ISSN 2509-5080), No. {{ $wpserno }}
+                        <hr>
+                    </span>
+                </h2>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <img style="width:90%; border-style: solid; border-width:0.1px; border-color:#E7E7E7; height: auto;" src="/resources/images/wp_cover/{{ $image_filename }}">
+                </div>
+                <div class="col-md-8">
+                    <span class="lead">
+                        {{ $author }}:
+                        <span style="text-align: justify;">{{ $title }}</span>,
+                        Salamanca WP No. {{ $wpserno }}.
+                    </span>
+                    <br>
+                    <br>
+                    <h4>Abstract</h4>
+                    <span>{{ $abstract }}</span>
+                    <br>
+                    <h4>Keywords</h4>
+                    <span>{{ $keywords }}</span>
+
+                    <div class="row">
+                        <div class="col-md-4 bs-callout bs-callout-info">
+                            <h4>PDF</h4>
+                            <a href="{{ $pdfurl }}">
+                                <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                                Download
+                            </a>
+                        </div>
+                        <div class="col-md-4 bs-callout bs-callout-info">
+                            <h4>URN</h4>
+                            <a href="http://nbn-resolving.de/urn/resolver.pl?{{ $wpurn }}" target="_blank">
+                                <ref type="url">{{ $wpurn }}</ref>
+                                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <div class="col-md-4 bs-callout bs-callout-info">
+                            <h4>Sprache</h4>
+                            {{ $language }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==== Back to top ==== -->
+        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
+
+{{ include "/resources/templates/template-footer.html" }}
+    </body>
+</html>

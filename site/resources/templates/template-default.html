@@ -21,19 +21,13 @@
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
         <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/css/style_default.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/style-default.css"/>
     {{ if eq $info.page "guidelines.html" }}<!-- For Guidelines page -->
         <link rel="stylesheet" type="text/css" href="/resources/css/shCoreDefault.css"/>
     {{ end }}
     {{ if eq $info.page "search.html" }}<!-- For Search page -->
         <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/ispinner.prefixed.css"/>
-    {{ end }}
-    {{ if eq $info.page "work.html" }}<!-- For Work page -->
-        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
-        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css"/>
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css">
-        <link rel="stylesheet" type="text/css" href="/resources/css/style_work.css"/>
     {{ end }}
     {{ if eq $info.page "works.html" }}<!-- For Works overview page -->
     {{ end }}
@@ -50,15 +44,6 @@
     {{ if eq $info.page "search.html" }}<!-- For Search page -->
         <script type="text/javascript" src="/resources/js/sal-search.js" defer></script>
     {{ end }}
-    {{ if eq $info.page "work.html" }}<!-- For Work page -->
-        <script type="text/javascript" src="/resources/js/jquery.bootstrap-autohidingnavbar.js" defer></script>
-        <script type="text/javascript" src="/resources/js/jquery.tooltipster.js" defer></script>
-        <!-- script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@3.1.0-beta.1/dist/infinite-ajax-scroll.min.js" defer></script -->
-        <script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@^3/dist/infinite-ajax-scroll.min.js"></script>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.9/jstree.min.js" defer></script>
-        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.js"></script>
-        <script type="text/javascript" src="/resources/js/sal-work.js" defer></script>
-    {{ end }}
     {{ if eq $info.page "works.html" }}<!-- For Works page -->
         <script type="text/javascript" src="/resources/js/underscore-1.1.7.js" defer></script>
         <script type="text/javascript" src="/resources/js/facetedsearchWrks.js" defer></script>
@@ -67,13 +52,15 @@
 
         <script type="text/javascript" src="/resources/js/sal-common.js" defer></script>
 
-        {{- include "resources/partials/favicons.html" .}}
+        {{- include "/resources/partials/favicons.html" .}}
 
         <meta name="google-site-verification" content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M">
     </head>
 
     <body id="body">
-{{include "resources/templates/template_navbar.html" $info}}
+
+        <!-- Header and Navbar -->
+{{- include "/resources/templates/template-navbar.html" $info}}
 
         <!-- Main page area -->
         <div id="content" class="container-fluid">
@@ -103,8 +90,9 @@
             <!-- Page content -->{{ $info.content }}
         </div>
 
+        <!-- ==== Back to top ==== -->
         <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
 
-{{ include "/resources/templates/template_footer.html" }}
+{{ include "/resources/templates/template-footer.html" }}
     </body>
 </html>

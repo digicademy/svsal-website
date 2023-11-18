@@ -23,7 +23,7 @@
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
         <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
         <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/css/style_default.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/style-default.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/ispinner.prefixed.css">
 
@@ -52,7 +52,7 @@
         <div id="wrap">
 
             <!-- Header and Navbar -->
-{{include "resources/templates/template_navbar.html" $info}}
+{{include "/resources/templates/template-navbar.html" $info}}
 
             <!-- Main page area -->
             <div id="content" class="container-fluid">
@@ -190,7 +190,7 @@
                                                 </a>
                                             </div>
                                         </li>
-                                        <li><a href="/viewer_standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimiles</a></li>
+                                        <li><a href="/viewer-standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimiles</a></li>
                                     </ul>
                                 </div>
                                 <hr>
@@ -253,7 +253,7 @@
                                     </tbody>
                                 </table>
                                 <span><a href="https://id.{{ $domain }}/texts/{{ $wid }}:vol{{ .num }}?mode=details"><span class="fa fa-arrow-right"></span> Full catalogue record</a></span><br>
-                                <span><a href="/viewer_standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer"><span class="fa fa-arrow-right"></span> Facsimiles</a></span>
+                                <span><a href="/viewer-standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer"><span class="fa fa-arrow-right"></span> Facsimiles</a></span>
                             </div>
                         </div>
     {{ end }}
@@ -262,7 +262,7 @@
                 </div>
             </div>
 
-{{ include "/resources/templates/template_footer.html" }}
+{{ include "/resources/templates/template-footer.html" }}
 
         </div>
             

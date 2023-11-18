@@ -94,7 +94,7 @@ var item_template =
 					'</p>' +
 						'<a title="<%=obj.facsAttrib %>" class="workImages pull-right" target="_blank" rel="noopener noreferrer" href="<%= obj.workImages %>"><i class="fas fa-book-open" ></i> <%=obj.facsAttrib %></a>' +
 					'<br/>' +
-					'<a title="<%=obj.titAttrib %>" class="workDetails pull-right" href="<%= obj.workDetails %>"><i class="fas fa-file-alt" ></i> <%=obj.titAttrib %></a>' +
+					'<a title="<%=obj.titAttrib %>" class="workDetails pull-right" href="<%= obj.workdetails %>"><i class="fas fa-file-alt" ></i> <%=obj.titAttrib %></a>' +
 						'<a style="display: none;"  ><%= obj.sortName %></a>' +
 				'</div>' +
 			'</div>' +
