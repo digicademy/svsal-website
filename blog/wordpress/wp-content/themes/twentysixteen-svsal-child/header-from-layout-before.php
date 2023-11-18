@@ -37,7 +37,7 @@
 <li><a href="<?php _e("[:de] http://www.salamanca.school/authors.html?lang=de [:en] http://www.salamanca.school/authors.html?lang=en [:es] http://www.salamanca.school/authors.html?lang=es"); ?>">
 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&#160;<?php _e("[:de] Autoren [:en] Authors [:es] Autores "); ?></a></li>
 
-<li><a href="<?php _e("[:de] http://www.salamanca.school/workingPapers.html?lang=de [:en] http://www.salamanca.school/workingPapers.html?lang=en [:es] http://www.salamanca.school/workingPapers.html?lang=es"); ?>">
+<li><a href="<?php _e("[:de] http://www.salamanca.school/workingpapers.html?lang=de [:en] http://www.salamanca.school/workingpapers.html?lang=en [:es] http://www.salamanca.school/workingpapers.html?lang=es"); ?>">
 <i class="fa fa-pencil" aria-hidden="true"></i>&#160;<?php _e("[:de] Working Papers [:en] Working Papers [:es] Working Papers "); ?></a></li>
 
 <li><a href="<?php _e("[:de] http://www.salamanca.school/search.html?lang=de [:en] http://www.salamanca.school/search.html?lang=en [:es] http://www.salamanca.school/search.html?lang=es"); ?>">
@@ -49,7 +49,7 @@
                 		<li><a href="http://www.salamanca.school/works.html"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&#160;Werke</a></li>  
 				<li><a href="http://www.salamanca.school/dictionary.html"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&#160;W&ouml;rterbuch</a></li>
                		<li><a href="http://www.salamanca.school/authors.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&#160;Autoren</a></li>
-               		<li><a href="http://www.salamanca.school/workingPapers.html"><i class="fa fa-pencil" aria-hidden="true"></i>&#160;Working Papers</a></li>
+               		<li><a href="http://www.salamanca.school/workingpapers.html"><i class="fa fa-pencil" aria-hidden="true"></i>&#160;Working Papers</a></li>
 				<li><a href="http://www.salamanca.school/search.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&#160;Suche</a></li>-->
 
               		<li role="presentation" class="dropdown hidden-lg">

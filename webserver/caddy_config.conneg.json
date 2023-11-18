@@ -398,7 +398,7 @@
 										{
 											"match": [
 												{
-													"path": [ "/workDetails.html" ]
+													"path": [ "/workdetails.html" ]
 												}
 											],
 											"handle": [
