@@ -1,0 +1,105 @@
+{{ $domain := "salamanca.school" }}
+{{ $info := dict "page" "dictionary.html" "title" "Dictionary" "header" "Dictionary" "description" "Overview of dictionary articles available in the project" "domain" $domain}}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="">
+        <meta name="description" content="{{ $info.description }}">
+        <title>{{ if $info.title }}{{ $info.title }} - {{ end }}The School of Salamanca</title>
+
+        <link rel="canonical" href="https://www.{{ $domain }}/{{ $info.page }}">
+        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}?lang=de">
+        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}?lang=en">
+        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}?lang=es">
+
+        <!-- ==== CSS ==== -->
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
+        <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/style-default.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
+
+        <!-- ==== Javascript ==== -->
+        <script type="text/javascript" src="/resources/js/jquery-1.js" defer></script>
+        <script type="text/javascript" src="/resources/js/bootstrap.js" defer></script>
+        <script type="text/javascript" src="/resources/js/jquery-ui.js" defer></script>
+        <script type="text/javascript" src="/resources/js/jquery.js" defer></script><!-- this is only the backTop function -->
+        <script type="text/javascript" src="/resources/js/underscore-1.1.7.js" defer></script>
+        <script type="text/javascript" src="/resources/js/facetedsearchWrks.js" defer></script>
+        <script type="text/javascript" src="/resources/js/sal-common.js" defer></script>
+        <script type="text/javascript" src="/resources/js/sal-dictionary.js" defer></script>
+
+        {{- include "/resources/partials/favicons.html" .}}
+
+        <meta name="google-site-verification" content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M">
+    </head>
+
+    <body id="body">
+{{include "/resources/templates/template-navbar.html" $info}}
+
+            <div id="content" class="container-fluid">
+                <div class="container">
+                    <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+                        <span class="text-muted">
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
+                        <hr>
+                    </h2>
+                    <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+                        <span class="text-muted">
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
+                        <hr>
+                    </h2>
+                    <h2 class="hidden-lg hidden-md">
+                        <span class="text-muted">
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
+                        <hr>
+                    </h2>
+
+                    <div style="margin-bottom:1em;border:1px solid gray;border-radius:5px;"><!-- introductory note -->
+                        <div style="padding:0.2em;text-align:justify">
+                            The dictionary of the project "The School of Salamanca" comprises
+                            articles for approx. 200 words of the juridical-political language, which are successively published on this page.
+                            For this purpose, the texts are encoded according to the specifications of the Text Encoding Initiative (TEI).
+                        </div>
+                    </div>
+                    <div class="row"><!-- main area -->
+                        <div class="col-md-3 hidden-xs hidden-sm"><!-- left column with facets and corpus info -->
+                            <ul class="fadeIn" id="facets" style="padding-top: 20%; padding-left: 5%"></ul>
+                            <!-- <noscript><!-/- show this as facets when js is disabled -/->
+                                    <div style="margin-top: -13%;">
+                                        <span>   <span class="lead" style="color: #999999;">
+                                                    <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span>Sort
+                                                </span>
+                                                <ul class="list-unstyled">
+                                                    <li><a href="dictionary.html?sort=surname" role="button" class="btn btn-link">Surname</a></li>
+                                                    <li><a href="dictionary.html?sort=title" role="button" class="btn btn-link">Title</a></li>
+                                                </ul>
+                                        </span>
+                                    </div>
+                                </noscript>
+                            -->
+                        </div>
+                        <div class="col-md-9" id="results" style="padding-top: 5%"><!-- Main area -->
+                            <noscript><!-- show this when js is disabled -->
+                                <div class="col-md-12" style="top: -27px; margin-bottom: -3%;">
+                                    <h3>Dictionary</h3>
+                                </div>
+                                {{include "data/dictionaryNoJs_en_title.html"}}
+                            </noscript>
+                        </div>
+                        <script type="text/javascript">
+                            var dictionaryItems = {{include "data/dictionary_en.json"}}
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
+
+{{include "/resources/templates/template-footer.html"}}
+    </body>
+</html>
