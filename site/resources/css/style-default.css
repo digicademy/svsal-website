@@ -278,6 +278,9 @@ li.toc {
 list-style-type:none; 
 font-size:0.95em
 }
+summary {
+cursor:pointer;
+}
 ul.toc {
 list-style:none outside none;
 margin-bottom:2px;

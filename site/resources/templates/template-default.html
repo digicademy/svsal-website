@@ -29,8 +29,6 @@
         <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/ispinner.prefixed.css"/>
     {{ end }}
-    {{ if eq $info.page "works.html" }}<!-- For Works overview page -->
-    {{ end }}
 
         <!-- ==== Javascript ==== -->
         <script type="text/javascript" src="/resources/js/jquery-1.js" defer></script>
@@ -44,12 +42,6 @@
     {{ if eq $info.page "search.html" }}<!-- For Search page -->
         <script type="text/javascript" src="/resources/js/sal-search.js" defer></script>
     {{ end }}
-    {{ if eq $info.page "works.html" }}<!-- For Works page -->
-        <script type="text/javascript" src="/resources/js/underscore-1.1.7.js" defer></script>
-        <script type="text/javascript" src="/resources/js/facetedsearchWrks.js" defer></script>
-        <script type="text/javascript" src="/resources/js/sal-works.js" defer></script>
-    {{ end }}
-
         <script type="text/javascript" src="/resources/js/sal-common.js" defer></script>
 
         {{- include "/resources/partials/favicons.html" .}}
