@@ -1,36 +1,37 @@
 {
-	debug
-	log {
-		output file /var/log/caddy/access.log
-		format console
-	}
-	email bla@foo.com # change this to your admin address
-	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory # Comment this out if everything works fine
-	# auto_https disable_redirects
+  debug
+  log {
+    output file /var/log/caddy/access.log
+    format console
+  }
+  email bla@foo.com # change this to your admin address
+  acme_ca https://acme-staging-v02.api.letsencrypt.org/directory # Comment this out if everything works fine
+  # auto_https disable_redirects
 }
+
 foo.com,
 www.foo.com {
-	# Define domain as a variable, so we only have to change it in one place (at least inside this site block)
-	# Probably it corresponds to hostname of the address served by this block, after the "id."
-	map 1 {mydomain} {
-		default "test.salamanca.school"
-	}
+  # Define domain as a variable, so we only have to change it in one place (at least inside this site block)
+  # Probably it corresponds to hostname of the address served by this block, after the "id."
+  map 1 {mydomain} {
+    default "test.salamanca.school"
+  }
 
-	# Compress responses according to Accept-Encoding headers
-	encode zstd gzip
+  # Compress responses according to Accept-Encoding headers
+  encode zstd gzip
 
-	# Enable http2 pushing
-	push
+  # Enable http2 pushing
+  push
 
-	# enable CORS headers
-	header {
-		Access-Control-Allow-Methods *
-		Access-Control-Allow-Headers *
-	}
+  # enable CORS headers
+  header {
+    Access-Control-Allow-Methods *
+    Access-Control-Allow-Headers *
+  }
 
-	# The following permanent redirection is for backwards compatibility only
-	# (we now access details at https://id.{mydomain}/texts/{wid}?mode=details
-	#  whereas earlier it was at https://www.{mydomain}/workdetails.html?wid={wid}
+  # The following permanent redirection is for backwards compatibility only
+  # ( we now access details at https://id.{mydomain}/texts/{wid}?mode=details
+  #   whereas earlier it was at https://www.{mydomain}/workdetails.html?wid={wid} )
         # More precisely, we need to translate this:
         #    https://www.salamanca.school/workdetails.html?wid=W0037_Vol04
         # to this:
@@ -42,183 +43,237 @@ www.foo.com {
         }
         redir /workdetails.html https://id.{mydomain}/texts/{id}?mode=details 301
 
-	# Templates give static sites some dynamic features
-	templates text/plain text/html text/javascript text/markdown text/xml application/xml application/json 
+  # Templates give static sites some dynamic features
+  templates text/plain text/html text/javascript text/markdown text/xml application/xml application/json 
 
-	# Serve everything else from the file system
-	root * /var/data/caddy/site
-	file_server
+  # Serve everything else from the file system
+  root * /var/data/caddy/site
+  file_server
 
-	# Make HTML file extension optional
-	try_files {path}.html {path}
+  # Make HTML file extension optional
+  try_files {path}.html {path}
 }
 
 api.foo.com {
-	# Compress responses according to Accept-Encoding headers
-	encode zstd gzip
+  # Compress responses according to Accept-Encoding headers
+  encode zstd gzip
 
-	# Enable http2 pushing
-	push
+  # Enable http2 pushing
+  push
 
-	# enable CORS headers
-	header {
-		Access-Control-Allow-Methods *
-		Access-Control-Allow-Headers *
-	}
+  # enable CORS headers
+  header {
+    Access-Control-Allow-Methods *
+    Access-Control-Allow-Headers *
+  }
 
-	rewrite * /exist/restxq{uri}
-	reverse_proxy localhost:8080 {
-		header_down Access-Control-Allow-Origin *
-		header_down Access-Control-Allow-Methods *
-		header_down Access-Control-Allow-Headers *
-	}
+  rewrite * /exist/restxq{uri}
+  reverse_proxy localhost:8080 {
+    header_down Access-Control-Allow-Origin *
+    header_down Access-Control-Allow-Methods *
+    header_down Access-Control-Allow-Headers *
+  }
 }
 
 id.foo.com {
-	# Enable CORS headers
-	header {
-		Access-Control-Allow-Origin *
-		Access-Control-Allow-Methods *
-		Access-Control-Allow-Headers *
-	}
+  # Enable CORS headers
+  header {
+    Access-Control-Allow-Origin *
+    Access-Control-Allow-Methods *
+    Access-Control-Allow-Headers *
+  }
 
-	# Define domain as a variable, so we only have to change it in one place (at least inside this site block)
-	# Probably it corresponds to hostname of the address served by this block, after the "id."
-	map 1 {mydomain} {
-		default "foo.com"
-	}
+  # Define domain as a variable, so we only have to change it in one place (at least inside this site block)
+  # Probably it corresponds to hostname of the address served by this block, after the "id."
+  map 1 {mydomain} {
+    default "foo.com"
+  }
 
-	# If a details view (catalogue page) is requested, encode this in an artificial {path}
-	map {query.mode} {full_path} {
-		"details" "{path}_details"
-		default "{path}"
-	}
+  # If a details view (catalogue page) is requested, encode this in an artificial {path}
+  map {query.mode} {full_path} {
+    "details" "{path}_details"
+    default "{path}"
+  }
 
-	# Prepare another map variable to hold passage id ←→ html fragment file associations
-	map {full_path} {myfile} {online} {
-		#   PATH                           FILE                                                                 ONLINE
-		# ------------------------------------------------------------------------------------------------------------
-		# /texts/W0004:1                   W0004/html/00003_W0004-00-0009-d1-03e9#W0004-00-0009-d1-03e9         yes
-		# /texts/W0014:frontmatter.2       W0014/html/00001_W0014-00-0006-fm-03e8.html#W0014-00-0010-d1-03e9    yes
-		# /texts/W0013:vol2.backmatter.3.1 W0013/html/00038_W0013-02-0892-bm-03e8.html#W0013-02-0930-pa-044d    yes
-		# /texts/W0013:vol2_details        W0013/html/W0013_Vol02_details.html                                  yes
-		# etc. (See how the last entry uses the info about a details view being requested that is encoded in the full_path variable
-		# This is being populated by API calls during runtime rather than hard-configured here.
-	}
+  # Prepare another map variable to hold passage id ←→ html fragment file associations
+  map {full_path} {myfile} {online} {
+    #   PATH                           FILE                                                                 ONLINE
+    # ------------------------------------------------------------------------------------------------------------
+    # /texts/W0004:1                   W0004/html/00003_W0004-00-0009-d1-03e9#W0004-00-0009-d1-03e9         yes
+    # /texts/W0014:frontmatter.2       W0014/html/00001_W0014-00-0006-fm-03e8.html#W0014-00-0010-d1-03e9    yes
+    # /texts/W0013:vol2.backmatter.3.1 W0013/html/00038_W0013-02-0892-bm-03e8.html#W0013-02-0930-pa-044d    yes
+    # /texts/W0013:vol2_details        W0013/html/W0013_Vol02_details.html                                  yes
+    # etc. (See how the last entry uses the info about a details view being requested that is encoded in the full_path variable
+    # This is being populated by API calls during runtime rather than hard-configured here.
+  }
 
-	# ===== We need (lots of) named matchers... =====
+  # ===== We need (lots of) named matchers... =====
 
-	@not_a_passage {
-		not {
-			path_regexp :
-		}
-	}
-	@work_id {
-		path_regexp wid /texts/(W[^:]+)
-	}
-	@html {
-		conneg {
-			match_types text/html
-			force_type_query_string format
-		}
-	}
-	@tei {
-		conneg {
-			match_types application/tei+xml
-			force_type_query_string format
-		}
-	}
-	@rdf {
-		conneg {
-			match_types application/rdf+xml
-			force_type_query_string format
-		}
-	}
-	@pdf {
-		conneg {
-			match_types application/pdf
-			force_type_query_string format
-		}
-	}
-	@txt_orig {
-		query mode=orig
-		conneg {
-			match_types text/plain
-			force_type_query_string format
-		}
-	}
-	@txt_edit {
-		query mode=edit
-		conneg {
-			match_types text/plain
-			force_type_query_string format
-		}
-	}
-	@txt_default {
-		conneg {
-			match_types text/plain
-			force_type_query_string format
-		}
-	}
+  @not_a_passage {
+    not {
+      path_regexp :
+    }
+  }
+  @work_id {
+    path_regexp wid /texts/(W[^:]+)
+  }
+  @html {
+    conneg {
+      match_types text/html
+      force_type_query_string format
+    }
+  }
+  @tei {
+    conneg {
+      match_types application/tei+xml
+      force_type_query_string format
+    }
+  }
+  @rdf {
+    conneg {
+      match_types application/rdf+xml
+      force_type_query_string format
+    }
+  }
+  @pdf {
+    conneg {
+      match_types application/pdf
+      force_type_query_string format
+    }
+  }
+  @txt_orig {
+    query mode=orig
+    conneg {
+      match_types text/plain
+      force_type_query_string format
+    }
+  }
+  @txt_edit {
+    query mode=edit
+    conneg {
+      match_types text/plain
+      force_type_query_string format
+    }
+  }
+  @txt_default {
+    conneg {
+      match_types text/plain
+      force_type_query_string format
+    }
+  }
 
-	# ===== Now comes the actual routing (mostly temporary redirects) ... ====
+  # ===== Now comes the actual routing (mostly temporary redirects) ... ====
 
-	# HTML is always served via mapped file fragments
-	handle @html {
-		redir /texts/* https://www.{mydomain}/data/{myfile} 302
-	}
+  # HTML is always served via mapped file fragments
+  handle @html {
+    redir /texts/* https://www.{mydomain}/data/{myfile} 302
+  }
 
-	# For other types, if a full work is requested, we have that prepared
-	# and can serve it from the filesystem.
-	handle @not_a_passage {
-		handle @tei {
-			redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.xml 302
-		}
-		handle @rdf {
-			redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.rdf 302
-		}
-		handle @pdf {
-			redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.pdf 302
-		}
-		handle @txt_orig {
-			redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_orig.txt 302
-		}
-		handle @txt_edit {
-			redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_edit.txt 302
-		}
-		handle @txt_default {
-			redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_edit.txt 302
-		}
-		# Do we need a default, or is it okay to respond with 404?
-	}
+  # For other types, if a full work is requested, we have that prepared
+  # and can serve it from the filesystem.
+  handle @not_a_passage {
+    handle @tei {
+      redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.xml 302
+    }
+    handle @rdf {
+      redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.rdf 302
+    }
+    handle @pdf {
+      redir @work_id https://www.{mydomain}/data/{re.wid.1}/{re.wid.1}.pdf 302
+    }
+    handle @txt_orig {
+      redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_orig.txt 302
+    }
+    handle @txt_edit {
+      redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_edit.txt 302
+    }
+    handle @txt_default {
+      redir @work_id https://www.{mydomain}/data/{re.wid.1}/text/{re.wid.1}_edit.txt 302
+    }
+    # Do we need a default, or is it okay to respond with 404?
+  }
 
-	# Otherwise, a (non-html) passage is requested and has to be
-	# generated on the fly, so we forward to the XQuery processor
-	handle {
-		rewrite * /exist/restxq{uri}
-		reverse_proxy localhost:8080 {
-			header_down Access-Control-Allow-Origin *
-			header_down Access-Control-Allow-Methods *
-			header_down Access-Control-Allow-Headers *
-		}
-	}
+  # Otherwise, a (non-html) passage is requested and has to be
+  # generated on the fly, so we forward to the XQuery processor
+  handle {
+    rewrite * /exist/restxq{uri}
+    reverse_proxy localhost:8080 {
+      header_down Access-Control-Allow-Origin *
+      header_down Access-Control-Allow-Methods *
+      header_down Access-Control-Allow-Headers *
+    }
+  }
 }
 
 search.foo.com {
-	# Compress responses according to Accept-Encoding headers
-	encode zstd gzip
+  # Compress responses according to Accept-Encoding headers
+  encode zstd gzip
 
-	# Enable http2 pushing
-	push
+  # Enable http2 pushing
+  push
 
-	# enable CORS headers
-	header {
-		Access-Control-Allow-Origin *
-		Access-Control-Allow-Methods *
-		Access-Control-Allow-Headers *
-	}
+  # enable CORS headers
+  header {
+    Access-Control-Allow-Origin *
+    Access-Control-Allow-Methods *
+    Access-Control-Allow-Headers *
+  }
 
-	root * /opt/opensphinxsearch/public
-	php_fastcgi unix//run/php/php-fpm.sock
-	file_server
+  root * /opt/opensphinxsearch/public
+  php_fastcgi unix//run/php/php-fpm.sock
+  file_server
+}
+
+facs.foo.com {
+
+    # I. Retrieve iiif manifests from filesystem
+    handle_path /iiif/presentation/* {
+
+        # find out work and volume numbers
+        map    {file}    {work}    {volume}    {
+            ~(([^_]*)(_[Vv]ol([0-9]+))?) "${2}" "${4}"
+            default    ""    ""
+        }
+
+        # strip all path components, only keep the request's filename,
+        # but prefix it with the work id as a folder
+        rewrite * /{work}/{file}
+
+        header Access-Control-Allow-Origin *
+        header Access-Control-Allow-Methods *
+        header Access-Control-Allow-Headers *
+
+        # make json file extension optional
+        try_files {path}.json {path}
+
+        # retrieve from filesystem
+        root * /var/data/caddy/site/data
+        file_server
+
+        # Alternative: do it via redirect to www.{mydomain}? Then it would be
+        # redir /iiif/presentation https://www.{mydomain}/data/{work}/{http.request.uri.path.file}.json 302
+    }
+
+    # II. Redirect iiif image requests to digilib image server,
+    #      eventually changing the path to the digilib resource
+    handle /iiif/image/* {
+
+        # find out the resource (i.e. everything beyond the iiif prefix)
+        map {path} {resource} {
+            ~/iiif/image/(.*) "${1}"
+            default "{file}"
+        }
+
+        # redirect to the iiif image service
+        # redir * https://iiif-server.com/digilib/Scaler/IIIF/svsal!{resource} 302
+        rewrite * /digilib/Scaler/IIIF/svsal!{resource}
+        reverse_proxy https://iiif-server.com {
+            header_up Host {upstream_hostport}
+        }
+    }
+
+    # III. Redirect everything else to web server on iiif server host
+    handle * {
+           redir * https://iiif-server.com/svsal{uri} 302
+    }
 }

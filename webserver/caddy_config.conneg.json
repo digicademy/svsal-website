@@ -9,7 +9,7 @@
 				"encoder": {
 					"format": "console"
 				},
-				"level": "DEBUG"
+				"level": "INFO"
 			}
 		}
 	},
@@ -398,7 +398,7 @@
 										{
 											"match": [
 												{
-													"path": [ "/workdetails.html" ]
+													"path": [ "/workDetails.html" ]
 												}
 											],
 											"handle": [
@@ -716,7 +716,9 @@
 															"match": [
 																{
 																	"path": [
-																		"/texts/*"
+																		"/texts/*",
+																																																																								"/workingpapers/*",
+																																																																								"/lemmata/*"
 																	]
 																}
 															]
@@ -1062,7 +1064,201 @@
 								}
 							],
 							"terminal": true
+						},
+
+						{
+							"match": [
+								{
+									"host": [
+										"facs.salamanca.school"
+									]
+								}
+							],
+							"handle": [
+								{
+									"handler": "subroute",
+									"routes": [
+										{
+											"group": "group3",
+											"match": [ { "path": [ "/iiif/presentation/*" ] } ],
+											"handle": [
+												{
+													"handler": "subroute",
+													"routes": [
+														{
+															"handle": [
+																{
+																	"handler": "vars",
+																	"root": "/var/data/caddy/site/data"
+																},
+																{
+																	"handler": "map",
+																	"destinations": [ "{work}", "{volume}" ],
+																	"source": "{http.request.uri.path.file}",
+																	"Defaults": [ "", "" ],
+																	"mappings": [
+																		{
+																			"input_regexp": "(([^_]*)(_[Vv]ol([0-9]+))?)",
+																			"outputs": [ "${2}", "${4}" ]
+																		}
+																	]
+																},
+																{
+																	"handler": "headers",
+																	"response": {
+																		"set": {
+																			"Access-Control-Allow-Origin": [ "*" ],
+																			"Access-Control-Allow-Methods": [ "*" ],
+																			"Access-Control-Allow-Headers": [ "*" ]
+																		}
+																	}
+																}
+															]
+														},
+														{
+															"group": "group0",
+															"handle": [
+																{
+																	"handler": "rewrite",
+																	"uri": "/{work}/{http.request.uri.path.file}"
+																}
+															]
+														},
+														{
+															"handle": [
+																{
+																	"handler": "rewrite",
+																	"uri": "{http.matchers.file.relative}"
+																}
+															],
+															"match": [
+																{
+																	"file": {
+																		"try_files": [
+																			"{http.request.uri.path}.json",
+																			"{http.request.uri.path}"
+																		]
+																	}
+																}
+															]
+														},
+														{
+															"handle": [
+																{
+																	"handler": "file_server",
+																	"hide": [
+																		"./Caddyfile"
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										},
+										{
+											"group": "group3",
+											"match": [ { "path": [ "/iiif/image/*" ] } ],
+											"handle": [
+												{
+													"handler": "subroute",
+													"routes": [
+														{
+															"handle": [
+																{
+																	"Defaults": [
+																		"{http.request.uri.path.file}"
+																	],
+																	"destinations": [
+																		"{resource}"
+																	],
+																	"handler": "map",
+																	"mappings": [
+																		{
+																			"input_regexp": "/iiif/image/(.*)",
+																			"outputs": [
+																				"${1}"
+																			]
+																		}
+																	],
+																	"source": "{http.request.uri.path}"
+																}
+															]
+														},
+														{
+															"group": "group1",
+															"handle": [
+																{
+																	"handler": "rewrite",
+																	"uri": "/digilib/Scaler/IIIF/svsal!{resource}"
+																}
+															]
+														},
+														{
+															"handle": [
+																{
+																	"handler": "reverse_proxy",
+																	"headers": {
+																		"request": {
+																			"set": {
+																				"Host": [
+																					"{http.reverse_proxy.upstream.host}"
+																				]
+																			}
+																		}
+																	},
+																	"transport": {
+																		"protocol": "http",
+																		"tls": {}
+																	},
+																	"upstreams": [
+																		{
+																			"dial": "c099-013.cloud.gwdg.de:443"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										},
+										{
+											"group": "group3",
+											"handle": [
+												{
+													"handler": "subroute",
+													"routes": [
+														{
+															"handle": [
+																{
+																	"handler": "static_response",
+																	"status_code": 302,
+																	"headers": {
+																		"Location": [ "https://c099-013.cloud.gwdg.de/svsal{http.request.uri}" ]
+																	}
+																}
+															]
+														}
+													]
+												}
+											]
+										},
+										{
+											"handle": [
+												{
+													"body": "Not Found",
+													"handler": "static_response",
+													"status_code": 404
+												}
+											]
+										}
+									]
+								}
+							],
+							"terminal": true
 						}
+
 					]
 				}
 			}
@@ -1076,6 +1272,7 @@
 							"salamanca.school",
 							"www.salamanca.school",
 							"search.salamanca.school",
+							"facs.salamanca.school",
 							"api.salamanca.school",
 							"id.salamanca.school",
 							"blog.salamanca.school",
