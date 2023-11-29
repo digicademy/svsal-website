@@ -1079,6 +1079,14 @@
 									"handler": "subroute",
 									"routes": [
 										{
+											"handle": [
+												{
+													"handler": "rewrite",
+													"strip_path_suffix": "/manifest"
+												}
+											]
+										},
+										{
 											"group": "group3",
 											"match": [ { "path": [ "/iiif/presentation/*" ] } ],
 											"handle": [

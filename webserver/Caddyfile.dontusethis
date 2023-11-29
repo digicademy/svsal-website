@@ -226,6 +226,9 @@ search.foo.com {
 
 facs.foo.com {
 
+    # we don't use the recommended manifest suffix but just the work identifier
+    uri strip_suffix /manifest
+
     # I. Retrieve iiif manifests from filesystem
     handle_path /iiif/presentation/* {
 
