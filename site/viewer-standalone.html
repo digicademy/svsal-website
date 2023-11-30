@@ -68,7 +68,7 @@
                 language: getLang(),
                 // manifestUrl: 'https://id.{{ $domain }}/texts/{{$id}}?format=iiif',       // https://example.com/iiif/manifest.json',
                 // manifestUrl: 'https://www.{{ $domain }}/de/iiif-out.xql?wid={{$id}}',    // https://example.com/iiif/manifest.json',
-                manifestUrl: `https://www.{{ $domain }}/data/${wid}/${wid}.json`,           // https://example.com/iiif/manifest.json',
+                manifestUrl: `https://facs.{{ $domain }}/iiif/presentation/${wid}`,           // https://example.com/iiif/manifest.json',
                 pageLabelFormat: 'P', // P: physical page number, L: logical page number
                 // pages: [0, 3], // default: null. The page(s) to display initially. If null, the initial page is determined by the manifest’s startCanvas
                 // pan: { x: .45, y: .6 }, // Initial pan. By default, the image is centered
