@@ -641,55 +641,36 @@
 										{
 											"handle": [
 												{
-													"defaults": [
-														"salamanca.school"
-													],
-													"destinations": [
-														"{mydomain}"
-													],
 													"handler": "map",
-													"source": "1"
+													"source": "1",
+													"destinations": [ "{mydomain}" ],
+													"defaults": [ "salamanca.school" ]
 												},
 												{
-													"defaults": [
-														"{http.request.uri.path}"
-													],
-													"destinations": [
-														"{full_path}"
-													],
 													"handler": "map",
+													"source": "{http.request.uri.query.mode}",
+													"destinations": [ "{full_path}" ],
+													"defaults": [ "{http.request.uri.path}" ],
 													"mappings": [
 														{
 															"input": "details",
-															"outputs": [
-																"{http.request.uri.path}_details"
-															]
+															"outputs": [ "{http.request.uri.path}_details" ]
 														}
-													],
-													"source": "{http.request.uri.query.mode}"
+													]
 												},
 												{
  													"@id": "routing_map",
-													"destinations": [
-														"{myfile}",
-														"{online}"
-													],
-													"handler": "map",
-													"source": "{full_path}"
+													 "handler": "map",
+													 "source": "{full_path}",
+													 "destinations": [ "{myfile}", "{online}" ]
 												},
 												{
 													"handler": "headers",
 													"response": {
 														"set": {
-															"Access-Control-Allow-Headers": [
-																"*"
-															],
-															"Access-Control-Allow-Methods": [
-																"*"
-															],
-															"Access-Control-Allow-Origin": [
-																"*"
-															]
+															"Access-Control-Allow-Headers": [ "*" ],
+															"Access-Control-Allow-Methods": [ "*" ],
+															"Access-Control-Allow-Origin": [ "*" ]
 														}
 													}
 												}
@@ -705,20 +686,18 @@
 															"handle": [
 																{
 																	"handler": "static_response",
+																	"status_code": 302,
 																	"headers": {
-																		"Location": [
-																			"https://www.{mydomain}/data/{myfile}"
-																		]
-																	},
-																	"status_code": 302
+																		"Location": [ "https://www.{mydomain}/data/{myfile}" ]
+																	}
 																}
 															],
 															"match": [
 																{
 																	"path": [
 																		"/texts/*",
-																																																																								"/workingpapers/*",
-																																																																								"/lemmata/*"
+																		"/workingpapers/*",
+																		"/lemmata/*"
 																	]
 																}
 															]
@@ -1065,7 +1044,6 @@
 							],
 							"terminal": true
 						},
-
 						{
 							"match": [
 								{
@@ -1266,7 +1244,6 @@
 							],
 							"terminal": true
 						}
-
 					]
 				}
 			}
