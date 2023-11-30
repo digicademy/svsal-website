@@ -166,7 +166,11 @@
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Library link:</td>
-                                                <td class="col-md-9" style="line-height: 1.2"><a href="{{ $info.hold_idno }}">{{ $info.hold_idno }}</a></td>
+                                                <td class="col-md-9" style="line-height: 1.2">
+                                                {{ range $v := splitList " " $info.hold_idno }}
+                                                    <a href="#">{{ $v }}</a><br/>
+                                                {{ end }}
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -190,7 +194,7 @@
                                                 </a>
                                             </div>
                                         </li>
-                                        <li><a href="/viewer-standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimiles</a></li>
+                                        <li><a href="/viewer-standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimile View</a></li>
                                     </ul>
                                 </div>
                                 <hr>
@@ -209,6 +213,9 @@
                                         <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=tei">XML (TEI P5)</a></li>
                                         <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=txt&amp;mode=edit">Text (constituted)</a></li>
                                         <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=txt&amp;mode=orig">Text (diplomatic)</a></li>
+                                        {{ if not $info.volumes }}
+                                        <li><a href="https://facs.{{ $domain }}/{{ $wid }}/{{ $wid }}.pdf">Pdf with facsimile images</a></li>
+                                        {{ end }}
                                     </ul>
                                 </div>
                             </div>
@@ -250,10 +257,22 @@
                                             <td class="col-md-2" style="line-height: 1.2">Electronic publication:</td>
                                             <td class="col-md-10" style="line-height: 1.2">{{ .el_publication_date }}</td>
                                         </tr>
+                                        <tr>
+                                            <td class="col-md-3" style="line-height: 1.2">Holding library:</td>
+                                            <td class="col-md-9" style="line-height: 1.2">{{ .hold_library }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-3" style="line-height: 1.2">Library link:</td>
+                                            <td class="col-md-9" style="line-height: 1.2">
+                                            {{ range $v := splitList " " .hold_idno }}
+                                                <a href="#">{{ $v }}</a><br/>
+                                            {{ end }}
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <span><a href="https://id.{{ $domain }}/texts/{{ $wid }}:vol{{ .num }}?mode=details"><span class="fa fa-arrow-right"></span> Full catalogue record</a></span><br>
-                                <span><a href="/viewer-standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer"><span class="fa fa-arrow-right"></span> Facsimiles</a></span>
+                                <span><a href="/viewer-standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer"><span class="fa fa-arrow-right"></span> Facsimile View</a></span>
                             </div>
                         </div>
     {{ end }}
