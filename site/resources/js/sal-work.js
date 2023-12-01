@@ -1,4 +1,45 @@
 
+function getI18nAccessString () {
+  var accessed;
+  var date;
+  var lang = getLang();
+  if (!['es', 'de', 'en'].includes(lang)) lang = 'en';
+  var current = new Date();
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  if (lang === 'de'){
+      accessed = 'Aufgerufen am';
+      date = current.toLocaleDateString('de-DE', options);
+  } else if (lang === 'es'){
+      accessed = 'Consultado por última vez el';
+      date = current.toLocaleDateString('es-ES', options);
+  } else {
+      accessed = 'Accessed';
+      date = current.toLocaleDateString('en-GB', options);
+  }
+  return '(' + accessed + ' ' + date + ')';
+}
+function getUrlParams (prop) {
+  var params = {};
+  var search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
+  var definitions = search.split( '&' );
+
+  definitions.forEach( function( val, key ) {
+      var parts = val.split( '=', 2 );
+      params[ parts[ 0 ] ] = parts[ 1 ];
+  } );
+
+  return ( prop && prop in params ) ? params[ prop ] : params;
+}
+function getLang () {
+  if (getUrlParams('lang').length > 0 
+          && ['de','en','es'].indexOf(getUrlParams('lang').substring(0,2)) >= 0) {
+      return getUrlParams('lang').substring(0,2);
+  }
+  else if (window.location.href.indexOf('/de/') != -1) return 'de';
+  else if (window.location.href.indexOf('/es/') != -1) return 'es';
+  else return 'en';
+}
+
 function highlightSpanClassInText (htmlClass, invokingElement) {
   // make all htmlClass elements have the inverse highlighting of the invoking element ...
   if (document.getElementById(invokingElement).classList.contains('highlighted')) {
@@ -211,123 +252,119 @@ function copyCitRef (elem) {
     copyNotify(elem);
     document.body.removeChild(input);
 }
+function copyNotify (elem) {
+  var del = elem.parentElement.getElementsByClassName('.copy-alert')[0];
+  if (typeof variable !== 'undefined' && variable !== null) {
+      elem.parentElement.removeChild(del);
+  }
+  var language = getLang();
+  console.log('$lang=' + language);
+  var msg;
+  if (language === 'de') {
+      msg = 'In die Zwischenablage kopiert'
+  } else if (language === 'es') {
+      msg = 'Copiado al portapapeles'
+  } else {
+      msg = 'Copied to clipboard'
+  }
+  var popup = document.createElement('span');
+  popup.setAttribute('class', 'copy-alert');
+  popup.textContent = msg;
+  elem.parentElement.appendChild(popup);
+  setTimeout(function() {
+      $('.copy-alert').fadeOut(1000);
+  }, 1500);
+}
 
 // Image Viewer
-function getI18nAccessString () {
-    var accessed;
-    var date;
-    var lang = getLang();
-    if (!['es', 'de', 'en'].includes(lang)) lang = 'en';
-    var current = new Date();
-    var options = { year: 'numeric', month: 'long', day: 'numeric' };
-    if (lang === 'de'){
-        accessed = 'Aufgerufen am';
-        date = current.toLocaleDateString('de-DE', options);
-    } else if (lang === 'es'){
-        accessed = 'Consultado por última vez el';
-        date = current.toLocaleDateString('es-ES', options);
-    } else {
-        accessed = 'Accessed';
-        date = current.toLocaleDateString('en-GB', options);
-    }
-    return '(' + accessed + ' ' + date + ')';
-}
-function copyNotify (elem) {
-    var del = elem.parentElement.getElementsByClassName('.copy-alert')[0];
-    if (typeof variable !== 'undefined' && variable !== null) {
-        elem.parentElement.removeChild(del);
-    }
-    var language = getLang();
-    console.log('$lang=' + language);
-    var msg;
-    if (language === 'de') {
-        msg = 'In die Zwischenablage kopiert'
-    } else if (language === 'es') {
-        msg = 'Copiado al portapapeles'
-    } else {
-        msg = 'Copied to clipboard'
-    }
-    var popup = document.createElement('span');
-    popup.setAttribute('class', 'copy-alert');
-    popup.textContent = msg;
-    elem.parentElement.appendChild(popup);
-    setTimeout(function() {
-        $('.copy-alert').fadeOut(1000);
-    }, 1500);
-}
-
-function getUrlParams (prop) {
-    var params = {};
-    var search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
-    var definitions = search.split( '&' );
-
-    definitions.forEach( function( val, key ) {
-        var parts = val.split( '=', 2 );
-        params[ parts[ 0 ] ] = parts[ 1 ];
-    } );
-
-    return ( prop && prop in params ) ? params[ prop ] : params;
-}
-
-function getLang () {
-    if (getUrlParams('lang').length > 0 
-            && ['de','en','es'].indexOf(getUrlParams('lang').substring(0,2)) >= 0) {
-        return getUrlParams('lang').substring(0,2);
-    }
-    else if (window.location.href.indexOf('/de/') != -1) return 'de';
-    else if (window.location.href.indexOf('/es/') != -1) return 'es';
-    else return 'en';
-}
-
-let domain = document.getElementById('Viewer').dataset.domain
-let wid = document.getElementById('Viewer').dataset.wid
-
-let tifyOptions = {
+async function loadTify (manifest) {
+  let tifyOptions = {
     container: '#Viewer',
-    // filters: { brightness: 0.5, contrast: 0.5, saturation: 2.3 },
     language: getLang(),
-    manifestUrl: 'https://www.' + domain + '/data/' + wid + '/' + wid + '.json',       // https://example.com/iiif/manifest.json',
+    manifestUrl: manifest,       // https://example.com/iiif/manifest.json',
     pageLabelFormat: 'P', // P: physical page number, L: logical page number
-    // pages: [0, 3], // default: null. The page(s) to display initially. If null, the initial page is determined by the manifest’s startCanvas
-    // pan: { x: .45, y: .6 }, // Initial pan. By default, the image is centered
-    // urlQueryKey: 'salView1', // Specify instance to manipulate via query parameters
-    // urlQueryParams: [], // Which settings can be manipulated via query parameters? Default: ['filters', 'pages', 'pan', 'rotation', 'view', 'zoom'] 
-    // view: '', // Default: ''. The initially displayed view (panel); scan, fulltext, thumbnails, toc, info, help, or empty (same as scan).
-    // viewer: {}, // An object with options for OpenSeadragon
     zoom: null,
-}
-let myViewer = new Tify (tifyOptions)
-// myViewer.mount('#Viewer');
-
-function setTifyPage (canvasId, title) {
-  var canvases = myViewer.app.canvases;
-  // console.log(canvases);
-  // console.log(`search canvases for @id === ${canvasId} ...`);
-  var targetCanvas = canvases.find((x) => x['@id'] === canvasId);
-  // console.log(`found canvas:`);
-  // console.log(targetCanvas);
-  if (typeof targetCanvas !== "undefined") {
-    var targetPage = targetCanvas.page;
-    // console.log(`found page number ${targetPage}.`);
-    myViewer.ready.then(() => {
-      myViewer.setPage([targetPage])
-    })
-    // Update some values of the dialog popup window
-    $('#parent small').text(title)         // update Viewer Heading
-    $('#parent div').attr('title', title)  // update Viewer Title
-    // // $('#Viewer')[0].contentDocument.getElementById('downloadImages').href = 'http://facs.salamanca.school/{{$id}}/{{$id}}.zip';  // update Download button
-    // $('#Viewer')[0].contentDocument.getElementById('downloadImages').setAttribute('download', '{{$id}}.zip');  // update Download button
   }
-};
+  myViewer = new Tify (tifyOptions)
+}
+
+/*
+  let domain = document.getElementById('Viewer').dataset.domain
+  let wid = document.getElementById('Viewer').dataset.wid
+  let tifyOptions = {
+      container: '#Viewer',
+      // filters: { brightness: 0.5, contrast: 0.5, saturation: 2.3 },
+      language: getLang(),
+      manifestUrl: 'https://facs.' + domain + '/iiif/presentation/' + wid,       // https://example.com/iiif/manifest.json',
+      pageLabelFormat: 'P', // P: physical page number, L: logical page number
+      // pages: [0, 3], // default: null. The page(s) to display initially. If null, the initial page is determined by the manifest’s startCanvas
+      // pan: { x: .45, y: .6 }, // Initial pan. By default, the image is centered
+      // urlQueryKey: 'salView1', // Specify instance to manipulate via query parameters
+      // urlQueryParams: [], // Which settings can be manipulated via query parameters? Default: ['filters', 'pages', 'pan', 'rotation', 'view', 'zoom'] 
+      // view: '', // Default: ''. The initially displayed view (panel); scan, fulltext, thumbnails, toc, info, help, or empty (same as scan).
+      // viewer: {}, // An object with options for OpenSeadragon
+      zoom: null,
+  }
+  let myViewer = new Tify (tifyOptions)
+*/
+
+async function setTifyPage (canvasId, title) {
+  let requestedManifest = canvasId.split('/canvas/')[0];
+  if (typeof myViewer !== 'undefined') {
+    let currentManifest = myViewer.options.manifestUrl
+    if (requestedManifest === currentManifest) {
+      let canvases = myViewer.app.canvases;
+      // console.log(canvases);
+      // console.log(`search canvases for @id === ${canvasId} ...`);
+      let targetCanvas = canvases.find((x) => x['@id'] === canvasId);
+      // console.log(`found canvas:`);
+      // console.log(targetCanvas);
+      if (typeof targetCanvas !== "undefined") {
+        let targetPage = targetCanvas.page;
+        // console.log(`found page number ${targetPage}.`);
+        myViewer.ready.then(() => {
+          myViewer.setPage([targetPage])
+        })
+        // Update some values of the dialog popup window
+        $('#parent small').text(title)         // update Viewer Heading
+        $('#parent div').attr('title', title)  // update Viewer Title
+        // // $('#Viewer')[0].contentDocument.getElementById('downloadImages').href = 'http://facs.salamanca.school/{{$id}}/{{$id}}.zip';  // update Download button
+        // $('#Viewer')[0].contentDocument.getElementById('downloadImages').setAttribute('download', '{{$id}}.zip');  // update Download button
+      }
+      return
+    }
+  }
+  console.log(`loading of new manifest is necessary: ${requestedManifest} ...`);
+  await loadTify(requestedManifest);
+  myViewer.ready.then(() => {
+    console.log(myViewer);
+    let canvases = myViewer.app.canvases;
+    console.log(`canvases:`);
+    console.log(canvases);
+    console.log(`...`);
+    console.log(`search canvases for @id === ${canvasId} ...`);
+    let targetCanvas = canvases.find((x) => x['@id'] === canvasId);
+    console.log(targetCanvas);
+    if (typeof targetCanvas !== "undefined") {
+      let targetPage = targetCanvas.page;
+      console.log(`found page number ${targetPage}.`);
+      myViewer.ready.then(() => {
+        myViewer.setPage([targetPage])
+      })
+      $('#parent small').text(title)         // update Viewer Heading
+      $('#parent div').attr('title', title)  // update Viewer Title
+    }
+  })
+}
 
 // Bind click event for opening viewer popup
-$(document).on('click', '.pageNo', function (event) {
+$(document).on('click', '.pageNo', async function (event) {
   event.preventDefault() // do not actually go to this url - or go there if javascript is disabled
   $(this).blur()
 
   // Configure viewer to go to the correct canvas
   var targetCanvasID = $(this).attr('data-canvas')
-  setTifyPage(targetCanvasID, targetCanvasID)
+  await setTifyPage(targetCanvasID, targetCanvasID)
 
   // Open the dialog window with jquery-ui Dialog method
   $('#parent').dialog('open')
@@ -409,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     // Load Paginator
     $('#dropdownMenu1').click(loadPaginatorContent);
 
-    // Initialize Image viewer dialogue window
+    // Initialize (jquery) dialogue window for Image viewer 
     $('#parent').dialog({
         position:   {my: 'left top', at: 'left+5 bottom+40', of: 'div.navbar'},
         autoOpen:   false,
@@ -429,6 +466,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                         params.delete('viewer');
                         window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash);
                         params.set('viewer', null);
+                        // myViewer.destroy();
                         // document.getElementById('Mirador')
                         event.stopImmediatePropagation();
                         event.preventDefault();
