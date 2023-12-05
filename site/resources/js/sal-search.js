@@ -52,6 +52,7 @@ async function mainSearch (field, st, targetListId, page, limit) {
       console.log(`Search for "${st}" in "${field}" results in:`)
       console.log('Terms: ' + terms.join(', '))
       console.log('total Results: ' + totalResults)
+      // console.log(items)
 
       document.getElementById('searchInfo').style.visibility = 'visible'
       document.getElementById('searchSummary').style.visibility = 'visible'
@@ -78,7 +79,7 @@ async function mainSearch (field, st, targetListId, page, limit) {
         var _targetUrl = i.getElementsByTagName('fragment_path')[0].textContent
 
         const itemString = `<li><a href="${_targetUrl}">${_author}: ${_title}</a><br>
-                                <a class="toggle-details" href="#details_${_workID}" data-wid="${_workID}" "data-target="#details_${_workID}" data-toggle="collapse" aria-expanded="true">${_groupCount}&nbsp;Fundstellen&nbsp;<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
+                                <a class="toggle-details" href="#details_${_workID}" data-wid="${_workID}" "data-target="#details_${_workID}" data-toggle="collapse" aria-expanded="true">${_groupCount}&nbsp;Results&nbsp;<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
                                 <div id="details_${_workID}" class="resultsDetails collapse" aria-expanded="true" style="">
                                     <div class="detailsDiv">
                                         <h3 id="detailsPaging_${_workID}" class="text-center"></h3>
@@ -135,6 +136,7 @@ async function detailsSearch (workId, page, limit, searchterm) {
       if (errorNode) {
         throw new Error('Response could not be parsed as XML')
       }
+      // console.log(doc)
       return doc.getElementsByTagName('channel')[0]
     })
     .then(data => { // Display details
@@ -142,6 +144,7 @@ async function detailsSearch (workId, page, limit, searchterm) {
       let limit = parseInt(data.getElementsByTagName('opensearch:itemsPerPage')[0].textContent)
       let page = Math.floor(parseInt(data.getElementsByTagName('opensearch:startIndex')[0].textContent) / limit) + 1
       let items = data.getElementsByTagName('item')
+      // console.log(items)
 
       // Build paging section
       let pagingRange = `${page} - ${page + items.length - 1}`
@@ -160,12 +163,17 @@ async function detailsSearch (workId, page, limit, searchterm) {
         // var _fragPath = updateURLParameter(value.getElementsByTagName('fragment_path')[0].innerHTML, 'q', searchterm)
         var _fragPath = value.getElementsByTagName('fragment_path')[0].innerHTML
         var _crumbtrail = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
+        // console.log(`This is crumbtrail: ${_crumbtrail}`)
         var _docOrig = value.getElementsByTagName('description_orig')[0].innerHTML
         var _docEdit = value.getElementsByTagName('description_edit')[0].innerHTML
+        console.log(`This is docEdit: ${_docEdit}`)
 
         var ct = document.createElement('div')
         ct.innerHTML = _crumbtrail
+        // console.log( `This ist _crumbtrail: ${_crumbtrail}`)
+        // console.log(`This is ct: ${ct}`)
         var crumbFrag = document.createDocumentFragment()
+        // console.log(`This is crumbfrag: ${crumbFrag}`)
         do {
           if (ct.firstChild.nodeType === 1 && ct.firstChild.tagName === 'A') {
             // ct.firstChild.setAttribute('href', updateURLParameter(ct.firstChild.getAttribute('href'), 'q', searchterm))  // add q parameter to all links in the crumbtrail
@@ -241,12 +249,14 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
       if (!response.ok) {
         throw new Error('Network response was not OK')
       }
+      // console.log(myOptions)
       return response.text()
     })
     .then(str => { // Parse OpenSearch xml document and return rss/channel
       const parser = new DOMParser()
       const doc = parser.parseFromString(str, 'text/xml')
       const errorNode = doc.querySelector('parsererror')
+      // console.log("This is string"+ str)
       if (errorNode) {
         throw new Error('Response could not be parsed as XML')
       }
@@ -255,7 +265,8 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
     .then(data => { // Display excerpts
       var doc1 = data.getElementsByTagName('item')[0].getElementsByTagName('description')[0].outerHTML
       var doc2 = data.getElementsByTagName('item')[1].getElementsByTagName('description')[0].outerHTML
-
+      // console.log('This is doc1:' + doc1)
+      // console.log('This is doc2:' + doc2)
       // display doc1 unless this has no highlighted span whereas doc2 does have one.
       var html = ''
       if (doc1.includes('<span class="hi"')) {
@@ -319,7 +330,7 @@ function updateURLParameter (url, param, paramVal) { // from <https://stackoverf
 
 function updateAllURLParameters (nodelist, param, paramVal) {
   for (let i = 0; i < nodelist.length; i++) {
-    if (nodelist[i].nodeType == 1 && nodelist[i].tagName == 'A') {
+    if (nodelist[i].nodeType === 1 && nodelist[i].tagName === 'A') {
       nodelist[i].setAttribute('href', updateURLParameter(nodelist[i].getAttribute('href'), param, paramVal))
     }
     return nodelist[i]
@@ -327,32 +338,37 @@ function updateAllURLParameters (nodelist, param, paramVal) {
 };
 
 function showSpinnerTotal () {
-  document.getElementById('spinner-total').classList.add('show');
+  document.getElementById('spinner-total').classList.add('show')
 };
 function hideSpinnerTotal () {
-  document.getElementById('spinner-total').classList.remove('show');
+  document.getElementById('spinner-total').classList.remove('show')
 };
 function showSpinnerDetails (id) {
-  document.getElementById(id).classList.add('show');
+  document.getElementById(id).classList.add('show')
 };
 function hideSpinnerDetails (id) {
-  document.getElementById(id).classList.remove('show');
+  document.getElementById(id).classList.remove('show')
 };
 
-$("#doSearch").click(function (event) {                                             // Do the Search!
+$('#doSearch').click(function (event) { // Do the Search!
   let field = document.getElementById('field').value
   let searchterm = document.getElementById('q').value
   let params = (new URL(window.location.href)).searchParams
   let page = params.has('offset') ? params.get('offset') : 0
   let limit = params.has('limit') ? params.get('limit') : 10
-  window.history.replaceState('', '', updateURLParameter(window.location.href, "q", searchterm))
+  window.history.replaceState('', '', updateURLParameter(window.location.href, 'q', searchterm))
   document.title = searchterm + ' - The School of Salamanca'
-  mainSearch(field, searchterm, "resultsList", page, limit)
+  mainSearch(field, searchterm, 'resultsList', page, limit)
   event.stopImmediatePropagation()
   event.preventDefault()
-});
+})
 
-document.querySelector("#resultsList").addEventListener('click', async function(e) {      // Call details handling
+$('.details-td > span > a, .details-td > div > a').click(function (event) {
+  localStorage.setItem('toRetrieve_desc', e.target.siblings('div[id^="excerpts_"').child().innerHTML)
+  console.log(localStorage.getItem('toRetrieve_desc'))
+})
+
+document.querySelector('#resultsList').addEventListener('click', async function (e) { // Call details handling
   // Since details are not available on document load, we have to listen to events on the ancestor
   // The clicked element then is in `e.target`.
   /* If querying excerpts right on loading the main query is too much overhead, we can re-enable this and defer excerpting to here...
@@ -370,84 +386,84 @@ document.querySelector("#resultsList").addEventListener('click', async function(
       }
   */
   if (e.target.classList.contains('paging-details')) {
-      let workId = e.target.getAttribute('data-wid')
-      let oldPage = parseInt(e.target.getAttribute('data-current-page'))
-      let limit = parseInt(e.target.getAttribute('data-limit'))
-      let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
-      let searchterm = document.getElementById('q').value
-      await detailsSearch (workId, newPage, 5, searchterm)
-      for (let [pos, item] of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
-          let index   = item.getAttribute('data-index')
-          let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
-          let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
-          excerptsSearch(workId, index, searchterm, docOrig, docEdit)
-      }
+    let workId = e.target.getAttribute('data-wid')
+    let oldPage = parseInt(e.target.getAttribute('data-current-page'))
+    let limit = parseInt(e.target.getAttribute('data-limit'))
+    let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
+    let searchterm = document.getElementById('q').value
+    await detailsSearch(workId, newPage, 5, searchterm)
+    for (let [pos, item] of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
+      let index = item.getAttribute('data-index')
+      let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
+      let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
+      excerptsSearch(workId, index, searchterm, docOrig, docEdit)
+    }
 
-      event.stopImmediatePropagation()
-      event.preventDefault()
+    event.stopImmediatePropagation()
+    event.preventDefault()
   }
-});
+})
 
-$(document).ready(function(){                                                       // Prepare page: fill fields, position backtotop, prevent defaultactions
+$(document).ready(function () { // Prepare page: fill fields, position backtotop, prevent defaultactions
   let params = (new URL(window.location.href)).searchParams
   let page = params.has('offset') ? params.get('offset') : 0
   let limit = params.has('limit') ? params.get('limit') : 0
   let field = params.has('field') ? params.get('field') : 'corpus'
   let searchterm = params.has('q') ? params.get('q') : ''
 
-  document.getElementById('field').value = field                                          // Prepopulate fields based on url paramaters
+  document.getElementById('field').value = field // Prepopulate fields based on url paramaters
   document.getElementById('q').value = searchterm
   if (searchterm.length > 0) {
-      document.getElementById('q').value = searchterm
-      mainSearch(field, searchterm, "resultsList", page, limit)                           // immediately call search function if "q" parameter given
+    document.getElementById('q').value = searchterm
+    mainSearch(field, searchterm, 'resultsList', page, limit) // immediately call search function if "q" parameter given
   }
 
-  $(".toggle-details").on('click', function (e) { e.preventDefault(); })                  // prevent default action on .toggle-details
+  $('.toggle-details').on('click', function (e) { e.preventDefault() }) // prevent default action on .toggle-details
 
-  $('#backTop').backTop({                                                                 // Position Back-to-top arrow
-      'position' : 100,
-      'speed' : 200,
-      'color' : 'white',
-  });
-});
+  $('#backTop').backTop({ // Position Back-to-top arrow
+    'position': 100,
+    'speed': 200,
+    'color': 'white'
+  })
+})
 
-$(document).ready(function(){
+$(document).ready(function () {
   $('#helpBox2').dialog({
-              autoOpen:   false,
-              //position:   {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
-              
-              height:     $(window).height()* 0.6,
-              maxHeight:  $(window).height()* 0.95,
-              width:      $(window).width() * 0.45,
-              create:     function(event, ui) {
-                              $(event.target).parent().css('position', 'fixed');
-                          },
-              resizeStop: function(event, ui) {
-                              var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
-                                               (Math.floor(ui.position.top) - $(window).scrollTop())];
-                              $(event.target).parent().css('position', 'fixed');
-                              $(dlg).dialog('option','position',position);
-                          },
-              beforeClose: function( event, ui ) {
-                              $("#showHelp").show();
-                           }
-  });
-});
+    autoOpen: false,
+    // position: {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
 
-$(document).on('click', '#toggleHelp',  function(event) {
-  if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close'); } else { $('#helpBox2').dialog('open'); }
-  event.preventDefault();
-});
+    height: $(window).height() * 0.6,
+    maxHeight: $(window).height() * 0.95,
+    width: $(window).width() * 0.45,
+    create: function (event, ui) {
+      $(event.target).parent().css('position', 'fixed')
+    },
+    resizeStop: function (event, ui) {
+      var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
+        (Math.floor(ui.position.top) - $(window).scrollTop())]
+      $(event.target).parent().css('position', 'fixed')
+      $(dlg).dialog('option', 'position', position)
+    },
+    beforeClose: function (event, ui) {
+      $('#showHelp').show()
+    }
+  })
+})
 
-$(document).on('click', 'a[href^="#option"]',  function(event) {
-  $('option:selected', 'select[name="field"]').removeAttr('selected');
-  var optionNumber = $(this).attr('href').substring(7);
-  $('option[accesskey="' + optionNumber +'"]').prop('selected',true);
-  event.preventDefault();
-});
+$(document).on('click', '#toggleHelp', function (event) {
+  if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close') } else { $('#helpBox2').dialog('open') }
+  event.preventDefault()
+})
 
-$(document).on('click', 'a[href^="#div_"]',  function(event) {
-  var target = $(this).attr('href');
-  $('#helpBox2').scrollTop($(target).position().top);
-  event.preventDefault();
-});
+$(document).on('click', 'a[href^="#option"]', function (event) {
+  $('option:selected', 'select[name="field"]').removeAttr('selected')
+  var optionNumber = $(this).attr('href').substring(7)
+  $('option[accesskey="' + optionNumber + '"]').prop('selected', true)
+  event.preventDefault()
+})
+
+$(document).on('click', 'a[href^="#div_"]', function (event) {
+  var target = $(this).attr('href')
+  $('#helpBox2').scrollTop($(target).position().top)
+  event.preventDefault()
+})

@@ -196,3 +196,184 @@ a.anchor{/*display: block;*/ position: relative; top: -50px; visibility: hidden;
     content: "";
 }
 
+/*GUI Navbar Design */
+.navbar-white {
+/*    background: rgba(0, 0, 0, 0) linear-gradient(5deg, white, white 10%, #39b3d7, #39b3d7, 20%, #428bca, #428bca 60%, #67598a, #67598a) repeat scroll 0 0;*/
+    color: #333;
+    background-color: #F8F8F8;
+    border-color: #39529B;
+/*    border-bottom-color: #4710D5;*/
+    padding-bottom: 3px;
+    padding-top: 40px;
+}
+.navbar-white .btn-link {
+    color: #333;
+}
+    
+/* Essential text areas, to be rendered as "columns" from left to right:
+ * - teasers: .section-title -> positioned relative to the main area (left) & hidden in smaller-screen view
+ * - pagination & image links: .pageNumbers -> positioned relative to the main area (left)
+ * - main area: .hauptText, .titlePage, .sec-titlePage (don't need any relative positioning)
+ * - marginals: .marginal -> -> positioned relative to the main area (right)
+ * Additionally, there are citation toolboxes (.sal-toolbox) in the main and marginal area 
+ * that are always slightly offset to the left, relative to *their* immediate container (.hauptText, .marginal, etc.)
+*/
+
+.sal-toolbox {
+    display: inline-block;
+    position: absolute;
+    left: -2.5%;
+}
+
+
+.sal-toolbox-title {
+    display: table-cell;
+    padding-right:0.8rem;
+}
+
+.sal-toolbox-marginal {
+    display:table-cell;
+    visibility: hidden;
+    padding-right:0.3em;
+}
+.marginal:hover .sal-toolbox-marginal {
+    visibility: visible;
+    transition:display 0.7s linear;
+}
+.sal-toolbox-body:hover .sal-toolbox-marginal {
+    visibility: visible;
+}
+
+/* Hover animations with citation toolboxes */
+.sal-toolbox-marginal:hover ~ .marginal-body,
+.sal-toolbox:hover ~ .heading-text,
+.sal-toolbox:hover ~ .titlePage-body,
+.sal-toolbox:hover ~ .hauptText-body,
+.sal-toolbox-title:hover ~ .section-title-body {
+    background-color: #F0F0F0; /* #F5F5F5 */
+    transition: background-color 0.2s linear;
+}
+.sal-toolbox a,
+.sal-toolbox-title a,
+.sal-toolbox-marginal a {
+    color: #B0C4DE !important;
+}
+.sal-toolbox:hover a,
+.sal-toolbox-marginal:hover a,
+.sal-toolbox-title:hover a {
+    color: #102873 !important;
+    transition: color 0.2s linear;
+}
+
+.marginal-body {
+    display:table-cell;
+    text-align:left;
+    font-size: 20px !important; 
+    font-style: normal !important;
+    font-weight: normal !important;
+    width:32rem;
+}
+.sal-toolbox-body {
+    display:none;
+}
+.sal-toolbox-body .popover-content { /* overwriting Bootstrap settings here */
+    padding: 3px;
+}
+
+div.sal-tb-btn {
+    font-size:16px !important;
+    display:block;
+}
+
+.sal-cite-toggle button {
+    margin-left:40%;
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    color: #102873 !important;
+    outline: none;
+    height:1.5em;
+}
+
+.sal-cite-toggle button:hover {
+    background-color: #E8E8E8 !important;
+    transition: color 0.2s linear;
+}
+
+.sal-cite-toggle > * {
+    margin:0.3em;
+}
+.sal-cite-input {
+    width:95%;
+}
+
+.marginal {
+    float: right;
+	clear: right;
+	margin-right: -49%;
+    padding: 5px;
+	line-height: 1.6;
+	text-indent: 0;
+	text-align: left;
+	width:45%;
+    display:table;
+}
+
+/* Section titles */
+.section-title-body {
+    display:table-cell;
+    width:90%;
+    font-size: 18px !important; 
+    font-style: normal !important;
+    font-weight: normal !important;
+}
+.section-title-text {
+    display:inline;
+}
+.section-title {
+    float: left;
+	clear: left;
+	line-height: 1.6;
+	text-indent: 0;
+	font-family: Helvetica, Arial, sans-serif;
+	text-align: left;
+	width: 34%;
+    margin-left:-56%;
+    display:table;
+}
+.section-title p.collapse[aria-expanded="false"] {
+    display: block;
+    height: 1.6em !important;
+    overflow: hidden;
+}
+.section-title p.collapsing[aria-expanded="false"] {
+    height: 1.6em !important;
+}
+.section-title a:not(.collapsed) {
+    text-decoration: none;
+    color: black;
+}
+.section-title a:not(.collapsed) .edited {
+    color:#707070;
+}
+.section-title a:not(.collapsed) .original {
+    color:#993333;
+}
+.section-title a.collapsed:after {
+    content: '...⌄';
+    margin-top:-1em;
+    position:absolute;
+}
+/*.sal-section-title {
+    float: left;
+    clear: left;
+    position: relative;
+    width: 17.5rem;
+    margin-left:-33rem;
+	line-height: 1.6;
+    font-family: Helvetica, Arial, sans-serif;
+	vertical-align: baseline;
+    font-size: initial;
+    bottom: -0.55em;
+}*/
+
