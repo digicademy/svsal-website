@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 // Paragraph popup with link, refresh and print icons
 $('[data-rel="popover"]').popover({
   trigger: 'click',
@@ -26,6 +28,8 @@ $('body').on('click', function (event) {
   })
 })
 
+// This is being called from the HTML element's onclick event
+// eslint-disable-next-line no-unused-vars
 function copyLink (elem) {
   var target = elem.parentElement.getElementsByClassName('cite-link')[0]
   var input = document.createElement('textarea')
@@ -38,12 +42,16 @@ function copyLink (elem) {
   document.body.removeChild(input)
 }
 
+// This is being called from the HTML element's onclick event
+// eslint-disable-next-line no-unused-vars
 function copyCitRef (elem) {
   var target = elem.parentElement.getElementsByClassName('sal-cite-rec')[0]
   var input = document.createElement('textarea')
   input.setAttribute('style', 'display:block; width:0; height:0; opacity: 0;')
   // construct string to be copied: get pre-rendered work/passage citation strings and insert the current date
   var v1 = target.getElementsByClassName('cite-rec-body')[0].textContent
+  // This is defined in the sal-common.js file loaded from the HTML file
+  // eslint-disable-next-line no-undef
   var v2 = getI18nAccessString()
   input.textContent = v1 + ' ' + v2
   document.body.appendChild(input)
@@ -55,9 +63,11 @@ function copyCitRef (elem) {
 
 function copyNotify (elem) {
   var del = elem.parentElement.getElementsByClassName('.copy-alert')[0]
-  if (typeof variable !== 'undefined' && variable !== null) {
+  if (typeof del !== 'undefined' && del !== null) {
     elem.parentElement.removeChild(del)
   }
+  // This is defined in the sal-common.js file loaded from the HTML file
+  // eslint-disable-next-line no-undef
   var language = getLang()
   // console.log('$lang=' + language)
   var msg

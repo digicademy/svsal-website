@@ -12,16 +12,18 @@
  */
 async function mainSearch (field, st, targetListId, page, limit) {
   // Build request
+  // cf. https://github.com/sphinxsearch/sphinx/blob/master/api/sphinxapi.php
   const endpoint = 'https://search.salamanca.school/lemmatized/search'
   const docFilter = '@sphinx_work ^W0*'
   const alsoAuthor = 'sphinx_author,'
   const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
   const searchterm = decodeURIComponent(st)
-  const grouping = '&groupby=sphinx_work&groupfunc=4'
+  const grouping = '&groupby=sphinx_work&groupfunc=4' // groupby 4: by attribute
+  const sorting = '&sort=2&sortby=sphinx_author&ranker=2' // sort 2: attribute ascending; ranker 2: no ranking
   const detailsPage = 0
   const detailsLimit = 5
   const paging = '&offset=' + page + '&limit=' + limit
-  const url = endpoint + '?q=' + docFilter + ' ' + fields + ' ' + searchterm + grouping + paging
+  const url = endpoint + '?q=' + docFilter + ' ' + fields + ' ' + searchterm + grouping + sorting + paging
 
   showSpinnerTotal()
 
@@ -76,7 +78,7 @@ async function mainSearch (field, st, targetListId, page, limit) {
         var _workID = i.getElementsByTagName('work')[0].textContent
         var _groupCount = i.getElementsByTagName('sphinx:groupcount')[0].textContent
         // var _targetUrl = updateURLParameter(i.getElementsByTagName('fragment_path')[0].textContent, 'q', st)
-        var _targetUrl = i.getElementsByTagName('fragment_path')[0].textContent
+        var _targetUrl = i.getElementsByTagName('fragment_path')[0].textContent.concat('?q=' + searchterm)
 
         const itemString = `<li><a href="${_targetUrl}">${_author}: ${_title}</a><br>
                                 <a class="toggle-details" href="#details_${_workID}" data-wid="${_workID}" "data-target="#details_${_workID}" data-toggle="collapse" aria-expanded="true">${_groupCount}&nbsp;Results&nbsp;<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
@@ -136,7 +138,7 @@ async function detailsSearch (workId, page, limit, searchterm) {
       if (errorNode) {
         throw new Error('Response could not be parsed as XML')
       }
-      // console.log(doc)
+      // console.log(doc);
       return doc.getElementsByTagName('channel')[0]
     })
     .then(data => { // Display details
@@ -162,23 +164,38 @@ async function detailsSearch (workId, page, limit, searchterm) {
         var _label = value.getElementsByTagName('hit_label')[0].innerHTML
         // var _fragPath = updateURLParameter(value.getElementsByTagName('fragment_path')[0].innerHTML, 'q', searchterm)
         var _fragPath = value.getElementsByTagName('fragment_path')[0].innerHTML
+        // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
+        // eslint-disable-next-line no-undef
+        const _url = updateURLParameter(_fragPath, 'q', searchterm)
         var _crumbtrail = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
-        // console.log(`This is crumbtrail: ${_crumbtrail}`)
+        // console.log(`This is crumbtrail: ${_crumbtrail}.outerHTML`)
+        // console.log(typeof _crumbtrail)
         var _docOrig = value.getElementsByTagName('description_orig')[0].innerHTML
         var _docEdit = value.getElementsByTagName('description_edit')[0].innerHTML
-        console.log(`This is docEdit: ${_docEdit}`)
+        // console.log(`This is docEdit: ${_docEdit}`)
 
         var ct = document.createElement('div')
         ct.innerHTML = _crumbtrail
-        // console.log( `This ist _crumbtrail: ${_crumbtrail}`)
-        // console.log(`This is ct: ${ct}`)
+        // console.log(ct.innerHTML)
+        let crumbtrailURL = ct.innerHTML.split('href="').pop()
+        // console.log(crumbtrailURL[0])
+        // console.log(crumbtrailURL.indexOf('"'))
+        let crumbtrailHit = crumbtrailURL.substr(0, crumbtrailURL.indexOf('"'))
+        // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
+        // eslint-disable-next-line no-undef
+        let replacedCrumbtrailHit = updateURLParameter(crumbtrailHit, 'q', searchterm)
+        // console.log(crumbtrailHit);
+        let replacedTotalCrumbtrail = ct.innerHTML.replace(crumbtrailHit, replacedCrumbtrailHit)
+        // console.log(replacedTotalCrumbtrail)
+        ct.innerHTML = replacedTotalCrumbtrail
         var crumbFrag = document.createDocumentFragment()
-        // console.log(`This is crumbfrag: ${crumbFrag}`)
+        // console.log(`This is crumbfrag: ${crumbFrag}.innerHTML`)
         do {
           if (ct.firstChild.nodeType === 1 && ct.firstChild.tagName === 'A') {
-            // ct.firstChild.setAttribute('href', updateURLParameter(ct.firstChild.getAttribute('href'), 'q', searchterm))  // add q parameter to all links in the crumbtrail
+            // ct.firstChild.setAttribute('href', updateURLParameter(ct.firstChild.getAttribute('href'), 'q', searchterm)) // add q parameter to all links in the crumbtrail
           }
           crumbFrag.appendChild(ct.firstChild) // This in fact removes the element from our nodelist
+          // console.log(crumbFrag);
         } while (ct.childNodes.length > 0)
 
         const itemString = `<tr>
@@ -195,7 +212,7 @@ async function detailsSearch (workId, page, limit, searchterm) {
                                   <div class="ispinner-blade"></div>
                                 </div>
                               </div>
-                              <span class="lead" style="padding-bottom: 7px; font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;"><a href="${_fragPath}">${_label}</a></span>
+                              <span class="lead" style="padding-bottom: 7px; font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;"><a href="${_url}">${_label}</a></span>
                                   <div id="crumbtrail_${workId}_${index}" class="crumbtrail"></div>
                                   <div id="excerpt_${workId}_${index}" class="result__snippet no-excerpts" data-orig="${_docOrig}">${_docEdit}</div>
                               </td>
@@ -204,7 +221,7 @@ async function detailsSearch (workId, page, limit, searchterm) {
         // Add content to the HTML
         document.getElementById('detailsTableBody_' + workId).insertAdjacentHTML('beforeend', itemString)
         document.getElementById('crumbtrail_' + workId + '_' + index).appendChild(crumbFrag)
-
+        // console.log(crumbFrag)
         // Should we rather defer calling this (async) function to populate excerpts?
         excerptsSearch(workId, index, searchterm, _docOrig, _docEdit)
       }
@@ -249,14 +266,14 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
       if (!response.ok) {
         throw new Error('Network response was not OK')
       }
-      // console.log(myOptions)
+      console.log(myOptions)
       return response.text()
     })
     .then(str => { // Parse OpenSearch xml document and return rss/channel
       const parser = new DOMParser()
       const doc = parser.parseFromString(str, 'text/xml')
       const errorNode = doc.querySelector('parsererror')
-      // console.log("This is string"+ str)
+      //  console.log("This is string"+ str)
       if (errorNode) {
         throw new Error('Response could not be parsed as XML')
       }
@@ -265,8 +282,8 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
     .then(data => { // Display excerpts
       var doc1 = data.getElementsByTagName('item')[0].getElementsByTagName('description')[0].outerHTML
       var doc2 = data.getElementsByTagName('item')[1].getElementsByTagName('description')[0].outerHTML
-      // console.log('This is doc1:' + doc1)
-      // console.log('This is doc2:' + doc2)
+      // console.log("This is doc1:" +doc1);
+      // console.log("This is doc2:" +doc2);
       // display doc1 unless this has no highlighted span whereas doc2 does have one.
       var html = ''
       if (doc1.includes('<span class="hi"')) {
@@ -290,47 +307,14 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
     .finally(() => { hideSpinnerDetails(`spinner_details__${workId}_${index}`) })
 };
 
-function updateURLParameter (url, param, paramVal) { // from <https://stackoverflow.com/questions/1090948/change-url-parameters-and-specify-defaults-using-javascript#10997390>
-  var TheAnchor = null
-  var newAdditionalURL = ''
-  var tempArray = url.split('?')
-  var baseURL = tempArray[0]
-  var additionalURL = tempArray[1]
-  var tmpAnchor = ''
-  var TheParams = ''
-  var temp = ''
-  if (additionalURL) {
-    tmpAnchor = additionalURL.split('#')
-    TheParams = tmpAnchor[0]
-    TheAnchor = tmpAnchor[1]
-    if (TheAnchor) {
-      additionalURL = TheParams
-    }
-    tempArray = additionalURL.split('&')
-    for (var i = 0; i < tempArray.length; i++) {
-      if (tempArray[i].split('=')[0] !== param) {
-        newAdditionalURL += temp + tempArray[i]
-        temp = '&'
-      }
-    }
-  } else {
-    tmpAnchor = baseURL.split('#')
-    TheParams = tmpAnchor[0]
-    TheAnchor = tmpAnchor[1]
-    if (TheParams) {
-      baseURL = TheParams
-    }
-  }
-  if (TheAnchor) {
-    paramVal += '#' + TheAnchor
-  }
-  var rowsTxt = temp + '' + param + '=' + paramVal
-  return baseURL + '?' + newAdditionalURL + rowsTxt
-};
-
+// This updates url parameters in a list of elements, like a crumbtrail.
+// It is not clear where it is called from, however. (TODO: check this)
+// eslint-disable-next-line no-unused-vars
 function updateAllURLParameters (nodelist, param, paramVal) {
   for (let i = 0; i < nodelist.length; i++) {
     if (nodelist[i].nodeType === 1 && nodelist[i].tagName === 'A') {
+      // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
+      // eslint-disable-next-line no-undef
       nodelist[i].setAttribute('href', updateURLParameter(nodelist[i].getAttribute('href'), param, paramVal))
     }
     return nodelist[i]
@@ -351,21 +335,26 @@ function hideSpinnerDetails (id) {
 };
 
 $('#doSearch').click(function (event) { // Do the Search!
-  let field = document.getElementById('field').value
-  let searchterm = document.getElementById('q').value
   let params = (new URL(window.location.href)).searchParams
   let page = params.has('offset') ? params.get('offset') : 0
   let limit = params.has('limit') ? params.get('limit') : 10
+
+  let field = document.getElementById('field').value
+  // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
+  // eslint-disable-next-line no-undef
+  window.history.replaceState('', '', updateURLParameter(window.location.href, 'field', field))
+
+  let searchterm = document.getElementById('q').value
+  // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
+  // eslint-disable-next-line no-undef
   window.history.replaceState('', '', updateURLParameter(window.location.href, 'q', searchterm))
-  document.title = searchterm + ' - The School of Salamanca'
-  mainSearch(field, searchterm, 'resultsList', page, limit)
+
+  if (searchterm.length > 0) {
+    document.title = searchterm + ' - The School of Salamanca'
+    mainSearch(field, searchterm, 'resultsList', page, limit)
+  }
   event.stopImmediatePropagation()
   event.preventDefault()
-})
-
-$('.details-td > span > a, .details-td > div > a').click(function (event) {
-  localStorage.setItem('toRetrieve_desc', e.target.siblings('div[id^="excerpts_"').child().innerHTML)
-  console.log(localStorage.getItem('toRetrieve_desc'))
 })
 
 document.querySelector('#resultsList').addEventListener('click', async function (e) { // Call details handling
@@ -392,7 +381,7 @@ document.querySelector('#resultsList').addEventListener('click', async function 
     let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
     let searchterm = document.getElementById('q').value
     await detailsSearch(workId, newPage, 5, searchterm)
-    for (let [pos, item] of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
+    for (let item of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
       let index = item.getAttribute('data-index')
       let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
       let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
@@ -404,17 +393,19 @@ document.querySelector('#resultsList').addEventListener('click', async function 
   }
 })
 
-$(document).ready(function () { // Prepare page: fill fields, position backtotop, prevent defaultactions
+// Prepare page: fill fields (and run search if requested) if url parameters are present,
+//               position backtotop and help popup
+$(document).ready(function () {
   let params = (new URL(window.location.href)).searchParams
   let page = params.has('offset') ? params.get('offset') : 0
-  let limit = params.has('limit') ? params.get('limit') : 0
+  let limit = params.has('limit') ? params.get('limit') : 10
   let field = params.has('field') ? params.get('field') : 'corpus'
   let searchterm = params.has('q') ? params.get('q') : ''
 
   document.getElementById('field').value = field // Prepopulate fields based on url paramaters
   document.getElementById('q').value = searchterm
   if (searchterm.length > 0) {
-    document.getElementById('q').value = searchterm
+    document.title = searchterm + ' - The School of Salamanca'
     mainSearch(field, searchterm, 'resultsList', page, limit) // immediately call search function if "q" parameter given
   }
 
@@ -425,12 +416,10 @@ $(document).ready(function () { // Prepare page: fill fields, position backtotop
     'speed': 200,
     'color': 'white'
   })
-})
 
-$(document).ready(function () {
   $('#helpBox2').dialog({
     autoOpen: false,
-    // position: {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
+    // position:   {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
 
     height: $(window).height() * 0.6,
     maxHeight: $(window).height() * 0.95,
@@ -442,7 +431,7 @@ $(document).ready(function () {
       var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
         (Math.floor(ui.position.top) - $(window).scrollTop())]
       $(event.target).parent().css('position', 'fixed')
-      $(dlg).dialog('option', 'position', position)
+      $('#helpBox2').dialog('option', 'position', position)
     },
     beforeClose: function (event, ui) {
       $('#showHelp').show()
@@ -467,3 +456,16 @@ $(document).on('click', 'a[href^="#div_"]', function (event) {
   $('#helpBox2').scrollTop($(target).position().top)
   event.preventDefault()
 })
+
+/*
+$(document).on('click', 'a[href^="https://id.salamanca.school/"]', function () {
+  sessionStorage.setItem('q', $(this).attr('href').split('?q=').pop())
+  sessionStorage.setitem('desc', $(this).siblings('description').text())
+  console.log('Clicked!')
+})
+$(document).bind('contextmenu', 'a[href^="https://id.salamanca.school/"]', function () {
+  sessionStorage.setItem('q', $(this).attr('href').split('?q=').pop())
+  sessionStorage.setitem('desc', $(this).siblings('description').text())
+  console.log('Clicked!')
+})
+*/
