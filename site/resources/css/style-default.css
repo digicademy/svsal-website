@@ -524,7 +524,8 @@ display:none
 .panel-default.c_hyph_proposed,
 .panel-default.d_hyph_approved,
 .panel-default.e_emended_unenriched,
-.panel-default.f_enriched {
+.panel-default.f_enriched,
+.panel-default.r_reference_work{
 background-color:silver;
 color:DimGray
 }
@@ -545,7 +546,11 @@ color:DimGray
 .panel-default.e_emended_unenriched .volumeLinks a,
 .panel-default.f_enriched a.lead,
 .panel-default.f_enriched .lead a,
-.panel-default.f_enriched .volumeLinks a
+.panel-default.f_enriched .volumeLinks a,
+.panel-default.r_reference_work a.lead,
+.panel-default.r_reference_work .lead a,
+.panel-default.r_reference_work .volumeLinks a
+
  {
 color:DimGray;
 pointer-events:none;
