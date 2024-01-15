@@ -162,13 +162,17 @@
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Holding library:</td>
-                                                <td class="col-md-9" style="line-height: 1.2">{{ $info.hold_library }}</td>
+                                                <td class="col-md-9" style="line-height: 1.2">
+                                                {{ range $v := splitList "|" $info.hold_library }}
+                                                    {{ $v }}<br/>
+                                                {{ end }}
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Library link:</td>
                                                 <td class="col-md-9" style="line-height: 1.2">
                                                 {{ range $v := splitList " " $info.hold_idno }}
-                                                    <a href="#">{{ $v }}</a><br/>
+                                                    <a href="{{ $v }}">{{ $v }}</a><br/>
                                                 {{ end }}
                                                 </td>
                                             </tr>
@@ -189,9 +193,13 @@
                                                 <a class="g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
                                                     <img src="{{ $info.thumbnail }}" class="img-responsive thumbnail" alt="Titlepage{{ if $info.volumes }} Multivolume{{ end }}">
                                                 </a>
-                                                <a class="btn btn-info button g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
+       
+                                
+				                             
+						<a class="btn btn-info button g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
                                                     <span class="glyphicon glyphicon-file"></span> Read
                                                 </a>
+						
                                             </div>
                                         </li>
                                         <li><a href="/viewer-standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimile View</a></li>
@@ -214,7 +222,11 @@
                                         <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=txt&amp;mode=edit">Text (constituted)</a></li>
                                         <li><a href="https://id.{{ $domain }}/texts/{{ $wid }}?format=txt&amp;mode=orig">Text (diplomatic)</a></li>
                                         {{ if not $info.volumes }}
-                                        <li><a href="https://facs.{{ $domain }}/{{ $wid }}/{{ $wid }}.pdf">Pdf with facsimile images</a></li>
+                                        <!-- Die Links für Monographien können einfach aus $wid erzeugt werden, aber die Links linke für Einzelbände sind so: https://facs.salamanca.school/W0013/B/W0013-B.pdf-->
+                                        <!-- → With symbolic links for volume pdfs, we still need to get rid of the ":volX" from the directory name. It's /$wid-minus-the-volume/$wid.pdf !! -->
+                                        <!--   → It should be possible to do this with a global template function, truncating the $wid after 5 characters... -->
+                                        <!--     But then, the slicing of strings as below is only possible in more recent go versions, so we need to re-build our caddy executable... -->
+                                        <!-- li><a href="https://facs.{{ $domain }}/{ { $wid | slice . 1 5 } }/{{ $wid }}.pdf">PDF with facsimile images</a></li -->
                                         {{ end }}
                                     </ul>
                                 </div>
@@ -314,7 +326,7 @@
                     'color' : 'white',
                 });
             });
-        </script>
-
+       </script>
+       <!-- script>console.log(.Args);</script -->
     </body>
 </html>
