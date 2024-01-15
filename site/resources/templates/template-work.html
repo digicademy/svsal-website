@@ -50,6 +50,8 @@
         <!-- link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css" -->
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.css">
         <link rel="stylesheet" type="text/css" href="/resources/css/style-work.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/css/ispinner.prefixed.css"/>
+
 
         <!-- ==== Javascript ==== -->
         <script type="text/javascript" src="/resources/js/jquery-1.js"                                   defer></script>
@@ -69,7 +71,8 @@
         {{- include "/resources/partials/favicons.html" .}}
     </head>
 
-    <body id="body">
+    <body id="body" class="darkenBody">
+	    
         <div id="wrap">
 
             <!-- Header and Navbar -->
@@ -79,7 +82,7 @@
             <div class="navbar navbar-white navbar-fixed-top" style="z-index: 1; margin-top: 10px; padding-top: 49px;">
                 <div class="row-fluid" style="margin-top: 0.9%;">
                     <h4 style="margin-top: 5px;" class="pull-left messengers">
-                        <a href="https://id.{{ $domain }}/texts/{{$wid}}" title="(Go to top of) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}">
+                        <a href="https://id.{{ $domain }}/texts/{{$wid}}" title="(Gehe zum Anfang von) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}">
                             <!-- &#xA0; -->
                             {{abbrev 15 $author}}: {{abbrev 20 $title}}
                         </a>
@@ -89,23 +92,23 @@
                     <div class="btn-toolbar pull-left">
                         <div class="btn-group hidden-lg"><!-- Hamburger Icon, used in small and eXtra-small views only: substitutes textmode, register, print and export functions -->
                             <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="fa fa-bars"></span>&nbsp;Mehr
+                                <span class="fa fa-bars"></span>&nbsp;More
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <!--<li class="disabled"><a><span class="glyphicon glyphicon-stats text-muted" aria-hidden="true"></span>&#xA0;<span class="text-muted"><i18n:text key="register">Register</i18n:text></span></a></li>-->
                                 <li>
                                     <a onclick="applyEditMode();" class="btn original unsichtbar" style="cursor: pointer;">
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Konstituiert
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Constituted
                                     </a>
                                 </li>
                                 <li>
                                     <a onclick="applyOrigMode();" class="btn edited" style="cursor: pointer;">
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatisch
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatic
                                     </a>
                                 </li>
                                 <li>
                                     <a class="btn btn-link" href="https://id.{{ $domain }}/texts/{{$wid}}?mode=details">
-                                        <span class="fas fa-file-alt"></span>&nbsp;Katalogeintrag
+                                        <span class="fas fa-file-alt"></span>&nbsp;Catalogue Details
                                     </a>
                                 </li>
                                 <!--
@@ -116,18 +119,18 @@
                                     </li>
                                 -->
                                 <li>
-                                    <a href="https://id.{{ $domain }}/texts/{{$wid}}" onclick="copyLink(this); return false;" title="Kopiert einen Hyperlink in die Zwischenablage">
-                                        <span class="messengers fas fa-link"></span>&nbsp;Link kopieren
+                                    <a href="https://id.{{ $domain }}/texts/{{$wid}}" onclick="copyLink(this); return false;" title="Copy a hyperlink in the clipboard">
+                                        <span class="messengers fas fa-link"></span>&nbsp;Copy Link
                                     </a>
                                     <span class="cite-link" style="display:none;">https://id.{{ $domain }}/texts/{{$wid}}?format=html</span>
                                 </li>
                                 <li>
-                                    <a href="https://id.{{ $domain }}/texts/{{$wid}}" onclick="copyCitRef(this); return false;" title="Kopiert eine Zitierempfehlung in die Zwischenablage">
-                                        <span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren
+                                    <a href="https://id.{{ $domain }}/texts/{{$wid}}" onclick="copyCitRef(this); return false;" title="Copy a citation in the clipboard">
+                                        <span class="messengers fas fa-feather-alt"></span>&nbsp;Copy Citation
                                     </a>
                                     <span class="sal-cite-rec" style="display:none">
                                         <span class="cite-rec-body">{{$author}}, {{$title}} (2019 [{{$year}}]), in:
-                                            Die Schule von Salamanca. Eine Digitale Quellensammlung
+                                            The School of Salamanca, a Digital Collection of Sources
                                             &lt;<a href="https://id.{{ $domain }}/texts/{{$wid}}">https://id.{{ $domain }}/texts/{{$wid}}</a>&gt;</span>
                                     </span>
                                 </li>
@@ -141,8 +144,8 @@
                                         <span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=edit">konstituiert</a></li>
-                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatisch</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=edit">constituted</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatic</a></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -165,19 +168,19 @@
                         <div class="btn-group"><!--Paginator dropdown-->
                             <div class="dropdown">
                                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                    <span class="fa fa-anchor"></span>&nbsp;Seite&nbsp;<span class="caret"></span>
+                                    <span class="fa fa-anchor"></span>&nbsp;Page&nbsp;<span class="caret"></span>
                                 </button>
                                 {{ include $pages_file }}
                             </div>
                         </div>
                         <div class="btn-group"><!--TOC button-->
                             <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
-                                <span class="fa fa-list-ul" aria-hidden="true"></span>&nbsp;Inhalt
+                                <span class="fa fa-list-ul" aria-hidden="true"></span>&nbsp;Table of Contents
                             </button>
                         </div>
                         <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Details button-->
                             <a class="btn btn-link" href="https://id.{{ $domain }}/texts/{{$wid}}?mode=details">
-                                <span class="fas fa-file-alt"></span>&nbsp;Katalogeintrag
+                                <span class="fas fa-file-alt"></span>&nbsp;Catalogue Details
                             </a>
                         </div>
                         <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Textmode button-->
@@ -185,12 +188,12 @@
                                 <section id="switchEditsSection">
                                     <span class="original unsichtbar" style="cursor: pointer;">
                                         <a class="btn btn-link" onclick="applyEditMode();">
-                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatisch
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatic
                                         </a>
                                     </span>
                                     <span class="edited" style="cursor: pointer;">
                                         <a class="btn btn-link" onclick="applyOrigMode();">
-                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Konstituiert
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Constituted
                                         </a>
                                     </span>
                                 </section>
@@ -201,13 +204,13 @@
                                 <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>&nbsp;Export&nbsp;<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu export-options" role="menu"><!-- Export buttons -->
-                                <li><a onclick="copyLink(this); return false;" title="URL in die Zwischenablage kopieren"><span class="messengers fas fa-link"></span>&nbsp;Link kopieren</a><span class="cite-link" style="display:none;">https://id.{{ $domain }}/texts/{{$wid}}?format=html</span></li>
-                                <li><a onclick="copyCitRef(this); return false;" title="Zitierhinweis in die Zwischenablage kopieren"><span class="messengers fas fa-feather-alt"></span>&nbsp;Zitierhinweis kopieren</a><span class="sal-cite-rec" style="display:none"><span class="cite-rec-body">Azpilcueta, Manual de Confessores y Penitentes (2019 [1556]), in: Die Schule von Salamanca. Eine Digitale Quellensammlung &lt;<a href="https://id.{{ $domain }}/texts/{{$wid}}">https://id.{{ $domain }}/texts/{{$wid}}</a>&gt;</span></span></li>
+                                <li><a onclick="copyLink(this); return false;" title="Copy the URL in the clipboard"><span class="messengers fas fa-link"></span>&nbsp;Copy Link</a><span class="cite-link" style="display:none;">https://id.{{ $domain }}/texts/{{$wid}}?format=html</span></li>
+                                <li><a onclick="copyCitRef(this); return false;" title="Copy the citation in the clipboard"><span class="messengers fas fa-feather-alt"></span>&nbsp;Copy Citation</a><span class="sal-cite-rec" style="display:none"><span class="cite-rec-body">{{ $author }}, {{ $title }} (2019 [{{ $year }}]), in: The School of Salamanca, A Digital Collection of Sources &lt;<a href="https://id.{{ $domain }}/texts/{{$wid}}">https://id.{{ $domain }}/texts/{{$wid}}</a>&gt;</span></span></li>
                                 <li><a title="Download TEI/XML source file" href="https://id.{{ $domain }}/texts/{{$wid}}?format=tei"><span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML</a></li>
-                                <li class="dropdown-submenu"><a title="Plaintext exportieren"><span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)</a>
+                                <li class="dropdown-submenu"><a title="Export plain text"><span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=edit">konstituiert</a></li>
-                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatisch</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=edit">constituted</a></li>
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatic</a></li>
                                     </ul>
                                 </li>
                                 <li><a title="Download RDF/XML data for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=rdf"><span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)</a></li>
@@ -217,7 +220,7 @@
                         </div>
                         <div class="btn-group"><!-- Impressum button -->
                             <a class="btn btn-link" href="/legal.html"><!--<span class="fa fa-info-circle"></span>-->
-                                <span class="fas fa-balance-scale"></span>&nbsp;Impressum & Datenschutz
+                                <span class="fas fa-balance-scale"></span>&nbsp;Legal Information & Privacy
                             </a>
                         </div>
                     </div>
@@ -237,7 +240,7 @@
                                         <span aria-hidden="true">×</span>
                                         <span class="sr-only">Close</span>
                                     </button>
-                                    <h4 class="modal-title" id="myModalLabel">Inhaltsverzeichnis
+                                    <h4 class="modal-title" id="myModalLabel">Table of Contents
                                         <button id="toggleButton" class="btn btn-link btn-lg expanded">
                                             <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
                                         </button>
@@ -245,7 +248,7 @@
                                 </div>
                                 {{ include $toc_file }}
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -260,15 +263,15 @@
                         <!-- div id="iasSpinner1" class="iasSpinner" style="margin: auto; text-align: center; opacity: 0;">Loading...</div -->
                         <div id="iasPagination1" class="iasPagination" style="margin: auto; text-align: center;">
                             {{with $map.prev}}
-                            <a class="prev" href="{{.}}">zurück</a>
+                            <a class="prev" href="{{.}}">back</a>
                             {{end}}
                             |
                             {{with $map.top}}
-                            <a href="{{.}}">zum Anfang</a>
+                            <a href="{{.}}">to the top</a>
                             {{end}}
                             |
                             {{with $map.next}}
-                            <a class="next" href="{{.}}">weiter</a>
+                            <a class="next" href="{{.}}">continue</a>
                             {{end}}
                         </div>
                         <div class="col-md-12">
@@ -276,18 +279,18 @@
                                 {{ $content }}
                             </div>
                         </div>
-                        <div id="iasSpinner2" class="iasSpinner" style="margin: auto; text-align: center; opacity: 0; height: 3em;">Lädt...</div>
+                        <div id="iasSpinner2" class="iasSpinner" style="margin: auto; text-align: center; opacity: 0; height: 3em;">Loading...</div>
                         <div id="iasPagination2" class="iasPagination" style="margin: auto; text-align: center;">
                             {{with $map.prev}}
-                            <a class="prev" href="{{.}}">zurück</a>
+                            <a class="prev" href="{{.}}">back</a>
                             {{end}}
                             |
                             {{with $map.top}}
-                            <a href="{{.}}">zum Anfang</a>
+                            <a href="{{.}}">to the top</a>
                             {{end}}
                             |
                             {{with $map.next}}
-                            <a class="next" href="{{.}}">weiter</a>
+                            <a class="next" href="{{.}}">continue</a>
                             {{end}}
                         </div>
                     </div>
