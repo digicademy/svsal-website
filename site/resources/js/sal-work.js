@@ -400,7 +400,7 @@ function hideText () {
 function showText () {
   document.getElementById('body').classList.remove('darkenBody')
 };
-async function showTextWithDelay(delay) {
+async function showTextWithDelay (delay) {
   return new Promise(resolve => {
     setTimeout(() => {
       console.log('Delayed showText now showing text.')
