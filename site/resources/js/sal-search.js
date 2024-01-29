@@ -381,7 +381,10 @@ document.querySelector('#resultsList').addEventListener('click', async function 
     let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
     let searchterm = document.getElementById('q').value
     await detailsSearch(workId, newPage, 5, searchterm)
-    for (let item of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
+    // for (let item of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
+    // for (let item of e.target.closest('.detailsDiv').querySelector('.detailsTable').getElementsByClassName('details_td')) {
+    for (let item of e.target.closest('.detailsDiv').getElementsByClassName('details_td')) {
+      // console.log(item)
       let index = item.getAttribute('data-index')
       let docOrig = item.getElementsByClassName('result__snippet')[0].getAttribute('data-orig')
       let docEdit = item.getElementsByClassName('result__snippet')[0].innerHTML
