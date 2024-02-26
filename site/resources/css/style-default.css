@@ -28,27 +28,14 @@
 */
 @font-face{
     font-family:Junicode;
-    src:url("/resources/fonts/junicode/junicode.woff");
+    src:url("/resources/fonts/junicode/junicode-206-roman.woff2");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 @font-face{
     font-family:Junicode;
-    src:url("/resources/fonts/junicode/junicode-bold.woff");
-    font-weight:bold;
-    font-display: swap;
-}
-@font-face{
-    font-family:Junicode;
-    src:url("/resources/fonts/junicode/junicode-italic.woff");
-    font-style:italic;
-    font-display: swap;
-}
-@font-face{
-    font-family:Junicode;
-    src:url("/resources/fonts/junicode/junicode-bolditalic.woff");
-    font-weight:bold;
+    src:url("/resources/fonts/junicode/junicode-206-italic.woff2");
     font-style:italic;
     font-display: swap;
 }

@@ -1,6 +1,6 @@
-module.exports = (canvas, options) => {
-    const WIN = global.window;
-    const DOC = WIN.document;
+function pagemap(canvas, options) {
+    const WIN = window;
+    const DOC = document;
     const DOC_EL = DOC.documentElement;
     const BODY = DOC.querySelector('body');
     const CTX = canvas.getContext('2d');

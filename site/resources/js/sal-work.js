@@ -94,6 +94,22 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
       console.log('Replacing targetElement.innerHTML with highlighted HTML.')
       targetElement.innerHTML = doc1
     })
+    .then(_ => { // Update minimap
+      pagemap(document.getElementById("minimap"), {
+        viewport: null,
+        styles: {
+          'header,footer,section,article': 'rgba(0,0,0,0.38)',
+          'div': 'rgba(0,0,0,0.01)',
+          'h1,a': 'rgba(0,0,100,0.30)',
+          'h2,h3,h4': 'rgba(0,0,0,0.38)',
+          'span.hi': 'rgba(253,185,36,0.90)'
+        },
+        back: 'rgba(0,0,0,0.02)',
+        view: 'rgba(0,0,0,0.10)',
+        drag: 'rgba(0,0,0,0.40)',
+        interval: null
+      });
+    })
     .catch(error => {
       console.error('There has been a problem with the fetch operation in highlightSearch(): ', error)
     })
@@ -119,22 +135,6 @@ function highlightSearchTerm () {
 
     // enable minimap for search results
     document.getElementById("minimap").style.visibility = "visible"
-    /*
-    pagemap(document.querySelector('#minimap'), {
-      viewport: null,
-      styles: {
-        'header,footer,section,article': 'rgba(0,0,0,0.38)',
-        'div': 'rgba(0,0,0,0.01)',
-        'h1,a': 'rgba(0,0,100,0.30)',
-        'h2,h3,h4': 'rgba(0,0,0,0.38)',
-        'hi': 'rgba(253,185,36,0.90)'
-      },
-      back: 'rgba(0,0,0,0.02)',
-      view: 'rgba(0,0,0,0.10)',
-      drag: 'rgba(0,0,0,0.40)',
-      interval: null
-    });
-    */
   } else {
     document.getElementById("minimap").style.visibility = "hidden"
   }
@@ -652,9 +652,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
   // show GUI-Nav when scolling upwards
   $('.navbar-white')
     .css('padding-top', parseInt($('#main-menu').css('height')) - 2)
-    .autoHidingNavbar()
-    .autoHidingNavbar('setShowOnBottom', false)
-    .autoHidingNavbar('setAnimationDuration', 400)
+    // .autoHidingNavbar()
+    // .autoHidingNavbar('setShowOnBottom', false)
+    // .autoHidingNavbar('setAnimationDuration', 400)
 })
 
 window.addEventListener('load', async function (e) {
