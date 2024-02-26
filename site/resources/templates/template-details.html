@@ -226,7 +226,7 @@
                                         <!-- → With symbolic links for volume pdfs, we still need to get rid of the ":volX" from the directory name. It's /$wid-minus-the-volume/$wid.pdf !! -->
                                         <!--   → It should be possible to do this with a global template function, truncating the $wid after 5 characters... -->
                                         <!--     But then, the slicing of strings as below is only possible in more recent go versions, so we need to re-build our caddy executable... -->
-                                        <!-- li><a href="https://facs.{{ $domain }}/{ { $wid | slice . 1 5 } }/{{ $wid }}.pdf">PDF with facsimile images</a></li -->
+                                        <li><a href="https://facs.{{ $domain }}/{{ printf "%.*s" 5 $wid }}/{{ $wid }}.pdf">PDF with facsimile images</a></li>
                                         {{ end }}
                                     </ul>
                                 </div>
