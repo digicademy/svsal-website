@@ -166,147 +166,6 @@
 							"match": [
 								{
 									"host": [
-										"blog.salamanca.school"
-									]
-								}
-							],
-							"handle": [
-								{
-									"handler": "subroute",
-									"routes": [
-										{
-											"handle": [
-												{
-													"handler": "vars",
-													"root": "/var/data/blog/wordpress"
-												},
-												{
-													"handler": "headers",
-													"response": {
-														"set": {
-															"Access-Control-Allow-Headers": [
-																"*"
-															],
-															"Access-Control-Allow-Methods": [
-																"*"
-															],
-															"Access-Control-Allow-Origin": [
-																"*"
-															]
-														}
-													}
-												},
-												{
-													"encodings": {
-														"gzip": {},
-														"zstd": {}
-													},
-													"handler": "encode",
-													"prefer": [
-														"zstd",
-														"gzip"
-													]
-												},
-												{
-													"handler": "push"
-												}
-											]
-										},
-										{
-											"handle": [
-												{
-													"handler": "static_response",
-													"headers": {
-														"Location": [
-															"{http.request.orig_uri.path}/"
-														]
-													},
-													"status_code": 308
-												}
-											],
-											"match": [
-												{
-													"file": {
-														"try_files": [
-															"{http.request.uri.path}/index.php"
-														]
-													},
-													"not": [
-														{
-															"path": [
-																"*/"
-															]
-														}
-													]
-												}
-											]
-										},
-										{
-											"handle": [
-												{
-													"handler": "rewrite",
-													"uri": "{http.matchers.file.relative}"
-												}
-											],
-											"match": [
-												{
-													"file": {
-														"split_path": [
-															".php"
-														],
-														"try_files": [
-															"{http.request.uri.path}",
-															"{http.request.uri.path}/index.php",
-															"index.php"
-														]
-													}
-												}
-											]
-										},
-										{
-											"handle": [
-												{
-													"handler": "reverse_proxy",
-													"transport": {
-														"protocol": "fastcgi",
-														"split_path": [
-															".php"
-														]
-													},
-													"upstreams": [
-														{
-															"dial": "unix//run/php/php-fpm.sock"
-														}
-													]
-												}
-											],
-											"match": [
-												{
-													"path": [
-														"*.php"
-													]
-												}
-											]
-										},
-										{
-											"handle": [
-												{
-													"handler": "file_server",
-													"hide": [
-														"./Caddyfile"
-													]
-												}
-											]
-										}
-									]
-								}
-							],
-							"terminal": true
-						},
-						{
-							"match": [
-								{
-									"host": [
 										"c100-101.cloud.gwdg.de",
 										"salamanca.school",
 										"www.salamanca.school"
@@ -348,56 +207,26 @@
 												}
 											]
 										},
-
 										{
 											"handle": [
-												{
-													"handler": "rewrite",
-													"strip_path_prefix": "/de"
-												},
-												{
-													"handler": "rewrite",
-													"strip_path_prefix": "/en"
-												},
-												{
-													"handler": "rewrite",
-													"strip_path_prefix": "/es"
-												}
-											]
-										},
-
-										{
-											"match": [
-												{
-													"path": [ "/workDetails.html" ]
-												}
-											],
-											"handle": [
-												{
-													"handler": "map",
-													"source": "{http.request.uri.query.wid}",
-													"destinations": [ "{id}" ],
-													"mappings": [
-														{
-															"input_regexp": "([^_]+)_[vV][oO][lL]0*([1-9]+0*)$",
-															"outputs": [ "${1}:vol${2}" ]
-														},
-														{
-															"input_regexp": "([^_]+)",
-															"outputs": [ "${1}" ]
-														}
-													]
-												},
 												{
 													"handler": "static_response",
 													"headers": {
-														"Location": [ "https://id.{mydomain}/texts/{id}?mode=details" ]
+														"Location": [
+															"https://id.{mydomain}/texts/{http.request.uri.query.wid}?mode=details"
+														]
 													},
 													"status_code": 301
 												}
+											],
+											"match": [
+												{
+													"path": [
+														"/workDetails.html"
+													]
+												}
 											]
 										},
-
 										{
 											"handle": [
 												{
@@ -434,14 +263,14 @@
 												},
 												{
 													"handler": "templates",
-													"mime_types": [
-															"text/plain",
-															"text/html",
-															"text/markdown",
-															"text/xml",
-															"application/xml",
-															"application/json"
-													]
+"mime_types": [
+    "text/plain",
+    "text/html",
+    "text/markdown",
+    "text/xml",
+    "application/xml",
+    "application/json"
+]
 												},
 												{
 													"handler": "file_server",
@@ -452,63 +281,6 @@
 											]
 										}
 									]
-								}
-							],
-							"terminal": true
-						},
-						{
-							"match": [
-								{
-									"host": [
-										"files.salamanca.school"
-									]
-								}
-							],
-							"handle": [
-								{
-									"encodings": {
-										"gzip": {},
-										"zstd": {}
-									},
-									"handler": "encode",
-									"prefer": [
-										"zstd",
-										"gzip"
-									]
-								},
-								{
-									"handler": "push"
-								},
-								{
-									"handler": "templates",
-									"mime_types": [
-											"text/plain",
-											"text/html",
-											"text/markdown",
-											"text/xml",
-											"application/xml",
-											"application/json"
-									]
-								},
-								{
-									"handler": "file_server",
-									"root": "/var/data/caddy/site/resources/files",
-									"hide": [
-										"./Caddyfile"
-									]
-								},
-								{
-									"handler": "headers",
-									"response": {
-										"set": {
-											"Access-Control-Allow-Headers": [
-												"*"
-											],
-											"Access-Control-Allow-Methods": [
-												"*"
-											]
-										}
-									}
 								}
 							],
 							"terminal": true
@@ -1048,9 +820,7 @@
 							"www.salamanca.school",
 							"search.salamanca.school",
 							"api.salamanca.school",
-							"id.salamanca.school",
-							"blog.salamanca.school",
-							"files.salamanca.school"
+							"id.salamanca.school"
 						],
 						"issuers": [
 							{
