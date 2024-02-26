@@ -116,6 +116,27 @@ function highlightSearchTerm () {
       nextParams.set('q', searchTerm)
       obj.href = obj.pathname + '?' + nextParams
     })
+
+    // enable minimap for search results
+    document.getElementById("minimap").style.visibility = "visible"
+    /*
+    pagemap(document.querySelector('#minimap'), {
+      viewport: null,
+      styles: {
+        'header,footer,section,article': 'rgba(0,0,0,0.38)',
+        'div': 'rgba(0,0,0,0.01)',
+        'h1,a': 'rgba(0,0,100,0.30)',
+        'h2,h3,h4': 'rgba(0,0,0,0.38)',
+        'hi': 'rgba(253,185,36,0.90)'
+      },
+      back: 'rgba(0,0,0,0.02)',
+      view: 'rgba(0,0,0,0.10)',
+      drag: 'rgba(0,0,0,0.40)',
+      interval: null
+    });
+    */
+  } else {
+    document.getElementById("minimap").style.visibility = "hidden"
   }
 }
 
@@ -369,11 +390,21 @@ function myScrollIntoView (targetId) {
   const goHere = offset - parseInt($('div.navbar-white').css('height')) - 15
   console.log(`Go to ${goHere}.`)
   $('html, body').animate({scrollTop: goHere}, 800, 'swing', function () {
-    showText()
+    showTextWithDelay(500)
     document.getElementById(targetId).effect('highlight', {color: 'LightSkyBlue'}, 1200)
   })
+  $('html, body').bind('scroll', function()
+  {
+    if($(this).scrollTop() + $(this).innerHeight()>=$(this)[0].scrollHeight)
+    {
+      alert('end reached');
+    }
+  })
+  showTextWithDelay(500)
   document.getElementById(targetId).effect('highlight', {color: 'LightSkyBlue'}, 1200)
 }
+
+
 
 // Mobil-View: scroll to last collapsed navbar item on mobile when there are many items
 // $('.navbar-collapse').css({ maxHeight: $(window).height() - $('.navbar-header').height() + 'px' })
@@ -390,17 +421,17 @@ const ias = new InfiniteAjaxScroll('#iasContainer', {
   spinner: '.iasSpinner',
   prefill: false,
   logger: true // don't clobber the console
-  // negativeMargin: 400          // when to start loading new items (before reaching the very bottom),
+  //negativeMargin: 100          // when to start loading new items (before reaching the very bottom),
 })
 
 // Darken body (when scrolling) in order not to confuse readers by ias's jumping around
 function hideText () {
   document.getElementById('body').classList.add('darkenBody')
 };
-function showText () {
+/*function showText () {
   document.getElementById('body').classList.remove('darkenBody')
-};
-async function showTextWithDelay (delay) {
+}; */
+async function showTextWithDelay(delay) {
   return new Promise(resolve => {
     setTimeout(() => {
       console.log('Delayed showText now showing text.')
@@ -426,14 +457,16 @@ ias.on('page', (event) => { // when user scrolls to a new segment: update addres
   })
   const newUrl = target.pathname.substr(target.pathname.lastIndexOf('/') + 1) + '?' + params
   history.replaceState(history.state, '', newUrl)
+  //showTextWithDelay(0)
 })
 ias.on('nexted', (e) => { // re-apply original/edited mode after adding new elements at the end
   applyMode()
-  showText() // should not be necessary but cannot hurt
+  showTextWithDelay(0) // should not be necessary but cannot hurt
 })
 ias.on('preved', (e) => { // re-apply original/edited mode after adding new elements at the top
   console.log('preved event')
   applyMode()
+  showTextWithDelay(0)
   // setTimeout(showText(), 2500)
 })
 
@@ -505,7 +538,7 @@ ias.on('prepended', function (e) { // after new ias items have been prepended: a
     $(this).click() // this disables highlighting
     $(this).click() // this re-enables it
   })
-  showTextWithDelay(500)
+  showTextWithDelay(0)
 })
 
 // ===== Binding and Initialization =====
@@ -529,6 +562,9 @@ document.body.addEventListener('click', async function (e) {
       // don't use the browser's navigation to scoll to target, since we already should be there
       // console.log(`Not performing default action for ${JSON.stringify(e)} ...`)
       e.preventDefault()
+    }
+	   else  {
+      console.log("No targetId or z found.");
     }
   } else if (t.matches('#dropdownMenu1')) { // load paginator
     const self = `<span data-template="dummyString"></span>`
@@ -568,8 +604,10 @@ document.body.addEventListener('click', async function (e) {
 //   Synchronous scripts have been executed (no images, styles loaded and no async scripts executed),
 // - window.load event, by contrast, triggers when *everything* has been loaded (i.e. later)
 document.addEventListener('DOMContentLoaded', function (event) {
-  // init backTop
+ console.log("DomContentLoaded");
+	// init backTop
   $('#backTop').backTop({ position: 100, speed: 200, color: 'white' })
+
 
   // initialize TOC tree
   $('#tableOfConts')
@@ -627,10 +665,11 @@ window.addEventListener('load', async function (e) {
   applyMode()
 
   // reveal darkened text after loading
-  showText()
+  showTextWithDelay(1500)
 
   // if we have a 'viewer' URL parameter, open the viewer popup
   if (params.get('viewer') !== undefined && params.get('viewer') !== null && params.get('viewer').length > 0) {
     showTify(params.get('viewer'))
   }
 })
+

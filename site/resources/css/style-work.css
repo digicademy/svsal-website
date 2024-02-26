@@ -1327,6 +1327,19 @@ a.unavailable {
     border-radius: 6px 0 6px 6px;
 }
 
+#minimap {
+  visibility: hidden;
+  background: rgba(0,0,0,.05) -moz-element(#wrapperwork) no-repeat center / contain;
+  position: fixed;
+  top: 120px;
+  right: 4px;
+  width: 150px;
+  height: 400px;
+  border: 1px solid rgba(253,185,36,0.5);
+  z-index: 100;
+  /* more style */
+}
+
 .ui-dialog .ui-dialog-content {
     padding: 0 0;
 }

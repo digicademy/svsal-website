@@ -58,7 +58,7 @@
         <script type="text/javascript" src="/resources/js/bootstrap.js"                                  defer></script>
         <script type="text/javascript" src="/resources/js/jquery-ui.js"                                  defer></script>
         <script type="text/javascript" src="/resources/js/jquery.js"                                     defer></script><!-- this is only the backTop function -->
-        <script type="text/javascript" src="/resources/js/jquery.bootstrap-autohidingnavbar.js"          defer></script>
+        <!--<script type="text/javascript" src="/resources/js/jquery.bootstrap-autohidingnavbar.js"          defer></script> -->
         <script type="text/javascript" src="/resources/js/jquery.tooltipster.js"                         defer></script>
         <!-- script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@3.1.0-beta.1/dist/infinite-ajax-scroll.min.js" defer></script -->
         <!-- script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll/dist/infinite-ajax-scroll.min.js" defer></script -->
@@ -67,7 +67,7 @@
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.js"             defer></script>
         <script type="text/javascript" src="/resources/js/sal-work.js"                                   defer></script>
         <script type="text/javascript" src="/resources/js/sal-common.js"                                 defer></script>
-
+        <script type="text/javascript" src="/resources/js/pagemap.min.js"                                defer></script>
         {{- include "/resources/partials/favicons.html" .}}
     </head>
 
@@ -82,7 +82,7 @@
             <div class="navbar navbar-white navbar-fixed-top" style="z-index: 1; margin-top: 10px; padding-top: 49px;">
                 <div class="row-fluid" style="margin-top: 0.9%;">
                     <h4 style="margin-top: 5px;" class="pull-left messengers">
-                        <a href="https://id.{{ $domain }}/texts/{{$wid}}" title="(Gehe zum Anfang von) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}">
+                        <a href="https://id.{{ $domain }}/texts/{{$wid}}" title="(Go to top of) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}">
                             <!-- &#xA0; -->
                             {{abbrev 15 $author}}: {{abbrev 20 $title}}
                         </a>
@@ -301,6 +301,10 @@
 
         <!-- ==== Back to top ==== -->
         <a id="backTop"></a>
+
+        <!-- Minimap -->
+        <!-- div id='minimap'></div -->
+        <canvas id='minimap'></canvas>
 
         <!-- Imageviewer -->
         <div id="parent">
