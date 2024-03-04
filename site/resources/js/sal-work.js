@@ -134,7 +134,7 @@ function highlightSearchTerm () {
     })
 
     // enable minimap for search results
-    document.getElementById("minimap").style.visibility = "visible"
+    // document.getElementById("minimap").style.visibility = "visible"
   } else {
     document.getElementById("minimap").style.visibility = "hidden"
   }

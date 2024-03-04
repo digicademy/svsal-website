@@ -8,10 +8,27 @@
         
         /\* The html and body elements cannot have any padding or margin. *\/
       }
+*/
 
 body {
-        padding-top: 30px; 
-}*/
+    counter-reset: my-paragraph;
+}
+
+div.hauptText-body::before {
+    counter-increment: my-paragraph;
+    content: counters(my-paragraph, ".") " ";
+    position: absolute;
+    text-indent: 0px;
+    left: -2.5em;
+    padding-top: 2px;
+    font-size: 80%;
+    color: #888888;
+}
+
+div.hauptText-body {
+    margin-top: 1.5ex;
+}
+
 .hauptText {
     text-align: justify;
     clear: both; 
@@ -285,6 +302,14 @@ div.sal-tb-btn {
     display:block;
 }
 
+.sal-tb-btn button {
+    margin-left:-0.5em;
+    border: none;
+    background-color: transparent;
+    color: #102873 !important;
+    outline: none;
+}
+
 .sal-cite-toggle button {
     margin-left:40%;
     border: none;
@@ -376,4 +401,8 @@ div.sal-tb-btn {
     font-size: initial;
     bottom: -0.55em;
 }*/
+
+div.wrap h2 {
+    margin-top: 50px;
+}
 

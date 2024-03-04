@@ -162,7 +162,7 @@ padding:4px 8px
 }
 
 .navbar-default .navbar-toggle,
-.navbar-default .navbar-toggle:hover .icon-bar,
+.navbar-default .navbar-toggle:hover .icon-barta,
 .navbar-default .navbar-toggle:focus .icon-bar {
 border-color:#337ab7
 }
@@ -720,7 +720,7 @@ animation: fadein 2s;
 -o-animation: fadein 2s;        /* Opera */
 }
 /*fade in of facets*/
-@keyframes fadein,
+/*@keyframes fadein,
 @-moz-keyframes fadein,
 @-webkit-keyframes fadein,
 @-o-keyframes fadein {
@@ -730,6 +730,42 @@ opacity:0;
 to {
 opacity:1;
 }
+}*/
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 #inner {
 width:10%
@@ -956,6 +992,12 @@ border:none
     text-align:center;
     margin:1em;
     font-size:120%;
+} 
+
+.typeWork {
+font-size: 0.7em;
+font-style: italic;
+display:none;
 }
 
 .ui-dialog .ui-dialog-content {
