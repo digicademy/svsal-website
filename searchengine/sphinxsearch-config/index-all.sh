@@ -16,8 +16,9 @@
 # export wid="W0001&wid=W0002&wid=W0003&wid=W0004&wid=W0005&wid=W0006&wid=W0007&wid=W0008&wid=W0011&wid=W0012&wid=W0013&&wid=W0014&wid=W0015&wid=W0039&wid=W0078&wid=W0092&wid=W0114"
 # wordforms preprocessing: delete lines containing "_" or "+" in order to avoid wordform duplication in output
 
-find /var/data/existdb/data/export -type f -name "*.snippet.xml" -exec sed -i 's| xmlns:sphinx="https://www.salamanca.school/xquery/sphinx"||g' {} + >/etc/sphinxsearch/indexer.log 2>&1
+# find /var/data/existdb/data/export -type f -name "*.snippet.xml" -exec sed -i 's| xmlns:sphinx="https://www.salamanca.school/xquery/sphinx"||g' {} + >/etc/sphinxsearch/indexer.log 2>&1
 
-sudo -u sphinxsearch indexer --all --rotate >> /etc/sphinxsearch/indexer.log 2>&1  # --quiet
+# sudo -u sphinxsearch indexer --all --rotate >> /etc/sphinxsearch/indexer.log 2>&1  # --quiet
+sudo -u sphinxsearch indexer --all --rotate > /etc/sphinxsearch/indexer.log  # --quiet
 
 echo Logs at /etc/sphinxsearch/indexer.log
