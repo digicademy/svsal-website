@@ -34,7 +34,7 @@
         <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css"/>
         <!-- link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css" -->
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.css">
+        <!-- link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.css" -->
         <link rel="stylesheet" type="text/css" href="/resources/css/style-author-and-lemma.css"/>
 
         <!-- ==== Javascript ==== -->
@@ -44,9 +44,9 @@
         <script type="text/javascript" src="/resources/js/jquery.js"                                     defer></script><!-- this is only the backTop function -->
         <!-- script type="text/javascript" src="/resources/js/jquery.bootstrap-autohidingnavbar.js"          defer></script -->
         <script type="text/javascript" src="/resources/js/jquery.tooltipster.js"                         defer></script>
-        <!-- script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.9/jstree.min.js" defer></script -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.9/jstree.min.js" defer></script>
         <script type="text/javascript" src="/resources/js/sal-common.js"                                 defer></script>
-        <script type="text/javascript" src="/resources/js/sal-lemma.js"                                 defer></script>
+        <script type="text/javascript" src="/resources/js/sal-lemma.js"                                  defer></script>
 
         {{- include "/resources/partials/favicons.html" .}}
     </head>
@@ -214,6 +214,10 @@
 
                 <!-- ==== Back to top ==== -->
                 <a id="backTop"></a>
+
+                <!-- Minimap -->
+                <!-- div id='minimap'></div -->
+                <canvas id='minimap'></canvas>
 
                 <!-- Boxes with resources mentioned in the article -->
 <!--

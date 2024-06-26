@@ -1,6 +1,149 @@
 /* eslint-env browser */
 
-// Paragraph popup with link, refresh and print icons
+const validParams = ['mode', 'q', 'format', 'viewer']
+const params = (new URL(window.location.href)).searchParams
+
+// ===== Search term highlighting =====
+
+// This replaces innerHTML of a target element
+// with a highlighted version of the original HTML
+async function highlightReplace (origHTML, searchTerm, targetElement) {
+  // console.log('searchTerm: ' + searchTerm)
+
+  // check if target element exists
+  if (targetElement === null) {
+    return
+  }
+
+  const endpoint = 'https://search.salamanca.school/lemmatized/excerpts'
+  const myFormData = new FormData()
+  myFormData.append('opts[limit]', '0')
+  myFormData.append('opts[html_strip_mode]', 'retain')
+  myFormData.append('opts[query_mode]', 'true')
+  myFormData.append('words', searchTerm)
+  myFormData.append('docs[0]', origHTML)
+
+  const myOptions = {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    body: myFormData // body data type must match "Content-Type" header
+  }
+
+  // Send request and handle response
+  window.fetch(endpoint, myOptions)
+    .then(response => { // Check network status and return response's text content
+      if (!response.ok) {
+        console.log(myOptions)
+        throw new Error('Network response was not OK')
+      }
+      return response.text()
+    })
+    .then(str => { // Parse OpenSearch xml document and return rss/channel
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(str, 'text/html')
+      const errorNode = doc.querySelector('parsererror')
+      // console.log('This is string: ' + str)
+      if (errorNode) {
+        throw new Error('Response could not be parsed as html')
+      }
+      return doc.getElementsByTagName('channel')[0]
+    })
+    .then(data => { // Push highlighted HTML to target element
+      const doc1 = data.getElementsByTagName('item')[0].getElementsByTagName('description')[0].innerHTML
+      console.log('Replacing targetElement.innerHTML with highlighted HTML.')
+      targetElement.innerHTML = doc1
+    })
+    .then(_ => { // Update minimap
+      pagemap(document.getElementById('minimap'), {
+        viewport: null,
+        styles: {
+          'header,footer,section,article': 'rgba(0,0,0,0.38)',
+          'div': 'rgba(0,0,0,0.01)',
+          'h1,a': 'rgba(0,0,100,0.30)',
+          'h2,h3,h4': 'rgba(0,0,0,0.38)',
+          'span.hi': 'rgba(253,185,36,0.90)'
+        },
+        back: 'rgba(0,0,0,0.02)',
+        view: 'rgba(0,0,0,0.10)',
+        drag: 'rgba(0,0,0,0.40)',
+        interval: null
+      })
+    })
+    .catch(error => {
+      console.error('There has been a problem with the fetch operation in highlightSearch(): ', error)
+    })
+}
+
+// This checks if a searchTerm URL query parameter is present (?q=XY)
+// and, if so, replaces innerHTML of the InfiniteAjaxScroll container element
+// with version of the original HTML that has the search term highlighted
+function highlightSearchTerm () {
+  const searchTerm = params.get('q') || ''
+  // console.log(`searchTerm: ${searchTerm} (params: ${params})`)
+  if (searchTerm.length > 0) {
+    const targetElement = document.getElementById('wrapperWork')
+    const origHTML = targetElement.innerHTML.trim()
+    highlightReplace(origHTML, searchTerm, targetElement)
+
+    // also update the links to next/prev/top inside the iasContainer
+    $('.next, .prev, .top').each(function (i, obj) {
+      let nextParams = (new URL(obj.href)).searchParams
+      nextParams.set('q', searchTerm)
+      obj.href = obj.pathname + '?' + nextParams
+    })
+
+  // enable minimap for search results
+  // document.getElementById("minimap").style.visibility = "visible"
+  } else {
+    document.getElementById('minimap').style.visibility = 'hidden'
+  }
+}
+
+// ===== Entity highlighting =====
+
+// This highlights spans of named entities (persons, books etc.)
+// It is being called from the HTML element's onclick event
+// eslint-disable-next-line no-unused-vars
+function highlightSpanClassInText (htmlClass, invokingElement) {
+  // make all htmlClass elements have the inverse highlighting of the invoking element
+  if (document.getElementById(invokingElement).classList.contains('highlighted')) {
+    [].forEach.call(document.getElementsByClassName(htmlClass), function (el) { el.classList.remove('highlighted') })
+  } else {
+    [].forEach.call(document.getElementsByClassName(htmlClass), function (el) { el.classList.add('highlighted') })
+  }
+  // then toggle the highlighting also for the invoking element
+  document.getElementById(invokingElement).classList.toggle('highlighted')
+}
+
+function toolboxHighlight (elem, mode) {
+  const target = elem.parentElement.nextElementSibling
+  if (target !== undefined && mode === 'on') {
+    if (elem.closest('.sal-toolbox-marginal')) {
+      elem.style.visibility = 'visible'
+    }
+    elem.style.setProperty('color', '#102873', 'important')
+    if (target !== null) {
+      target.style.backgroundColor = '#F0F0F0'
+    }
+  } else if (target !== undefined && mode === 'off') {
+    elem.style.removeProperty('color')
+    if (target !== null) {
+      target.style.backgroundColor = ''
+    }
+    if (elem.closest('.sal-toolbox-marginal')) {
+      elem.style.removeProperty('visibility')
+    }
+  }
+}
+
+// Add entity highlighting as needed
+$('#hiliteBox a.highlighted').each(function () {
+  $(this).click() // this disables highlighting
+  $(this).click() // this re-enables it
+})
+
+// ===== Passage context/hand menu: Cite, Copy link, Export =====
+
+// Initialize paragraph popups with link, refresh and print icons
 $('[data-rel="popover"]').popover({
   trigger: 'click',
   animation: 'true',
@@ -13,26 +156,43 @@ $('[data-rel="popover"]').popover({
     toolboxHighlight(this, 'on')
     return $(this).siblings('.sal-toolbox-body').html()
   }
-  // close popup by clicking outside
-}).click(function (event) { event.preventDefault() }) // don't jump around to the anchor associated with the span
-
-$('body').on('click', function (event) {
-  $('[data-rel="popover"]').each(function () {
-    event.preventDefault()
-    if (!$(this).is(event.target) &&
-          $(this).has(event.target).length === 0 &&
-          $('.popover').has(event.target).length === 0) {
-      toolboxHighlight(this, 'off')
-      $(this).popover('hide')
-    }
-  })
 })
+
+// Add tooltip
+$('.messengers').tooltipster({'multiple': true})
+
+// Helper function
+function copyNotify (elem) {
+  const del = elem.parentElement.getElementsByClassName('.copy-alert')[0]
+  if (typeof del !== 'undefined' && del !== null) {
+    elem.parentElement.removeChild(del)
+  }
+  // This is defined in the sal-common.js file loaded from the HTML file
+  // eslint-disable-next-line no-undef
+  const language = getLang()
+  // console.log('$lang=' + language)
+  let msg
+  if (language === 'de') {
+    msg = 'In die Zwischenablage kopiert'
+  } else if (language === 'es') {
+    msg = 'Copiado al portapapeles'
+  } else {
+    msg = 'Copied to clipboard'
+  }
+  let popup = document.createElement('span')
+  popup.setAttribute('class', 'copy-alert')
+  popup.textContent = msg
+  elem.parentElement.appendChild(popup)
+  setTimeout(function () {
+    $('.copy-alert').fadeOut(1000)
+  }, 1500)
+}
 
 // This is being called from the HTML element's onclick event
 // eslint-disable-next-line no-unused-vars
 function copyLink (elem) {
-  var target = elem.parentElement.getElementsByClassName('cite-link')[0]
-  var input = document.createElement('textarea')
+  const target = elem.parentElement.getElementsByClassName('cite-link')[0]
+  let input = document.createElement('textarea')
   input.setAttribute('style', 'width:0;height:0;opacity:0;') // hidden
   input.textContent = target.textContent
   document.body.appendChild(input)
@@ -45,14 +205,14 @@ function copyLink (elem) {
 // This is being called from the HTML element's onclick event
 // eslint-disable-next-line no-unused-vars
 function copyCitRef (elem) {
-  var target = elem.parentElement.getElementsByClassName('sal-cite-rec')[0]
-  var input = document.createElement('textarea')
+  const target = elem.parentElement.getElementsByClassName('sal-cite-rec')[0]
+  let input = document.createElement('textarea')
   input.setAttribute('style', 'display:block; width:0; height:0; opacity: 0;')
   // construct string to be copied: get pre-rendered work/passage citation strings and insert the current date
-  var v1 = target.getElementsByClassName('cite-rec-body')[0].textContent
+  const v1 = target.getElementsByClassName('cite-rec-body')[0].textContent
   // This is defined in the sal-common.js file loaded from the HTML file
   // eslint-disable-next-line no-undef
-  var v2 = getI18nAccessString()
+  const v2 = getI18nAccessString()
   input.textContent = v1 + ' ' + v2
   document.body.appendChild(input)
   input.select()
@@ -61,84 +221,67 @@ function copyCitRef (elem) {
   document.body.removeChild(input)
 }
 
-function copyNotify (elem) {
-  var del = elem.parentElement.getElementsByClassName('.copy-alert')[0]
-  if (typeof del !== 'undefined' && del !== null) {
-    elem.parentElement.removeChild(del)
-  }
-  // This is defined in the sal-common.js file loaded from the HTML file
-  // eslint-disable-next-line no-undef
-  var language = getLang()
-  // console.log('$lang=' + language)
-  var msg
-  if (language === 'de') {
-    msg = 'In die Zwischenablage kopiert'
-  } else if (language === 'es') {
-    msg = 'Copiado al portapapeles'
-  } else {
-    msg = 'Copied to clipboard'
-  }
-  var popup = document.createElement('span')
-  popup.setAttribute('class', 'copy-alert')
-  popup.textContent = msg
-  elem.parentElement.appendChild(popup)
-  setTimeout(function () {
-    $('.copy-alert').fadeOut(1000)
-  }, 1500)
-}
+// ===== Binding and Initialization =====
 
-// TOC tree
-var tree = $('#tableOfConts')
-tree.bind('loaded.jstree', function (event, data) {
-  tree.jstree(true).open_node($('#tableOfConts').find('li').first())
-})
-$('#tableOfConts').jstree({
-  'core': { }
-}).bind('select_node.jstree', function (e, data) {
-  var href = data.node.a_attr.href
-  document.location.href = href
-})
+// Bind all click events
+document.body.addEventListener('click', async function (e) {
+  const t = e.target
+  $('.collapse .navbar-collapse').collapse('hide') // Hide collapsible menu after clicking anywhere
 
-// toggle TOC tree
-$(function () {
-  $('#toggleButton').click(function () {
-    if ($('button[id="toggleButton"]').hasClass('expanded')) {
+  // Click outside of popover: close popover and no longer highlight text section
+  // (and continue checking against all the other event listeners)
+  if (!t.closest('[data-rel="popover"]')) {
+    $('[data-rel="popover"]').popover('hide')
+  }
+  if (t.matches('#toggleButton')) { // toggle ToC tree: expand/collapse
+    if (t.hasClass('expanded')) {
       $('#tableOfConts').jstree('close_all')
-      $('button[id="toggleButton"]').removeClass('expanded').addClass('collapsed')
+      t.removeClass('expanded').addClass('collapsed')
       $('span[class="glyphicon glyphicon-resize-small"]').removeClass('glyphicon glyphicon-resize-small').addClass('glyphicon glyphicon-fullscreen')
-    } else if ($('button[id="toggleButton"]').hasClass('collapsed')) {
+    } else if (t.hasClass('collapsed')) {
       $('#tableOfConts').jstree('open_all')
-      $('button[id="toggleButton"]').removeClass('collapsed').addClass('expanded')
+      t.removeClass('collapsed').addClass('expanded')
       $('span[class="glyphicon glyphicon-fullscreen"]').removeClass('glyphicon glyphicon-fullscreen').addClass('glyphicon glyphicon-resize-small')
     }
-  })
-})
-
-// Close Modal on Clicking a TOC link
-$('.hideMe').click(function () {
-  // 'this' would reference the anchor that was clicked
-  $('#myModal').modal('hide')
-})
-
-// Do not close export menu on click
-$(document).on('click', '.dropdown-menu.export-options', function (e) {
-  e.stopPropagation()
-})
-
-// Toolboxes: highlighting and copy functions
-function toolboxHighlight (elem, mode) {
-  var target = elem.parentElement.nextElementSibling
-  if (mode === 'on') {
-    if (elem.parentElement.className === 'sal-toolbox-marginal') {
-      elem.style.visibility = 'visible'
-    }
-    elem.style.setProperty('color', '#102873', 'important')
-    target.style.backgroundColor = '#F0F0F0'
-  } else if (mode === 'off') {
-    elem.style.removeProperty('color')
-    target.style.backgroundColor = ''
-    if (elem.parentElement.className === 'sal-toolbox-marginal') {
-      elem.style.removeProperty('visibility')
-    }
+  } else if (t.matches('.hideMe')) { // anchors in ToC popup: close modal window
+    $('#myModal').modal('hide') // 't' would reference the anchor that was clicked
+  } else if (t.matches('.dropdown-menu.export-options')) { // export options: do not close menu on click
+    // console.log(`Stop event propagation for ${e} ...`)
+    e.stopPropagation()
+  } else if (t.closest('[data-rel="popover"]')) { // toolbox/hand icon: show popover and highlight section, but don't jump to the anchor
+    console.log(`Not performing default action for ${e} ...`)
+    e.preventDefault()
+    console.log(`Stop event propagation for ${e} ...`)
+    e.stopPropagation()
+    $(t.closest('[data-rel="popover"]')).popover('show')
+    toolboxHighlight(this, 'on')
   }
-}
+})
+
+// document.ready-like functions collecting init for all of the above...
+// - document.DOMContentLoaded triggers when DOM has been completely parsed
+//   Synchronous scripts have been executed (no images, styles loaded and no async scripts executed),
+// - window.load event, by contrast, triggers when *everything* has been loaded (i.e. later)
+document.addEventListener('DOMContentLoaded', function (event) {
+  // console.log('DomContentLoaded')
+  // init backTop
+  $('#backTop').backTop({ position: 100, speed: 200, color: 'white' })
+
+  // initialize TOC tree
+  $('#tableOfConts')
+    .bind('loaded.jstree', function (e, d) {
+      $('#tableOfConts')
+        .jstree(true)
+        .open_node($('#tableOfConts').find('li').first())
+    })
+    .bind('select_node.jstree', function (e, data) {
+      const href = data.node.a_attr.href
+      document.location.href = href
+    })
+    .jstree({ 'core': { } })
+})
+
+window.addEventListener('load', async function (e) {
+  // apply search term highlighting
+  highlightSearchTerm()
+})

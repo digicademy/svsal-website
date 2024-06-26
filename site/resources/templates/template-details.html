@@ -190,16 +190,43 @@
                                         <li>
                                             <h5>Reading View:</h5>
                                             <div>
+						     {{ if eq  $info.status  "g_enriched_approved" }}
+
                                                 <a class="g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
                                                     <img src="{{ $info.thumbnail }}" class="img-responsive thumbnail" alt="Titlepage{{ if $info.volumes }} Multivolume{{ end }}">
                                                 </a>
-       
-                                
-				                             
-						<a class="btn btn-info button g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
-                                                    <span class="glyphicon glyphicon-file"></span> Read
+					
+                                                    {{ else if eq  $info.status  "h_revised"  }}
+   <a class="g_enriched_approved" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
+                                                    <img src="{{ $info.thumbnail }}" class="img-responsive thumbnail" alt="Titlepage{{ if $info.volumes }} Multivolume{{ end }}">
+   </a>
+
+               
+
+                {{ else  }}
+
+						 <a>
+                                                    <img src="{{ $info.thumbnail }}" class="img-responsive teaser-thumbnail" alt="Titlepage{{ if $info.volumes }} Multivolume{{ end }}">
                                                 </a>
-						
+						{{ end }}
+  {{ if eq  $info.status  "g_enriched_approved" }}
+                  <a class="btn btn-info button g_enriched_approved {{ $wid }}" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
+                    <span class="glyphicon glyphicon-file"></span> Read
+                </a>
+               
+                {{ else if eq  $info.status  "h_revised"  }}
+  <a class="btn btn-info button g_enriched_approved {{ $wid }}" href="https://id.{{ $domain }}/texts/{{ $wid }}?format=html">
+                    <span class="glyphicon glyphicon-file"></span> Read
+                </a>
+
+	
+
+		{{ else  }}
+		<a class="btn btn-info button {{ $wid }}" style="color: DimGray; background-color: silver;  pointer-events: none; cursor: default;">
+			 <span class="glyphicon glyphicon-file"></span> Coming soon
+                </a>
+                {{ end }}
+		
                                             </div>
                                         </li>
                                         <li><a href="/viewer-standalone.html?wid={{ $wid }}" target="_blank" rel="noopener noreferrer">Facsimile View</a></li>

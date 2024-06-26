@@ -6,7 +6,7 @@ var item_template =
 					'<% if (obj.WIPstatus == "yes") { %>' +
 						'<p class="watermark-wip-text">Work in Progress!</p>' +
 					'<% } %>' +
-					'<p class="lead">' +
+					'<p class="lead">' +'<span class="typeWork"><%= obj.type %></span>'+ '</br>' +
 						'<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) {  %><%= obj.title %><% } %> </span></a>' +
 						'</br>' +
 						'<span><% if (obj.name) {  %><%= obj.name %><% } %></span>' +

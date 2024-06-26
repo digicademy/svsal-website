@@ -95,7 +95,7 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
       targetElement.innerHTML = doc1
     })
     .then(_ => { // Update minimap
-      pagemap(document.getElementById("minimap"), {
+      pagemap(document.getElementById('minimap'), {
         viewport: null,
         styles: {
           'header,footer,section,article': 'rgba(0,0,0,0.38)',
@@ -108,7 +108,7 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
         view: 'rgba(0,0,0,0.10)',
         drag: 'rgba(0,0,0,0.40)',
         interval: null
-      });
+      })
     })
     .catch(error => {
       console.error('There has been a problem with the fetch operation in highlightSearch(): ', error)
@@ -136,7 +136,7 @@ function highlightSearchTerm () {
     // enable minimap for search results
     // document.getElementById("minimap").style.visibility = "visible"
   } else {
-    document.getElementById("minimap").style.visibility = "hidden"
+    document.getElementById('minimap').style.visibility = 'hidden'
   }
 }
 
@@ -212,7 +212,7 @@ function copyNotify (elem) {
   // This is defined in the sal-common.js file loaded from the HTML file
   // eslint-disable-next-line no-undef
   const language = getLang()
-  console.log('$lang=' + language)
+  // console.log('$lang=' + language)
   let msg
   if (language === 'de') {
     msg = 'In die Zwischenablage kopiert'
@@ -229,6 +229,7 @@ function copyNotify (elem) {
     $('.copy-alert').fadeOut(1000)
   }, 1500)
 }
+
 // This is being called from the HTML element's onclick event
 // eslint-disable-next-line no-unused-vars
 function copyLink (elem) {
@@ -242,6 +243,7 @@ function copyLink (elem) {
   copyNotify(elem)
   document.body.removeChild(input)
 }
+
 // This is being called from the HTML element's onclick event
 // eslint-disable-next-line no-unused-vars
 function copyCitRef (elem) {
@@ -393,18 +395,14 @@ function myScrollIntoView (targetId) {
     showTextWithDelay(500)
     document.getElementById(targetId).effect('highlight', {color: 'LightSkyBlue'}, 1200)
   })
-  $('html, body').bind('scroll', function()
-  {
-    if($(this).scrollTop() + $(this).innerHeight()>=$(this)[0].scrollHeight)
-    {
-      alert('end reached');
+  $('html, body').bind('scroll', function () {
+    if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+      alert('end reached')
     }
   })
   showTextWithDelay(500)
   document.getElementById(targetId).effect('highlight', {color: 'LightSkyBlue'}, 1200)
 }
-
-
 
 // Mobil-View: scroll to last collapsed navbar item on mobile when there are many items
 // $('.navbar-collapse').css({ maxHeight: $(window).height() - $('.navbar-header').height() + 'px' })
@@ -421,17 +419,17 @@ const ias = new InfiniteAjaxScroll('#iasContainer', {
   spinner: '.iasSpinner',
   prefill: false,
   logger: true // don't clobber the console
-  //negativeMargin: 100          // when to start loading new items (before reaching the very bottom),
+  // negativeMargin: 100          // when to start loading new items (before reaching the very bottom),
 })
 
 // Darken body (when scrolling) in order not to confuse readers by ias's jumping around
 function hideText () {
   document.getElementById('body').classList.add('darkenBody')
 };
-/*function showText () {
-  document.getElementById('body').classList.remove('darkenBody')
+/* function showText () {
+   document.getElementById('body').classList.remove('darkenBody')
 }; */
-async function showTextWithDelay(delay) {
+async function showTextWithDelay (delay) {
   return new Promise(resolve => {
     setTimeout(() => {
       console.log('Delayed showText now showing text.')
@@ -457,7 +455,7 @@ ias.on('page', (event) => { // when user scrolls to a new segment: update addres
   })
   const newUrl = target.pathname.substr(target.pathname.lastIndexOf('/') + 1) + '?' + params
   history.replaceState(history.state, '', newUrl)
-  //showTextWithDelay(0)
+  // showTextWithDelay(0)
 })
 ias.on('nexted', (e) => { // re-apply original/edited mode after adding new elements at the end
   applyMode()
@@ -562,9 +560,8 @@ document.body.addEventListener('click', async function (e) {
       // don't use the browser's navigation to scoll to target, since we already should be there
       // console.log(`Not performing default action for ${JSON.stringify(e)} ...`)
       e.preventDefault()
-    }
-	   else  {
-      console.log("No targetId or z found.");
+    } else {
+      console.log('No targetId or z found.')
     }
   } else if (t.matches('#dropdownMenu1')) { // load paginator
     const self = `<span data-template="dummyString"></span>`
@@ -604,10 +601,9 @@ document.body.addEventListener('click', async function (e) {
 //   Synchronous scripts have been executed (no images, styles loaded and no async scripts executed),
 // - window.load event, by contrast, triggers when *everything* has been loaded (i.e. later)
 document.addEventListener('DOMContentLoaded', function (event) {
- console.log("DomContentLoaded");
-	// init backTop
+  // console.log('DomContentLoaded')
+  // init backTop
   $('#backTop').backTop({ position: 100, speed: 200, color: 'white' })
-
 
   // initialize TOC tree
   $('#tableOfConts')
@@ -672,4 +668,3 @@ window.addEventListener('load', async function (e) {
     showTify(params.get('viewer'))
   }
 })
-

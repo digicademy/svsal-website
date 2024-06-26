@@ -31,26 +31,26 @@ div.hauptText-body {
 
 .hauptText {
     text-align: justify;
-    clear: both; 
+    clear: both;
     font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;
     font-size:1.3em;
 }
 
 .marginal {
-	float: right;
-	clear: right;
-	margin-right: -51%;
-	padding: 5px;
-	line-height: 1.6;
+    float: right;
+    clear: right;
+    margin-right: -51%;
+    padding: 5px;
+    line-height: 1.6;
    font-size: 0.8em;
    font-style: normal;
-	text-indent: 0;
-	text-align: justify;
-	width:45%;
+    text-indent: 0;
+    text-align: justify;
+    width:45%;
 }
 
 .places {
-	display: none;
+    display: none;
 }
 
 .spaced {
@@ -77,7 +77,49 @@ span.glyphicon-new-window {
     text-justify:inter-word;
 }
 
-a.anchor{/*display: block;*/ position: relative; top: -50px; visibility: hidden;}
+a {
+    color: #102873;
+}
+
+a[id]:not(.jstree-anchor) {
+/*    padding-top: 10px; */
+/*    margin-top: -10px; */
+    display: inline-block; /* required for webkit browsers */
+    
+}
+
+a[id]:before {
+  display: block;
+  content: " ";
+  margin-top: -100px;
+  height: 100px;
+  visibility: hidden;
+}
+
+/*a.anchor {
+    display: block;
+    position: relative;
+    top: -50px;
+    visibility: hidden;
+}*/
+
+a[class~="hideMe"] {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;     /** IE6+, Firefox 7+, Opera 11+, Chrome, Safari **/
+        -o-text-overflow: ellipsis;  /** Opera 9 & 10 **/
+        width: 65% /* note that this width will have to be smaller to see the effect */
+    }
+
+a > span[class~=pull-right] {
+        position:absolute;
+        right: 10%;
+    }
+
+a:hover > span[class~=pull-right] {
+    background-color: #E7F4F9
+}
 
 .highlighted {
     background: none repeat scroll 0 0 #ffff00;
@@ -226,7 +268,7 @@ a.anchor{/*display: block;*/ position: relative; top: -50px; visibility: hidden;
 .navbar-white .btn-link {
     color: #333;
 }
-    
+
 /* Essential text areas, to be rendered as "columns" from left to right:
  * - teasers: .section-title -> positioned relative to the main area (left) & hidden in smaller-screen view
  * - pagination & image links: .pageNumbers -> positioned relative to the main area (left)
@@ -241,13 +283,10 @@ a.anchor{/*display: block;*/ position: relative; top: -50px; visibility: hidden;
     position: absolute;
     left: -2.5%;
 }
-
-
 .sal-toolbox-title {
     display: table-cell;
     padding-right:0.8rem;
 }
-
 .sal-toolbox-marginal {
     display:table-cell;
     visibility: hidden;
@@ -302,14 +341,6 @@ div.sal-tb-btn {
     display:block;
 }
 
-.sal-tb-btn button {
-    margin-left:-0.5em;
-    border: none;
-    background-color: transparent;
-    color: #102873 !important;
-    outline: none;
-}
-
 .sal-cite-toggle button {
     margin-left:40%;
     border: none;
@@ -334,15 +365,16 @@ div.sal-tb-btn {
 
 .marginal {
     float: right;
-	clear: right;
-	margin-right: -49%;
+    clear: right;
+    margin-right: -49%;
     padding: 5px;
-	line-height: 1.6;
-	text-indent: 0;
-	text-align: left;
-	width:45%;
+    line-height: 1.6;
+    text-indent: 0;
+    text-align: left;
+    width:45%;
     display:table;
 }
+
 
 /* Section titles */
 .section-title-body {
@@ -357,12 +389,12 @@ div.sal-tb-btn {
 }
 .section-title {
     float: left;
-	clear: left;
-	line-height: 1.6;
-	text-indent: 0;
-	font-family: Helvetica, Arial, sans-serif;
-	text-align: left;
-	width: 34%;
+    clear: left;
+    line-height: 1.6;
+    text-indent: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    text-align: left;
+    width: 34%;
     margin-left:-56%;
     display:table;
 }
@@ -395,9 +427,9 @@ div.sal-tb-btn {
     position: relative;
     width: 17.5rem;
     margin-left:-33rem;
-	line-height: 1.6;
+    line-height: 1.6;
     font-family: Helvetica, Arial, sans-serif;
-	vertical-align: baseline;
+    vertical-align: baseline;
     font-size: initial;
     bottom: -0.55em;
 }*/
@@ -405,4 +437,3 @@ div.sal-tb-btn {
 div.wrap h2 {
     margin-top: 50px;
 }
-
