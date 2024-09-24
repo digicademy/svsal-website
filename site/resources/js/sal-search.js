@@ -1,60 +1,5 @@
 /* eslint-env browser */
 
-
-
-//function sortList to sort by author,once the list is made.
-// For now can only counts the 10 results present on the page. 
-function sortList() {
-  var i, switching, b, shouldSwitch;
-	console.log("The function sortList is indeed used");
-  switching = true;
-  /* Make a loop that will continue until
-no switching has been done: */
-
-  //console.log(' shouldSwitch '+shouldSwitch+ " and switching "+switching);
-
-	while (switching) {
-    // Start by saying: no switching is done:
-    
-  //console.log(' shouldSwitch '+shouldSwitch+ " and switching "+switching);
-
-	  switching = false;
-    b = document.getElementById('resultsList');// document.querySelectorAll("ul.resultsList > li > a");
-	 
-    // Loop through all list items:
-    for (i = 0; i < (document.getElementById("resultsList").childElementCount - 1); i++) {
-      // Start by saying there should be no switching:
-      shouldSwitch = false;
-    //console.log(i);
-
-       let b_selected = b.children[i].firstChild.text.toLowerCase().slice(0, b.children[i].firstChild.text.indexOf(','));
-    //   let bPlus_select =  b[i].parentNode.parentNode.children[i+1].querySelector('a').innerHTML.toLowerCase().slice(0, b[i].parentNode.parentNode.children[i+1].querySelector('a').innerHTML.indexOf(','));      
-      if (b_selected >  b.children[i+1].firstChild.text.toLowerCase().slice(0, b.children[i+1].firstChild.text.toLowerCase().indexOf(',')))
-      {
-    
-        /* If next item is alphabetically lower than current item,
-        mark as a switch and break the loop: */
-shouldSwitch = true;
-	      //console.log(' shouldSwitch '+shouldSwitch+ " and switching "+switching);
-        break;
-        //document.querySelectorAll("ul.resultsList > li > a")[0].innerHTML.toLowerCase().slice(document.querySelectorAll("ul.resultsList > li > a")[0].innerHTML.toLowerCase.indexOf(','))
-      }
-    }
-    if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark the switch as done: */i
-	     //console.log(`Switching true with ${b[i].innerHTML} and ${b[i].parentNode.parentNode.children[i+1].querySelector('a').innerHTML}`);
-   //    console.log(`Switching true with ${ b.children[i].firstChild.text} and ${b.children[i+1].firstChild.text}`);
-      //b[i].parentNode.parentNode.insertBefore( b.children[i+1].firstChild,  b.children[i].firstChild);
-      b.insertBefore( b.children[i+1],  b.children[i]);
-      switching = true;
-	     //console.log(' shouldSwitch '+shouldSwitch+ " and switching "+switching);
-
-    } 
-//TODO: how to have all the results ? SphinxSearch gives only 10 in a row. 
- 
-}
-};
 /*
  * mainSearch - performs a search for a searchterm
  *              It does not return a value but instead manipulates the dom tree to reflect its results.
@@ -73,8 +18,8 @@ async function mainSearch (field, st, targetListId, page, limit) {
   const alsoAuthor = 'sphinx_author,'
   const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
   const searchterm = decodeURIComponent(st)
-  const grouping = '&groupby=sphinx_work&groupfunc=4' // groupby 4: by attribute
-  const sorting = '&sort=2&sortby=sphinx_author&ranker=2' // sort 2: attribute ascending; ranker 2: no ranking
+  const grouping = '&groupby=sphinx_work&groupsort=sphinx_author asc&groupfunc=4' // groupfunc 4: by attribute
+  const sorting = '&sort=4&sortby=sphinx_year asc&ranker=2' // sort 2: attribute ascending; ranker 2: no ranking
   const detailsPage = 0
   const detailsLimit = 5
   const paging = '&offset=' + page + '&limit=' + limit
@@ -83,6 +28,7 @@ async function mainSearch (field, st, targetListId, page, limit) {
   showSpinnerTotal()
 
   // Send request and handle response
+  console.log('This is the search request\'s URL: ' + url)
   window.fetch(url)
     .then(response => { // Check network status and return response's text content
       if (!response.ok) {
@@ -105,12 +51,12 @@ async function mainSearch (field, st, targetListId, page, limit) {
       var startIndex = Math.floor(parseInt(data.getElementsByTagName('opensearch:startIndex')[0].textContent) / itemsPerPage) + 1
       var terms = [...data.getElementsByTagName('terms')].map(i => i.getElementsByTagName('word')[0].textContent) // convert HTMLCollection to an array with spread operator
       var items = data.getElementsByTagName('item')
-      console.log(data);
+      // console.log(data)
 
       console.log(`Search for "${st}" in "${field}" results in:`)
       console.log('Terms: ' + terms.join(', '))
       console.log('total Results: ' + totalResults)
-      //console.log(items)
+      // console.log(items)
 
       document.getElementById('searchInfo').style.visibility = 'visible'
       document.getElementById('searchSummary').style.visibility = 'visible'
@@ -149,8 +95,6 @@ async function mainSearch (field, st, targetListId, page, limit) {
                             </li>`
         // add content to the HTML
         document.getElementById(targetListId).insertAdjacentHTML('beforeend', itemString)
-//	     sortList(); //fall into an infinite loop with the first result of list being swichted infinitely. 
-//	      console.log("Calling sortList() now." );
         // call (an async) function to populate excerps for this result
         detailsSearch(_workID, detailsPage, detailsLimit, searchterm)
       }
@@ -158,9 +102,9 @@ async function mainSearch (field, st, targetListId, page, limit) {
     .catch(error => {
       console.error('There has been a problem with your fetch operation:', error)
     })
-    .finally(() => { hideSpinnerTotal();  sortList(); //fall into an infinite loop with the first result of list being swichted infinitely. 
-             // console.log("Calling sortList() now." );
- })
+    .finally(() => {
+      hideSpinnerTotal()
+    })
 };
 
 /*
@@ -326,7 +270,7 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
       if (!response.ok) {
         throw new Error('Network response was not OK')
       }
-      //console.log(myOptions)
+      // console.log(myOptions)
       return response.text()
     })
     .then(str => { // Parse OpenSearch xml document and return rss/channel
@@ -502,13 +446,6 @@ $(document).ready(function () {
   })
 })
 
-/*$(document).ready(function() {
-	
- console.log("In sorting");
-	sortList();
-
-});*/
-
 $(document).on('click', '#toggleHelp', function (event) {
   if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close') } else { $('#helpBox2').dialog('open') }
   event.preventDefault()
@@ -526,8 +463,6 @@ $(document).on('click', 'a[href^="#div_"]', function (event) {
   $('#helpBox2').scrollTop($(target).position().top)
   event.preventDefault()
 })
-
-//sortList();
 
 /*
 $(document).on('click', 'a[href^="https://id.salamanca.school/"]', function () {

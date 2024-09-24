@@ -4,12 +4,14 @@
         <form class="col-md-12 form-group" name="f-query" role="form" action="search.html" method="get"><!-- Search Form -->
             <div class="col-md-4 col-sm-5 col-xs-5">
                 <select class="span12 form-control templates:form-control" name="field" id="field" data-template="form-control">
-                    <option value="everything" accesskey="1" title="everything" disabled="disabled">All data sources</option>
+                    <!-- option value="everything" accesskey="1" title="everything" disabled="disabled">All data sources</option>
+                    -->
                     <option value="corpus" accesskey="2" title="corpus" selected="selected">Works: full text</option>
-                    <option value="headings" accesskey="3" title="corpus, headings only" disabled="disabled">Works: headings</option>
-                    <option value="notes" accesskey="4" title="corpus, notes only" disabled="disabled">Works: notes</option>
-                    <option value="nonotes" accesskey="5" title="corpus, without the notes" disabled="disabled">Works: without notes</option>
-                    <option value="wp" accesskey="a" title="working papers" disabled="disabled">Working Papers: abstract, keywords, etc.</option>
+                    <!-- option value="headings" accesskey="3" title="corpus, headings only" disabled="disabled">Works: headings</option>
+                        <option value="notes" accesskey="4" title="corpus, notes only" disabled="disabled">Works: notes</option>
+                        <option value="nonotes" accesskey="5" title="corpus, without the notes" disabled="disabled">Works: without notes</option>
+                        <option value="wp" accesskey="a" title="working papers" disabled="disabled">Working Papers: abstract, keywords, etc.</option>
+                    -->
                 </select>
             </div>
             <div class="col-md-4 col-sm-5 col-xs-5">
@@ -21,7 +23,7 @@
                 </button>
             </div>
             <a style="font-size:1.05em;" class="btn btn-link" id="toggleHelp" target="#">
-                <i class="glyphicon glyphicon-info-sign"></i> Need help?
+                <i class="glyphicon glyphicon-info-sign"></i> Search functions explained
             </a>
             <input type="hidden" name="lang" value="en">
         </form>
@@ -244,6 +246,6 @@
         </div>
     </div>`}}
 
-{{ $info := dict "page" "search.html" "title" "Suche" "header" "Suche" "description" "Suche in Texten der Salmanticenser Autoren, in Wörterbuch- und biographischen Artikeln sowie in Working Papers über die Schule von Salamanca." "content" $content }}
+{{ $info := dict "page" "search.html" "title" "Search" "header" "Search" "description" "Search in the Texts of the authors, in the dictionnary, the biographical articles and the working papers of the School of Salamanca." "content" $content }}
 
 {{ include "/resources/templates/template-default.html" $info }}
