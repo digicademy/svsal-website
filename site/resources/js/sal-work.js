@@ -94,21 +94,24 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
       console.log('Replacing targetElement.innerHTML with highlighted HTML.')
       targetElement.innerHTML = doc1
     })
-    .then(_ => { // Update minimap
-      pagemap(document.getElementById('minimap'), {
-        viewport: null,
-        styles: {
-          'header,footer,section,article': 'rgba(0,0,0,0.38)',
-          'div': 'rgba(0,0,0,0.01)',
-          'h1,a': 'rgba(0,0,100,0.30)',
-          'h2,h3,h4': 'rgba(0,0,0,0.38)',
-          'span.hi': 'rgba(253,185,36,0.90)'
-        },
-        back: 'rgba(0,0,0,0.02)',
-        view: 'rgba(0,0,0,0.10)',
-        drag: 'rgba(0,0,0,0.40)',
-        interval: null
-      })
+    .then(_ => {
+      /*
+        // Update minimap
+        pagemap(document.getElementById('minimap'), {
+          viewport: null,
+          styles: {
+            'header,footer,section,article': 'rgba(0,0,0,0.38)',
+            'div': 'rgba(0,0,0,0.01)',
+            'h1,a': 'rgba(0,0,100,0.30)',
+            'h2,h3,h4': 'rgba(0,0,0,0.38)',
+            'span.hi': 'rgba(253,185,36,0.90)'
+          },
+          back: 'rgba(0,0,0,0.02)',
+          view: 'rgba(0,0,0,0.10)',
+          drag: 'rgba(0,0,0,0.40)',
+          interval: null
+        })
+      */
     })
     .catch(error => {
       console.error('There has been a problem with the fetch operation in highlightSearch(): ', error)
@@ -158,22 +161,32 @@ function highlightSpanClassInText (htmlClass, invokingElement) {
 
 function toolboxHighlight (elem, mode) {
   const target = elem.parentElement.nextElementSibling
-  if (target !== undefined && mode === 'on') {
+
+  if (target === undefined || target === null) return 0
+
+  if (mode === 'on') {
     if (elem.closest('.sal-toolbox-marginal')) {
       elem.style.visibility = 'visible'
     }
     elem.style.setProperty('color', '#102873', 'important')
     if (target !== null) {
-      target.style.backgroundColor = '#F0F0F0'
+      elem.style.backgroundColor = '#F0F0F0'
     }
-  } else if (target !== undefined && mode === 'off') {
-    elem.style.removeProperty('color')
-    if (target !== null) {
-      target.style.backgroundColor = ''
-    }
+  } else {
     if (elem.closest('.sal-toolbox-marginal')) {
       elem.style.removeProperty('visibility')
     }
+
+    // Remove highlighting from all highlighted elements
+    var allhighlightedelements = $('a, span').filter(function () {
+      var fgcolor = $(this).css('color').toLowerCase()
+      var bgcolor = $(this).css('background-color').toLowerCase()
+
+      return (bgcolor === '#f0f0f0' || bgcolor === 'rgb(240, 240, 240)') &&
+             (fgcolor === '#102873' || fgcolor === 'rgb(16, 40, 115)')
+    })
+    allhighlightedelements.css('color', 'inherit')
+    allhighlightedelements.css('background-color', 'inherit')
   }
 }
 
@@ -181,6 +194,7 @@ function toolboxHighlight (elem, mode) {
 $('#hiliteBox a.highlighted').each(function () {
   $(this).click() // this disables highlighting
   $(this).click() // this re-enables it
+  console.log('This is hilitebox initializer')
 })
 
 // ===== Passage context/hand menu: Cite, Copy link, Export =====
@@ -195,8 +209,16 @@ $('[data-rel="popover"]').popover({
   html: true,
   title: function () { return $('#popover-head').html() },
   content: function () {
-    toolboxHighlight(this, 'on')
-    return $(this).siblings('.sal-toolbox-body').html()
+    var target = $(this)
+    if (!target.data('popover-initialized')) {
+      toolboxHighlight(this, 'on')
+      target.data('popover-initialized', true)
+      // Reset the flag when the popover is hidden
+      target.on('hidden.bs.popover', function () {
+        target.removeData('popover-initialized')
+      })
+    }
+    return target.siblings('.sal-toolbox-body').html()
   }
 })
 
@@ -212,7 +234,7 @@ function copyNotify (elem) {
   // This is defined in the sal-common.js file loaded from the HTML file
   // eslint-disable-next-line no-undef
   const language = getLang()
-  // console.log('$lang=' + language)
+  console.log('$lang=' + language)
   let msg
   if (language === 'de') {
     msg = 'In die Zwischenablage kopiert'
@@ -414,12 +436,12 @@ function myScrollIntoView (targetId) {
 const ias = new InfiniteAjaxScroll('#iasContainer', {
   item: '.iasItem',
   next: '.next',
-  prev: '.prev',
+  // prev: '.prev',
   pagination: '.iasPagination',
   spinner: '.iasSpinner',
-  prefill: false,
-  logger: true // don't clobber the console
-  // negativeMargin: 100          // when to start loading new items (before reaching the very bottom),
+  prefill: true,
+  logger: false, // don't clobber the console
+  negativeMargin: 100 // when to start loading new items (before reaching the very bottom),
 })
 
 // Darken body (when scrolling) in order not to confuse readers by ias's jumping around
@@ -434,6 +456,7 @@ async function showTextWithDelay (delay) {
     setTimeout(() => {
       console.log('Delayed showText now showing text.')
       document.getElementById('body').classList.remove('darkenBody')
+      window.dispatchEvent(new Event('resize')) // trigger resize event to provoke prefilling
       resolve()
     }, delay)
   })
@@ -441,33 +464,35 @@ async function showTextWithDelay (delay) {
 
 // Hide text during loading
 hideText()
+
 // and also hide during loading of new ias items (only when scrolling up/backwards)
-ias.on('top', (event) => { // when user scrolls to the top
-  hideText()
-})
+// ias.on('top', (event) => { // when user scrolls to the top
+//   hideText()
+// })
 
 ias.on('page', (event) => { // when user scrolls to a new segment: update address bar
   const target = new URL(event.url, location.protocol + '//' + location.hostname + '/') // event.url is a string, but we want to use URL methods (second parameter is basename)
-  console.log('This is target :' + target)
+  // console.log('This is target :' + target)
   params.forEach(function (value, key) { // sanitize query parameters
     if (validParams.indexOf(key) === -1) { params.delete(key) };
-    console.log('Here are all the query parameters: ' + params)
+    // console.log('Here are all the query parameters: ' + params)
   })
   const newUrl = target.pathname.substr(target.pathname.lastIndexOf('/') + 1) + '?' + params
   history.replaceState(history.state, '', newUrl)
   // showTextWithDelay(0)
 })
-ias.on('nexted', (e) => { // re-apply original/edited mode after adding new elements at the end
-  applyMode()
-  showTextWithDelay(0) // should not be necessary but cannot hurt
-})
-ias.on('preved', (e) => { // re-apply original/edited mode after adding new elements at the top
-  console.log('preved event')
-  applyMode()
-  showTextWithDelay(0)
-  // setTimeout(showText(), 2500)
-})
-
+/*
+  ias.on('nexted', (e) => { // re-apply original/edited mode after adding new elements at the end
+    applyMode()
+    showTextWithDelay(0) // should not be necessary but cannot hurt
+  })
+  ias.on('preved', (e) => { // re-apply original/edited mode after adding new elements at the top
+    console.log('preved event')
+    applyMode()
+    showTextWithDelay(0)
+    // setTimeout(showText(), 2500)
+  })
+*/
 ias.on('append', function (event) { // when items are appended: add searchTerm highlighting as needed
   const searchTerm = params.get('q') || ''
   if (searchTerm.length > 0) {
@@ -492,7 +517,7 @@ ias.on('appended', function (e) { // after new ias items have been appended: add
       toolboxHighlight(this, 'on')
       return $(this).siblings('.sal-toolbox-body').html()
     }
-    // close popup by clicking outside
+    // close popup by clicking outside (handled in click-binding below)
   })
   // 2. Add tooltip
   $('.messengers').tooltipster({'multiple': true})
@@ -527,7 +552,7 @@ ias.on('prepended', function (e) { // after new ias items have been prepended: a
       toolboxHighlight(this, 'on')
       return $(this).siblings('.sal-toolbox-body').html()
     }
-    // close popup by clicking outside
+    // close popup by clicking outside (handled in click-binding below)
   })
   // 3. Add tooltip
   $('.messengers').tooltipster({'multiple': true})
@@ -548,9 +573,14 @@ document.body.addEventListener('click', async function (e) {
 
   // Click outside of popover: close popover and no longer highlight text section
   // (and continue checking against all the other event listeners)
-  if (!t.closest('[data-rel="popover"]')) {
+  // if (!t.closest('[data-rel="popover"]')) {
+  if (!t.closest('.sal-toolbox') &&
+      !t.closest('.sal-toolbox-body') &&
+      !t.closest('.sal-toolbox-marginal') &&
+      !t.closest('.sal-toolbox-title')) {
     $('[data-rel="popover"]').popover('hide')
-    toolboxHighlight(this, 'off')
+    toolboxHighlight(t, 'off')
+    // console.log('Toolbox off !')
   }
 
   if (t.matches('a[href*="#W"]')) { // a local link: scroll to anchor
@@ -578,7 +608,7 @@ document.body.addEventListener('click', async function (e) {
     }
   } else if (t.matches('.hideMe')) { // anchors in ToC popup: close modal window
     $('#myModal').modal('hide') // 't' would reference the anchor that was clicked
-  } else if (t.matches('.dropdown-menu.export-options')) { // export options: do not close menu on click
+  } else if (t.matches('.dropdown-menu.export-options.dropdown-toggle.dropdown')) { // export options: do not close menu on click
     // console.log(`Stop event propagation for ${e} ...`)
     e.stopPropagation()
   } else if (t.matches('.pageNo')) { // a page number: open viewer
@@ -587,12 +617,12 @@ document.body.addEventListener('click', async function (e) {
     t.blur()
     showTify(t.getAttribute('data-canvas'))
   } else if (t.closest('[data-rel="popover"]')) { // toolbox/hand icon: show popover and highlight section, but don't jump to the anchor
-    console.log(`Not performing default action for ${e} ...`)
+    // console.log(`Not performing default action for ${e} ...`)
     e.preventDefault()
-    console.log(`Stop event propagation for ${e} ...`)
+    // console.log(`Stop event propagation for ${e} ...`)
     e.stopPropagation()
     $(t.closest('[data-rel="popover"]')).popover('show')
-    toolboxHighlight(this, 'on')
+    toolboxHighlight(t, 'on')
   }
 })
 
@@ -601,7 +631,7 @@ document.body.addEventListener('click', async function (e) {
 //   Synchronous scripts have been executed (no images, styles loaded and no async scripts executed),
 // - window.load event, by contrast, triggers when *everything* has been loaded (i.e. later)
 document.addEventListener('DOMContentLoaded', function (event) {
-  // console.log('DomContentLoaded')
+  console.log('DomContentLoaded')
   // init backTop
   $('#backTop').backTop({ position: 100, speed: 200, color: 'white' })
 

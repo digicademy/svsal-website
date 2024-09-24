@@ -6,6 +6,7 @@
 {{ $content := $map.content }}
 {{ $place := $map.place }}
 {{ $printer := $map.printer }}
+{{ $type := $map.type }}
 {{ $year := $map.year }}
 {{ $searchterm := placeholder "http.request.uri.query.q" }}
 {{ $pages_file := (list "../../data/" $wid "/html/" $wid "_pages.html" | join "") }}
@@ -60,9 +61,8 @@
         <script type="text/javascript" src="/resources/js/jquery.js"                                     defer></script><!-- this is only the backTop function -->
         <!--<script type="text/javascript" src="/resources/js/jquery.bootstrap-autohidingnavbar.js"          defer></script> -->
         <script type="text/javascript" src="/resources/js/jquery.tooltipster.js"                         defer></script>
-        <!-- script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@3.1.0-beta.1/dist/infinite-ajax-scroll.min.js" defer></script -->
         <!-- script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll/dist/infinite-ajax-scroll.min.js" defer></script -->
-        <script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@^3/dist/infinite-ajax-scroll.min.js"></script>
+        <script type="text/javascript" src="//unpkg.com/@webcreate/infinite-ajax-scroll@3.1/dist/infinite-ajax-scroll.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.9/jstree.min.js" defer></script>
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.js"             defer></script>
         <script type="text/javascript" src="/resources/js/sal-work.js"                                   defer></script>
@@ -72,7 +72,6 @@
     </head>
 
     <body id="body" class="darkenBody">
-	    
         <div id="wrap">
 
             <!-- Header and Navbar -->
@@ -87,6 +86,11 @@
                             {{abbrev 15 $author}}: {{abbrev 20 $title}}
                         </a>
                     </h4>
+{{ if eq $type "Reference Work" }}
+                    <span type="button" style="margin-top: 5px;margin-left: 4px; margin-right: 6px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Technically edited texts only"></span>
+{{ else }}
+                    <span type="button" style="margin-top: 5px;margin-left: 4px; margin-right: 6px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Fully edited texts with manual corrections"></span>
+{{ end }}
                 </div>
                 <div class="row-fluid">
                     <div class="btn-toolbar pull-left">
@@ -96,19 +100,27 @@
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <!--<li class="disabled"><a><span class="glyphicon glyphicon-stats text-muted" aria-hidden="true"></span>&#xA0;<span class="text-muted"><i18n:text key="register">Register</i18n:text></span></a></li>-->
+{{ if eq $type "Reference Work" }}
+                                 <li>
+                                     <a  class="btn disabled" style="cursor: not-allowed;">
+                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatic
+                                     </a>
+                                 </li>
+{{ else }}
                                 <li>
-                                    <a onclick="applyEditMode();" class="btn original unsichtbar" style="cursor: pointer;">
+                                    <a onclick="applyOrigMode();" class="btn original unsichtbar" style="cursor: pointer;">
                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Constituted
                                     </a>
                                 </li>
                                 <li>
-                                    <a onclick="applyOrigMode();" class="btn edited" style="cursor: pointer;">
+                                    <a onclick="applyEditMode();" class="btn edited" style="cursor: pointer;">
                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatic
                                     </a>
                                 </li>
+{{ end }}
                                 <li>
                                     <a class="btn btn-link" href="https://id.{{ $domain }}/texts/{{$wid}}?mode=details">
-                                        <span class="fas fa-file-alt"></span>&nbsp;Catalogue Details
+                                        <span class="fas fa-file-alt"></span>&nbsp;Catalogue
                                     </a>
                                 </li>
                                 <!--
@@ -143,21 +155,35 @@
                                     <a title="Plaintext Formate" href="https://id.{{ $domain }}/texts/{{$wid}}#">
                                         <span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)
                                     </a>
+{{ if eq $type "Reference Work" }}
+                                    <ul class="dropdown-menu">
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatic</a></li>
+                                    </ul>
+{{ else }}
                                     <ul class="dropdown-menu">
                                         <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=edit">constituted</a></li>
                                         <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatic</a></li>
                                     </ul>
+{{ end }}
                                 </li>
                                 <li>
                                     <a title="Download RDF/XML data for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=rdf">
                                         <span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)
                                     </a>
                                 </li>
+{{ if eq $type "Reference Work" }}
                                 <li class="disabled">
-                                    <a title="Download PDF file for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=pdf">
+                                    <a title="Download PDF file for this work">
                                         <span class="fas fa-file-pdf text-muted" aria-hidden="true"></span>&nbsp;PDF
                                     </a>
                                 </li>
+{{ else }}
+                                <li>
+                                     <a title="Download PDF file for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=pdf">
+                                         <span class="fas fa-file-pdf" aria-hidden="true"></span>&nbsp;PDF
+                                     </a>
+                                 </li>
+{{ end }}
                                 <li class="disabled">
                                     <a>
                                         <span class="fas fa-book text-muted" aria-hidden="true"></span>&nbsp;<span class="text-muted">E-Book</span>
@@ -180,12 +206,19 @@
                         </div>
                         <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Details button-->
                             <a class="btn btn-link" href="https://id.{{ $domain }}/texts/{{$wid}}?mode=details">
-                                <span class="fas fa-file-alt"></span>&nbsp;Catalogue Details
+                                <span class="fas fa-file-alt"></span>&nbsp;Catalogue
                             </a>
                         </div>
                         <div class="btn-group hidden-md hidden-sm hidden-xs"><!--Textmode button-->
                             <div>
                                 <section id="switchEditsSection">
+{{ if eq $type "Reference Work" }}
+                                    <span class="edited" style="cursor: not-allowed;">
+                                         <a class="btn disabled">
+                                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatic
+                                         </a>
+                                     </span>
+ {{ else }}
                                     <span class="original unsichtbar" style="cursor: pointer;">
                                         <a class="btn btn-link" onclick="applyEditMode();">
                                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Diplomatic
@@ -196,6 +229,7 @@
                                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Constituted
                                         </a>
                                     </span>
+{{ end }}
                                 </section>
                             </div>
                         </div>
@@ -209,18 +243,26 @@
                                 <li><a title="Download TEI/XML source file" href="https://id.{{ $domain }}/texts/{{$wid}}?format=tei"><span class="fas fa-file-code" aria-hidden="true"></span>&nbsp;TEI XML</a></li>
                                 <li class="dropdown-submenu"><a title="Export plain text"><span class="messengers fas fa-align-left"></span>&nbsp;Plain Text (TXT)</a>
                                     <ul class="dropdown-menu">
+{{ if eq $type "Reference Work" }}
+                                        <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatic</a></li>
+{{ else }}
                                         <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=edit">constituted</a></li>
                                         <li><a href="https://id.{{ $domain }}/texts/{{$wid}}?format=txt&mode=orig">diplomatic</a></li>
+{{ end }}
                                     </ul>
                                 </li>
                                 <li><a title="Download RDF/XML data for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=rdf"><span class="fas fa-code-branch" aria-hidden="true"></span>&nbsp;RDF (XML)</a></li>
+{{ if eq $type "Reference Work" }}
+                                <li class="disabled"><a><span class="fas fa-file-pdf text-muted" aria-hidden="true"></span>&nbsp;PDF</a></li>
+{{ else }}
                                 <li><a title="Download PDF file for this work" href="https://id.{{ $domain }}/texts/{{$wid}}?format=pdf"><span class="fas fa-file-pdf" aria-hidden="true"></span>&nbsp;PDF</a></li>
+{{ end }}
                                 <li class="disabled"><a><span class="fas fa-book text-muted" aria-hidden="true"></span>&nbsp;<span class="text-muted">E-Book</span></a></li>
                             </ul>
                         </div>
                         <div class="btn-group"><!-- Impressum button -->
                             <a class="btn btn-link" href="/legal.html"><!--<span class="fa fa-info-circle"></span>-->
-                                <span class="fas fa-balance-scale"></span>&nbsp;Legal Information & Privacy
+                                <span class="fas fa-balance-scale"></span>&nbsp;Legal
                             </a>
                         </div>
                     </div>
@@ -240,7 +282,7 @@
                                         <span aria-hidden="true">×</span>
                                         <span class="sr-only">Close</span>
                                     </button>
-                                    <h4 class="modal-title" id="myModalLabel">Table of Contents
+                                    <h4 class="modal-title" id="myModalLabel">Table of Contents {{ $type }}
                                         <button id="toggleButton" class="btn btn-link btn-lg expanded">
                                             <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
                                         </button>
@@ -255,12 +297,14 @@
                     </div>
                     <!-- === TOC*** Modal End === -->
                 </div>
-
                 <!-- Main text -->
                 <div id="wrapperWork"
                     class="col-lg-7 col-lg-offset-3 col-md-7 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-12"
                     style="padding-top: 17%">
                     <div class="row" xml:space="preserve">
+                        {{with $map.prev}}
+                            <span style="width: 100%; display: flex; justify-content: center;" ><a class="prev" href="{{.}}">preceding text ...</a></span>
+                        {{end}}
                         <!-- div id="iasSpinner1" class="iasSpinner" style="margin: auto; text-align: center; opacity: 0;">Loading...</div -->
                         <div id="iasPagination1" class="iasPagination" style="margin: auto; text-align: center;">
                             {{with $map.prev}}
