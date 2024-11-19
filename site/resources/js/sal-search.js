@@ -125,7 +125,8 @@ async function detailsSearch (workId, page, limit, searchterm) {
   const docFilter = '@sphinx_work ^' + workId
   const sorting = '&sort=2&sortby=sphinx_fragment_number&ranker=2'
   const paging = '&offset=' + page + '&limit=' + limit
-  const url = endpoint + docFilter + ' ' + fields + ' ' + searchterm + sorting + paging
+  const maxmatches = '&maxmatches=10000'
+  const url = endpoint + docFilter + ' ' + fields + ' ' + searchterm + sorting + paging + maxmatches
 
   // Send request and handle response
   window.fetch(url)
