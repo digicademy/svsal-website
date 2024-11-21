@@ -5,13 +5,13 @@
         "port": 9312,
         "mode": 4,
         "sort": 2,
-        "sortby": "sphinx_fragment_number",
+        "sortby": "sphinx_author",
         "ranker": 0
     },
     "indexes": {
             "lemmatized": {
                 "alias": "salamanca_lemmatized",
-                "allowParameters": "q,limit,offset,html_strip_mode,query_mode,groupby,groupfunc,groupsort,ranker,sort,sortby,around",
+                "allowParameters": "q,limit,offset,html_strip_mode,query_mode,groupby,groupfunc,groupsort,ranker,sort,sortby,around,maxmatches",
                 "description": "The School of Salamanca Open Search",
                 "excerpts": {
                     "after_match": "</span>",

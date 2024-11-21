@@ -5,7 +5,7 @@
 	 xmlns:sphinx="http://sphinxsearch.com">
 	<channel>
 		<title>Open Salamanca Search</title>
-		<link>http://search.test.salamanca.school</link>
+		<link>https://search.salamanca.school</link>
 		<description>Extracted keywords from query</description>
 		<opensearch:totalResults>{{ count }}</opensearch:totalResults>
 		{% for keyword in result %}

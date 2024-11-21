@@ -5,7 +5,7 @@
 	 xmlns:sphinx="http://sphinxsearch.com">
 	<channel>
 		<title>Open Salamanca Search</title>
-		<link>http://search.test.salamanca.school</link>
+		<link>https://search.salamanca.school</link>
 		<description>Search The School of Salamanca's works, the project's dictionary and other resources</description>
 		<opensearch:totalResults>{{ result.total_found }}</opensearch:totalResults>
 		<opensearch:startIndex>{{ startIndex }}</opensearch:startIndex>
