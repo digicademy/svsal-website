@@ -1,94 +1,264 @@
-{{ $domain := "salamanca.school" }}
-{{ $info := dict "page" "works.html" "title" "Works" "header" "Works" "description" "Overview of the works planned and available in the digital collection, with filters" "domain" $domain}}
+{{ $domain := "salamanca.school" }} {{ $info := dict "page" "works.html" "title"
+"Works" "header" "Works" "description" "Overview of the sources available in the
+digital collection, with filters" "domain" $domain}}
 
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="">
-        <meta name="description" content="{{ $info.description }}">
-        <title>{{ if $info.title }}{{ $info.title }} - {{ end }}The School of Salamanca</title>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="" />
+    <meta name="description" content="{{ $info.description }}" />
+    <title>
+      {{ if $info.title }}{{ $info.title }} - {{ end }}The School of Salamanca
+    </title>
 
-        <link rel="canonical" href="https://www.{{ $domain }}/{{ $info.page }}">
-        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}?lang=de">
-        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}?lang=en">
-        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}?lang=es">
+    <link rel="canonical" href="https://www.{{ $domain }}/{{ $info.page }}" />
+    <link
+      rel="alternate"
+      hreflang="de"
+      href="https://www.{{ $domain }}/{{ $info.page }}?lang=de"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://www.{{ $domain }}/{{ $info.page }}?lang=en"
+    />
+    <link
+      rel="alternate"
+      hreflang="es"
+      href="https://www.{{ $domain }}/{{ $info.page }}?lang=es"
+    />
 
-        <!-- ==== CSS ==== -->
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
-        <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" href="/resources/css/style-default.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
+    <!-- ==== CSS ==== -->
 
-        <!-- ==== Javascript ==== -->
-        <script type="text/javascript" src="/resources/js/jquery-1.js" defer></script>
-        <script type="text/javascript" src="/resources/js/bootstrap.js" defer></script>
-        <script type="text/javascript" src="/resources/js/jquery-ui.js" defer></script>
-        <script type="text/javascript" src="/resources/js/jquery.js" defer></script><!-- this is only the backTop function -->
-        <script type="text/javascript" src="/resources/js/underscore-1.1.7.js" defer></script>
-        <script type="text/javascript" src="/resources/js/facetedsearchWrks.js" defer></script>
-        <script type="text/javascript" src="/resources/js/sal-common.js" defer></script>
-        <script type="text/javascript" src="/resources/js/sal-works.js" defer></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+    />
+    <!-- TODO: Upgrade -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//use.fontawesome.com/releases/v5.7.2/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/resources/css/style-default.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/resources/css/tooltipster.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-        <!-- ==== favIcon ==== -->
-        <link rel="apple-touch-icon" type="image/png" sizes="57x57"   href="resources/favicons/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="60x60"   href="resources/favicons/apple-touch-icon-60x60.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="72x72"   href="resources/favicons/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="76x76"   href="resources/favicons/apple-touch-icon-76x76.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="resources/favicons/apple-touch-icon-114x114.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="resources/favicons/apple-touch-icon-120x120.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="resources/favicons/apple-touch-icon-144x144.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="resources/favicons/apple-touch-icon-152x152.png">
-        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="resources/favicons/apple-touch-icon-180x180.png">
-        <link rel="icon"             type="image/png" sizes="32x32"   href="resources/favicons/favicon-32x32.png">
-        <link rel="icon"             type="image/png" sizes="194x194" href="resources/favicons/favicon-194x194.png">
-        <link rel="icon"             type="image/png" sizes="96x96"   href="resources/favicons/favicon-96x96.png">
-        <link rel="icon"             type="image/png" sizes="192x192" href="resources/favicons/android-chrome-192x192.png">
-        <link rel="icon"             type="image/png" sizes="16x16"   href="resources/favicons/favicon-16x16.png">
-        <link rel="manifest" href="resources/favicons/manifest.json">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png">
-        <meta name="theme-color" content="#ffffff">
-        <meta name="google-site-verification" content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M">
-    </head>
+    <!-- ==== Javascript ==== -->
+    <script
+      type="text/javascript"
+      src="/resources/js/jquery-1.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/bootstrap.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/jquery-ui.js"
+      defer
+    ></script>
+    <script type="text/javascript" src="/resources/js/jquery.js" defer></script>
+    <!-- this is only the backTop function -->
+    <script
+      type="text/javascript"
+      src="/resources/js/underscore-1.1.7.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/facetedsearchWrks.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/sal-common.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/sal-works.js"
+      defer
+    ></script>
 
-    <body id="body">
-{{include "/resources/templates/template-navbar.html" $info}}
+    <!-- ==== favIcon ==== -->
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="57x57"
+      href="resources/favicons/apple-touch-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="60x60"
+      href="resources/favicons/apple-touch-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="72x72"
+      href="resources/favicons/apple-touch-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="76x76"
+      href="resources/favicons/apple-touch-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="114x114"
+      href="resources/favicons/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="120x120"
+      href="resources/favicons/apple-touch-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="144x144"
+      href="resources/favicons/apple-touch-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="152x152"
+      href="resources/favicons/apple-touch-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="180x180"
+      href="resources/favicons/apple-touch-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="resources/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="194x194"
+      href="resources/favicons/favicon-194x194.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="resources/favicons/favicon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="resources/favicons/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="resources/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="resources/favicons/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta
+      name="msapplication-TileImage"
+      content="resources/favicons/mstile-144x144.png"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="google-site-verification"
+      content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M"
+    />
+  </head>
 
-            <div id="content" class="container-fluid">
-                <div class="container">
-                    <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
-                        <span class="text-muted">
-                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
-                        <hr>
-                    </h2>
-                    <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
-                        <span class="text-muted">
-                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
-                        <hr>
-                    </h2>
-                    <h2 class="hidden-lg hidden-md">
-                        <span class="text-muted">
-                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;{{ $info.header }}</span>
-                        <hr>
-                    </h2>
+  <body id="body">
+    {{include "/resources/templates/template-navbar.html" $info}}
 
-                    <div style="margin-bottom:1em;border:1px solid gray;border-radius:5px;"><!-- introductory note -->
-                        <div style="padding:0.2em;text-align:justify">
-                            The digital collection of sources of the project "The School of Salamanca" comprises
-                            <a href="sources.html">116 works in total</a>, which are successively published on this page.
-                            For this purpose, the texts are encoded according to the specifications of the Text Encoding
-                            Initiative (TEI); for further information, please refer to the
-                            <a href="guidelines.html">Edition Guidelines</a>.
-                        </div>
-                    </div>
-                    <div class="row"><!-- main area -->
-                        <div class="col-md-3 hidden-xs hidden-sm"><!-- left column with facets and corpus info -->
-                            <ul class="fadeIn" id="facets" style="padding-top: 20%; padding-left: 5%"></ul>
-                            <!-- <noscript><!-/- show this as facets when js is disabled -/->
+    <div id="content" class="container-fluid">
+      <div class="container">
+        <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+          <span class="text-muted">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span
+            >&nbsp;{{ $info.header }}</span
+          >
+          <hr />
+        </h2>
+        <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+          <span class="text-muted">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span
+            >&nbsp;{{ $info.header }}</span
+          >
+          <hr />
+        </h2>
+        <h2 class="hidden-lg hidden-md">
+          <span class="text-muted">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span
+            >&nbsp;{{ $info.header }}</span
+          >
+          <hr />
+        </h2>
+
+        <div
+          style="margin-bottom: 1em; border: 1px solid gray; border-radius: 5px"
+        >
+          <!-- introductory note -->
+          <div style="padding: 0.2em; text-align: justify">
+            The digital collection of sources of the project "The School of
+            Salamanca" comprises
+            <a href="sources.html">116 works in total</a>, which are
+            successively published on this page. For this purpose, the texts are
+            encoded according to the specifications of the Text Encoding
+            Initiative (TEI). The texts are made available in various stages of
+            processing: as facsimiles, as machine transcriptions, as
+            automatically or manually corrected texts. For further information,
+            please refer to the
+            <a href="guidelines.html">Edition Guidelines</a>.
+          </div>
+          <div style="padding: 0.2em; text-align: justify">
+            <br />
+            You can fin a list of all the sources here:
+            <a href="sources.html">
+              <span aria-hidden="true"></span>List of all sources
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <!-- main area -->
+
+          <div class="col-md-3 hidden-xs hidden-sm">
+            <!-- left column with facets and corpus info -->
+
+            <ul
+              class="fadeIn"
+              id="facets"
+              style="padding-top: 20%; padding-left: 5%"
+            ></ul>
+            <!-- <noscript><!-/- show this as facets when js is disabled -/->
                                     <div style="margin-top: -13%;">
                                         <span>   <span class="lead" style="color: #999999;">
                                                     <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span>Sort
@@ -103,48 +273,57 @@
                                     </div>
                                 </noscript>
                             -->
-                            <div class="corpus-download"><!-- Box with info about the corpus -->
-                                <h4>About the Corpus</h4>
-                                <span data-template="app:corpusStatsTeaser"></span>
-                                <hr>
-                                <p>Download the complete corpus:</p>
-                                <ul>
-                                    <li>
-                                        <a href="https://id.{{ $domain }}/texts?format=tei">
-                                            <span class="glyphicon glyphicon-download-alt"></span>&nbsp;TEI XML
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://id.{{ $domain }}/texts?format=txt">
-                                            <span class="glyphicon glyphicon-download-alt"></span>&nbsp;Plain text (TXT)
-                                        </a>
-                                    </li>
-                                </ul>
-                                <hr>
+            <div class="corpus-download">
+              <!-- Box with info about the corpus -->
+              <h4>About the Corpus</h4>
+              <span data-template="app:corpusStatsTeaser"></span>
+              <hr />
+              <p>Download the complete corpus:</p>
+              <ul>
+                <li>
+                  <a href="https://id.{{ $domain }}/texts?format=tei">
+                    <span class="glyphicon glyphicon-download-alt"></span
+                    >&nbsp;TEI XML
+                  </a>
+                </li>
+                <li>
+                  <a href="https://id.{{ $domain }}/texts?format=txt">
+                    <span class="glyphicon glyphicon-download-alt"></span
+                    >&nbsp;Plain text (TXT)
+                  </a>
+                </li>
+              </ul>
+              <!-- <hr>
                                 <p>
                                     <a href="sources.html">
                                         <span class="fas fa-th-list" aria-hidden="true"></span>&nbsp;List of all sources
                                     </a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-9" id="results" style="padding-top: 5%"><!-- Main area -->
-                            <noscript><!-- show this when js is disabled -->
-                                <div class="col-md-12" style="top: -27px; margin-bottom: -3%;">
-                                    <h3>Works</h3>
-                                </div>
-                                {{include "data/worksNoJs_en_surname.html"}}
-                            </noscript>
-                        </div>
-                        <script type="text/javascript">
-                            var works_items = {{include "data/works_en.json"}} // [ {"title":"Tractatus de casibus curiae.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0033","workdetails":"workdetails.html?wid=W0033","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0033","facsAttrib":"Bildansicht","printer":": González","name":"Carrasco del Saz, Francisco","sortName":"carrasco del saz","nameFacet":"A - F","date":"1630","chronology":"1601-1650","textLanguage":"Latein","printingPlace":"Madrid","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Apologia pro libro de iustis belli causis","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0095","workdetails":"workdetails.html?wid=W0095","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0095","facsAttrib":"Bildansicht","printer":": Dorico","name":"Sepúlveda, Juan Ginés de","sortName":"sepúlveda","nameFacet":"S - Z","date":"1550","chronology":"1501-1550","textLanguage":"Latein","printingPlace":"Romae","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Treinta Proposiciones","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0034","workdetails":"workdetails.html?wid=W0034","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0034","facsAttrib":"Bildansicht","printer":": Trugillo","name":"Las Casas, Bartolomé de","sortName":"las casas","nameFacet":"G - L","date":"1552","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Seuilla","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Provechoso tratado de cambios y contrataciones de mercaderes y reprovación de usura.","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0113","workdetails":"workdetails.html?wid=W0113","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0113","facsAttrib":"Bildansicht","printer":": Fernandez d[e] Cordoua","name":"Villalón, Cristóbal de","sortName":"villalón","nameFacet":"S - Z","date":"1541","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Valladolid","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Expositiones locorum obscuriorum et Paratitulorum in Pandectas.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0103","workdetails":"workdetails.html?wid=W0103","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0103","facsAttrib":"Bildansicht","printer":": Bonhomme","name":"Vacca, Antonius","sortName":"vacca","nameFacet":"S - Z","date":"1554","chronology":"1551-1600","textLanguage":"Latein","printingPlace":"Lyon","facetPlace":"G - L","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Summa de casos de consciencia","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0083","workdetails":"workdetails.html?wid=W0083","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0083","facsAttrib":"Bildansicht","printer":": Canto","name":"Pedraza, Juan de","sortName":"pedraza","nameFacet":"M - R","date":"1568","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Medina del Campo","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Tratado de Cuentas","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0004","workdetails":"workdetails.html?wid=W0004","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0004","facsAttrib":"Bildansicht","printer":": Melgar","name":"Castillo, Diego de","sortName":"castillo","nameFacet":"A - F","date":"1522","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Burgos","facetPlace":"A - F","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Tractado de los préstamos.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0018","workdetails":"workdetails.html?wid=W0018","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0018","facsAttrib":"Bildansicht","printer":": Ayala","name":"Alcalá, Luis de","sortName":"alcalá","nameFacet":"A - F","date":"1543","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Toledo","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Confessionario","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0015","workdetails":"workdetails.html?wid=W0015","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0015","facsAttrib":"Bildansicht","printer":": [s.n.]","name":"Vitoria, Francisco de","sortName":"vitoria","nameFacet":"S - Z","date":"1562","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Santiago","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, ];
-                        </script>
-                    </div>
-                </div>
+                                </p> -->
             </div>
+          </div>
+          <div class="col-md-9" id="results" style="padding-top: 5%">
+            <!-- Main area -->
+            <noscript
+              ><!-- show this when js is disabled -->
+              <div class="col-md-12" style="top: -27px; margin-bottom: -3%">
+                <h3>Works</h3>
+              </div>
+              {{include "data/worksNoJs_en_surname.html"}}
+            </noscript>
+          </div>
+          <script type="text/javascript">
+            var works_items = {{include "data/works_en.json"}} // [ {"title":"Tractatus de casibus curiae.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0033","workdetails":"workdetails.html?wid=W0033","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0033","facsAttrib":"Bildansicht","printer":": González","name":"Carrasco del Saz, Francisco","sortName":"carrasco del saz","nameFacet":"A - F","date":"1630","chronology":"1601-1650","textLanguage":"Latein","printingPlace":"Madrid","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Apologia pro libro de iustis belli causis","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0095","workdetails":"workdetails.html?wid=W0095","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0095","facsAttrib":"Bildansicht","printer":": Dorico","name":"Sepúlveda, Juan Ginés de","sortName":"sepúlveda","nameFacet":"S - Z","date":"1550","chronology":"1501-1550","textLanguage":"Latein","printingPlace":"Romae","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Treinta Proposiciones","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0034","workdetails":"workdetails.html?wid=W0034","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0034","facsAttrib":"Bildansicht","printer":": Trugillo","name":"Las Casas, Bartolomé de","sortName":"las casas","nameFacet":"G - L","date":"1552","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Seuilla","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Provechoso tratado de cambios y contrataciones de mercaderes y reprovación de usura.","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0113","workdetails":"workdetails.html?wid=W0113","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0113","facsAttrib":"Bildansicht","printer":": Fernandez d[e] Cordoua","name":"Villalón, Cristóbal de","sortName":"villalón","nameFacet":"S - Z","date":"1541","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Valladolid","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Expositiones locorum obscuriorum et Paratitulorum in Pandectas.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0103","workdetails":"workdetails.html?wid=W0103","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0103","facsAttrib":"Bildansicht","printer":": Bonhomme","name":"Vacca, Antonius","sortName":"vacca","nameFacet":"S - Z","date":"1554","chronology":"1551-1600","textLanguage":"Latein","printingPlace":"Lyon","facetPlace":"G - L","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Summa de casos de consciencia","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0083","workdetails":"workdetails.html?wid=W0083","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0083","facsAttrib":"Bildansicht","printer":": Canto","name":"Pedraza, Juan de","sortName":"pedraza","nameFacet":"M - R","date":"1568","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Medina del Campo","facetPlace":"M - R","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Tratado de Cuentas","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0004","workdetails":"workdetails.html?wid=W0004","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0004","facsAttrib":"Bildansicht","printer":": Melgar","name":"Castillo, Diego de","sortName":"castillo","nameFacet":"A - F","date":"1522","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Burgos","facetPlace":"A - F","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Tractado de los préstamos.","status":"g_enriched_approved","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0018","workdetails":"workdetails.html?wid=W0018","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0018","facsAttrib":"Bildansicht","printer":": Ayala","name":"Alcalá, Luis de","sortName":"alcalá","nameFacet":"A - F","date":"1543","chronology":"1501-1550","textLanguage":"Spanisch","printingPlace":"Toledo","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, {"title":"Confessionario","status":"h_revised","WIPstatus":"no","monoMultiUrl":"work.html?wid=W0015","workdetails":"workdetails.html?wid=W0015","titAttrib":"Katalogeintrag","workImages":"viewer-standalone.html?wid=W0015","facsAttrib":"Bildansicht","printer":": [s.n.]","name":"Vitoria, Francisco de","sortName":"vitoria","nameFacet":"S - Z","date":"1562","chronology":"1551-1600","textLanguage":"Spanisch","printingPlace":"Santiago","facetPlace":"S - Z","facetAvailability":"Full Text (+ Facsimiles)","volLabel":"",}, ];
+          </script>
+        </div>
+      </div>
+    </div>
 
-        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
+    <a
+      id="backTop"
+      class="white"
+      style="right: 40px; bottom: 40px; position: fixed; display: none"
+    ></a>
 
-{{include "/resources/templates/template-footer.html"}}
-    </body>
+    {{include "/resources/templates/template-footer.html"}}
+  </body>
 </html>

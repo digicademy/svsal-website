@@ -16,19 +16,20 @@
                 </div>
                 <div class="collapse navbar-collapse navbar-menubuilder">
                     <menu class="nav navbar-nav">
-                        <li class="">
+<!--                        <li class="">
                             <a href="https://blog.{{ $domain }}/?lang=de">
                                 <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;Blog
                             </a>
-                        </li>
+                        </li> -->
+  <li class="{{ if eq $page "works.html" }}active{{ end }}">
+                              <a href="https://www.{{ $domain }}/works.html">
+                                  <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
+                              </a>
+                          </li>
+
                         <li class="{{ if eq $page "project.html" }}active{{ end }}">
                             <a href="https://www.{{ $domain }}/project.html">
                                 <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Project
-                            </a>
-                        </li>
-                        <li class="{{ if eq $page "works.html" }}active{{ end }}">
-                            <a href="https://www.{{ $domain }}/works.html">
-                                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
                             </a>
                         </li>
                         <li class="{{ if eq $page "dictionary.html" }}active{{ end }}">

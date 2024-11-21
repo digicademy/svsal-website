@@ -1,0 +1,13 @@
+{{$content := `
+<div class="container">
+  <p class="lead" style="text-align: justify">
+    The Dictionary of the School of Salamanca’s juridical-political language is
+    going to be found here: approx. 200 entries with Latin and Spanish lemmata,
+    taken directly from the sources. The entries will be published successively,
+    beginning in 2024.
+  </p>
+</div>
+`}} {{$info := dict "page" "dictionary.html" "title" "Dictionary" "header"
+"Dictionary" "description" "Overview of the articles of the dictionary of the
+juridical-political language in the School of Salamanca" "content" $content}}
+{{include "/resources/templates/template-default.html" $info }}

@@ -1,98 +1,188 @@
-{{ $domain := "salamanca.school" }}
-{{ $info := index .Args 0 }}
-{{ $searchterm := placeholder "http.request.uri.query.q" }}
-<!DOCTYPE html>
+{{ $domain := "salamanca.school" }} {{ $info := index .Args 0 }} {{ $searchterm
+:= placeholder "http.request.uri.query.q" }}
+<!doctype html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ if $info.title }}{{ $info.title }} - {{ end }}{{ if $searchterm }}{{ $searchterm }} - {{ end }}The School of Salamanca</title>
-        <meta name="author" content="">
-        <meta name="description" content="{{ $info.description }}">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ if $info.title }}{{ $info.title }} - {{ end }}{{ if $searchterm }}{{
+      $searchterm }} - {{ end }}The School of Salamanca
+    </title>
+    <meta name="author" content="" />
+    <meta name="description" content="{{ $info.description }}" />
 
-        <link rel="canonical"               href="https://www.{{ $domain }}/{{ $info.page }}">
-        <link rel="alternate" hreflang="de" href="https://www.{{ $domain }}/{{ $info.page }}?lang=de{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}">
-        <link rel="alternate" hreflang="en" href="https://www.{{ $domain }}/{{ $info.page }}?lang=en{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}">
-        <link rel="alternate" hreflang="es" href="https://www.{{ $domain }}/{{ $info.page }}?lang=es{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}">
+    <link rel="canonical" href="https://www.{{ $domain }}/{{ $info.page }}" />
+    <link
+      rel="alternate"
+      hreflang="de"
+      href="https://www.{{ $domain }}/{{ $info.page }}?lang=de{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://www.{{ $domain }}/{{ $info.page }}?lang=en{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}"
+    />
+    <link
+      rel="alternate"
+      hreflang="es"
+      href="https://www.{{ $domain }}/{{ $info.page }}?lang=es{{ if $searchterm }}&q={{ $searchterm }}&field=corpus&action=Search{{ end }}"
+    />
 
-        <!-- ==== CSS ==== -->
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/><!-- TODO: Upgrade -->
-        <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" href="/resources/css/tooltipster.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/css/style-default.css"/>
-    {{ if eq $info.page "guidelines.html" }}<!-- For Guidelines page -->
-        <link rel="stylesheet" type="text/css" href="/resources/css/shCoreDefault.css"/>
+    <!-- ==== CSS ==== -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+    />
+    <!-- TODO: Upgrade -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//use.fontawesome.com/releases/v5.7.2/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/resources/css/tooltipster.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/resources/css/style-default.css"
+    />
+    {{ if eq $info.page "guidelines.html" }}
+    <!-- For Guidelines page -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/resources/css/shCoreDefault.css"
+    />
+    {{ end }} {{ if eq $info.page "search.html" }}
+    <!-- For Search page -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/resources/css/ispinner.prefixed.css"
+    />
+    {{ end }} {{ if eq $info.page "works.html" }}
+    <!-- For Works overview page -->
     {{ end }}
-    {{ if eq $info.page "search.html" }}<!-- For Search page -->
-        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/css/ispinner.prefixed.css"/>
+
+    <!-- ==== Javascript ==== -->
+    <script
+      type="text/javascript"
+      src="/resources/js/jquery-1.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/bootstrap.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/jquery-ui.js"
+      defer
+    ></script>
+    <script type="text/javascript" src="/resources/js/jquery.js" defer></script>
+    <!-- this is only the backTop function -->
+    {{ if eq $info.page "guidelines.html" }}
+    <!-- For Guidelines page -->
+    <script type="text/javascript" src="/resources/js/shCore.js" defer></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/shBrushXml.js"
+      defer
+    ></script>
+    {{ end }} {{ if eq $info.page "search.html" }}
+    <!-- For Search page -->
+    <script
+      type="text/javascript"
+      src="/resources/js/sal-search.js"
+      defer
+    ></script>
+    {{ end }} {{ if eq $info.page "works.html" }}
+    <!-- For Works page -->
+    <script
+      type="text/javascript"
+      src="/resources/js/underscore-1.1.7.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/facetedsearchWrks.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="/resources/js/sal-works.js"
+      defer
+    ></script>
     {{ end }}
-    {{ if eq $info.page "works.html" }}<!-- For Works overview page -->
-    {{ end }}
 
-        <!-- ==== Javascript ==== -->
-        <script type="text/javascript" src="/resources/js/jquery-1.js" defer></script>
-        <script type="text/javascript" src="/resources/js/bootstrap.js" defer></script>
-        <script type="text/javascript" src="/resources/js/jquery-ui.js" defer></script>
-        <script type="text/javascript" src="/resources/js/jquery.js" defer></script><!-- this is only the backTop function -->
-    {{ if eq $info.page "guidelines.html" }}<!-- For Guidelines page -->
-        <script type="text/javascript" src="/resources/js/shCore.js" defer></script>
-        <script type="text/javascript" src="/resources/js/shBrushXml.js" defer></script>
-    {{ end }}
-    {{ if eq $info.page "search.html" }}<!-- For Search page -->
-        <script type="text/javascript" src="/resources/js/sal-search.js" defer></script>
-    {{ end }}
-    {{ if eq $info.page "works.html" }}<!-- For Works page -->
-        <script type="text/javascript" src="/resources/js/underscore-1.1.7.js" defer></script>
-        <script type="text/javascript" src="/resources/js/facetedsearchWrks.js" defer></script>
-        <script type="text/javascript" src="/resources/js/sal-works.js" defer></script>
-    {{ end }}
+    <script
+      type="text/javascript"
+      src="/resources/js/sal-common.js"
+      defer
+    ></script>
 
-        <script type="text/javascript" src="/resources/js/sal-common.js" defer></script>
+    {{- include "/resources/partials/favicons.html" .}}
 
-        {{- include "/resources/partials/favicons.html" .}}
+    <meta
+      name="google-site-verification"
+      content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M"
+    />
+  </head>
 
-        <meta name="google-site-verification" content="prNlalyCtVBolnafrLV40YQ_iTF2F8aeG9qcdTMMB6M">
-    </head>
+  <body id="body">
+    <!-- Header and Navbar -->
+    {{- include "/resources/templates/template-navbar.html" $info}}
 
-    <body id="body">
+    <!-- Main page area -->
+    <div id="content" class="container-fluid">
+      {{if $info.header }}<!-- Page title -->
+      <div class="container">
+        <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
+          <span class="text-muted">
+            <span class="text-muted">{{ $info.header }}</span>
+            <hr />
+          </span>
+        </h2>
+        <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
+          <span class="text-muted">
+            <span class="text-muted">{{ $info.header }}</span>
+            <hr />
+          </span>
+        </h2>
+        <h2 class="hidden-lg hidden-md">
+          <span class="text-muted">
+            <span class="text-muted">{{ $info.header }}</span>
+            <hr />
+          </span>
+        </h2>
+      </div>
+      {{end}}
 
-        <!-- Header and Navbar -->
-{{- include "/resources/templates/template-navbar.html" $info}}
+      <!-- Page content -->{{ $info.content }}
+    </div>
 
-        <!-- Main page area -->
-        <div id="content" class="container-fluid">
+    <!-- ==== Back to top ==== -->
+    <a
+      id="backTop"
+      class="white"
+      style="right: 40px; bottom: 40px; position: fixed; display: none"
+    ></a>
 
-            {{if $info.header }}<!-- Page title -->
-            <div class="container">
-                <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
-                    <span class="text-muted">
-                        <span class="text-muted">{{ $info.header }}</span>
-                        <hr>
-                    </span>
-                </h2>
-                <h2 style="margin-top: 2%" class="hidden-lg hidden-sm hidden-xs">
-                    <span class="text-muted">
-                        <span class="text-muted">{{ $info.header }}</span>
-                        <hr>
-                    </span>
-                </h2>
-                <h2 class="hidden-lg hidden-md">
-                    <span class="text-muted">
-                        <span class="text-muted">{{ $info.header }}</span>
-                        <hr>
-                    </span>
-                </h2>
-            </div>{{end}}
-
-            <!-- Page content -->{{ $info.content }}
-        </div>
-
-        <!-- ==== Back to top ==== -->
-        <a id="backTop" class="white" style="right: 40px; bottom: 40px; position: fixed; display: none;"></a>
-
-{{ include "/resources/templates/template-footer.html" }}
-    </body>
+    {{ include "/resources/templates/template-footer.html" }}
+  </body>
 </html>

@@ -608,7 +608,6 @@
                     <mapping type="composed">è</mapping>
                     <mapping type="standardized">e</mapping>
                 </char>
-                
                 <char xml:id="charg0304">
                     <desc>LATIN SMALL LETTER G WITH MACRON</desc>
                     <charProp>
@@ -839,6 +838,24 @@
                     <mapping type="composed">s̃</mapping>
                     <mapping type="standardized">s</mapping>
                 </char>
+                <char xml:id="chars0308">
+                    <desc>LATIN SMALL LETTER S WITH DIAERESIS</desc>
+                    <charProp>
+                        <localName>combined-entity</localName>
+                        <value> sdiaeresis = s U+0073 + U+0308</value>
+                    </charProp>
+                    <mapping type="composed">s̈</mapping>
+                    <mapping type="standardized">s</mapping>
+                </char>
+                <char xml:id="charS0308">
+                    <desc>LATIN CAPITAL LETTER S WITH DIAERESIS</desc>
+                    <charProp>
+                        <localName>combined-entity</localName>
+                        <value> Sdiaeresis = S U+0053 + U+0308</value>
+                    </charProp>
+                    <mapping type="composed">S̈</mapping>
+                    <mapping type="standardized">S</mapping>
+                </char>
                 <char xml:id="chart0303">
                     <desc>LATIN SMALL LETTER T WITH TILDE</desc>
                     <mapping type="composed">t̃</mapping>
@@ -866,7 +883,6 @@
                     <mapping type="composed">ū</mapping>
                     <mapping type="standardized">u</mapping>
                 </char>
-                
                 <char xml:id="charu0302">
                     <desc>LATIN SMALL LETTER U WITH CIRCUMFLEX</desc>
                     <mapping type="precomposed">û</mapping>
@@ -962,6 +978,9 @@
         </encodingDesc>
         <revisionDesc status="a_raw">
             <listChange>
+                <change who="#CR" when="2024-01-18" status="a_raw" xml:lang="en">Added latin capital letter S with diaeresis.</change>
+                <change who="#CR" when="2024-01-18" status="a_raw" xml:lang="en">Added latin small letter s with diaeresis.</change>
+                <change who="#AW" when="2023-11-20" status="a_raw" xml:lang="en">Added q with dot above and fix sorting.</change>
                 <change who="#CR" when="2023-03-01" status="a_raw" xml:lang="en">Added latin small letter q with grave accent.</change>
                 <change who="#AW" when="2020-11-06" status="a_raw" xml:lang="en">Added composed j with diaeresis character.</change>
                 <change who="#CR" when="2020-10-12" status="a_raw" xml:lang="en">Added latin small letter u with circumflex.</change>
