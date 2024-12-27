@@ -1,4 +1,4 @@
-{{$content := `
+{{ $content := `
 <div class="container">
   <h2 style="margin-top: 3%" class="hidden-md hidden-sm hidden-xs">
     <span class="text-muted">
@@ -80,7 +80,6 @@
             </div>
         </div>-->
 </div>
-`}} {{$info := dict "page" "editorial-workingpapers.html" "title" "About the
-Working Papers" "header" "" "description" "How to submit a working paper in the
-edition line of the project &quot;The School of Salamanca&quot;." "content"
-$content}} {{include "/resources/templates/template-default.html" $info }}
+`}}
+{{ $info := dict "page" "editorial-workingpapers.html" "title" "About the Working Papers" "header" "" "description" "How to submit a working paper in the edition line of the project &quot;The School of Salamanca&quot;." "content" $content }}
+{{ include "/resources/templates/template-default.html" $info }}

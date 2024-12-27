@@ -1,6 +1,5 @@
-{{ $domain := "salamanca.school" }} {{ $info := dict "page" "dictionary.html"
-"title" "Dictionary" "header" "Dictionary" "description" "Overview of dictionary
-articles available in the project" "domain" $domain}}
+{{ $domain := "salamanca.school" }}
+{{ $info := dict "page" "dictionary.html" "title" "Dictionary" "header" "Dictionary" "description" "Overview of dictionary articles available in the project" "domain" $domain }}
 
 <!doctype html>
 <html>
@@ -189,6 +188,6 @@ articles available in the project" "domain" $domain}}
       style="right: 40px; bottom: 40px; position: fixed; display: none"
     ></a>
 
-    {{include "/resources/templates/template-footer.html"}}
+    {{ include "/resources/templates/template-footer.html" }}
   </body>
 </html>

@@ -1,4 +1,4 @@
-{{$content := `
+{{ $content := `
 <header id="myCarousel" class="carousel slide hidden-xs">
   <div id="carousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
@@ -197,8 +197,7 @@
     </div>
     <br />
   </div>
-  `}} {{$info := dict "page" "index.html" "title" "Home" "header" ""
-  "description" "Website of the Project &#34;The School of Salamanca&#34;"
-  "content" $content}} {{include "/resources/templates/template-default.html"
-  $info }}
+`}}
+{{ $info := dict "page" "index.html" "title" "Home" "header" "" "description" "Website of the Project &#34;The School of Salamanca&#34;" "content" $content }}
+{{ include "/resources/templates/template-default.html" $info }}
 </div>

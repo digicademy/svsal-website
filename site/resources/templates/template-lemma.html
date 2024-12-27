@@ -1,9 +1,12 @@
-{{ $domain := "salamanca.school" }} {{ $map := index .Args 0 }} {{ $lid :=
-$map.id }} {{ $title := $map.title }} {{ $author := $map.author }} {{ $content
-:= $map.content }} {{ $searchterm := placeholder "http.request.uri.query.q" }}
+{{ $domain := "salamanca.school" }}
+{{ $map := index .Args 0 }}
+{{ $lid := $map.id }}
+{{ $title := $map.title }}
+{{ $author := $map.author }}
+{{ $content := $map.content }}
+{{ $searchterm := placeholder "http.request.uri.query.q" }}
 {{ $toc_file := (list "../../data/" $lid "/html/" $lid "_toc.html" | join "") }}
-{{ $info := dict "page" "lemma.html" "title" "{{$title}} ({{$author}})" "header"
-"{{$title}}" "description" "" "domain" $domain }}
+{{ $info := dict "page" "lemma.html" "title" "{{$title}} ({{$author}})" "header" "{{$title}}" "description" "" "domain" $domain }}
 
 <!doctype html>
 <html>

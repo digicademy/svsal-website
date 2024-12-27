@@ -1,4 +1,4 @@
-{{$content := `
+{{ $content := `
 <div class="container">
   <p>
     The interdisciplinary Salamanca Working Papers Series offers philosophical,
@@ -985,8 +985,6 @@
     </span>
   </div>
 </div>
-`}} {{$info := dict "page" "workingpapers.html" "title" "Working Papers"
-"header" "Salamanca Working Paper Series (ISSN 2509-5080)" "description"
-"Overwiew of the Working Papers of the School of Salamanca inside the collection
-managed by the project" "content" $content}} {{include
-"/resources/templates/template-default.html" $info }}
+`}}
+{{ $info := dict "page" "workingpapers.html" "title" "Working Papers" "header" "Salamanca Working Paper Series (ISSN 2509-5080)" "description" "Overwiew of the Working Papers of the School of Salamanca inside the collection managed by the project" "content" $content }}
+{{ include "/resources/templates/template-default.html" $info }}

@@ -1,4 +1,5 @@
-{{ $domain := "salamanca.school" }} {{ $content := `
+{{ $domain := "salamanca.school" }}
+{{ $content := `
 <div class="container">
   <div id="privacy" title="PrivacyPolicy">
     <div id="privDecl" class="help">
@@ -491,7 +492,6 @@
     </div>
   </div>
 </div>
-`}} {{ $info := dict "page" "legal.html" "title" "Legal Information & Privacy"
-"header" "Legal Information & Privacy" "description" "Legal information"
-"content" $content }} {{ include "/resources/templates/template-default.html"
-$info }}
+`}}
+{{ $info := dict "page" "legal.html" "title" "Legal Information & Privacy" "header" "Legal Information & Privacy" "description" "Legal information" "content" $content }}
+{{ include "/resources/templates/template-default.html" $info }}

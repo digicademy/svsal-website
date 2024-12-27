@@ -1,12 +1,18 @@
-{{ $domain := "salamanca.school" }} {{ $map := index .Args 0 }} {{ $id :=
-$map.id }} {{ $title := $map.title }} {{ $author := $map.author }} {{ $abstract
-:= $map.abstract }} {{ $keywords := $map.keywords }} {{ $language :=
-$map.language }} {{ $year := $map.year }} {{ $wpserno := $map.serialnumber }} {{
-$wpurn := $map.urn }} {{ $pdfurl := $map.pdfurl }} {{ $image_filename :=
-$map.image_filename }} {{ $searchterm := placeholder "http.request.uri.query.q"
-}} {{ $info := dict "page" "workingpaper.html" "title" "{{ $author }} - {{
-$title }}. Salamanca Working Paper No. {{ $wpserno }}" "header" "" "description"
-"" "domain" $domain }}
+{{ $domain := "salamanca.school" }}
+{{ $map := index .Args 0 }}
+{{ $id := $map.id }}
+{{ $title := $map.title }}
+{{ $author := $map.author }}
+{{ $abstract := $map.abstract }}
+{{ $keywords := $map.keywords }}
+{{ $language := $map.language }}
+{{ $year := $map.year }}
+{{ $wpserno := $map.serialnumber }}
+{{ $wpurn := $map.urn }}
+{{ $pdfurl := $map.pdfurl }}
+{{ $image_filename := $map.image_filename }}
+{{ $searchterm := placeholder "http.request.uri.query.q" }}
+{{ $info := dict "page" "workingpaper.html" "title" "{{ $author }} - {{ $title }}. Salamanca Working Paper No. {{ $wpserno }}" "header" "" "description" "" "domain" $domain }}
 
 <!doctype html>
 <html>

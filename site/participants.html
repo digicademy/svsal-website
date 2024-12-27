@@ -1,4 +1,5 @@
-{{ $domain := "salamanca.school" }} {{ $content := `
+{{ $domain := "salamanca.school" }}
+{{ $content := `
 <div class="container">
   <div class="row">
     <div class="col-md-8">
@@ -643,7 +644,6 @@
     </div>
   </div>
 </div>
-`}} {{ $info := dict "page" "participants.html" "title" "Project Team" "header"
-"Project Team" "description" "Project Team working on the Project &#34;The
-School of Salamanca&#34;" "content" $content }} {{ include
-"/resources/templates/template-default.html" $info }}
+`}}
+{{ $info := dict "page" "participants.html" "title" "Project Team" "header" "Project Team" "description" "Project Team working on the Project &#34;The School of Salamanca&#34;" "content" $content }}
+{{ include "/resources/templates/template-default.html" $info }}
