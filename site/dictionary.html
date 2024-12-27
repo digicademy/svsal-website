@@ -172,11 +172,15 @@
               <div class="col-md-12" style="top: -27px; margin-bottom: -3%">
                 <h3>Dictionary</h3>
               </div>
-              {{include "data/dictionaryNoJs_en_title.html"}}
+              {{ if (fileExists "data/dictionaryNoJs_en_title.html") }}
+                {{ include "data/dictionaryNoJs_en_title.html" }}
+              {{ end }}
             </noscript>
           </div>
           <script type="text/javascript">
-            var dictionaryItems = {{include "data/dictionary_en.json"}}
+            {{ if (fileExists "data/dictionary_en.json") }}
+              var dictionaryItems = {{include "data/dictionary_en.json"}}
+            {{ end }}
           </script>
         </div>
       </div>
