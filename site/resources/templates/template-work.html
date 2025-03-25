@@ -178,10 +178,10 @@
       <!-- Work-UI (Toggle Boxes, extended menu) -->
       <div
         class="navbar navbar-white navbar-fixed-top"
-        style="z-index: 1; margin-top: 10px; padding-top: 49px"
+        style="z-index: 1; margin-top: 10px; padding-top: 49px;"
       >
-        <div class="row-fluid" style="margin-top: 0.9%">
-          <h4 style="margin-top: 5px" class="pull-left messengers">
+        <div class="row-fluid" style="margin-top: 0.9%;">
+          <h4 style="margin-top: 5px;" class="pull-left messengers">
             <a
               href="https://id.{{ $domain }}/texts/{{$wid}}"
               title="(Go to top of) {{$author}}: {{$title}}. {{$place}}: {{$printer}}, {{$year}}"
@@ -193,7 +193,7 @@
           {{ if eq $type "Reference Work" }}
           <span
             type="button"
-            style="margin-top: 5px; margin-left: 4px; margin-right: 6px"
+            style="margin-top: 5px; margin-left: 4px; margin-right: 6px;"
             class="glyphicon glyphicon-info-sign"
             data-toggle="tooltip"
             data-placement="right"
@@ -202,7 +202,7 @@
           {{ else }}
           <span
             type="button"
-            style="margin-top: 5px; margin-left: 4px; margin-right: 6px"
+            style="margin-top: 5px; margin-left: 4px; margin-right: 6px;"
             class="glyphicon glyphicon-info-sign"
             data-toggle="tooltip"
             data-placement="right"
@@ -226,7 +226,7 @@
                 <!--<li class="disabled"><a><span class="glyphicon glyphicon-stats text-muted" aria-hidden="true"></span>&#xA0;<span class="text-muted"><i18n:text key="register">Register</i18n:text></span></a></li>-->
                 {{ if eq $type "Reference Work" }}
                 <li>
-                  <a class="btn disabled" style="cursor: not-allowed">
+                  <a class="btn disabled" style="cursor: not-allowed;">
                     <span
                       class="glyphicon glyphicon-eye-open"
                       aria-hidden="true"
@@ -239,7 +239,7 @@
                   <a
                     onclick="applyOrigMode();"
                     class="btn original unsichtbar"
-                    style="cursor: pointer"
+                    style="cursor: pointer;"
                   >
                     <span
                       class="glyphicon glyphicon-eye-open"
@@ -252,7 +252,7 @@
                   <a
                     onclick="applyEditMode();"
                     class="btn edited"
-                    style="cursor: pointer"
+                    style="cursor: pointer;"
                   >
                     <span
                       class="glyphicon glyphicon-eye-open"
@@ -285,7 +285,7 @@
                   >
                     <span class="messengers fas fa-link"></span>&nbsp;Copy Link
                   </a>
-                  <span class="cite-link" style="display: none"
+                  <span class="cite-link" style="display: none;"
                     >https://id.{{ $domain }}/texts/{{$wid}}?format=html</span
                   >
                 </li>
@@ -298,7 +298,7 @@
                     <span class="messengers fas fa-feather-alt"></span
                     >&nbsp;Copy Citation
                   </a>
-                  <span class="sal-cite-rec" style="display: none">
+                  <span class="sal-cite-rec" style="display: none;">
                     <span class="cite-rec-body"
                       >{{$author}}, {{$title}} (2019 [{{$year}}]), in: The
                       School of Salamanca, a Digital Collection of Sources
@@ -704,7 +704,7 @@
 
     <!-- Minimap -->
     <!-- div id='minimap'></div -->
-    <canvas id="minimap"></canvas>
+    <canvas id='minimap'></canvas>
 
     <!-- Imageviewer -->
     <div id="parent">
@@ -717,5 +717,26 @@
         data-wid="{{ $wid }}"
       ></div>
     </div>
+
+    <div id="embeddings_experiment" class="beta" style="display:none;">
+        <div id="embeddings_experiment_content">
+            <h3 id="embeddings_experiment_title">Embeddings Experiment</h3>
+            <div id="embeddings_experiment_text">This is a test
+                <div id="spinner-dialog" class="ispinner ispinner-medium">
+                    <div class="spinner-container">
+                        <div class="ispinner-blade"></div>
+                        <div class="ispinner-blade"></div>
+                        <div class="ispinner-blade"></div>
+                        <div class="ispinner-blade"></div>
+                        <div class="ispinner-blade"></div>
+                        <div class="ispinner-blade"></div>
+                        <div class="ispinner-blade"></div>
+                        <div class="ispinner-blade"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
   </body>
 </html>

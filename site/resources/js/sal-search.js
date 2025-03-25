@@ -99,6 +99,10 @@ async function mainSearch (field, st, targetListId, page, limit) {
         detailsSearch(_workID, detailsPage, detailsLimit, searchterm)
       }
     })
+    .then(() => { // start backgroundSearch
+      // console.log('Starting background search...')
+      backgroundSearch(field, st)
+    })
     .catch(error => {
       console.error('There has been a problem with your fetch operation:', error)
     })
@@ -443,6 +447,31 @@ $(document).ready(function () {
     },
     beforeClose: function (event, ui) {
       $('#showHelp').show()
+    }
+  })
+
+  // initialize (jquery) dialogue window for embeddings experiment
+  $('#embedding-plot-container').dialog({
+    position: { my: 'left top', at: 'left+155 bottom+40', of: 'div.navbar' },
+    // inset: 55px auto auto 137px;
+    autoOpen: false,
+    width: Math.min($(window).width() * 0.8, 1200), // startsize of the dialog
+    height: Math.min($(window).height() * 0.8, 700),
+    create: function (event, ui) {
+      $(event.target).parent().css('position', 'fixed')
+    },
+    resizeStop: function (event, ui) {
+      const position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
+        (Math.floor(ui.position.top) - $(window).scrollTop())]
+      $(event.target).parent().css('position', 'fixed')
+      $('#embedding-plot-container').dialog('option', 'position', position)
+    },
+    close: function (event, ui) {
+      console.log(`Stop event propagation for ${event} ...`)
+      event.stopImmediatePropagation()
+      console.log(`Not performing default action for ${event} ...`)
+      event.preventDefault()
+      return false
     }
   })
 })
