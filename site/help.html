@@ -1,0 +1,180 @@
+{{$content := `
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel-group" id="accordion" role="tablist" style="margin-top:1em;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a href="#a">Reading View</a></h4>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a href="#b">Search</a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div><a name="a"></a>
+                    <h2 class="alignedGuidelines">Reading View</h2>
+                    <p class="lead" style="text-align: justify">
+                        Information on how to use the various functions of the Reading View.
+                    </p>
+                    <div><a name="a_videos"></a>
+                        <h3>Videos</h3>
+                        <video width="600" controls title="Basic reading view functions">
+                            <source src="/resources/files/basic_reading_view.mp4" type="video/mp4" />
+                            It seems your browser doesn't support HTML video. Here is a 
+                            <a href="/resources/files/basic_reading_view.mp4">link to download the video</a> instead.
+                        </video>
+                        <video width="600" controls title="Avanced reading view functions">
+                            <source src="/resources/files/advanced_reading_view.mp4" type="video/mp4" />
+                            It seems your browser doesn't support HTML video. Here is a 
+                            <a href="/resources/files/advanced_reading_view.mp4">link to download the video</a> instead.
+                        </video>
+                    </div>
+                </div>
+                <hr>
+                <div><a name="b"></a>
+                    <h2 class="alignedGuidelines">Search</h2>
+                    <p class="lead" style="text-align: justify">
+                        Information on how to use the basic and avanced search functions.
+                    </p>
+                    <div><a name="b_videos"></a>
+                        <h3>Videos</h3>
+                        <video width="600" controls title="Basic search functions">
+                            <source src="/resources/files/how_to_search.mp4" type="video/mp4" />
+                            It seems your browser doesn't support HTML video. Here is a 
+                            <a href="/resources/files/how_to_search.mp4">link to download the video</a> instead.
+                        </video>
+                        <video width="600" controls title="Advanced search functions">
+                            <source src="/resources/files/pro_search.mp4" type="video/mp4" />
+                            It seems your browser doesn't support HTML video. Here is a 
+                            <a href="/resources/files/pro_search.mp4">link to download the video</a> instead.
+                        </video>
+                    </div>
+                    <div><a name="b_text"></a>
+                        <h3>Description of Search Syntax</h3>
+                        <div id="div_terms">
+                            <h3 id="head_searchTerms">
+                                <a class="anchorjs-link" id="div_terms" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_terms">
+                                    <span class="anchorjs-icon"></span>
+                                </a>
+                                How the Search Syntax Works
+                            </h3>
+                            <p class="hauptText" id="p_sefgcerbczcx">The search works, in general, based on lemmatization;
+                            that is, a search for
+                            a word form finds all other word forms of the respective lemma: </p>
+                            <pre> lex =&gt; finds all passages with "lex", "legum", "leges", etc. </pre>
+                            If a specific word form is to be found, an equality sign must be prepended to the search term:
+                            <pre> =lex =&gt; finds passages with "lex", but not those in which only "legum", "leges", etc. occur. </pre>
+                            (This operator can also be applied within phrases and other operators 
+                            described further below.) Furthermore, the search allows the use of "?" 
+                            and "*" as placeholders for one or infinitely many character(s):
+                            <pre> l?b?r =&gt; finds liber and labor lab* =&gt; finds labor and labello leg* =&gt; finds leges, legislator, legitimus, legatus, etc. </pre>
+                            <p></p>
+                        </div>
+                        <div id="div_multiple">
+                            <h3 id="head_multipleTerms">
+                                <a class="anchorjs-link" id="div_multiple" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_multiple">
+                                    <span class="anchorjs-icon"></span>
+                                </a>
+                                How the Multiple-Term Search Works
+                            </h3>
+                            <p class="hauptText" id="p_swsaeaserea"> The input of multiple search terms implies a search for text passages in which <it>all</it>
+                            the stated search terms must be present (implicit AND operator). If 
+                            this is not desired, the terms must be separated by means of a "|" pipe 
+                            (as OR operator): </p>
+                            <pre> lex | ius =&gt; finds texts in which either lex or ius, or both, occur. </pre>
+                            At this, the precedence of the OR operator is higher than the precedence of the AND operator, such that
+                            <pre> Francisco Vitoria | Suárez =&gt; searches for Francisco and (Vitoria or Suárez), thus finds no document that only contains the string "Suárez". </pre>
+                            In case of doubt, the grouping of terms and operators may be explicitely stated in brackets:
+                            <pre> (Francisco Vitoria) | Suárez =&gt; searches for documents in which Francisco and Vitoria occur, or in which Suárez occurs. </pre>
+                            In case a term is to be <it>excluded</it>, it must be prepended by a "-" hyphen:
+                            <pre> lex -ius =&gt; finds all texts in which lex occurs but not ius. lex -(ius | naturalis) =&gt; finds all texts containing lex but neither ius nor naturalis. </pre>
+                            If an exact phrase is to be searched for, the respective terms must be embedded within quotation signs:
+                            <pre> "lex naturalis" =&gt; searches for lex naturalis, with both terms being required to occur in this very sequence. </pre>
+                            If the search terms are to occur close to each other, the phrase can either be relativized:
+                            <pre> "lex aeterna naturalis"~10 =&gt; searches for the occurrence of all three search terms within a scope of ten words. </pre>
+                            ... or a tolerance for distance must be stated by means of the "NEAR/XY" operator between each search term:
+                            <pre> lex NEAR/10 aeterna NEAR/20 =&gt; searches for a passage of maximally 9 words between lex and aeterna and maximally 19 words between the found aeterna and naturalis. </pre>
+                            In case that merely some of a set of search terms shall be found, a phrase can be relativized through "/":
+                            <pre> lex "divina aeterna naturalis positiva civilis"/2 =&gt; searches for the term "lex" and 2 out of the 5 stated additional words. </pre>
+                            If the order but not the immediate succession of search terms is relevant, the order operator "&lt;&lt;" can be used:
+                            <pre> lex &lt;&lt; ius =&gt; searches for lex ahead of ius </pre>
+                            (This operator has, along with the NEAR/XY operator, the lowest 
+                            precedence of all operators.) The "SENTENCE" operator assigns two search
+                            terms to the condition of both thse terms having to occur within the 
+                            same sentence.
+                            <pre> lex SENTENCE naturalis =&gt; searches for a sentence in which lex as well as naturalis occur. </pre>
+                            <p></p>
+                        </div>
+                        <div id="div_single_work_en">
+                            <h3 id="head_single_work_en">
+                                <a class="anchorjs-link" id="div_single_work_en" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_single_work_en">
+                                    <span class="anchorjs-icon"></span>
+                                </a>
+                                Search within Single Works
+                            </h3>
+                            <p class="hauptText" id="p_lakjsfass">When
+                            searching globally or within a specific category of "data sources" 
+                            ("Works: full text", "Works: headings", "Working Papers: ..."), all 
+                            texts (of the selected category) are targeted through the search. A more
+                            selective search for single works (instead of the whole corpus) is not 
+                            possible by means of the graphical user interface at the moment. 
+                            However, the technically adventurous may limit their search queries 
+                            already through the "@sphinx_work" field operator.</p>
+                            <p class="hauptText" id="p_kjassdlas">For
+                            this purpose, it is necessary to know the specific "work id" of the 
+                            respective work. This five-place id consists of the initial "W" (for 
+                            "work") followed by four digits and can be found in URLs of 
+                            work-specific views (such as the reading view or the catalogue entry for
+                            a work) in the "wid=" parameter; alternatively, the citation proposal 
+                            for a work, to be found in its catalogue entry, contains the work id in 
+                            its URL: "https://id.{{ $domain }}/texts/[work id]". </p>
+                            <p class="hauptText" id="p_oijsdfsi">Once
+                            the respective work's id has been identified, the search can be limited
+                            to this work through the field operator in the following way:</p>
+                            <pre>[query term] @sphinx_work ^[work id]</pre>
+                            <p class="hauptText" id="p_lshdfjlssdjf">For
+                            example, searching for the term "lex" only in Diego de Castillo's 
+                            "Tratado de Cuentas" (which has the work id "W0004") is possible by 
+                            means of the following query (to be entered in the search field): </p>
+                            <pre>lex @sphinx_work ^W0004</pre>
+                            <p class="hauptText" id="p_saiousdas">Apart from that, the search syntax follows the guidelines stated above.</p>
+                        </div>
+                        <div id="div_more_info_en">
+                            <h3 id="head_more_info_en">
+                                <a class="anchorjs-link" id="div_more_info_en" href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_more_info_en">
+                                    <span class="anchorjs-icon"></span>
+                                </a>
+                                Where to Find more Information
+                            </h3>
+                            <p class="hauptText" id="p_juzserdvnzu"> The search is based, in the background, on the
+                                <a href="http://sphinxsearch.com/" target="_blank">Sphinx</a> search engine in version 2.1.3.
+                                The largest part of the <a href="http://sphinxsearch.com/docs/archives/2.1.3/extended-syntax.html" target="_blank">documentation
+                                of search syntax</a> displayed there also applies to the search function at hand.
+                                <sup>*</sup><span class="marginal note" id="note_note_esfwerer">
+                                    <a class="" data-toggle="collapse" data-target="#subdiv_note_esfwerer">* An important exception is the stating of field
+                                        operators "@"…<i class="fa fa-angle-double-down"></i>
+                                    </a>
+                                    <br>
+                                    <span class="collapse" id="subdiv_note_esfwerer">An important exception is the stating of field operators "@", which are 
+                                    not available on our search function. The source text is always searched
+                                    after (and in the search for everything, the lemma, author, and working
+                                    paper search also the author name); with the search within works, the 
+                                    diplomatic as well as the constituted version are searched after.</span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+`}}
+
+{{$info := dict "page" "help.html" "title" "Help for the School of Salamanca Website" "header" "Help for the School of Salamanca Website" "description" "Various resources explaining how to use some of the more advanced features of the website." "content" $content}}
+
+{{include "/resources/templates/template-default.html" $info }}

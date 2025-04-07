@@ -1,63 +1,33 @@
 {{ $domain := "salamanca.school" }}
 {{ $id := placeholder "http.request.uri.query.wid" }}
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>SvSal Image Viewer</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css"
-      rel="stylesheet"
-    />
+    <head>
+        <title>SvSal Image Viewer</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.css" rel="stylesheet">
 
-    <!-- ==== favIcon ==== -->
-    <link
-      rel="icon"
-      type="image/png"
-      href="resources/favicons/favicon-32x32.png"
-      sizes="32x32"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="resources/favicons/favicon-194x194.png"
-      sizes="194x194"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="resources/favicons/favicon-96x96.png"
-      sizes="96x96"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="resources/favicons/android-chrome-192x192.png"
-      sizes="192x192"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="resources/favicons/favicon-16x16.png"
-      sizes="16x16"
-    />
-    <link rel="manifest" href="resources/favicons/manifest.json" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta
-      name="msapplication-TileImage"
-      content="resources/favicons/mstile-144x144.png"
-    />
-    <meta name="theme-color" content="#ffffff" />
-  </head>
+        <!-- ==== favIcon ==== -->
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-32x32.png" sizes="32x32"/>
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-194x194.png" sizes="194x194"/>
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-96x96.png" sizes="96x96"/>
+        <link rel="icon" type="image/png" href="resources/favicons/android-chrome-192x192.png" sizes="192x192"/>
+        <link rel="icon" type="image/png" href="resources/favicons/favicon-16x16.png" sizes="16x16"/>
+        <link rel="manifest" href="resources/favicons/manifest.json"/>
+        <meta name="msapplication-TileColor" content="#ffffff"/>
+        <meta name="msapplication-TileImage" content="resources/favicons/mstile-144x144.png"/>
+        <meta name="theme-color" content="#ffffff"/>
+    </head>
+    
+    <body id="body">
+        <div id="Viewer" title="Image Viewer" style="height: 98vh;"></div>
 
-  <body id="body">
-    <div id="Viewer" title="Image Viewer" style="height: 98vh"></div>
+        <script src="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.js"></script>
+        <script type="text/javascript">
 
-    <script src="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.js"></script>
-    <script type="text/javascript">
-      /*
+            /*
                 let [ wid, loc ] = getUrlParams('wid').split(':')
                 let tifyOptions = {
                     container: '#Viewer',
@@ -108,6 +78,7 @@
                 };
                 * /
             */
-    </script>
-  </body>
+
+        </script>
+    </body>
 </html>

@@ -1,64 +1,61 @@
-{{ $content := `
-<div class="container" style="margin-top: 3em">
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-      <p class="lead text-center">
-        Thank you for your interest. If you have any questions regarding our
-        project, please contact us at:
-        <br />
-        <a href="mailto:info.salamanca@adwmainz.de"
-          >info.salamanca@adwmainz.de</a
-        >
-      </p>
+{{$content := `
+    <div class="container" style="margin-top:3em;">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <p class="lead text-center">
+               
+
+Thank you for your interest. If you have any questions regarding our project, please contact us at: 
+                    <br>
+                    <a href="mailto:info.salamanca@adwmainz.de">info.salamanca@adwmainz.de</a>
+                </p>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <br>
+        <div class="row text-center">
+            <img class="img-rounded" alt="SvSal-Logo" src="./resources/images/logo-svsal.png">
+        </div>
+        <hr class="half-rule">
+        <div class="row">
+            <div class="col-sm-12 col-md-4">
+                <h2 class="text-center">
+                    <span>ADW Mainz</span>
+                </h2>
+                <p class="bigger text-center">
+                    Akademie der Wissenschaften<br> 
+                    und der Literatur | Mainz, Germany<br>
+                    Geschwister-Scholl-Str. 2<br> 
+                    55131 Mainz
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <h2 class="text-center">
+                    <span>Goethe-Universität</span>
+                </h2>
+                <p class="bigger text-center">
+                    Institut für Philosophie<br>
+                    Goethe-Universität<br>
+                    Norbert-Wollheim-Platz 1<br> 
+                    60629 Frankfurt am Main, Germany
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <h2 class="text-center">
+                    <span>Max-Planck-Institut</span>
+                </h2>
+                <p class="bigger text-center">
+                    Max-Planck-Institut<br>
+                    für Rechtsgeschichte und Rechtstheorie<br> 
+                    Postfach 50 07 01<br> 
+                    60395 Frankfurt am  Main, Germany
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3"></div>
-  </div>
-  <br />
-  <div class="row text-center">
-    <img
-      class="img-rounded"
-      alt="SvSal-Logo"
-      src="./resources/images/logo-svsal.png"
-    />
-  </div>
-  <hr class="half-rule" />
-  <div class="row">
-    <div class="col-sm-12 col-md-4">
-      <h2 class="text-center">
-        <span>ADW Mainz</span>
-      </h2>
-      <p class="bigger text-center">
-        Akademie der Wissenschaften<br />
-        und der Literatur | Mainz, Germany<br />
-        Geschwister-Scholl-Str. 2<br />
-        55131 Mainz
-      </p>
-    </div>
-    <div class="col-sm-12 col-md-4">
-      <h2 class="text-center">
-        <span>Goethe-Universität</span>
-      </h2>
-      <p class="bigger text-center">
-        Institut für Philosophie<br />
-        Goethe-Universität<br />
-        Norbert-Wollheim-Platz 1<br />
-        60629 Frankfurt am Main, Germany
-      </p>
-    </div>
-    <div class="col-sm-12 col-md-4">
-      <h2 class="text-center">
-        <span>Max-Planck-Institut</span>
-      </h2>
-      <p class="bigger text-center">
-        Max-Planck-Institut<br />
-        für Rechtsgeschichte und Rechtstheorie<br />
-        Postfach 50 07 01<br />
-        60395 Frankfurt am Main, Germany
-      </p>
-    </div>
-  </div>
-</div>
 `}}
-{{ $info := dict "page" "contact.html" "title" "Contact" "header" "" "description" "How to contact the team on the project &quot;The School of Salamanca&quot; and stay informed." "content" $content }}
-{{ include "/resources/templates/template-default.html" $info }}
+
+{{$info := dict "page" "contact.html" "title" "Contact" "header" "" "description" "How to contact the team on the project &quot;The School of Salamanca&quot; and stay informed." "content" $content}}
+
+{{include "/resources/templates/template-default.html" $info }}

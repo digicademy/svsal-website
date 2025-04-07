@@ -410,7 +410,6 @@ async function showEmbeddingsExperiment (elem) {
     const data = JSON.parse(str)
     const ids = data.ids
 
-    // When no or empty result set is returned, explain why this could be
     if (!ids || ids.length === 0) {
       document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
       document.getElementById('embeddings_experiment_text').innerHTML = `

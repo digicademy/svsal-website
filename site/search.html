@@ -1,441 +1,57 @@
 {{ $domain := "salamanca.school" }}
 {{ $content := `
-<div class="container" style="margin-top: 3em">
-  <form
-    class="col-md-12 form-group"
-    name="f-query"
-    role="form"
-    action="search.html"
-    method="get"
-  >
-    <!-- Search Form -->
-    <div class="col-md-4 col-sm-5 col-xs-5">
-      <select
-        class="span12 form-control templates:form-control"
-        name="field"
-        id="field"
-        data-template="form-control"
-      >
-        <!-- option value="everything" accesskey="1" title="everything" disabled="disabled">All data sources</option>
-                    -->
-        <option value="corpus" accesskey="2" title="corpus" selected="selected">
-          Works: full text
-        </option>
-        <!-- option value="headings" accesskey="3" title="corpus, headings only" disabled="disabled">Works: headings</option>
-                        <option value="notes" accesskey="4" title="corpus, notes only" disabled="disabled">Works: notes</option>
-                        <option value="nonotes" accesskey="5" title="corpus, without the notes" disabled="disabled">Works: without notes</option>
-                        <option value="wp" accesskey="a" title="working papers" disabled="disabled">Working Papers: abstract, keywords, etc.</option>
-                    -->
-      </select>
-    </div>
-    <div class="col-md-4 col-sm-5 col-xs-5">
-      <input
-        class="templates:form-control form-control"
-        id="q"
-        name="q"
-        placeholder="search"
-        value=""
-      />
-    </div>
-    <div class="col-md-1 col-sm-2 col-xs-2">
-      <button
-        class="btn btn-default"
-        name="action"
-        id="doSearch"
-        value="Search"
-      >
-        &nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;
-      </button>
-    </div>
-    <a
-      style="font-size: 1.05em"
-      class="btn btn-link"
-      id="toggleHelp"
-      target="#"
-    >
-      <i class="glyphicon glyphicon-info-sign"></i> Search functions explained
-    </a>
-    <input type="hidden" name="lang" value="en" />
-  </form>
+    <div class="container" style="margin-top:3em;">
+        <form class="col-md-12 form-group" name="f-query" role="form" action="search.html" method="get"><!-- Search Form -->
+            <div class="col-md-4 col-sm-5 col-xs-5">
+                <select class="span12 form-control templates:form-control" name="field" id="field" data-template="form-control">
+                    <!-- <option value="everything" accesskey="1" title="everything" disabled="disabled">All data sources</option> -->
+                    <option value="corpus" accesskey="2" title="corpus" selected="selected">Works: full text</option>
+                    <!-- <option value="headings" accesskey="3" title="corpus, headings only" disabled="disabled">Works: headings</option>
+                    <option value="notes" accesskey="4" title="corpus, notes only" disabled="disabled">Works: notes</option>
+                    <option value="nonotes" accesskey="5" title="corpus, without the notes" disabled="disabled">Works: without notes</option>
+                    <option value="wp" accesskey="a" title="working papers" disabled="disabled">Working Papers: abstract, keywords, etc.</option> -->
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-5 col-xs-5">
+                <input class="templates:form-control form-control" id="q" name="q" placeholder="search" value="">
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2">
+                <button class="btn btn-default" name="action" id="doSearch" value="Search">
+                    &nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;
+                </button>
+            </div>
+            <a style="font-size:1.05em;" class="btn btn-link" href="help.html#b" target="_blank">
+                <i class="glyphicon glyphicon-info-sign"></i> Search functions explained
+            </a>
+            <input type="hidden" name="lang" value="en">
+        </form>
 
-  <div class="col-md-9 col-sm-12 searchResults">
-    <!-- Results List -->
-    <p id="searchInfo" style="visibility: hidden">
-      Search for: <span id="searchterm"></span><br />
-      <span id="searchSummary" style="visibility: hidden">
-        found:&nbsp;<strong><span id="resultDocs"></span>&nbsp;Works.</strong
-        >&nbsp; display:&nbsp;<span id="currentPaging"></span>
-      </span><br>
-      <a id="showEmbeddingsPlot" href="#" title="Open embeddings experiment for this paragraph">
-        <span class="fas fa-code"></span> Open comparison plot
-      </a>
-    </p>
-    <p id="docPagingTop" class="paging-doc"></p>
-    <div id="spinner-total" class="ispinner ispinner-large">
-      <div class="spinner-container">
-        <div class="ispinner-blade"></div>
-        <div class="ispinner-blade"></div>
-        <div class="ispinner-blade"></div>
-        <div class="ispinner-blade"></div>
-        <div class="ispinner-blade"></div>
-        <div class="ispinner-blade"></div>
-        <div class="ispinner-blade"></div>
-        <div class="ispinner-blade"></div>
-      </div>
-    </div>
-    <ul id="resultsList" class="resultsList"></ul>
-    <p id="docPagingBottom" class="paging-doc"></p>
-  </div>
-
-  <!-- Embedding plot container -->
-  <div id="embedding-plot-container"></div>
-
-  <!-- Help window -->
-  <div
-    id="help"
-    class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"
-    style="display: none; position: fixed"
-    tabindex="-1"
-    role="dialog"
-    aria-describedby="helpBox2"
-    aria-labelledby="ui-id-1"
-  >
-    <div
-      class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle"
-    >
-      <span id="ui-id-1" class="ui-dialog-title"></span>
-      <button
-        type="button"
-        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close"
-        role="button"
-        title="Close"
-      >
-        <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span
-        ><span class="ui-button-text">Close</span>
-      </button>
-    </div>
-    <div
-      id="helpBox2"
-      style="overflow: auto;"
-      class="ui-dialog-content ui-widget-content"
-    >
-      <a
-        data-toggle="collapse"
-        href="#collapseTOC"
-        aria-expanded="false"
-        aria-controls="collapseTOC"
-      >
-        <h4 style="top: 10%;">
-          <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-          Contents
-        </h4>
-      </a>
-      <div id="help" class="help">
-        <div id="collapseTOC" class="collapse">
-          <!-- class="collapse"  -->
-          <div>
-            <!-- class="panel panel-default" -->
-            <ul class="toc tocStyle">
-              <li class="tocStyle"><a href="#div_modi_en">Search Modes</a></li>
-              <li class="tocStyle">
-                <a href="#div_terms">How the Search Syntax Works</a>
-              </li>
-              <li class="tocStyle">
-                <a href="#div_multiple">How the Multiple-Term Search Works</a>
-              </li>
-              <li class="tocStyle">
-                <a href="#div_single_work_en">Search within Single Works</a>
-              </li>
-              <li class="tocStyle">
-                <a href="#div_more_info_en">Where to Find more Information</a>
-              </li>
-            </ul>
-          </div>
+        <div class="col-md-9 col-sm-12 searchResults"><!-- Results List -->
+            <p id="searchInfo" style="visibility: hidden;">
+                Search for: <span id="searchterm"></span><br>
+                <span id="searchSummary" style="visibility: hidden;">
+                    found:&nbsp;<strong><span id="resultDocs"></span>&nbsp;Works.</strong>&nbsp;
+                    display:&nbsp;<span id="currentPaging"></span>
+                </span>
+            </p>
+            <p id="docPagingTop" class="paging-doc"></p>
+            <div id="spinner-total" class="ispinner ispinner-large">
+                <div class="spinner-container">
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                    <div class="ispinner-blade"></div>
+                </div>
+            </div>
+            <ul id="resultsList" class="resultsList"></ul>
+            <p id="docPagingBottom" class="paging-doc"></p>
         </div>
-        <div id="div_searchHelp_en">
-          <div id="div_modi_en">
-            <h3 id="head_modi_en">
-              <a
-                class="anchorjs-link"
-                id="div_modi_en"
-                href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_modi_en"
-              >
-                <span class="anchorjs-icon"></span> </a
-              >Search Modes
-            </h3>
-            <p class="hauptText" id="p_sdfgcerbc">
-              In the dropdown menu on the left hand side, you can choose among
-              different search modes:
-            </p>
-            <section>
-              <ol>
-                <li>
-                  <span
-                    style="font-weight: bold"
-                    class="term hi_#option1"
-                    title=""
-                    >All data sources</span
-                  >
-                  searches for terms across all types of text, that is,
-                  including biographic and topic-related dictionary articles as
-                  well as abstracts and keywords from the workin papers. The
-                  results are grouped according to text types, possibly offering
-                  an option for repeating the search within one such group and
-                  for yielding more, or more detailed, respectively, results.
-                  (This is the standard mode of search.)
-                </li>
-                <li>
-                  <span
-                    style="font-weight: bold"
-                    class="term hi_#option2"
-                    title=""
-                    >Works: full text</span
-                  >
-                  searches for terms in the full texts of all (published) works
-                  throughout the complete digital collection of sources.
-                </li>
-                <li>
-                  <span
-                    style="font-weight: bold"
-                    class="term hi_#option3"
-                    title=""
-                    >Works: headings</span
-                  >
-                  searches for terms in all works, but only within their
-                  headings.
-                </li>
-                <li>
-                  <span
-                    style="font-weight: bold"
-                    class="term hi_#option4"
-                    title=""
-                    >Works: notes</span
-                  >
-                  searches for terms in all works, but only within marginal,
-                  bottom, and end notes.
-                </li>
-                <li>
-                  <span
-                    style="font-weight: bold"
-                    class="term hi_#optiona"
-                    title=""
-                    >Working Papers: Abstract, Keywords etc.</span
-                  >
-                  searches for terms in the metadata of the working papers. The
-                  full text of the working papers is not included in this search
-                  mode.
-                </li>
-              </ol>
-            </section>
-            <p></p>
-          </div>
-          <div id="div_terms">
-            <h3 id="head_searchTerms">
-              <a
-                class="anchorjs-link"
-                id="div_terms"
-                href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_terms"
-              >
-                <span class="anchorjs-icon"></span>
-              </a>
-              How the Search Syntax Works
-            </h3>
-            <p class="hauptText" id="p_sefgcerbczcx">
-              The search works, in general, based on lemmatization; that is, a
-              search for a word form finds all other word forms of the
-              respective lemma:
-            </p>
-            <pre>
- lex =&gt; finds all passages with "lex", "legum", "leges", etc. </pre
-            >
-            If a specific word form is to be found, an equality sign must be
-            prepended to the search term:
-            <pre>
- =lex =&gt; finds passages with "lex", but not those in which only "legum", "leges", etc. occur. </pre
-            >
-            (This operator can also be applied within phrases and other
-            operators described further below.) Furthermore, the search allows
-            the use of "?" and "*" as placeholders for one or infinitely many
-            character(s):
-            <pre>
- l?b?r =&gt; finds liber and labor lab* =&gt; finds labor and labello leg* =&gt; finds leges, legislator, legitimus, legatus, etc. </pre
-            >
-            <p></p>
-          </div>
-          <div id="div_multiple">
-            <h3 id="head_multipleTerms">
-              <a
-                class="anchorjs-link"
-                id="div_multiple"
-                href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_multiple"
-              >
-                <span class="anchorjs-icon"></span>
-              </a>
-              How the Multiple-Term Search Works
-            </h3>
-            <p class="hauptText" id="p_swsaeaserea">
-              The input of multiple search terms implies a search for text
-              passages in which <it>all</it> the stated search terms must be
-              present (implicit AND operator). If this is not desired, the terms
-              must be separated by means of a "|" pipe (as OR operator):
-            </p>
-            <pre>
- lex | ius =&gt; finds texts in which either lex or ius, or both, occur. </pre
-            >
-            At this, the precedence of the OR operator is higher than the
-            precedence of the AND operator, such that
-            <pre>
- Francisco Vitoria | Suárez =&gt; searches for Francisco and (Vitoria or Suárez), thus finds no document that only contains the string "Suárez". </pre
-            >
-            In case of doubt, the grouping of terms and operators may be
-            explicitely stated in brackets:
-            <pre>
- (Francisco Vitoria) | Suárez =&gt; searches for documents in which Francisco and Vitoria occur, or in which Suárez occurs. </pre
-            >
-            In case a term is to be <it>excluded</it>, it must be prepended by a
-            "-" hyphen:
-            <pre>
- lex -ius =&gt; finds all texts in which lex occurs but not ius. lex -(ius | naturalis) =&gt; finds all texts containing lex but neither ius nor naturalis. </pre
-            >
-            If an exact phrase is to be searched for, the respective terms must
-            be embedded within quotation signs:
-            <pre>
- "lex naturalis" =&gt; searches for lex naturalis, with both terms being required to occur in this very sequence. </pre
-            >
-            If the search terms are to occur close to each other, the phrase can
-            either be relativized:
-            <pre>
- "lex aeterna naturalis"~10 =&gt; searches for the occurrence of all three search terms within a scope of ten words. </pre
-            >
-            ... or a tolerance for distance must be stated by means of the
-            "NEAR/XY" operator between each search term:
-            <pre>
- lex NEAR/10 aeterna NEAR/20 =&gt; searches for a passage of maximally 9 words between lex and aeterna and maximally 19 words between the found aeterna and naturalis. </pre
-            >
-            In case that merely some of a set of search terms shall be found, a
-            phrase can be relativized through "/":
-            <pre>
- lex "divina aeterna naturalis positiva civilis"/2 =&gt; searches for the term "lex" and 2 out of the 5 stated additional words. </pre
-            >
-            If the order but not the immediate succession of search terms is
-            relevant, the order operator "&lt;&lt;" can be used:
-            <pre> lex &lt;&lt; ius =&gt; searches for lex ahead of ius </pre>
-            (This operator has, along with the NEAR/XY operator, the lowest
-            precedence of all operators.) The "SENTENCE" operator assigns two
-            search terms to the condition of both thse terms having to occur
-            within the same sentence.
-            <pre>
- lex SENTENCE naturalis =&gt; searches for a sentence in which lex as well as naturalis occur. </pre
-            >
-            <p></p>
-          </div>
-          <div id="div_single_work_en">
-            <h3 id="head_single_work_en">
-              <a
-                class="anchorjs-link"
-                id="div_single_work_en"
-                href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_single_work_en"
-              >
-                <span class="anchorjs-icon"></span>
-              </a>
-              Search within Single Works
-            </h3>
-            <p class="hauptText" id="p_lakjsfass">
-              When searching globally or within a specific category of "data
-              sources" ("Works: full text", "Works: headings", "Working Papers:
-              ..."), all texts (of the selected category) are targeted through
-              the search. A more selective search for single works (instead of
-              the whole corpus) is not possible by means of the graphical user
-              interface at the moment. However, the technically adventurous may
-              limit their search queries already through the "@sphinx_work"
-              field operator.
-            </p>
-            <p class="hauptText" id="p_kjassdlas">
-              For this purpose, it is necessary to know the specific "work id"
-              of the respective work. This five-place id consists of the initial
-              "W" (for "work") followed by four digits and can be found in URLs
-              of work-specific views (such as the reading view or the catalogue
-              entry for a work) in the "wid=" parameter; alternatively, the
-              citation proposal for a work, to be found in its catalogue entry,
-              contains the work id in its URL: "https://id.{{ $domain
-              }}/texts/[work id]".
-            </p>
-            <p class="hauptText" id="p_oijsdfsi">
-              Once the respective work's id has been identified, the search can
-              be limited to this work through the field operator in the
-              following way:
-            </p>
-            <pre>[query term] @sphinx_work ^[work id]</pre>
-            <p class="hauptText" id="p_lshdfjlssdjf">
-              For example, searching for the term "lex" only in Diego de
-              Castillo's "Tratado de Cuentas" (which has the work id "W0004") is
-              possible by means of the following query (to be entered in the
-              search field):
-            </p>
-            <pre>lex @sphinx_work ^W0004</pre>
-            <p class="hauptText" id="p_saiousdas">
-              Apart from that, the search syntax follows the guidelines stated
-              above.
-            </p>
-          </div>
-          <div id="div_more_info_en">
-            <h3 id="head_more_info_en">
-              <a
-                class="anchorjs-link"
-                id="div_more_info_en"
-                href="https://www.{{ $domain }}/work.html?wid=TechSearchHelp#div_more_info_en"
-              >
-                <span class="anchorjs-icon"></span>
-              </a>
-              Where to Find more Information
-            </h3>
-            <p class="hauptText" id="p_juzserdvnzu">
-              The search is based, in the background, on the
-              <a href="http://sphinxsearch.com/" target="_blank">Sphinx</a>
-              search engine in version 2.1.3. The largest part of the
-              <a
-                href="http://sphinxsearch.com/docs/archives/2.1.3/extended-syntax.html"
-                target="_blank"
-                >documentation of search syntax</a
-              >
-              displayed there also applies to the search function at hand.
-              <sup>*</sup
-              ><span class="marginal note" id="note_note_esfwerer">
-                <a
-                  class=""
-                  data-toggle="collapse"
-                  data-target="#subdiv_note_esfwerer"
-                  >* An important exception is the stating of field operators
-                  "@"…<i class="fa fa-angle-double-down"></i>
-                </a>
-                <br />
-                <span class="collapse" id="subdiv_note_esfwerer"
-                  >An important exception is the stating of field operators "@",
-                  which are not available on our search function. The source
-                  text is always searched after (and in the search for
-                  everything, the lemma, author, and working paper search also
-                  the author name); with the search within works, the diplomatic
-                  as well as the constituted version are searched after.</span
-                >
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90"></div>
-    <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90"></div>
-    <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90"></div>
-    <div class="ui-resizable-handle ui-resizable-w" style="z-index: 90"></div>
-    <div
-      class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se"
-      style="z-index: 90"
-    ></div>
-    <div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90"></div>
-    <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90"></div>
-    <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90"></div>
-  </div>
-</div>
-`}}
+    </div>`}}
+
 {{ $info := dict "page" "search.html" "title" "Search" "header" "Search" "description" "Search in the Texts of the authors, in the dictionnary, the biographical articles and the working papers of the School of Salamanca." "content" $content }}
+
 {{ include "/resources/templates/template-default.html" $info }}

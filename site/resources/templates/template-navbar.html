@@ -11,45 +11,49 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand hidden-xs {{ if eq $page "index.html" }}active{{ end }}" href="https://www.{{ $domain }}/index.html">The School of Salamanca</a>
-                    <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav {{ if eq $page "index.html" }}active{{ end }}" href="https://www.{{ $domain }}/index.html">The School of Salamanca</a>
+                    <a class="navbar-brand hidden-xs {{ if eq $page "index.html" }}active{{ end }}" href="/index.html">The School of Salamanca</a>
+                    <a class="navbar-brand hidden-lg hidden-md hidden-sm smallNav {{ if eq $page "index.html" }}active{{ end }}" href="/index.html">The School of Salamanca</a>
                 </div>
                 <div class="collapse navbar-collapse navbar-menubuilder">
                     <menu class="nav navbar-nav">
-<!--                        <li class="">
+                        <!-- <li class="">
                             <a href="https://blog.{{ $domain }}/?lang=de">
                                 <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;Blog
                             </a>
                         </li> -->
-  <li class="{{ if eq $page "works.html" }}active{{ end }}">
-                              <a href="https://www.{{ $domain }}/works.html">
-                                  <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
-                              </a>
-                          </li>
-
+                        <li class="{{ if eq $page "works.html" }}active{{ end }}">
+                            <a href="/works.html">
+                                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;Works
+                            </a>
+                        </li>
                         <li class="{{ if eq $page "project.html" }}active{{ end }}">
-                            <a href="https://www.{{ $domain }}/project.html">
+                            <a href="/project.html">
                                 <i class="fa fa-university" aria-hidden="true"></i>&nbsp;Project
                             </a>
                         </li>
                         <li class="{{ if eq $page "dictionary.html" }}active{{ end }}">
-                            <a href="https://www.{{ $domain }}/dictionary.html">
+                            <a href="/dictionary.html">
                                 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Dictionary
                             </a>
                         </li>
-<!--                        <li class="{{ if eq $page "authors.html" }}active{{ end }}">
-                            <a href="https://www.{{ $domain }}/authors.html">
+                        <!-- <li class="{{ if eq $page "authors.html" }}active{{ end }}">
+                            <a href="/authors.html">
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Authors
                             </a>
-                        </li> --> 
+                        </li> -->
                         <li class="{{ if eq $page "workingpapers.html" }}active{{ end }}">
-                            <a href="https://www.{{ $domain }}/workingpapers.html">
+                            <a href="/workingpapers.html">
                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i>&nbsp;Working Papers
                             </a>
                         </li>
                         <li class="{{ if eq $page "search.html" }}active{{ end }}">
-                            <a href="https://www.{{ $domain }}/search.html">
+                            <a href="/search.html">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search
+                            </a>
+                        </li>
+                        <li class="{{ if eq $page "help.html" }}active{{ end }}">
+                            <a href="/help.html">
+                                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;Help
                             </a>
                         </li>
 <!-- As long as we don't have multilinguality back, better disable language switching buttons...
@@ -59,17 +63,17 @@
                             </a>
                             <menu class="dropdown-menu">
                                 <li class="hidden-lg">
-                                    <a href="https://www.{{ $domain }}/{{$page}}?lang=de">
+                                    <a href="/{{$page}}?lang=de">
                                         <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Deutsch
                                     </a>
                                 </li>
                                 <li class="hidden-lg">
-                                    <a href="https://www.{{ $domain }}/{{$page}}?lang=en">
+                                    <a href="/{{$page}}?lang=en">
                                         <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Englisch
                                     </a>
                                 </li>
                                 <li class="hidden-lg">
-                                    <a href="https://www.{{ $domain }}/{{$page}}?lang=es">
+                                    <a href="/{{$page}}?lang=es">
                                         <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;Spanisch
                                     </a>
                                 </li>
@@ -81,9 +85,9 @@
                     <menu class="nav navbar-nav"><!-/- language-switch buttons on large screens -/->
                         <li class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md">
                             <div class="btn-group" role="group" aria-label="...">
-                                <a class="btn navbar-btn btn-info" href="https://www.{{ $domain }}/{{$page}}?lang=de">de</a>
-                                <a class="btn navbar-btn btn-default" href="https://www.{{ $domain }}/{{$page}}?lang=en">en</a>
-                                <a class="btn navbar-btn btn-default" href="https://www.{{ $domain }}/{{$page}}?lang=es">es</a>
+                                <a class="btn navbar-btn btn-info" href="/{{$page}}?lang=de">de</a>
+                                <a class="btn navbar-btn btn-default" href="/{{$page}}?lang=en">en</a>
+                                <a class="btn navbar-btn btn-default" href="/{{$page}}?lang=es">es</a>
                             </div>
                         </li>
                     </menu>

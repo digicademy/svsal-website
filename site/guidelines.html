@@ -130,12 +130,11 @@
                                 <p class="textGuidelines">The documents published on this website have been encoded within the scope of the project "The School of Salamanca. 
                                     A Digital Collection of Sources and a Dictionary of its Juridical-Political Language" 
                                     of the <a href="http://www.adwmainz.de">Akademie der Wissenschaften und der Literatur, Mainz</a>. 
-                                    Besides creating a dictionary, the project aims at a freely available and easily accessible collection of important texts from the discoursive context of the so called "School of Salamanca", which are being digitized for this purpose (usually in the form of their initial edition). A critical revision, or a recourse to manuscript templates, for instance, has been refrained from. The total corpus of works 
-                                    that are gradually being encoded and published on the website is documented 
-                                    <a href="http://wwwuser.gwdg.de/~svsal/images/Quellensammlung%20sortiert%20nach%20Work-ID.pdf">here (.pdf)</a>.</p>
+                                    Besides creating a dictionary, the project aims at a freely available and easily accessible collection of important texts from the discoursive context of the so called "School of Salamanca", which are being digitized for this purpose (usually in the form of their initial edition). A critical revision, or a recourse to manuscript templates, for instance, has been refrained from. The total corpus of works can be found at
+                                    <a href="https://www.salamanca.school/sources.html">here</a>.</p>
                             </div>
                             <div><a name="edition"><h3 class="alignedGuidelines">1.2. About the Digital Edition</h3></a>
-                                <p class="textGuidelines">The digital edition of "The School of Salamanca" consists of 116 works that are encoded by means of an adaptation of the TEI P5 schema. This adapted schema (in the following, "SalTEI") is TEI-compliant and specifically designed for the research demands of the project, which comprise especially the following points:</p>
+                                <p class="textGuidelines">The digital edition of "The School of Salamanca" consists of 107 works that are encoded by means of an adaptation of the TEI P5 schema. This adapted schema (in the following, "SalTEI") is TEI-compliant and specifically designed for the research demands of the project, which comprise especially the following points:</p>
                                 <ul class="textGuidelines">
                                     <li style="list-style-type: square; margin-left: 20px;">The (hyper-)linking of the text sources to the dictionary entries of lemmata from the discoursive context of the School of Salamanca.</li>
                                     <li style="list-style-type: square; margin-left: 20px;">The inter-linking of the text sources by means of references to (other) "internal" works and/or authors of the digital collection of sources, and the linking of entities (person and place names, bibliographic references) within the sources to external authority files.</li>
@@ -1377,4 +1376,5 @@
             </div>` | join "" }}
 
 {{ $info := dict "page" "guidelines.html" "title" "Edition Guidelines" "header" "" "description" "Edition Guidelines for the creation of the collection of sources of the project &#34;The School of Salamanca&#34;" "content" $content }}
+
 {{ include "/resources/templates/template-default.html" $info }}

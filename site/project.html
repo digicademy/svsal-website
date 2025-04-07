@@ -1,4 +1,4 @@
-{{ $content := `
+{{$content := `
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -124,5 +124,8 @@ Sources.</p>
         </div>
     </div>
 `}}
-{{ $info := dict "page" "project.html" "title" "Project" "header" "" "description" "General Information about the project &#34;The School of Salamanca. A Digital Collection of Sources and a Dictionary of its Juridical-Political Language&#34;" "content" $content }}
-{{ include "/resources/templates/template-default.html" $info }}
+
+{{$info := dict "page" "project.html" "title" "Project" "header" "" "description" "General Information about the project &#34;The School of Salamanca. A Digital Collection of Sources and a Dictionary of its Juridical-Political Language&#34;" "content" $content}}
+
+{{include "/resources/templates/template-default.html" $info }}
+
