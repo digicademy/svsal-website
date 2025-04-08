@@ -301,9 +301,21 @@
       '        margin: { l: 10, r: 10, b: 10, t: 80 },\n' +
       '        autosize: true,\n' +
       '        scene: {\n' +
-      '          xaxis: { title: \'\' },\n' +
-      '          yaxis: { title: \'\' },\n' +
-      '          zaxis: { title: \'\' }\n' +
+      '          xaxis: {\n' +
+      '            range: [Math.min(...resultTrace.x, ...contextTrace.x) - 1,\n' +
+      '            Math.max(...resultTrace.x, ...contextTrace.x) + 1],\n' +
+      '            title: \'\'\n' +
+      '          },\n' +
+      '          yaxis: {\n' +
+      '            range: [Math.min(...resultTrace.y, ...contextTrace.y) - 1,\n' +
+      '            Math.max(...resultTrace.y, ...contextTrace.y) + 1],\n' +
+      '            title: \'\'\n' +
+      '          },\n' +
+      '          zaxis: {\n' +
+      '            range: [Math.min(...resultTrace.z, ...contextTrace.z) - 1,\n' +
+      '            Math.max(...resultTrace.z, ...contextTrace.z) + 1],\n' +
+      '            title: \'\'\n' +
+      '          }\n' +
       '        }\n' +
       '      };\n' +
       '      \n' +
@@ -311,11 +323,19 @@
       '      \n' +
       '      // Add control for context points visibility\n' +
       '      document.getElementById(\'showContextPoints\').addEventListener(\'change\', function(e) {\n' +
+      '        // Get current camera view before updating\n' +
+      '        var currentLayout = document.getElementById(\'visualization\').layout;\n' +
+      '        \n' +
       '        if (this.checked) {\n' +
       '          Plotly.addTraces(\'visualization\', contextTrace);\n' +
       '        } else {\n' +
       '          Plotly.deleteTraces(\'visualization\', 1);\n' +
       '        }\n' +
+      '        \n' +
+      '        // Preserve the camera position and zoom\n' +
+      '        Plotly.relayout(\'visualization\', {\n' +
+      '          \'scene.camera\': currentLayout.scene.camera\n' +
+      '        });\n' +
       '      });\n' +
       '      \n' +
       '      // Close button handler\n' +
