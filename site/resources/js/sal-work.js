@@ -392,8 +392,9 @@ async function showEmbeddingsExperiment (elem) {
   const limit = 5
 
   const targetIDEncoded = encodeURIComponent(targetID)
+  const authorEncoded = encodeURIComponent(document.querySelector('meta[name="author"]').content)
   const queryURL = 'https://c100-188.cloud.gwdg.de/vdb-api/v1/similars/sal/sal-openai-large/' + targetIDEncoded +
-    '?threshold=' + threshold + '&limit=' + limit
+    '?threshold=' + threshold + '&limit=' + limit + '&metadata_path=author&metadata_value=' + authorEncoded
   const getHeaders = { 'Authorization': `Bearer ${VDB_API_KEY}`, 'Content-Type': 'application/json' }
   var count = 0
 
