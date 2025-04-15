@@ -1,2 +1,3 @@
 webserver/bin/
-*.bak?
+*.bak
+*.bak*
