@@ -1,3 +1,4 @@
 webserver/bin/
 *.bak
 *.bak*
+site/resources/files/*.mp4
