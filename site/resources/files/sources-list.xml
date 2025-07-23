@@ -1,0 +1,278 @@
+<?xml-model href="http://files.salamanca.school/SvSal_txt.rng"
+    type="application/xml"
+    schematypens="http://relaxng.org/ns/structure/1.0"?><TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="works-list">
+  <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title xml:lang="en">List of works in the Digital Collection of Sources</title>            
+            <author xml:id="CR">
+               <persName ref="orcid:0000-0001-5095-1793">
+                  <surname>Rico Carmona</surname>, <forename>Cindy</forename>
+               </persName>
+            </author>
+         </titleStmt>
+        
+         <publicationStmt>
+            	<xi:include href="meta/works-general.xml" xpointer="xmlns(tei=http://www.tei-c.org/ns/1.0)xpointer(//tei:fileDesc/tei:publicationStmt/*)">
+            		<xi:fallback><publisher><ref target="https://www.salamanca.school" xml:lang="en">For information about the digital edition, please 
+            					refer to our website.</ref></publisher>
+            		</xi:fallback>
+            	</xi:include>
+         </publicationStmt>
+         
+         <sourceDesc>
+            <p xml:id="p_cq2d63" xml:lang="en">Born digital, created on <date when="2019-03-11">13 November 2024</date>.</p>
+         </sourceDesc>
+      </fileDesc>
+     <encodingDesc xml:id="encodingDesc">
+        <xi:include href="meta/works-general.xml" xpointer="xmlns(tei=http://www.tei-c.org/ns/1.0)xpointer(//tei:encodingDesc/projectDesc)">
+           <xi:fallback><projectDesc><p xml:id="W0002-00-meta-pa-0004"><ref target="https://www.salamanca.school" xml:lang="en">For information about the project, please 
+              refer to our website.</ref></p></projectDesc>
+           </xi:fallback>
+        </xi:include>
+     </encodingDesc>
+     <revisionDesc>
+        <listChange status="g_enriched_approved">
+           <change who="#CR" when="2024-11-28" xml:lang="en" status="g_enriched_approved">Update and revision bibliographic data and internal @type, @ref:author, @corresp:work id(s) Group B from work:W0094 - work:W0116 and Reference-Works.</change>
+           <change who="#CR" when="2024-11-27" xml:lang="en" status="g_enriched_approved">Update and revision bibliographic data and internal @type, @ref:author, @corresp:work id(s) Group B from work:W0050 - work:W0094.</change>
+           <change who="#CR" when="2024-11-14" xml:lang="en" status="g_enriched_approved">Update and revision bibliographic data and internal @type, @ref:author, @corresp:work id(s) from Group A until Group B work:W0047.</change>
+           <change who="#CR" when="2024-11-13" xml:lang="en" status="g_enriched_approved">Removed works that won't be digitized: W0009, W0028, W0036, W0048, W0086, W0097, W0108, W0110, W0115.</change>
+           <change who="#CR" when="2024-11-13" xml:lang="en" status="g_enriched_approved">Set sources list Group A, Group B, Reference works. Only in english.</change>
+           <change who="#CR" when="2024-11-13" xml:lang="en" status="g_enriched_approved">Version used until 13.11.24 was saved as trunk/svsal-tei/archive/meta/sources-list_13.11.24.xml to start new sources list.</change>
+           <change who="#DG" when="2019-04-23" xml:lang="en" status="g_enriched_approved">Revised titles; finalized first version of list for publication.</change>
+           <change who="#CR" when="2019-03-11" xml:lang="en" status="a_raw">Created document.</change>
+        </listChange>
+     </revisionDesc>
+  </teiHeader>
+  <text xml:id="completeWork" type="technical">
+      <body>
+         <head xml:lang="en" xml:id="head-en">Digital Collection of Sources</head>
+         <p xml:lang="en" xml:id="p2">List of texts that this project is going to provide in digital form</p>
+         <listBibl xml:id="a">
+            <head xml:lang="en" xml:id="head-a-en">Group A</head>
+            
+            <bibl type="series" corresp="work:W0001" change="published"><author ref="author:A0007"><persName>AVENDAÑO, Diego de</persName></author>: <title>Thesaurus Indicus, seu generalis instructor pro regimini conscientiae, in iis quae ad indias spectant.</title> 6 vols. <pubPlace>Antwerpen</pubPlace> 1-2(<date>1668</date>), 3-5(<date>1675</date>), 6(<date>1686</date>)</bibl>
+            
+            <bibl type="monogr" corresp="work:W0002" change="published"><author ref="author:A0011"><persName>AZPILCUETA (Navarro), Martin de</persName></author>: <title>Manual de confessores y penitentes.</title> <pubPlace>Salamanca</pubPlace> <date>1556</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0003" change="published"><author ref="author:A0012"><persName>BÁÑEZ, Domingo</persName></author>: <title>De Iure et Iustitia Decissiones.</title> <pubPlace>Salamanca</pubPlace> <date>1594</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0004" change="published"><author ref="author:A0019"><persName>CASTILLO, Diego de</persName></author>: <title>Tratado de cuentas.</title> <pubPlace>Burgos</pubPlace> <date>1522</date></bibl>
+            
+            <bibl type="series" corresp="work:W0006" change="published"><author ref="author:A0026"><persName>COVARRUBIAS Y LEYVA, Diego de</persName></author>: <title>Opera Omnia Quae Hactenvs Extant, Tribvs Tomis distincta.</title> <pubPlace>Frankfurt</pubPlace> 1(<date>1573</date>), 2(<date>1571</date>)</bibl>
+            
+            <bibl type="monogr" corresp="work:W0007" change="published"><author ref="author:A0060"><persName>MERCADO, Tomás de</persName></author>: <title>Suma de tratos y contratos de mercaderes dividido en seis libros.</title> <pubPlace>Salamanca</pubPlace> <date>1569</date></bibl>
+            
+            <bibl type="series" corresp="work:W0008" change="published"><author ref="author:A0061"><persName>MOLINA, Luis de</persName></author>: <title>De Iustitia et Iure.</title> 7 vols. vols. 1-3: <pubPlace>Cuenca</pubPlace> <date>1593</date>, <date>1597</date>, <date>1600</date>; vols. 4-7: <pubPlace>Antwerpen</pubPlace> <date>1609</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0010" change="published"><author ref="author:A0082"><persName>SOLÓRZANO PEREIRA, Juan de</persName></author>: <title>Política indiana sacada en lengua castellana de los dos tomos del derecho y gobierno municipal de las Indias.</title> <pubPlace>Madrid</pubPlace> <date>1648</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0011" change="published"><author ref="author:A0083"><persName>SOTO, Domingo de</persName></author>: <title>De Iustitia et Iure libri decem.</title> <pubPlace>Salamanca</pubPlace> <date>1553</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0012"><author ref="author:A0084"><persName>SUÁREZ, Francisco</persName></author>: <title>Tractatus de Legibus ac Deo Legislatore in decem libros.</title> <pubPlace>Coimbra</pubPlace> <date>1612</date></bibl>
+            
+            <bibl type="series" corresp="work:W0013" change="published"><author ref="author:A0100"><persName>VITORIA, Francisco de</persName></author>: <title>Relectiones Theologicae XII.</title> 2 vols. <pubPlace>Lyon</pubPlace> <date>1557</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0014" change="published"><author ref="author:A0100"><persName>VITORIA, Francisco de</persName></author>: <title>Summa sacramentorum Ecclesiae.</title> <pubPlace>Valladolid</pubPlace> <date>1561</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0015" change="published"><author ref="author:A0100"><persName>VITORIA, Francisco de</persName></author>: <title>Confesionario útil y provechoso.</title> <pubPlace>Santiago</pubPlace> <date>1562</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0017" change="published"><author ref="author:A0002"><persName>ALBORNOZ, Bartolomé de</persName></author>: <title>Arte de los contratos.</title> <pubPlace>Valencia</pubPlace> <date>1573</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0018" change="published"><author ref="author:A0003"><persName>ALCALÁ, Luis de</persName></author>: <title>Tractado de los préstamos que passan entre mercaderes y tractantes y, por consiguiente, de los logros, cambios, compra adelantadas y ventas al fiado.</title> <pubPlace>Toledo</pubPlace> <date>1543</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0030" change="published"><author ref="author:A0016"><persName>CANO, Melchor</persName></author>: <title>Relectio De Poenitentia habita in Academia salmanticensis anno M.D.XLVIII.</title> <pubPlace>Madrid</pubPlace> <date>1558</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0041" change="published"><author ref="author:A0027"><persName>DÍAZ DE LUGO, Juan Bernal</persName></author>: <title>Practica criminalis canonica.</title> <pubPlace>Lyon</pubPlace> <date>1554</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0046" change="published"><author ref="author:A0032"><persName>FREITAS, Serafín de</persName></author>: <title>De Iusto Imperio Lusitanorum Asiatico.</title> <pubPlace>Valladolid</pubPlace> <date>1625</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0061" change="published"><author ref="author:A0046"><persName>LEÓN PINELO, Antonio de</persName></author>: <title>Tratado de confirmaciones reales de encomiendas e oficios.</title> <pubPlace>Madrid</pubPlace> <date>1630</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0076" change="published"><author ref="author:A0063"><persName>MORENO, Jerónimo</persName></author>: <title>Reglas ciertas y precisamente necessarias para juezes y ministros de iusticia de las Indias y para sus confesores.</title> <pubPlace>México</pubPlace>. <date>1637</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0078" change="published"><author ref="author:A0065"><persName>NEBRIJA, Antonio de</persName></author>: <title>Lexicon Iuris Civilis, Adversvs quosdam insignes Accvrs errores aeditum.</title> <pubPlace>Lyon</pubPlace> <date>1537</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0083" change="published"><author ref="author:A0069"><persName>PEDRAZA, Juan de</persName></author>: <title>Summa de casos de consciencia.</title> <pubPlace>Medina del Campo</pubPlace> <date>1568</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0095" change="published"><author ref="author:A0081"><persName>SEPÚLVEDA, Juan Ginés de</persName></author>: <title>Apologia pro libro de iustis belli causis</title> <pubPlace>Rom</pubPlace> <date>1550</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0103" change="published"><author ref="author:A0089"><persName>VACCA, Antonius</persName></author>: <title>Expositiones locorum obscuriorum et Paratitulorum in Pandectas.</title> <pubPlace>Lyon</pubPlace> <date>1554</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0106" change="published"><author ref="author:A0093"><persName>VÁZQUEZ DE MENCHACA, Fernando</persName></author>: <title>Controversiarvm Illvstrivm Aliarvmqve Vsv Frequentium Libri Tres.</title> <pubPlace>Frankfurt</pubPlace> <date>1572</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0113" change="published"><author ref="author:A0098"><persName>VILLALÓN, Cristóbal de</persName></author>: <title>Provechoso tratado de cambios y contrataciones de mercaderes y reprovación de usura.</title> <pubPlace>Valladolid</pubPlace> <date>1541</date></bibl>
+            
+         </listBibl>
+         <listBibl xml:id="b">
+            <head xml:lang="en" xml:id="head-b-en">Group B</head>
+            
+            <bibl type="series" corresp="work:W0005"><author ref="author:A0020"><persName>CASTILLO DE BOBADILLA, Jerónimo</persName></author>: <title>Política para Corregidores y Señores de vasallos en tiempos de paz y guerra y para jueces ecclesiasticos y seglares.</title> 2 vols. <pubPlace>Madrid</pubPlace> <date>1597</date></bibl>
+            
+            <bibl type="series" corresp="work:W0016" change="published"><author ref="author:A0001"><persName>ACOSTA, José de</persName></author>: <title>De natura novi orbis libri duo, et De promulgatione Evangelii, apud barbaros, sive De procuranda Indorum salute libri sex.</title> <pubPlace>Salamanca</pubPlace> <date>1589</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0019" change="published"><author ref="author:A0004"><persName>ALFARO, Francisco de</persName></author>: <title>Tractatus de officio fiscalis deque fiscalibus priuilegiis.</title> Valladolid 1606</bibl>
+            
+            <bibl type="monogr" corresp="work:W0020"><author ref="author:A0005"><persName>ARAGÓN, Pedro de</persName></author>: <title>In Secundam secundae diui Thomae doctoris Angelici commentaria De Iustitia et Iure.</title> <pubPlace>Salamanca</pubPlace> <date>1590</date></bibl>
+            
+            <bibl type="series" corresp="work:W0021"><author ref="author:A0006"><persName>ARRIAGA, Rodrigo de</persName></author>: <title>Dispvtationes Theologicae.</title> 8 vols. <pubPlace>Antwerpen</pubPlace> 1-2(<date>1643</date>, 3-4<date>1644</date>, 5<date>1649</date>, 6<date>1650</date>, 7-8<date>1655</date>)</bibl>
+            
+            <bibl type="monogr" corresp="work:W0022"><author ref="author:A0008"><persName>AYALA, Balthasar</persName></author>: <title>De iure et officiis bellicis et disciplina militari libri III.</title> <pubPlace>Douai</pubPlace> <date>1582</date>.</bibl>
+            
+            <bibl type="series" corresp="work:W0024"><author ref="author:A0010"><persName>AZOR, Juan</persName></author>: <title>Institutiones morales in quibus universe quaestiones ad conscientiam recte aut prave factorum pertinentes, breviter tractantur.</title> 3 vols. <pubPlace>Coloniae</pubPlace> (1<date>1602</date>, 2<date>1608</date>, 3<date>1612</date>)</bibl>
+            
+            <bibl type="monogr" corresp="work:W0025"><author ref="author:A0012"><persName>BÁÑEZ, Domingo</persName></author>: <title>De fide, spe &amp; charitate.</title> <pubPlace>Salamanca</pubPlace> <date>1584</date></bibl>
+            
+            <bibl type="series" corresp="work:W0026"><author ref="author:A0013"><persName>BARBOSA, Augustinus</persName></author>: <title>Pastoralis solicitudinis, sive De officio et potestate Episcopi tripartita descriptio.</title> <pubPlace>Lyon</pubPlace> <date>1628</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0027"><author ref="author:A0013"><persName>BARBOSA, Augustinus</persName></author>: <title>Iuris ecclesiastici universi libri tres.</title> <pubPlace>Lyon</pubPlace> <date>1634</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0031" change="published"><author ref="author:A0016"><persName>CANO, Melchor</persName></author>: <title>De locis theologicis libri duodecim.</title> <pubPlace>Salamanca</pubPlace> <date>1563</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0032"><author ref="author:A0017"><persName>CARRASCO DEL SAZ, Francisco</persName></author>: <title>Interpretatio ad aliquas leges recopilationis regni Castellae.</title> <pubPlace>Sevilla</pubPlace> <date>1620</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0034" change="published"><author ref="author:A0018"><persName>CASAS, Bartolomé de las</persName></author>: <title>Treinta proposiciones muy jurídicas.</title> <pubPlace>Sevilla</pubPlace> <date>1552</date>.</bibl>
+            
+            <bibl type="monogr" corresp="work:W0035" change="published"><author ref="author:A0018"><persName>CASAS, Bartolomé de las</persName></author>: <title>Tratado co[m]probatorio del Imperio soberano y principado vniuersal que los Reyes de Castilla y Leon tienen sobre las indias.</title> <pubPlace>Sevilla</pubPlace> <date>1553</date></bibl>
+            
+            <bibl type="series" corresp="work:W0037" change="published"><author ref="author:A0021"><persName>CASTILLO SOTOMAYOR, Juan de</persName></author>: <title>Opera omnia, sive quotidianarum controversiarum iuris.</title> 8 vols. <pubPlace>Lyon</pubPlace> <date>1658</date>.</bibl>
+            
+            <bibl type="monogr" corresp="work:W0038"><author ref="author:A0022"><persName>CASTRO PALAO, Fernando de</persName></author>: <title>De Iustitia et Iure (Opus morale de virtutibus et vitiis contrariis, pars 7).</title> <pubPlace>Lyon</pubPlace> <date>1651</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0040"><author ref="author:A0025"><persName>CÓRDOBA, Antonio de</persName></author>: <title>Quaestionarium Theologicum, sive Silva casuum conscientiae.</title> <pubPlace>Venedig</pubPlace> <date>1569</date></bibl>
+            
+            <bibl type="series" corresp="work:W0042"><author ref="author:A0028"><persName>DICASTILLO, Juan de</persName></author>: <title>De iustitia et iure ceterisque cirtutibus cardinalibus libri duo.</title> <pubPlace>Antwerpen</pubPlace> <date>1641</date></bibl>
+            
+            <bibl type="series" corresp="work:W0043" change="published"><author ref="author:A0029"><persName>ESCOBAR Y MENDOZA, Antonio de</persName></author>: <title>Universae Theologiae Moralis receptiores absque lite sententiae necnon problematicae disquisitiones.</title> 10 vols. <pubPlace>Lyon</pubPlace> (1<date>1652</date>, 2<date>1655</date>, 3-10<date>1663</date>)</bibl>
+            
+            <bibl type="monogr" corresp="work:W0044"><author ref="author:A0030"><persName>FAGÚNDEZ, Esteban</persName></author>: <title>De iustitia et contractibus et de acquisitione et translatione dominium, libri septem.</title> <pubPlace>Lyon</pubPlace> <date>1641</date></bibl>
+            
+            <bibl type="series" corresp="work:W0045"><author ref="author:A0031"><persName>FRASSO, Pedro</persName></author>: <title>De Regio Patronatu Indiarum.</title> 2 vols. <pubPlace>Madrid</pubPlace> (1<date>1677</date>, 2<date>1679</date>)</bibl>
+            
+            <bibl type="series" corresp="work:W0047"><author ref="author:A0033"><persName>GARCÍA, Francisco</persName></author>: <title>Parte primera [-segunda] del tratado utilísimo y muy general de todos los contractos, quantos en los negocios humanos se suelen ofrecer.</title> <pubPlace>Valencia</pubPlace> <date>1583</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0050"><author ref="author:A0036"><persName>GÓMEZ DE SILVA, Domingo</persName></author>: <title>Practica, y instruccion para albaceas, tutores, y curadores, que administran bienes de menores.</title> <pubPlace>Lima</pubPlace> <date>1640</date></bibl>
+            
+            <bibl type="series" corresp="work:W0051"><author ref="author:A0037"><persName>GONZÁLEZ TÉLLEZ, Manuel</persName></author>: <title>Commentaria perpetua in singulos textus quinque librorum Decretalium Gregorii IX.</title> 5 vols. <pubPlace>Lyon</pubPlace> <date>1673</date></bibl>
+            
+            <bibl type="series" corresp="work:W0052"><author ref="author:A0038"><persName>HENRÍQUEZ, Enrique</persName></author>: <title>Theologiae Moralis Summa.</title> 2 vols. <pubPlace>Salamanca</pubPlace> <date>1591</date>, <date>1593</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0053"><author ref="author:A0039"><persName>[VIÑONES, Juan Bautista de]</persName></author>: <title>Espejo de la conciencia que trata de todos los estados: como cada uno deue auerle para biuir con limpia y pura consciencia. Logroño 1507</title></bibl>
+            
+            <bibl type="monogr" corresp="work:W0054"><author ref="author:A0040"><persName>HEVIA BOLAÑOS, Juan de</persName></author>: <title>Curia Philipica.</title> <pubPlace>Lima</pubPlace> <date>1603</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0055"><author ref="author:A0041"><persName>HURTADO, Gaspar</persName></author>: <title>Tractatus de justitia et jure.</title> <pubPlace>Madrid</pubPlace> <date>1637</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0056"><author ref="author:A0042"><persName>IBARRA, Miguel de</persName></author>: <title>Annuae relectiones ad Canonicae Iuris Explicationes in duas partes divisae.</title> <pubPlace>México</pubPlace> <date>1675</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0057"><author ref="author:A0044"><persName>LEDESMA, Martin de</persName></author>: <title>Secunda quartae.</title> <pubPlace>Coimbra</pubPlace> <date>1560</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0058"><author ref="author:A0045"><persName>LEDESMA, Pedro de</persName></author>: <title>Primera parte de la Suma, en la cual se cifra y suma todo lo que toca y pertenece a los sacramentos.</title> <pubPlace>Salamanca</pubPlace> <date>1598</date>.</bibl>
+            
+            <bibl type="monogr" corresp="work:W0059"><author ref="author:A0045"><persName>LEDESMA, Pedro de</persName></author>: <title>Segunda parte de la Suma, en la cual se cifra y suma toda la moral y casos de conciencia que no pertenecen a los sacramentos.</title> <pubPlace>Salamanca</pubPlace> <date>1603</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0060"><author ref="author:A0045"><persName>LEDESMA, Pedro de</persName></author>: <title>Tractatus de magno matrimonii sacramento.</title> <pubPlace>Salamanca</pubPlace> <date>1592</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0062"><author ref="author:A0047"><persName>LESSIUS, Leonhard</persName></author>: De Iustitia et Iure caeterisque virtutibus cardinalibus libri IV. <pubPlace>Leuven</pubPlace> <date>1605</date></bibl>
+                        
+            <bibl type="monogr" corresp="work:W0064"><author ref="author:A0050"><persName>LORCA, Pedro de</persName></author>: <title>Commentariorum et Disputationum in universam Primam Secundae Sancti Thomae.</title> <pubPlace>Madrid</pubPlace> <date>1609</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0065" change="published"><author ref="author:A0048"><persName>LÓPEZ, Luis</persName></author>: Instructorium negotiantium: in duobus contentum libris. <pubPlace>Salamanca</pubPlace> <date>1589</date></bibl>
+            
+            <bibl type="series" corresp="work:W0066"><author ref="author:A0049"><persName>LUGO, Juan de</persName></author>: <title>De Iustita et Iure.</title> 2 vols. <pubPlace>Lyon</pubPlace> <date>1642</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0067"><author ref="author:A0052"><persName>MARIANA, Juan de</persName></author>: <title>De rege et regis institutione libri III.</title> <pubPlace>Toledo</pubPlace> <date>1599</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0069"><author ref="author:A0053"><persName>MARTÍNEZ, Gregorio</persName></author>: <title>Commentario super Primam Secundae Divi Thomae. Tomus tertius.</title> <pubPlace>Valladolid</pubPlace> <date>1637</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0071"><author ref="author:A0055"><persName>MARTÍNEZ DE PRADO, Juan</persName></author>: <title>De Justitia et Jure. Theologiae moralis quaestiones praecipuae. Tomus secundus.</title> <pubPlace>Alcalá</pubPlace> <date>1656</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0072"><author ref="author:A0057"><persName>MEDINA, Bartolomé de</persName></author>: <title>Expositio In Primam Secvndae Angelici Doctoris D. Thomae Aqvinatis.</title> <pubPlace>Salamanca</pubPlace> <date>1578</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0073" change="published"><author ref="author:A0058"><persName>MEDINA, Juan de</persName></author>: <title>Restitutione et Contractibus Tractatus.</title> <pubPlace>Salamanca</pubPlace> <date>1553</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0074" change="published"><author ref="author:A0058"><persName>MEDINA, Juan de</persName></author>: <title>In titulum de poenitentia eiusque partibus commentarii.</title> <pubPlace>Salamanca</pubPlace> <date>1553</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0075"><author ref="author:A0062"><persName>MONTERROSO Y ALVARADO, Gabriel</persName></author>: <title>Práctica civil y criminal y instrucción de escrivanos, dividida en nueve tratados.</title> <pubPlace>Valladolid</pubPlace> <date>1566</date>.</bibl>
+            
+            <bibl type="series" corresp="work:W0077"><author ref="author:A0064"><persName>NAVARRA, Pedro de</persName></author>: <title>De ablatorum restitutione in foro conscientiae.</title> <pubPlace>Toledo</pubPlace> <date>1585</date></bibl>
+            
+            <bibl type="series" corresp="work:W0080"><author ref="author:A0066"><persName>OÑATE, Pedro de</persName></author>: <title>De contractibus in genere.</title> 4 vols. <pubPlace>Rom</pubPlace> <date>1646</date>-<date>1647</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0081"><author ref="author:A0067"><persName>OROZCO, Juan de</persName></author>: <title>Ad responsa prudentum comentarii. Duo hi tomi in priores integrosque Digestorum duos libros sunt.</title> <pubPlace>Salamanca</pubPlace> <date>1558</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0082"><author ref="author:A0068"><persName>PALACIO, Miguel de</persName></author>: <title>Praxis theologica de contractibus &amp; restitutionibus.</title> <pubPlace>Salamanca</pubPlace> <date>1585</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0084"><author ref="author:A0070"><persName>PEÑA MONTENEGRO, Alfonso de la</persName></author>: <title>Itinerario para parochos de indios.</title> <pubPlace>Madrid</pubPlace> <date>1668</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0085"><author ref="author:A0071"><persName>PÉREZ, Antonio</persName></author>: <title>Tractatus de Iustitia et Iure et Restitutione et de Poenitentia.</title> <pubPlace>Rom</pubPlace> <date>1668</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0089" change="published"><author ref="author:A0075"><persName>QUESADA, Antonio de</persName></author>: <title>Diversarum quaestionum iuris liber.</title> <pubPlace>Salamanca</pubPlace> <date>1573</date></bibl>
+            
+            <bibl type="series" corresp="work:W0090"><author ref="author:A0076"><persName>RODRÍGUEZ, Manuel</persName></author>: <title>Summa de casos de consciencia.</title> 2 vols. <pubPlace>Salamanca</pubPlace> <date>1595</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0091"><author ref="author:A0080"><persName>SÁNCHEZ, Tomás</persName></author>: <title>Dispvtationvm De Sancto Matrimonii Sacramento.</title> <pubPlace>Genua</pubPlace> <date>1602</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0092" change="published"><author ref="author:A0077"><persName>SALAS, Juan de</persName></author>: <title>Tractatus De Legibvs, In Secvndam Secvndæ S. Thomae.</title> <pubPlace>Lyon</pubPlace> <date>1611</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0093"><author ref="author:A0078"><persName>SALGADO DE SOMOZA, Francisco</persName></author>: <title>Tractatus de supplicatione ad Sanctissimum.</title> <pubPlace>Madrid</pubPlace> <date>1639</date></bibl>
+            
+            <bibl type="series" corresp="work:W0094"><author ref="author:A0079"><persName>SALÓN, Miguel Bartolomé</persName></author>: <title>Commentariorum in disputationem de iustitia.</title> 2 vols. <pubPlace>Valencia</pubPlace> <date>1591</date>, <date>1598</date></bibl>
+            
+            <bibl type="series" corresp="work:W0096"><author ref="author:A0082"><persName>SOLÓRZANO PEREIRA, Juan de</persName></author>: <title>De Indiarum Iure, sive de Iusta Indiarum Occidentalium Inquisitione, Acquisitione, et Retentiones Tribus Libris Comprehensum.</title> 2 vols. <pubPlace>Madrid</pubPlace> <date>1629</date>, <date>1639</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0098"><author ref="author:A0084"><persName>SUÁREZ, Francisco</persName></author>: <title>Defensio fidei Catholicae et apostolicae adversus Anglicanae sectae errores.</title> <pubPlace>Coimbra</pubPlace> <date>1613</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0099"><author ref="author:A0086"><persName>TOLEDO, Francisco de</persName></author>: <title>Summa casuum conscientiae sive instructio sacerdotum.</title> <pubPlace>Constantiae</pubPlace> <date>1600</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0100"><author ref="author:A0087"><persName>TORQUEMADA, Juan de</persName></author>: <title>Summa ecclesiastica.</title> <pubPlace>Salamanca</pubPlace> <date>1560</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0101"><author ref="author:A0088"><persName>TORRES, Luis de</persName></author>: <title>Disputationes in Secundam Secundae D. Thomae, de Fide, Spe et Charitate et Prudentia. Tomus unus.</title> <pubPlace>Lyon</pubPlace> <date>1617</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0102"><author ref="author:A0088"><persName>TORRES, Luis de</persName></author>: <title>Disputationes in Secundam Secundae D. Thomae, de Fide, Spe et Charitate et Prudentia. Tomus alter.</title> <pubPlace>Lyon</pubPlace> <date>1621</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0104"><author ref="author:A0090"><persName>VALDERAS, Francisco Arias de</persName></author>: <title>De belli justitia et injustitia. (Tractatus universi juris, vol. 16).</title> <pubPlace>Rom</pubPlace> <date>1533</date></bibl>
+            
+            <bibl type="series" corresp="work:W0105"><author ref="author:A0092"><persName>VÁZQUEZ, Gabriel</persName></author>: <title>Commentariorum theologicorum ac disputationum in primam secundae sancti Thomae.</title> 2 vols. <pubPlace>Ingolstadt</pubPlace> <date>1606</date></bibl>
+            
+            <bibl type="series" corresp="work:W0107"><author ref="author:A0091"><persName>VALENCIA, Gregorio de</persName></author>: <title>De Legibus. Commentaria Theologica et Disputationes in Summam D. Thomae Aquinatis.</title> 4 vols. <pubPlace>Ingolstadt</pubPlace> <date>1591</date>-<date>1597</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0109"><author ref="author:A0095"><persName>VERA CRUZ, Alonso de la</persName></author>: <title>Speculum coniugiorum.</title> <pubPlace>Salamanca</pubPlace> <date>1562</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0112"><author ref="author:A0099"><persName>VILLAROEL, Gaspar de</persName></author>: <title>Govierno eclesiástico pacífico y Unión de los Cuchillo pontificio y regio.</title> 2 vols. <pubPlace>Madrid</pubPlace> <date>1656</date>, <date>1657</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0116"><author ref="author:A0101"><persName>ZAPATA Y SANDOVAL, Juan</persName></author>: <title>De Iustitia distributiva et acceptione personarum ei opposita.</title> <pubPlace>Valladolid</pubPlace> <date>1609</date></bibl>
+            
+         </listBibl>
+         <listBibl xml:id="Reference-Works">
+              <head xml:lang="en" xml:id="head-RW-en">References Works</head>
+            <bibl type="series" corresp="work:W0023"><author ref="author:A0009"><persName>AZEVEDO, Alfonso de</persName></author>: <title>Commentariorum iuris civilis in hispaniae regias constitutiones.</title> <pubPlace>Madrid</pubPlace> <date>1612</date></bibl>
+            
+            <bibl type="series" corresp="work:W0029" change="published"><author ref="author:A0015"><persName>CABEDO DE VASCONCELLOS, Jorge</persName></author>: <title>Decisionum Senatus Regni Lusitaniae.</title> <pubPlace>Lissabon</pubPlace> <date>1602</date>, <date>1604</date></bibl>
+                        
+            <bibl type="monogr" corresp="work:W0033" change="published"><author ref="author:A0017"><persName>CARRASCO DEL SAZ, Francisco</persName></author>: <title>Tractatus de casibus curiae.</title> <pubPlace>Madrid</pubPlace> <date>1630</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0039" change="published"><author ref="author:A0024"><persName>CLAVASIO, Angel de</persName></author>: <title>Svmma Angelica Reverendi Patris fratris Angeli de clauasio secundu[m] primu[m] exe[m]plar ipsius hac editione castigata</title> <pubPlace>Lyon</pubPlace> <date>1534</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0049"><author ref="author:A0035"><persName>GÓMEZ, Antonio</persName></author>: <title>Variarum resolutionum iuris civilis communis et regii, libri tres.</title> <pubPlace>Salamanca</pubPlace> <date>1552</date></bibl>
+            
+            <bibl type="series" corresp="work:W0063" change="published"><author ref="author:A0046"><persName>LÓPEZ, Gregorio</persName></author>: <title>Las Siete Partidas Del Sabio Rey don Alonso el nono, nueuamente Glosadas por el Licenciado Gregorio Lopez del Consejo Real de Indias de su Magestad</title> <pubPlace>Salamanca</pubPlace> <date>1555</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0068"><author ref="author:A0056"><persName>MATIENZO, Juan de</persName></author>: <title>Commentaria in librum quintum Recollectionis legum Hispaniae.</title> <pubPlace>Madrid</pubPlace> <date>1580</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0070" change="published"><author ref="author:A0054"><persName>MARTÍNEZ DE OLANO, Juan</persName></author>: <title>Concordia Et noua reductio antinomiaru[m] iuris comunis, acregij Hispaniarum: in qua veræ horum iurium differentiæ, &amp; quàmplurium legum regiarum, communiu[m]que intellectus, &amp; recepta praxis causarum forensium explicantur.</title> <pubPlace>Burgos</pubPlace> <date>1575</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0079" change="published"><author ref="author:A0065"><persName>NEBRIJA, Antonio de</persName></author>: <title>Vocabularium utriusque juris.</title> <pubPlace>Lyon</pubPlace> <date>1559</date></bibl>
+            
+            <bibl type="series" corresp="work:W0087"><author ref="author:A0073"><persName>PÉREZ DE SALAMANCA, Diego</persName></author>: <title>Commentaria In Qvatvor Priores Libros Ordinationvm Regni Castellae.</title> <pubPlace>Salamanca</pubPlace> <date>1575</date></bibl>
+            
+            <bibl type="series" corresp="work:W0088"><author ref="author:A0073"><persName>PÉREZ DE SALAMANCA, Diego</persName></author>: <title>Commentaria In Qvatvor Posteriores Libros Ordinationvm Regni Castellae.</title> <pubPlace>Salamanca</pubPlace> <date>1574</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0111"><author ref="author:A0097"><persName>VILLALOBOS, Juan Bautista de</persName></author>: <title>Antinomia Ivris Regni Hispaniarvm, Ac Civilis, In Qva Practica forensium causarum versatur: ac Aerarium commune opinionum communium iuxta ordinem alphabeti, cum concordantijs ac discordantijs legum regni Hispaniae.</title> <pubPlace>Salamanca</pubPlace> <date>1569</date></bibl>
+            
+            <bibl type="monogr" corresp="work:W0114" change="published"><author ref="author:A0023"><persName>VIO (Cayetan), Tommaso de</persName></author>: <title>Summula Caietani.</title> <pubPlace>Rome</pubPlace> <date>1525</date></bibl>
+            
+         </listBibl>
+      </body>
+  </text>
+</TEI>

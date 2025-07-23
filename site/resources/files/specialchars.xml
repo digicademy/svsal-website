@@ -629,6 +629,11 @@
                     <mapping type="precomposed">ì</mapping>
                     <mapping type="standardized">i</mapping>
                 </char>
+                   <char xml:id="chari0301">
+                    <desc>LATIN SMALL LETTER I WITH ACUTE</desc>
+                    <mapping type="precomposed">í</mapping>
+                    <mapping type="standardized">i</mapping>
+                </char>
                 <char xml:id="chari0302">
                     <desc>LATIN SMALL LETTER I WITH CIRCUMFLEX</desc>
                     <mapping type="precomposed">î</mapping>
@@ -978,6 +983,7 @@
         </encodingDesc>
         <revisionDesc status="a_raw">
             <listChange>
+                <change who="#MAH" when="2025-04-28" status="a_raw" xml:lang="en">Added latin small letter i with acute.</change>
                 <change who="#CR" when="2024-01-18" status="a_raw" xml:lang="en">Added latin capital letter S with diaeresis.</change>
                 <change who="#CR" when="2024-01-18" status="a_raw" xml:lang="en">Added latin small letter s with diaeresis.</change>
                 <change who="#AW" when="2023-11-20" status="a_raw" xml:lang="en">Added q with dot above and fix sorting.</change>
