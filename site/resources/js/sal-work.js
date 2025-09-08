@@ -135,12 +135,21 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
       return doc.getElementsByTagName('channel')[0]
     })
     .then((data) => {
-      // Push highlighted HTML to target element
+      // Push highlighted HTML to target element with sanitization
       const doc1 = data
         .getElementsByTagName('item')[0]
         .getElementsByTagName('description')[0].innerHTML
+      
+      // Sanitize HTML content before insertion to prevent XSS
+      const sanitizedHtml = doc1
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/javascript:/gi, '')
+        .replace(/on\w+\s*=/gi, '')
+        .replace(/data:/gi, '')
+        .replace(/vbscript:/gi, '')
+      
       console.log('Replacing targetElement.innerHTML with highlighted HTML.')
-      targetElement.innerHTML = doc1
+      targetElement.innerHTML = sanitizedHtml
     })
     .then((_) => {
       /*
@@ -382,7 +391,11 @@ async function showEmbeddingsExperiment (elem) {
 
   // If user cancelled or didn't provide a key, show message and exit
   if (!VDB_API_KEY) {
-    document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
+    // Escape citation to prevent XSS
+    const escapedCitation = citation.replace(/[<>&"']/g, function(match) {
+      return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+    })
+    document.getElementById('embeddings_experiment_title').innerHTML = `${escapedCitation}:`
     document.getElementById('embeddings_experiment_text').innerHTML = 'API key required to retrieve similar texts.'
     hideSpinnerMedium()
     return
@@ -412,7 +425,11 @@ async function showEmbeddingsExperiment (elem) {
     const ids = data.ids
 
     if (!ids || ids.length === 0) {
-      document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
+      // Escape citation to prevent XSS
+      const escapedCitation = citation.replace(/[<>&"']/g, function(match) {
+        return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+      })
+      document.getElementById('embeddings_experiment_title').innerHTML = `${escapedCitation}:`
       document.getElementById('embeddings_experiment_text').innerHTML = `
         <div class="no-results-message">
           <p>No similar texts were found in the database with the current threshold (${threshold}).</p>
@@ -692,8 +709,16 @@ async function generateTextAnalysis () {
     const data = await response.json()
     const comparisonText = data.choices[0].message.content
 
+    // Sanitize the response from OpenAI API to prevent XSS
+    const sanitizedContent = comparisonText
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+\s*=/gi, '')
+      .replace(/data:/gi, '')
+      .replace(/vbscript:/gi, '')
+
     // Update the analysis content
-    document.getElementById('analysis-content').innerHTML = `<p>${comparisonText.replace(/\n/g, '<br>')}</p>`
+    document.getElementById('analysis-content').innerHTML = `<p>${sanitizedContent.replace(/\n/g, '<br>')}</p>`
   } catch (error) {
     console.error('Error generating text analysis:', error)
     document.getElementById('analysis-content').innerHTML = `

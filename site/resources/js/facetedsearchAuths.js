@@ -294,7 +294,11 @@ function updateFacetUI() {
   var itemtemplate = _.template(settings.listItemTemplate);
   _.each(settings.facetStore, function(facet, facetname) {
     _.each(facet, function(filter, filtername){
-      var item = {id: filter.id, name: filtername, count: filter.count};
+      // Escape filter name to prevent XSS
+      const escapedFilterName = filtername.replace(/[<>&"']/g, function(match) {
+        return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+      })
+      var item = {id: filter.id, name: escapedFilterName, count: filter.count};
       var filteritem  = $(itemtemplate(item)).html();
       $("#"+filter.id).html(filteritem);
       if (settings.state.filters[facetname] && _.indexOf(settings.state.filters[facetname], filtername) >= 0) {
@@ -330,6 +334,12 @@ function showMoreResults() {
       batchItemNr    : i - settings.state.shownResults,
       batchItemCount : showNowCount
     });
+    // Escape the item name to prevent XSS
+    if (item.name && typeof item.name === 'string') {
+      item.name = item.name.replace(/[<>&"']/g, function(match) {
+        return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+      })
+    }
     var itemHtml = itemHtml + template(item);
   }
   $(settings.resultSelector).append(itemHtml);

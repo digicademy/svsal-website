@@ -64,9 +64,11 @@ async function mainSearch (field, st, targetListId, page, limit) {
       document.getElementById('resultDocs').innerText = totalResults
       document.getElementById('currentPaging').innerText = startIndex + '-' + (startIndex + items.length - 1)
 
-      // Results paging
-      let pagingHTML = [(startIndex > 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Math.max(Number(page) - Number(limit), 0)}&limit=${limit}">previous page</a> ` : ' '),
-        (totalResults > startIndex + itemsPerPage - 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Number(page) + Number(limit)}&limit=${limit}">next page</a>` : '')
+      // Results paging - use safe URL encoding to prevent XSS
+      const encodedField = encodeURIComponent(field)
+      const encodedSearchTerm = encodeURIComponent(st)
+      let pagingHTML = [(startIndex > 1 ? `<a href="search.html?field=${encodedField}&q=${encodedSearchTerm}&offset=${Math.max(Number(page) - Number(limit), 0)}&limit=${limit}">previous page</a> ` : ' '),
+        (totalResults > startIndex + itemsPerPage - 1 ? `<a href="search.html?field=${encodedField}&q=${encodedSearchTerm}&offset=${Number(page) + Number(limit)}&limit=${limit}">next page</a>` : '')
       ].join(' ')
       document.getElementById('docPagingTop').innerHTML = pagingHTML
       document.getElementById('docPagingBottom').innerHTML = pagingHTML
@@ -79,21 +81,37 @@ async function mainSearch (field, st, targetListId, page, limit) {
         var _title = i.getElementsByTagName('title')[0].textContent
         var _workID = i.getElementsByTagName('work')[0].textContent
         var _groupCount = i.getElementsByTagName('sphinx:groupcount')[0].textContent
-        // var _targetUrl = updateURLParameter(i.getElementsByTagName('fragment_path')[0].textContent, 'q', st)
-        var _targetUrl = i.getElementsByTagName('fragment_path')[0].textContent.concat('?q=' + searchterm)
+        
+        // Safely construct URL with proper encoding
+        var _baseUrl = i.getElementsByTagName('fragment_path')[0].textContent
+        var _targetUrl = _baseUrl + '?q=' + encodeURIComponent(searchterm)
 
-        const itemString = `<li><a href="${_targetUrl}">${_author}: ${_title}</a><br>
-                                <a class="toggle-details" href="#details_${_workID}" data-wid="${_workID}" "data-target="#details_${_workID}" data-toggle="collapse" aria-expanded="true">${_groupCount}&nbsp;Results&nbsp;<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
-                                <div id="details_${_workID}" class="resultsDetails collapse" aria-expanded="true" style="">
+        // Escape HTML content to prevent XSS
+        const escapedAuthor = _author.replace(/[<>&"']/g, function(match) {
+          return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+        })
+        const escapedTitle = _title.replace(/[<>&"']/g, function(match) {
+          return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+        })
+        const escapedWorkID = _workID.replace(/[<>&"']/g, function(match) {
+          return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+        })
+        const escapedGroupCount = _groupCount.replace(/[<>&"']/g, function(match) {
+          return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+        })
+
+        const itemString = `<li><a href="${_targetUrl}">${escapedAuthor}: ${escapedTitle}</a><br>
+                                <a class="toggle-details" href="#details_${escapedWorkID}" data-wid="${escapedWorkID}" "data-target="#details_${escapedWorkID}" data-toggle="collapse" aria-expanded="true">${escapedGroupCount}&nbsp;Results&nbsp;<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
+                                <div id="details_${escapedWorkID}" class="resultsDetails collapse" aria-expanded="true" style="">
                                     <div class="detailsDiv">
-                                        <h3 id="detailsPaging_${_workID}" class="text-center"></h3>
+                                        <h3 id="detailsPaging_${escapedWorkID}" class="text-center"></h3>
                                         <table class="detailsTable table table-hover borderless">
-                                            <tbody id="detailsTableBody_${_workID}"></tbody>
+                                            <tbody id="detailsTableBody_${escapedWorkID}"></tbody>
                                         </table>
                                     </div>
                                 </div>
                             </li>`
-        // add content to the HTML
+        // add content to the HTML using safe insertion
         document.getElementById(targetListId).insertAdjacentHTML('beforeend', itemString)
         // call (an async) function to populate excerps for this result
         detailsSearch(_workID, detailsPage, detailsLimit, searchterm)
@@ -179,6 +197,17 @@ async function detailsSearch (workId, page, limit, searchterm) {
         var _docEdit = value.getElementsByTagName('description_edit')[0].innerHTML
         // console.log(`This is docEdit: ${_docEdit}`)
 
+        // Escape HTML content to prevent XSS
+        const escapedLabel = _label.replace(/[<>&"']/g, function(match) {
+          return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+        })
+        const escapedWorkID = workId.replace(/[<>&"']/g, function(match) {
+          return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+        })
+        const escapedDocEdit = _docEdit.replace(/[<>&"']/g, function(match) {
+          return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+        })
+
         var ct = document.createElement('div')
         ct.innerHTML = _crumbtrail
         // console.log(ct.innerHTML)
@@ -204,8 +233,8 @@ async function detailsSearch (workId, page, limit, searchterm) {
         } while (ct.childNodes.length > 0)
 
         const itemString = `<tr>
-                              <td class="details_td" data-wid="${workId}" data-index="${index}">
-                              <div id="spinner_details__${workId}_${index}" class="spinner-details ispinner">
+                              <td class="details_td" data-wid="${escapedWorkID}" data-index="${index}">
+                              <div id="spinner_details__${escapedWorkID}_${index}" class="spinner-details ispinner">
                                 <div class="spinner-container">
                                   <div class="ispinner-blade"></div>
                                   <div class="ispinner-blade"></div>
@@ -217,13 +246,13 @@ async function detailsSearch (workId, page, limit, searchterm) {
                                   <div class="ispinner-blade"></div>
                                 </div>
                               </div>
-                              <span class="lead" style="padding-bottom: 7px; font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;"><a href="${_url}">${_label}</a></span>
-                                  <div id="crumbtrail_${workId}_${index}" class="crumbtrail"></div>
-                                  <div id="excerpt_${workId}_${index}" class="result__snippet no-excerpts" data-orig="${_docOrig}">${_docEdit}</div>
+                              <span class="lead" style="padding-bottom: 7px; font-family: 'Junicode', 'Cardo', 'Andron', 'Cabin', sans-serif;"><a href="${_url}">${escapedLabel}</a></span>
+                                  <div id="crumbtrail_${escapedWorkID}_${index}" class="crumbtrail"></div>
+                                  <div id="excerpt_${escapedWorkID}_${index}" class="result__snippet no-excerpts" data-orig="${_docOrig}">${escapedDocEdit}</div>
                               </td>
                             </tr>`
 
-        // Add content to the HTML
+        // Add content to the HTML using safe insertion
         document.getElementById('detailsTableBody_' + workId).insertAdjacentHTML('beforeend', itemString)
         document.getElementById('crumbtrail_' + workId + '_' + index).appendChild(crumbFrag)
         // console.log(crumbFrag)
@@ -299,9 +328,17 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
         html = doc1
       }
 
+      // Sanitize HTML content before insertion to prevent XSS
+      const sanitizedHtml = html
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/javascript:/gi, '')
+        .replace(/on\w+\s*=/gi, '')
+        .replace(/data:/gi, '')
+        .replace(/vbscript:/gi, '')
+
       // replace excerpts and remove data-orig attribute (so the event listener can know whether we've already retrieved excerpts)
       document.getElementById(`excerpt_${workId}_${index}`).innerHTML = ''
-      document.getElementById(`excerpt_${workId}_${index}`).insertAdjacentHTML('beforeend', html)
+      document.getElementById(`excerpt_${workId}_${index}`).insertAdjacentHTML('beforeend', sanitizedHtml)
       document.getElementById(`excerpt_${workId}_${index}`).removeAttribute('data-orig')
       document.getElementById(`excerpt_${workId}_${index}`).classList.remove('no-excerpts')
       document.getElementById(`excerpt_${workId}_${index}`).classList.add('excerpts')
