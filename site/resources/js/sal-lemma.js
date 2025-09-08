@@ -47,10 +47,19 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
       }
       return doc.getElementsByTagName('channel')[0]
     })
-    .then(data => { // Push highlighted HTML to target element
+    .then(data => { // Push highlighted HTML to target element with sanitization
       const doc1 = data.getElementsByTagName('item')[0].getElementsByTagName('description')[0].innerHTML
+      
+      // Sanitize HTML content before insertion to prevent XSS
+      const sanitizedHtml = doc1
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/javascript:/gi, '')
+        .replace(/on\w+\s*=/gi, '')
+        .replace(/data:/gi, '')
+        .replace(/vbscript:/gi, '')
+      
       console.log('Replacing targetElement.innerHTML with highlighted HTML.')
-      targetElement.innerHTML = doc1
+      targetElement.innerHTML = sanitizedHtml
     })
     .then(_ => { // Update minimap
       pagemap(document.getElementById('minimap'), {
