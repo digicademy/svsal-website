@@ -1,5 +1,9 @@
 /* eslint-env browser */
 
+const validParams = ['mode', 'q', 'format', 'viewer', 'beta']
+const params = (new URL(window.location.href)).searchParams
+const beta = Boolean(params.get('beta'))
+
 // This is being called from other JS scripts loaded from the HTML file
 // eslint-disable-next-line no-unused-vars
 function getI18nAccessString () {
@@ -46,42 +50,13 @@ function getLang () {
 
 // This is being called from other sal-search.js and sal-work.js scripts
 // eslint-disable-next-line no-unused-vars
-function updateURLParameter (url, param, paramVal) { // from <https://stackoverflow.com/questions/1090948/change-url-parameters-and-specify-defaults-using-javascript#10997390>
-  var TheAnchor = null
-  var newAdditionalURL = ''
-  var tempArray = url.split('?')
-  var baseURL = tempArray[0]
-  var additionalURL = tempArray[1]
-  var tmpAnchor = ''
-  var TheParams = ''
-  var temp = ''
-  if (additionalURL) {
-    tmpAnchor = additionalURL.split('#')
-    TheParams = tmpAnchor[0]
-    TheAnchor = tmpAnchor[1]
-    if (TheAnchor) {
-      additionalURL = TheParams
-    }
-    tempArray = additionalURL.split('&')
-    for (var i = 0; i < tempArray.length; i++) {
-      if (tempArray[i].split('=')[0] !== param) {
-        newAdditionalURL += temp + tempArray[i]
-        temp = '&'
-      }
-    }
-  } else {
-    tmpAnchor = baseURL.split('#')
-    TheParams = tmpAnchor[0]
-    TheAnchor = tmpAnchor[1]
-    if (TheParams) {
-      baseURL = TheParams
-    }
+function updateURLParameter (url, param, paramVal) {
+  let newUrl = new URL(url);
+  if (newUrl.searchParams.get(param) === paramVal) {
+    return url;
   }
-  if (TheAnchor) {
-    paramVal += '#' + TheAnchor
-  }
-  var rowsTxt = temp + '' + param + '=' + paramVal
-  return baseURL + '?' + newAdditionalURL + rowsTxt
+  newUrl.searchParams.set(param, paramVal);
+  return newUrl.href;
 };
 
 // ==== Various Configuration things ===
@@ -96,8 +71,8 @@ $('.carousel').carousel({
   interval: 1500 * 10
 })
 
-// ppover for citation proposal
-$('[data-toggle="popover"]').popover()
+// popover for citation proposal (this is a works function and should be called in sal-work.js, perhaps in sal-lemma.js, too?)
+// $('[data-toggle="popover"]').popover()
 
 // ==== Binding events ====
 

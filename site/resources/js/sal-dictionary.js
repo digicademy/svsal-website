@@ -21,7 +21,12 @@ var itemTemplate =
 
 var settings = {
   items: dictionaryItems,
-  facets: {},
+  facets: {
+
+
+              'nameFacet'         : 'Title',                                    
+              'authorFacet'        : 'Author'
+},
   resultSelector: '#results',
   facetSelector: '#facets',
   resultTemplate: itemTemplate,

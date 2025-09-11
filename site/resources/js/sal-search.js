@@ -79,9 +79,18 @@ async function mainSearch (field, st, targetListId, page, limit) {
         var _title = i.getElementsByTagName('title')[0].textContent
         var _workID = i.getElementsByTagName('work')[0].textContent
         var _groupCount = i.getElementsByTagName('sphinx:groupcount')[0].textContent
-        // var _targetUrl = updateURLParameter(i.getElementsByTagName('fragment_path')[0].textContent, 'q', st)
-        var _targetUrl = i.getElementsByTagName('fragment_path')[0].textContent.concat('?q=' + searchterm)
 
+        // var _targetUrl = updateURLParameter(i.getElementsByTagName('fragment_path')[0].textContent, 'q', st)
+        // var _targetUrl = i.getElementsByTagName('fragment_path')[0].textContent.concat('?q=' + searchterm)
+
+        let targetUrl = new URL(i.getElementsByTagName('fragment_path')[0].textContent)
+        targetUrl.searchParams.set('q', searchterm)
+        var windowParams = new URLSearchParams(window.location.search);
+        if (beta) {
+          targetUrl.searchParams.set('beta', true)
+        }
+        let _targetUrl = targetUrl.href
+        
         const itemString = `<li><a href="${_targetUrl}">${_author}: ${_title}</a><br>
                                 <a class="toggle-details" href="#details_${_workID}" data-wid="${_workID}" "data-target="#details_${_workID}" data-toggle="collapse" aria-expanded="true">${_groupCount}&nbsp;Results&nbsp;<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
                                 <div id="details_${_workID}" class="resultsDetails collapse" aria-expanded="true" style="">
@@ -167,32 +176,38 @@ async function detailsSearch (workId, page, limit, searchterm) {
 
       for (let [index, value] of Array.from(items).entries()) {
         var _label = value.getElementsByTagName('hit_label')[0].innerHTML
-        // var _fragPath = updateURLParameter(value.getElementsByTagName('fragment_path')[0].innerHTML, 'q', searchterm)
         var _fragPath = value.getElementsByTagName('fragment_path')[0].innerHTML
-        // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
-        // eslint-disable-next-line no-undef
-        const _url = updateURLParameter(_fragPath, 'q', searchterm)
+
+        // const _url = updateURLParameter(_fragPath, 'q', searchterm)
+        let targetUrl = new URL(_fragPath)
+        targetUrl.searchParams.set('q', searchterm)
+        var windowParams = new URLSearchParams(window.location.search);
+        if (beta) {
+          targetUrl.searchParams.set('beta', true)
+        }
+        let _url = targetUrl.href
+        
         var _crumbtrail = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
-        // console.log(`This is crumbtrail: ${_crumbtrail}.outerHTML`)
-        // console.log(typeof _crumbtrail)
         var _docOrig = value.getElementsByTagName('description_orig')[0].innerHTML
         var _docEdit = value.getElementsByTagName('description_edit')[0].innerHTML
         // console.log(`This is docEdit: ${_docEdit}`)
 
+        // format crumbtrail (query parameters to crumbtrail component links)
         var ct = document.createElement('div')
         ct.innerHTML = _crumbtrail
-        // console.log(ct.innerHTML)
         let crumbtrailURL = ct.innerHTML.split('href="').pop()
-        // console.log(crumbtrailURL[0])
-        // console.log(crumbtrailURL.indexOf('"'))
         let crumbtrailHit = crumbtrailURL.substr(0, crumbtrailURL.indexOf('"'))
-        // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
-        // eslint-disable-next-line no-undef
-        let replacedCrumbtrailHit = updateURLParameter(crumbtrailHit, 'q', searchterm)
-        // console.log(crumbtrailHit);
+
+        let newUrl = new URL(crumbtrailHit)
+        newUrl.searchParams.set('q', searchterm)
+        var windowParams = new URLSearchParams(window.location.search);
+        if (beta) {
+          newUrl.searchParams.set('beta', true)
+        }
+        let replacedCrumbtrailHit = newUrl.href
         let replacedTotalCrumbtrail = ct.innerHTML.replace(crumbtrailHit, replacedCrumbtrailHit)
-        // console.log(replacedTotalCrumbtrail)
         ct.innerHTML = replacedTotalCrumbtrail
+
         var crumbFrag = document.createDocumentFragment()
         // console.log(`This is crumbfrag: ${crumbFrag}.innerHTML`)
         do {
@@ -402,7 +417,7 @@ document.querySelector('#resultsList').addEventListener('click', async function 
 })
 
 // Prepare page: fill fields (and run search if requested) if url parameters are present,
-//               position backtotop
+//               position backtotop and help popup
 $(document).ready(function () {
   let params = (new URL(window.location.href)).searchParams
   let page = params.has('offset') ? params.get('offset') : 0
@@ -424,12 +439,44 @@ $(document).ready(function () {
     'speed': 200,
     'color': 'white'
   })
+
+  $('#helpBox2').dialog({
+    autoOpen: false,
+    // position:   {my: "left top", at: "right-10 bottom+10", of: "button.btn-default"},
+
+    height: $(window).height() * 0.6,
+    maxHeight: $(window).height() * 0.95,
+    width: $(window).width() * 0.45,
+    create: function (event, ui) {
+      $(event.target).parent().css('position', 'fixed')
+    },
+    resizeStop: function (event, ui) {
+      var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
+        (Math.floor(ui.position.top) - $(window).scrollTop())]
+      $(event.target).parent().css('position', 'fixed')
+      $('#helpBox2').dialog('option', 'position', position)
+    },
+    beforeClose: function (event, ui) {
+      $('#showHelp').show()
+    }
+  })
+})
+
+$(document).on('click', '#toggleHelp', function (event) {
+  if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close') } else { $('#helpBox2').dialog('open') }
+  event.preventDefault()
 })
 
 $(document).on('click', 'a[href^="#option"]', function (event) {
   $('option:selected', 'select[name="field"]').removeAttr('selected')
   var optionNumber = $(this).attr('href').substring(7)
   $('option[accesskey="' + optionNumber + '"]').prop('selected', true)
+  event.preventDefault()
+})
+
+$(document).on('click', 'a[href^="#div_"]', function (event) {
+  var target = $(this).attr('href')
+  $('#helpBox2').scrollTop($(target).position().top)
   event.preventDefault()
 })
 

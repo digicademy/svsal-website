@@ -1,8 +1,4 @@
-/* eslint-env browser */
-
-const validParams = ['mode', 'q', 'format', 'viewer', 'beta']
-const params = (new URL(window.location.href)).searchParams
-const beta = Boolean(params.get('beta'))
+/*eslint-env browser */
 
 // ==== Beta Feature Switch ====
 
@@ -41,12 +37,14 @@ function applyOrigMode () {
     '',
     window.location.pathname + '?' + params + window.location.hash
   )
+/*
   console.log(
     'applyOrigMode: ' +
       (null,
       '',
       window.location.pathname + '?' + params + window.location.hash)
   )
+*/
   $('.next, .prev, .top').each(function (i, obj) {
     let nextParams = (new URL(obj.href)).searchParams
     nextParams.set('mode', 'orig')
@@ -66,12 +64,14 @@ function applyEditMode () {
     '',
     window.location.pathname + '?' + params + window.location.hash
   )
+/*
   console.log(
     'applyEditMode: ' +
       (null,
       '',
       window.location.pathname + '?' + params + window.location.hash)
   )
+*/
   $('.next, .prev, .top').each(function (i, obj) {
     let nextParams = (new URL(obj.href)).searchParams
     nextParams.set('mode', 'edit')
@@ -89,16 +89,40 @@ function applyMode () {
 
 // ===== Search term highlighting =====
 
+// This checks if a searchTerm URL query parameter is present (?q=XY)
+// and, if so, calls highlightReplace to replace the innerHTML of the
+// InfiniteAjaxScroll container element with a version of the original
+// HTML that has the search term highlighted
+function highlightSearchTerm () {
+  const searchTerm = params.get('q') || ''
+  if (searchTerm.length > 0) {
+    const targetElement = document.getElementById('iasContainer')
+    const origHTML = targetElement.innerHTML.trim()
+    highlightReplace(origHTML, searchTerm, targetElement)
+
+    // also update the links to next/prev/top inside the iasContainer
+    $('.next, .prev, .top').each(function (i, obj) {
+      // let nextParams = (new URL(obj.href)).searchParams
+      // nextParams.set('q', searchTerm)
+      // obj.href = obj.pathname + '?' + nextParams
+      obj.href = obj.pathname + '?' + params
+    })
+  } else {
+    document.getElementById('minimap').style.visibility = 'hidden'
+  }
+}
+
 // This replaces innerHTML of a target element
 // with a highlighted version of the original HTML
 async function highlightReplace (origHTML, searchTerm, targetElement) {
-  // console.log('searchTerm: ' + searchTerm)
-
   // check if target element exists
   if (targetElement === null) {
     return
   }
 
+  console.log(`Requesting highlighting of html with searchTerm ${searchTerm} ...`)
+
+  // construct POST request
   const endpoint = 'https://search.salamanca.school/lemmatized/excerpts'
   const myFormData = new FormData()
   myFormData.append('opts[limit]', '0')
@@ -106,7 +130,6 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
   myFormData.append('opts[query_mode]', 'true')
   myFormData.append('words', searchTerm)
   myFormData.append('docs[0]', origHTML)
-
   const myOptions = {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     body: myFormData // body data type must match "Content-Type" header
@@ -143,7 +166,16 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
       targetElement.innerHTML = doc1
     })
     .then((_) => {
-      /*
+      // also update the links to next/prev/top inside the iasContainer
+      $('.next, .prev, .top').each(function (i, obj) {
+        // let nextParams = (new URL(obj.href)).searchParams
+        // nextParams.set('q', searchTerm)
+        // obj.href = obj.pathname + '?' + nextParams
+        obj.href = obj.pathname + '?' + params
+      })
+    })
+    /*
+    .then((_) => {
         // Update minimap
         pagemap(document.getElementById('minimap'), {
           viewport: null,
@@ -159,39 +191,14 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
           drag: 'rgba(0,0,0,0.40)',
           interval: null
         })
-      */
     })
+    */
     .catch((error) => {
       console.error(
         'There has been a problem with the fetch operation in highlightSearch(): ',
         error
       )
     })
-}
-
-// This checks if a searchTerm URL query parameter is present (?q=XY)
-// and, if so, replaces innerHTML of the InfiniteAjaxScroll container element
-// with version of the original HTML that has the search term highlighted
-function highlightSearchTerm () {
-  const searchTerm = params.get('q') || ''
-  // console.log(`searchTerm: ${searchTerm} (params: ${params})`)
-  if (searchTerm.length > 0) {
-    const targetElement = document.getElementById('iasContainer')
-    const origHTML = targetElement.innerHTML.trim()
-    highlightReplace(origHTML, searchTerm, targetElement)
-
-    // also update the links to next/prev/top inside the iasContainer
-    $('.next, .prev, .top').each(function (i, obj) {
-      let nextParams = (new URL(obj.href)).searchParams
-      nextParams.set('q', searchTerm)
-      obj.href = obj.pathname + '?' + nextParams
-    })
-
-    // enable minimap for search results
-    // document.getElementById("minimap").style.visibility = "visible"
-  } else {
-    document.getElementById('minimap').style.visibility = 'hidden'
-  }
 }
 
 // ===== Entity highlighting =====
@@ -249,43 +256,51 @@ function toolboxHighlight (elem, mode) {
   }
 }
 
-// Add entity highlighting as needed
-$('#hiliteBox a.highlighted').each(function () {
-  $(this).click() // this disables highlighting
-  $(this).click() // this re-enables it
-  console.log('This is hilitebox initializer')
-})
-
 // ===== Passage context/hand menu: Cite, Copy link, Export =====
 
-// Initialize paragraph popups with link, refresh and print icons
-$('[data-rel="popover"]').popover({
-  trigger: 'click',
-  animation: 'true',
-  placement: 'bottom',
-  container: 'body',
-  template:
-    '<div class="popover sal-toolbox-body"><div class="popover-content"></div></div>',
-  html: true,
-  title: function () {
-    return $('#popover-head').html()
-  },
-  content: function () {
-    var target = $(this)
-    if (!target.data('popover-initialized')) {
-      toolboxHighlight(this, 'on')
-      target.data('popover-initialized', true)
-      // Reset the flag when the popover is hidden
-      target.on('hidden.bs.popover', function () {
-        target.removeData('popover-initialized')
-      })
+function initializePopupsAndHighlighting() {
+  // Initialize paragraph popups with link, refresh and print icons
+  $('[data-rel="popover"]').popover({
+    trigger: 'click',
+    animation: 'true',
+    placement: 'bottom',
+    container: 'body',
+    template:
+      '<div class="popover sal-toolbox-body"><div class="popover-content"></div></div>',
+    html: true,
+    title: function () {
+      return $('#popover-head').html()
+    },
+    content: function () {
+      var target = $(this)
+      if (!target.data('popover-initialized')) {
+        toolboxHighlight(this, 'on')
+        target.data('popover-initialized', true)
+        // Reset the flag when the popover is hidden
+        target.on('hidden.bs.popover', function () {
+          target.removeData('popover-initialized')
+        })
+      }
+      return target.siblings('.sal-toolbox-body').html()
     }
-    return target.siblings('.sal-toolbox-body').html()
-  }
-})
+  })
 
-// Add tooltip
-$('.messengers').tooltipster({'multiple': true})
+  // Add tooltip
+  $('.messengers').tooltipster({'multiple': true})
+  
+  // Add entity highlighting as needed
+  $('#hiliteBox a.highlighted').each(function () {
+    $(this).click() // this disables highlighting
+    $(this).click() // this re-enables it
+    console.log('This is hilitebox initializer')
+  })
+
+  // Show Beta features if applicable
+  showBeta()
+  
+  // enable minimap for search results
+  // document.getElementById("minimap").style.visibility = "visible"
+}
 
 // Helper function
 function copyNotify (elem) {
@@ -1108,29 +1123,16 @@ viewerObserver.observe(document.getElementById('Viewer'), observerOptions)
 
 // Scroll an anchor into view if we have one
 function myScrollIntoView (targetId) {
-  const offset = document.getElementById(targetId).offset().top
-  console.log(`myScrollIntoView(${targetId}) running...`)
-  console.log(`document.getElementById('${targetId}').offset().top = ${offset}.`)
-  const goHere = offset - parseInt($('div.navbar-white').css('height')) - 15
-  console.log(`Go to ${goHere}.`)
-  $('html, body').animate({'scrollTop': goHere}, 800, 'swing', function () {
-    showTextWithDelay(500)
-    document
-      .getElementById(targetId)
-      .effect('highlight', {'color': 'LightSkyBlue'}, 1200)
-  })
-  $('html, body').bind('scroll', function () {
-    if (
-      $(this).scrollTop() + $(this).innerHeight() >=
-      $(this)[0].scrollHeight
-    ) {
-      alert('end reached')
-    }
-  })
-  showTextWithDelay(500)
-  document
-    .getElementById(targetId)
-    .effect('highlight', {color: 'LightSkyBlue'}, 1200)
+  targetEl = document.getElementById(targetId)
+  scrollMarginTop = parseInt($('div.navbar-white').css('height')) + 15
+  targetEl.style.scrollMarginTop = `${scrollMarginTop}px`
+  console.log(`Scrolling element ${targetId} into view.`)
+  targetEl.scrollIntoView()
+  showTextWithDelay(1)
+  // targetEl.effect('highlight', {color: 'LightSkyBlue'}, 1200)
+  targetEl.animate(
+    [ { backgroundColor: 'white' }, { backgroundColor: 'LightSkyBlue' } ], { duration: 600, iterations: 6, direction: 'alternate' } 
+  )
 }
 
 // Mobil-View: scroll to last collapsed navbar item on mobile when there are many items
@@ -1152,25 +1154,22 @@ const ias = new InfiniteAjaxScroll('#iasContainer', {
 })
 
 // Darken body (when scrolling) in order not to confuse readers by ias's jumping around
-function hideText () {
+/*function hideText () {
   document.getElementById('body').classList.add('darkenBody')
-}
+} */
 /* function showText () {
    document.getElementById('body').classList.remove('darkenBody')
 }; */
 async function showTextWithDelay (delay) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log('Delayed showText now showing text.')
+      console.log('Now showing text.')
       document.getElementById('body').classList.remove('darkenBody')
       window.dispatchEvent(new Event('resize')) // trigger resize event to provoke prefilling
       resolve()
     }, delay)
   })
 }
-
-// Hide text during loading
-hideText()
 
 // and also hide during loading of new ias items (only when scrolling up/backwards)
 // ias.on('top', (event) => { // when user scrolls to the top
@@ -1208,95 +1207,28 @@ ias.on('page', (event) => {
 
 ias.on('append', function (event) {
   // when items are appended: add searchTerm highlighting as needed
-  const searchTerm = params.get('q') || ''
-  if (searchTerm.length > 0) {
-    for (let i of [...event.items]) {
-      let origHTML = i.innerHTML.trim()
-      console.log(
-        `calling asynchronous highlighting with searchTerm ${searchTerm} ...`
-      )
-      highlightReplace(origHTML, searchTerm, i)
-    }
-  }
+  highlightSearchTerm()
 })
 ias.on('appended', function (e) {
   // after new ias items have been appended: add functionality to newly loaded elements
-  // 1. Initialize Popover Boxes ...
-  $('[data-rel="popover"]').popover({
-    trigger: 'click',
-    animation: 'true',
-    placement: 'bottom',
-    container: 'body',
-    template:
-      '<div class="popover sal-toolbox-body"><div class="popover-content"></div></div>',
-    html: true,
-    title: function () {
-      return $('#popover-head').html()
-    },
-    content: function () {
-      toolboxHighlight(this, 'on')
-      return $(this).siblings('.sal-toolbox-body').html()
-    }
-    // close popup by clicking outside (handled in click-binding below)
-  })
-  // 2. Add tooltip
-  $('.messengers').tooltipster({'multiple': true})
-  // 3. Add entity highlighting as needed
-  $('#hiliteBox a.highlighted').each(function () {
-    $(this).click() // this disables highlighting
-    $(this).click() // this re-enables it
-  })
-  // 4. Show Beta features if applicable
-  showBeta()
+  initializePopupsAndHighlighting()
 })
 ias.on('prepend', async function (event) {
   // when items are prepended: add searchTerm highlighting as needed
-  const searchTerm = params.get('q') || ''
-  if (searchTerm.length > 0) {
-    for (let i of [...event.items]) {
-      let origHTML = i.innerHTML.trim()
-      console.log(
-        `calling asynchronous highlighting with searchTerm ${searchTerm} ...`
-      )
-      highlightReplace(origHTML, searchTerm, i)
-    }
-  }
+  highlightSearchTerm()
 })
 ias.on('prepended', function (e) {
   // after new ias items have been prepended: add functionality to newly loaded elements
   console.log('prepended event')
-  // 1. Initialize Popover Boxes ...
-  $('[data-rel="popover"]').popover({
-    trigger: 'click',
-    animation: 'true',
-    placement: 'bottom',
-    container: 'body',
-    template:
-      '<div class="popover sal-toolbox-body"><div class="popover-content"></div></div>',
-    html: true,
-    title: function () {
-      return $('#popover-head').html()
-    },
-    content: function () {
-      toolboxHighlight(this, 'on')
-      return $(this).siblings('.sal-toolbox-body').html()
-    }
-    // close popup by clicking outside (handled in click-binding below)
-  })
-  // 2. Add tooltip
-  $('.messengers').tooltipster({'multiple': true})
-  // 3. Add entity highlighting as needed
-  $('#hiliteBox a.highlighted').each(function () {
-    $(this).click() // this disables highlighting
-    $(this).click() // this re-enables it
-  })
-  // 4. Show Beta features if applicable
-  showBeta()
-
+  // TODO: Go to the end of what has been prepended!
+  initializePopupsAndHighlighting()
   showTextWithDelay(0)
 })
 
 // ===== Binding and Initialization =====
+
+// Hide text during loading
+//hideText()
 
 // Bind all click events
 document.body.addEventListener('click', async function (e) {
@@ -1393,7 +1325,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     })
     .jstree({'core': { }})
 
-  // initialize (jquery) dialogue window for Image viewer
+  // initialize (jquery) dialog window for Image viewer
   $('#parent').dialog({
     position: { 'my': 'left top', 'at': 'left+5 bottom+40', 'of': 'div.navbar' },
     autoOpen: false,
@@ -1426,7 +1358,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   })
 
-  // initialize (jquery) dialogue window for embeddings experiment
+  // initialize (jquery) dialog window for embeddings experiment
   $('#embeddings_experiment').dialog({
     position: { my: 'left top', at: 'left+155 bottom+40', of: 'div.navbar' },
     // inset: 55px auto auto 137px;
@@ -1461,21 +1393,27 @@ document.addEventListener('DOMContentLoaded', function (event) {
     'padding-top',
     parseInt($('#main-menu').css('height')) - 2
   )
-  // .autoHidingNavbar()
-  // .autoHidingNavbar('setShowOnBottom', false)
-  // .autoHidingNavbar('setAnimationDuration', 400)
+
+  // apply search term highlighting
+  highlightSearchTerm()
 })
 
 window.addEventListener('load', async function (e) {
-  // apply search term highlighting
-  highlightSearchTerm()
-
   // apply constituted/diplomatic mode
   applyMode()
 
-  // reveal darkened text after loading
-  showTextWithDelay(1500)
+  // initialize context menu and highlighting (so late because it may need
+  // to apply to asynchronously loaded data)
+  initializePopupsAndHighlighting()
 
+  // try and see if we should scroll a particular anchor into view
+  if (window.location.hash) {
+    const target = window.location.hash.substring(1)
+    myScrollIntoView(target)
+  } else {
+    showTextWithDelay(0)
+  }
+  
   showBeta()
 
   // if we have a 'viewer' URL parameter, open the viewer popup

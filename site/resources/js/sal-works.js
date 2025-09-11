@@ -7,18 +7,18 @@ var item_template =
 					'<% if (obj.WIPstatus == "yes") { %>' +
 						'<p class="watermark-wip-text">Work in Progress!</p>' +
 					'<% } %> '+  '<div class="lead">' +'<% if (obj.type == "Reference Work") { %>'
-				+	'<p class="typeWork"><%= obj.type %>  <span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed texts with technical editing only"></span></p>'+ '</br>'+ '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) {  %><%= obj.title %><% } %> </span></a>' +
+				+	'<p class="typeWork"><%= obj.type %> <a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"> <span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed reference text with automatic editing only"></span></p>'+ '</br>'+ '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) {  %><%= obj.title %><% } %> </span></a>' +
 '<% } else if (obj.type == "Facsimiles") { %>' +
-  '<p class="typeWork"><%= obj.type %>  <span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Image scans only; text is forthcoming"></span></p>'+ '</br>' + 
+  '<p class="typeWork"><%= obj.type %>  <span type="btn" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Image scans only; text is forthcoming"></span></p>'+ '</br>' + 
    '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) {  %><%= obj.title %><% } %> </span></a>' + 
 
 '<% } else if (obj.type == "Automatically Edited Work") { %>' +
-        '<p class="typeWork"><%= obj.type %> <span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed texts from the corpus with technical editing only"></span></p>' +
+        '<p class="typeWork"><%= obj.type %><a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"><span style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed text with automatic editing only"></a></span></p>' +
         '</br>' +
         '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) {  %><%= obj.title %><% } %></span></a>' +
 
   '<% } else if (obj.type == "Edited Work") { %>'  + 
-' <p class="typeWork"><%= obj.type %>  <span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Fully edited texts"></span></p>'+ '</br>' +
+' <p class="typeWork"><%= obj.type %> <a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"> <span type="btn" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Fully scholarly edited text"></a></span></p>'+ '</br>' +
 '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) {  %><%= obj.title %><% } %> </span></a>' +
 
  '<% } else { %>'+

@@ -26,7 +26,7 @@ var defaults = {
   noResults          : '<div class=results style=float:left;>Sorry, but no items match these criteria (or the list of items has not been found [hint to admin])</div>',
   orderByOptions     : {'a': 'by A', 'b': 'by B', 'RANDOM': 'by random'},
   state              : {
-                         orderBy : 'title',
+                         orderBy : 'sortName',
                          filters : {}
                        },
   showMoreTemplate   : '<a id="showmorebutton"><div class="text-center"><a class="btn btn-default">&nbsp;&nbsp;<i class="fa fa-chevron-right"></i>&nbsp;&nbsp;</a></div></a>',

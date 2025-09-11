@@ -617,7 +617,17 @@
                     <mapping type="precomposed">ḡ</mapping>
                     <mapping type="standardized">g</mapping>
                 </char>
-                
+                <char xml:id="charg1E23">
+                    <desc>LATIN SMALL LETTER H WITH DOT ABOVE</desc>
+                    <charProp>
+                        <localName>entity</localName>
+                        <value>hdot</value>
+                    </charProp>
+                    <mapping type="MUFI">1E23</mapping>
+                    <mapping type="precomposed">ḣ</mapping>
+                    <mapping type="composed">ḣ</mapping>
+                    <mapping type="standardized">h</mapping>
+                </char>
                 <char xml:id="chari0303">
                     <desc>LATIN SMALL LETTER I WITH TILDE</desc>
                     <mapping type="precomposed">ĩ</mapping>
@@ -811,11 +821,6 @@
                     <mapping type="composed">q̄</mapping>
                     <mapping type="standardized">q</mapping>
                 </char>
-                <char xml:id="charq0307">
-                    <desc>LATIN SMALL LETTER Q WITH DOT ABOVE</desc>
-                    <mapping type="composed">q̇</mapping>
-                    <mapping type="standardized">q</mapping>
-                </char>
                 <char xml:id="charq0308">
                     <desc>LATIN SMALL LETTER Q WITH TWO DOTS ABOVE</desc>
                     <mapping type="composed">q̈</mapping>
@@ -983,6 +988,8 @@
         </encodingDesc>
         <revisionDesc status="a_raw">
             <listChange>
+                <change who="#CR" when="2025-08-21" status="a_raw" xml:lang="en">Added latin small letter h with dot above.</change>
+                <change who="#CR" when="2025-08-20" status="a_raw" xml:lang="en">Update latin small letter q with dot above: Deleted charq0307 due to repetition. chare682 remains as latin small letter q with dot above.</change>
                 <change who="#MAH" when="2025-04-28" status="a_raw" xml:lang="en">Added latin small letter i with acute.</change>
                 <change who="#CR" when="2024-01-18" status="a_raw" xml:lang="en">Added latin capital letter S with diaeresis.</change>
                 <change who="#CR" when="2024-01-18" status="a_raw" xml:lang="en">Added latin small letter s with diaeresis.</change>

@@ -248,7 +248,7 @@ toolboxHighlight(salToolbox, 'off')
   }
  $('.collapse .navbar-collapse').collapse('hide') // Hide collapsible menu after clicking anywhere
  console.log('element collapsed')
-
+//Problem here: the glyphicon-resize-small in useless, as only the cross can close the ToC.
   if (t.matches('#toggleButton')) { // toggle ToC tree: expand/collapse
     if (t.hasClass('expanded')) {
       $('#tableOfConts').jstree('close_all')

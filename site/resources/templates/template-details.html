@@ -99,14 +99,16 @@
                                                 <td class="col-md-3">Electronic publication:</td>
                                                 <td class="col-md-9">{{ $info.el_publication_date }}</td>
                                             </tr>
-{{ if eq $info.type "Reference Work" }}
+{{  if eq $info.type "Reference Work"  }}
 
-{{ else }} 
-                                            <tr>
+{{  else if eq $info.type "Automatically Edited Work"  }}
+
+{{  else  }} 
+                                       <tr>
                                                 <td class="col-md-3">Scholarly editing:</td>
                                                 <td class="col-md-9">{{ $info.schol_ed }}</td>
-                                            </tr>
-{{ end }}
+                                            </tr> 
+{{  end  }}
                                             <tr>
                                                 <td class="col-md-3">Technical editing:</td>
                                                 <td class="col-md-9">{{ $info.tech_ed }}</td>
@@ -171,15 +173,25 @@
                                                     {{ $v }}<br/>
                                                 {{ end }}
                                                 </td>
+
                                             </tr>
                                             <tr>
                                                 <td class="col-md-3" style="line-height: 1.2">Library link:</td>
                                                 <td class="col-md-9" style="line-height: 1.2">
                                                 {{ range $v := splitList " " $info.hold_idno }}
-                                                    <a href="{{ $v }}">{{ $v }}</a><br/>
+                                                    <a href="{{ $v }}" target="_blank">{{ $v }}</a><br/>
                                                 {{ end }}
                                                 </td>
-                                            </tr>
+ </tr>
+{{ if contains $info.hold_library "British Library" }}                                           
+<tr>
+<td class="col-md-3" style="line-height: 1.2">Remark:</td>
+<td class="col-md-9" style="line-height: 1.2">Please note that following the Cyberattack of october 2023 against the British Library, the links are not working until the searchtool returns to normal.</td>
+
+</tr>
+{{ else }}
+
+ {{ end }}
                                         </tbody>
                                     </table>
                                 </div>
@@ -308,10 +320,22 @@
                                             <td class="col-md-3" style="line-height: 1.2">Library link:</td>
                                             <td class="col-md-9" style="line-height: 1.2">
                                             {{ range $v := splitList " " .hold_idno }}
-                                                <a href="#">{{ $v }}</a><br/>
+                                                <a href="{{ $v }}" target="_blank">{{ $v }}</a><br/>
                                             {{ end }}
                                             </td>
                                         </tr>
+ {{ if contains $info.hold_library "British Library" }}
+ <tr>
+ <td class="col-md-3" style="line-height: 1.2">Remark:</td>
+ <td class="col-md-9" style="line-height: 1.2">Please note that following the Cyberattack of october 2023, the links are not working until the searchtool returns to normal.</td>
+ 
+ </tr>
+{{ else }}
+
+ 
+
+  {{ end }}
+
                                     </tbody>
                                 </table>
                                 <span><a href="https://id.{{ $domain }}/texts/{{ $wid }}:vol{{ .num }}?mode=details"><span class="fa fa-arrow-right"></span> Full catalogue record</a></span><br>
