@@ -1,10 +1,5 @@
 #!/bin/bash
 file="wordforms-united.txt"
-backup_file="wordforms-united-backup-$(date +%Y%m%d).txt"
-
-# Create backup
-cp "$file" "$backup_file"
-echo "Backup created: $backup_file"
 
 echo "Detecting and resolving charset_table conflicts..."
 
@@ -55,5 +50,5 @@ removed_count=$((original_count - cleaned_count))
 
 echo "=== CLEANUP SUMMARY ==="
 echo "Original entries: $original_count"
-echo "Cleaned entries: $cleaned_count" 
+echo "Cleaned entries: $cleaned_count"
 echo "Removed entries: $removed_count"
