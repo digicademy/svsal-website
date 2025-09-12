@@ -17,11 +17,11 @@ async function mainSearch (field, st, targetListId, offset, limit) {
   const docFilter = '@sphinx_work ^W0*'
   const alsoAuthor = 'sphinx_author,'
   const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
-  const searchterm = decodeURIComponent(st)
+  const searchterm = sanitizeText(decodeURIComponent(st))
   const grouping = '&groupby=sphinx_work&groupsort=sphinx_author asc&groupfunc=4' // groupfunc 4: by attribute
   const sorting = '&sort=4&sortby=sphinx_year asc&ranker=2' // sort 2: attribute ascending; ranker 2: no ranking
   const detailsOffset = 0
-  const detailsLimit = 5
+  const detailsLimit = SPHINX_DETAILS_LIMIT
   const paging = '&offset=' + offset + '&limit=' + limit
   const url = endpoint + '?q=' + docFilter + ' ' + fields + ' ' + searchterm + grouping + sorting + paging
 
@@ -51,12 +51,10 @@ async function mainSearch (field, st, targetListId, offset, limit) {
       var startIndex = Math.floor(parseInt(data.getElementsByTagName('opensearch:startIndex')[0].textContent) / itemsPerPage) + 1
       var terms = [...data.getElementsByTagName('terms')].map(i => i.getElementsByTagName('word')[0].textContent) // convert HTMLCollection to an array with spread operator
       var items = data.getElementsByTagName('item')
-      // console.log(data)
 
       console.log(`Search for "${st}" in "${field}" results in:`)
       console.log('Terms: ' + terms.join(', '))
       console.log('total Results: ' + totalResults)
-      // console.log(items)
 
       document.getElementById('searchInfo').style.visibility = 'visible'
       document.getElementById('searchSummary').style.visibility = 'visible'
@@ -65,8 +63,8 @@ async function mainSearch (field, st, targetListId, offset, limit) {
       document.getElementById('currentPaging').innerText = startIndex + '-' + (startIndex + items.length - 1)
 
       // Results paging
-      let pagingHTML = [(startIndex > 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Math.max(parseInt(offset) - parseInt(limit), 0)}&limit=${limit}">previous page</a> ` : ' '),
-        (totalResults > startIndex + itemsPerPage - 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${parseInt(offset) + parseInt(limit)}&limit=${limit}">next page</a>` : '')
+      let pagingHTML = [(startIndex > 1 ? `<a href="search.html?field=${sanitizeText(field)}&q=${encodeURIComponent(searchterm)}&offset=${Math.max(parseInt(offset) - parseInt(limit), 0)}&limit=${limit}">previous page</a> ` : ' '),
+        (totalResults > startIndex + itemsPerPage - 1 ? `<a href="search.html?field=${sanitizeText(field)}&q=${encodeURIComponent(searchterm)}&offset=${parseInt(offset) + parseInt(limit)}&limit=${limit}">next page</a>` : '')
       ].join(' ')
       document.getElementById('docPagingTop').innerHTML = pagingHTML
       document.getElementById('docPagingBottom').innerHTML = pagingHTML
@@ -75,21 +73,19 @@ async function mainSearch (field, st, targetListId, offset, limit) {
       document.getElementById(targetListId).innerHTML = ''
 
       for (let i of [...items]) {
-        var _author = i.getElementsByTagName('author')[0].textContent
-        var _title = i.getElementsByTagName('title')[0].textContent
-        var _workID = i.getElementsByTagName('work')[0].textContent
-        var _groupCount = i.getElementsByTagName('sphinx:groupcount')[0].textContent
+        var _author = sanitizeText(i.getElementsByTagName('author')[0].textContent)
+        var _title = sanitizeText(i.getElementsByTagName('title')[0].textContent)
+        var _workID = sanitizeText(i.getElementsByTagName('work')[0].textContent)
+        var _groupCount = sanitizeText(i.getElementsByTagName('sphinx:groupcount')[0].textContent)
 
         // var _targetUrl = updateURLParameter(i.getElementsByTagName('fragment_path')[0].textContent, 'q', st)
         // var _targetUrl = i.getElementsByTagName('fragment_path')[0].textContent.concat('?q=' + searchterm)
 
         let targetUrl = new URL(i.getElementsByTagName('fragment_path')[0].textContent)
         targetUrl.searchParams.set('q', searchterm)
-        if (beta) {
-          targetUrl.searchParams.set('beta', true)
-        }
+        if (beta) {targetUrl.searchParams.set('beta', true)}
         let _targetUrl = targetUrl.href
-        
+
         const itemString = `<li><a href="${_targetUrl}">${_author}: ${_title}</a><br>
                                 <a class="toggle-details" href="#details_${_workID}" data-wid="${_workID}" "data-target="#details_${_workID}" data-toggle="collapse" aria-expanded="true">${_groupCount}&nbsp;Results&nbsp;<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
                                 <div id="details_${_workID}" class="resultsDetails collapse" aria-expanded="true" style="">
@@ -155,7 +151,6 @@ async function detailsSearch (workId, offset, limit, searchterm) {
       let limit = parseInt(data.getElementsByTagName('opensearch:itemsPerPage')[0].textContent)
       let offset = Math.floor(parseInt(data.getElementsByTagName('opensearch:startIndex')[0].textContent) / limit) + 1
       let items = data.getElementsByTagName('item')
-      // console.log(items)
 
       // Build paging section
       let pagingRange = `${offset} - ${offset + items.length - 1}`
@@ -180,25 +175,31 @@ async function detailsSearch (workId, offset, limit, searchterm) {
         let _url = targetUrl.href
 
         // format crumbtrail (add query parameters to crumbtrail component links)
-        var ct = document.createElement('div')
-        ct.innerHTML = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
-        let crumbtrailURL = ct.innerHTML.split('href="').pop() // get everything after the last href="
-        let crumbtrailHit = crumbtrailURL.substr(0, crumbtrailURL.indexOf('"')) // remove the trailing quote, so we have the last URL from the search engine's 'hit_crumbtrail' field foir the current 'value' (i.e. search result item)
-        let newUrl = new URL(crumbtrailHit)
-        newUrl.searchParams.set('q', searchterm)
-        if (beta) { newUrl.searchParams.set('beta', true) }
-        let replacedCrumbtrailHit = newUrl.href
-        let replacedTotalCrumbtrail = ct.innerHTML.replace(crumbtrailHit, replacedCrumbtrailHit)
-        ct.innerHTML = replacedTotalCrumbtrail
-        _ct = document.createDocumentFragment()
+        try {
+          var ct = document.createElement('div')
+          ct.innerHTML = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
+          let crumbtrailURL = ct.innerHTML.split('href="').pop() // get everything after the last href="
+          let crumbtrailHit = crumbtrailURL.substr(0, crumbtrailURL.indexOf('"')) // remove the trailing quote, so we have the last URL from the search engine's 'hit_crumbtrail' field foir the current 'value' (i.e. search result item)
+          let newUrl = new URL(crumbtrailHit)
+          newUrl.searchParams.set('q', searchterm)
+          if (beta) { newUrl.searchParams.set('beta', true) }
+          let replacedCrumbtrailHit = newUrl.href
+          let replacedTotalCrumbtrail = ct.innerHTML.replace(crumbtrailHit, replacedCrumbtrailHit)
+          ct.innerHTML = replacedTotalCrumbtrail
+          _ct = document.createDocumentFragment()
         // console.log(`This is _ct: ${_ct}.innerHTML`)
-        do {
-          if (ct.firstChild.nodeType === 1 && ct.firstChild.tagName === 'A') {
-            // ct.firstChild.setAttribute('href', updateURLParameter(ct.firstChild.getAttribute('href'), 'q', searchterm)) // add q parameter to all links in the crumbtrail
-          }
-          _ct.appendChild(ct.firstChild) // This in fact removes the element from our nodelist
-          // console.log(crumbFrag);
-        } while (ct.childNodes.length > 0)
+          do {
+            if (ct.firstChild.nodeType === 1 && ct.firstChild.tagName === 'A') {
+              // ct.firstChild.setAttribute('href', updateURLParameter(ct.firstChild.getAttribute('href'), 'q', searchterm)) // add q parameter to all links in the crumbtrail
+            }
+            _ct.appendChild(ct.firstChild) // This in fact removes the element from our nodelist
+            // console.log(crumbFrag);
+          } while (ct.childNodes.length > 0)
+        } catch (e) {
+          console.error('Could not parse crumbtrail URL from ' + decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26')))
+          _ct = document.createDocumentFragment()
+          continue
+        }
 
         var _docOrig = value.getElementsByTagName('description_orig')[0].innerHTML
         var _docEdit = value.getElementsByTagName('description_edit')[0].innerHTML
@@ -223,10 +224,9 @@ async function detailsSearch (workId, offset, limit, searchterm) {
                               </td>
                             </tr>`
 
-                            // Add content to the HTML
+        // Add content to the HTML
         document.getElementById('detailsTableBody_' + workId).insertAdjacentHTML('beforeend', itemString)
         document.getElementById('crumbtrail_' + workId + '_' + index).appendChild(_ct)
-        // console.log(crumbFrag)
         // Should we rather defer calling this (async) function to populate excerpts?
         excerptsSearch(workId, index, searchterm, _docOrig, _docEdit)
       }

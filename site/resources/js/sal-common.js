@@ -10,6 +10,7 @@ const EMBEDDINGS_SUMMARY_SERVER = 'https://api.openai.com/v1/chat/completions'
 const EMBEDDINGS_SUMMARY_MODEL = 'gpt-5-nano'
 const EMBEDDINGS_SUMMARY_TEMP = 0.4
 const SPHINX_SERVER = 'https://search.salamanca.school/lemmatized'
+const SPHINX_DETAILS_LIMIT = 5
 
 // Navbar height
 $('.navbar-collapse').css({ maxHeight: $(window).height() - $('.navbar-header').height() + 'px' })
