@@ -25,27 +25,13 @@
     
     <body id="body">
         <div id="Viewer" title="Image Viewer" style="height: 98vh;"></div>
-
-        <!-- script src="https://cdn.jsdelivr.net/npm/tify@0.27.0/dist/tify.js"></script -->
-        <!-- script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.28.1/dist/tify.js"></script -->
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/tify@0.29.2/dist/tify.js"></script>
         <script type="text/javascript">
-
-            function getUrlParams( prop ) {
-                var params = {};
-                var search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
-                var definitions = search.split( '&' );
-        
-                definitions.forEach( function( val, key ) {
-                    var parts = val.split( '=', 2 );
-                    params[ parts[ 0 ] ] = parts[ 1 ];
-                });
-                return ( prop && prop in params ) ? params[ prop ] : params;
-            };
+            const params = (new URL(window.location.href)).searchParams
 
             function getLang() {
-                if (getUrlParams('lang').length > 0)
-                    return getUrlParams('lang')
+                if (params.get('lang').length > 0)
+                    return params.get('lang')
                 else if (window.location.href.indexOf("_es") > -1)
                     return 'es'
                 else if (window.location.href.indexOf("_de") > -1)
@@ -54,14 +40,7 @@
                     return 'en'
             };
 
-            /*
-            function setZipUrl() {
-                document.getElementById('downloadImages').href = "https://c104-131.cloud.gwdg.de/sal-facs/" + getUrlParams( 'wid' ) + "/" + getUrlParams( 'wid' ) + ".zip";  // update Download button
-                // $('#viewer')[0].getElementById('downloadImages').href = "http://facs.{{ $domain }}/" + getUrlParams( 'wid' ) + "/" + getUrlParams( 'wid' ) + ".zip";  // update Download button
-                document.getElementById('downloadImages').setAttribute('download', getUrlParams( 'wid' ) + ".zip");  // update Download button
-            };
-            */
-            let [ wid, loc ] = getUrlParams('wid').split(':')
+            let [ wid, loc ] = params.get('wid').split(':')
             let tifyOptions = {
                 container: '#Viewer',
                 // filters: { brightness: 0.5, contrast: 0.5, saturation: 2.3 },

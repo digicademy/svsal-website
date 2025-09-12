@@ -6,23 +6,23 @@
  * Parameters:
  * - st (String) - the term to search for. This can be a sphinx search pattern
  * - targetListId (String) - the id of a list element that results can be appended to as <li> items
- * - page (Int) - page of the first item to retrieve
+ * - offset (Int) - offset of the first item to retrieve
  * - limit (Int) - how many items to retrieve before paging
  * Return value: none
  */
-async function mainSearch (field, st, targetListId, page, limit) {
+async function mainSearch (field, st, targetListId, offset, limit) {
   // Build request
   // cf. https://github.com/sphinxsearch/sphinx/blob/master/api/sphinxapi.php
-  const endpoint = 'https://search.salamanca.school/lemmatized/search'
+  const endpoint = SPHINX_SERVER + '/search'
   const docFilter = '@sphinx_work ^W0*'
   const alsoAuthor = 'sphinx_author,'
   const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
   const searchterm = decodeURIComponent(st)
   const grouping = '&groupby=sphinx_work&groupsort=sphinx_author asc&groupfunc=4' // groupfunc 4: by attribute
   const sorting = '&sort=4&sortby=sphinx_year asc&ranker=2' // sort 2: attribute ascending; ranker 2: no ranking
-  const detailsPage = 0
+  const detailsOffset = 0
   const detailsLimit = 5
-  const paging = '&offset=' + page + '&limit=' + limit
+  const paging = '&offset=' + offset + '&limit=' + limit
   const url = endpoint + '?q=' + docFilter + ' ' + fields + ' ' + searchterm + grouping + sorting + paging
 
   showSpinnerTotal()
@@ -65,8 +65,8 @@ async function mainSearch (field, st, targetListId, page, limit) {
       document.getElementById('currentPaging').innerText = startIndex + '-' + (startIndex + items.length - 1)
 
       // Results paging
-      let pagingHTML = [(startIndex > 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Math.max(Number(page) - Number(limit), 0)}&limit=${limit}">previous page</a> ` : ' '),
-        (totalResults > startIndex + itemsPerPage - 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Number(page) + Number(limit)}&limit=${limit}">next page</a>` : '')
+      let pagingHTML = [(startIndex > 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${Math.max(parseInt(offset) - parseInt(limit), 0)}&limit=${limit}">previous page</a> ` : ' '),
+        (totalResults > startIndex + itemsPerPage - 1 ? `<a href="search.html?field=${field}&q=${st}&offset=${parseInt(offset) + parseInt(limit)}&limit=${limit}">next page</a>` : '')
       ].join(' ')
       document.getElementById('docPagingTop').innerHTML = pagingHTML
       document.getElementById('docPagingBottom').innerHTML = pagingHTML
@@ -85,7 +85,6 @@ async function mainSearch (field, st, targetListId, page, limit) {
 
         let targetUrl = new URL(i.getElementsByTagName('fragment_path')[0].textContent)
         targetUrl.searchParams.set('q', searchterm)
-        var windowParams = new URLSearchParams(window.location.search);
         if (beta) {
           targetUrl.searchParams.set('beta', true)
         }
@@ -105,15 +104,11 @@ async function mainSearch (field, st, targetListId, page, limit) {
         // add content to the HTML
         document.getElementById(targetListId).insertAdjacentHTML('beforeend', itemString)
         // call (an async) function to populate excerps for this result
-        detailsSearch(_workID, detailsPage, detailsLimit, searchterm)
+        detailsSearch(_workID, detailsOffset, detailsLimit, searchterm)
       }
     })
-    .catch(error => {
-      console.error('There has been a problem with your fetch operation:', error)
-    })
-    .finally(() => {
-      hideSpinnerTotal()
-    })
+    .catch(error => { console.error('There has been a problem with your fetch operation:', error) })
+    .finally(() => { hideSpinnerTotal() })
 };
 
 /*
@@ -121,19 +116,19 @@ async function mainSearch (field, st, targetListId, page, limit) {
  *                 It does not return a value but instead manipulates the dom tree to reflect its results.
  * Parameters:
  * - workId (String) - the work Id
- * - page (Int) - page of the first detail item to retrieve
+ * - offset (Int) - offset of the first detail item to retrieve
  * - limit (Int) - how many detail items to retrieve before paging
  * - searchterm (String) - the term to search for. This can be a sphinx search pattern
  * Return value: none
  */
-async function detailsSearch (workId, page, limit, searchterm) {
+async function detailsSearch (workId, offset, limit, searchterm) {
   // Build request
-  const endpoint = 'https://search.salamanca.school/lemmatized/search?q='
+  const endpoint   = SPHINX_SERVER + '/search?q='
   const alsoAuthor = 'sphinx_author,'
-  const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
-  const docFilter = '@sphinx_work ^' + workId
-  const sorting = '&sort=2&sortby=sphinx_fragment_number&ranker=2'
-  const paging = '&offset=' + page + '&limit=' + limit
+  const fields     = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
+  const docFilter  = '@sphinx_work ^' + workId
+  const sorting    = '&sort=2&sortby=sphinx_fragment_number&ranker=2'
+  const paging     = '&offset=' + offset + '&limit=' + limit
   const maxmatches = '&maxmatches=10000'
   const url = endpoint + docFilter + ' ' + fields + ' ' + searchterm + sorting + paging + maxmatches
 
@@ -158,16 +153,16 @@ async function detailsSearch (workId, page, limit, searchterm) {
     .then(data => { // Display details
       let totalResults = parseInt(data.getElementsByTagName('opensearch:totalResults')[0].textContent)
       let limit = parseInt(data.getElementsByTagName('opensearch:itemsPerPage')[0].textContent)
-      let page = Math.floor(parseInt(data.getElementsByTagName('opensearch:startIndex')[0].textContent) / limit) + 1
+      let offset = Math.floor(parseInt(data.getElementsByTagName('opensearch:startIndex')[0].textContent) / limit) + 1
       let items = data.getElementsByTagName('item')
       // console.log(items)
 
       // Build paging section
-      let pagingRange = `${page} - ${page + items.length - 1}`
-      let pagingLinks = [ page > 1 ? `<a href="" class="paging-details backward" data-wid="${workId}" data-current-page="${page - 1}" data-limit="${limit}"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;previous page</a> ` : undefined,
-        totalResults > page + limit - 1 ? `<a href="" class="paging-details forward" data-wid="${workId}" data-current-page="${page - 1}" data-limit="${limit}">next page&nbsp;&nbsp;<i class="fa fa-chevron-right"></i></a>` : undefined
+      let pagingRange = `${offset} - ${offset + items.length - 1}`
+      let pagingLinks = [ offset > 1 ?      `<a href="" class="paging-details backward" data-wid="${workId}" data-current-offset="${offset - 1}" data-limit="${limit}"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;previous page</a> ` : undefined,
+        totalResults > offset + limit - 1 ? `<a href="" class="paging-details forward"  data-wid="${workId}" data-current-offset="${offset - 1}" data-limit="${limit}">next page&nbsp;&nbsp;<i class="fa fa-chevron-right"></i></a>` : undefined
       ].join(' | ')
-      let pagingHTML = `<h3 id="detailsPaging_${workId}" class="text-center">${pagingRange}<br>${pagingLinks}</h3>`
+      let pagingHTML = sanitizeHTML(`<h3 id="detailsPaging_${workId}" class="text-center">${pagingRange}<br>${pagingLinks}</h3>`)
       // Add paging section to HTML
       if (totalResults > limit) { document.getElementById('detailsPaging_' + workId).outerHTML = pagingHTML }
 
@@ -175,49 +170,39 @@ async function detailsSearch (workId, page, limit, searchterm) {
       document.getElementById('detailsTableBody_' + workId).innerHTML = ''
 
       for (let [index, value] of Array.from(items).entries()) {
-        var _label = value.getElementsByTagName('hit_label')[0].innerHTML
+        var _label    = value.getElementsByTagName('hit_label')[0].innerHTML
         var _fragPath = value.getElementsByTagName('fragment_path')[0].innerHTML
 
-        // const _url = updateURLParameter(_fragPath, 'q', searchterm)
+        // add parameters to fragment path
         let targetUrl = new URL(_fragPath)
         targetUrl.searchParams.set('q', searchterm)
-        var windowParams = new URLSearchParams(window.location.search);
-        if (beta) {
-          targetUrl.searchParams.set('beta', true)
-        }
+        if (beta) { targetUrl.searchParams.set('beta', true) }
         let _url = targetUrl.href
-        
-        var _crumbtrail = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
-        var _docOrig = value.getElementsByTagName('description_orig')[0].innerHTML
-        var _docEdit = value.getElementsByTagName('description_edit')[0].innerHTML
-        // console.log(`This is docEdit: ${_docEdit}`)
 
-        // format crumbtrail (query parameters to crumbtrail component links)
+        // format crumbtrail (add query parameters to crumbtrail component links)
         var ct = document.createElement('div')
-        ct.innerHTML = _crumbtrail
-        let crumbtrailURL = ct.innerHTML.split('href="').pop()
-        let crumbtrailHit = crumbtrailURL.substr(0, crumbtrailURL.indexOf('"'))
-
+        ct.innerHTML = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
+        let crumbtrailURL = ct.innerHTML.split('href="').pop() // get everything after the last href="
+        let crumbtrailHit = crumbtrailURL.substr(0, crumbtrailURL.indexOf('"')) // remove the trailing quote, so we have the last URL from the search engine's 'hit_crumbtrail' field foir the current 'value' (i.e. search result item)
         let newUrl = new URL(crumbtrailHit)
         newUrl.searchParams.set('q', searchterm)
-        var windowParams = new URLSearchParams(window.location.search);
-        if (beta) {
-          newUrl.searchParams.set('beta', true)
-        }
+        if (beta) { newUrl.searchParams.set('beta', true) }
         let replacedCrumbtrailHit = newUrl.href
         let replacedTotalCrumbtrail = ct.innerHTML.replace(crumbtrailHit, replacedCrumbtrailHit)
         ct.innerHTML = replacedTotalCrumbtrail
-
-        var crumbFrag = document.createDocumentFragment()
-        // console.log(`This is crumbfrag: ${crumbFrag}.innerHTML`)
+        _ct = document.createDocumentFragment()
+        // console.log(`This is _ct: ${_ct}.innerHTML`)
         do {
           if (ct.firstChild.nodeType === 1 && ct.firstChild.tagName === 'A') {
             // ct.firstChild.setAttribute('href', updateURLParameter(ct.firstChild.getAttribute('href'), 'q', searchterm)) // add q parameter to all links in the crumbtrail
           }
-          crumbFrag.appendChild(ct.firstChild) // This in fact removes the element from our nodelist
+          _ct.appendChild(ct.firstChild) // This in fact removes the element from our nodelist
           // console.log(crumbFrag);
         } while (ct.childNodes.length > 0)
 
+        var _docOrig = value.getElementsByTagName('description_orig')[0].innerHTML
+        var _docEdit = value.getElementsByTagName('description_edit')[0].innerHTML
+        // console.log(`This is docEdit: ${_docEdit}`)
         const itemString = `<tr>
                               <td class="details_td" data-wid="${workId}" data-index="${index}">
                               <div id="spinner_details__${workId}_${index}" class="spinner-details ispinner">
@@ -238,17 +223,15 @@ async function detailsSearch (workId, page, limit, searchterm) {
                               </td>
                             </tr>`
 
-        // Add content to the HTML
+                            // Add content to the HTML
         document.getElementById('detailsTableBody_' + workId).insertAdjacentHTML('beforeend', itemString)
-        document.getElementById('crumbtrail_' + workId + '_' + index).appendChild(crumbFrag)
+        document.getElementById('crumbtrail_' + workId + '_' + index).appendChild(_ct)
         // console.log(crumbFrag)
         // Should we rather defer calling this (async) function to populate excerpts?
         excerptsSearch(workId, index, searchterm, _docOrig, _docEdit)
       }
     })
-    .catch(error => {
-      console.error('There has been a problem with your fetch operation:', error)
-    })
+    .catch(error => { console.error('There has been a problem with your fetch operation:', error) })
 };
 
 /*
@@ -289,7 +272,7 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
       // console.log(myOptions)
       return response.text()
     })
-    .then(str => { // Parse OpenSearch xml document and return rss/channel
+    .then(str => {      // Parse OpenSearch xml document and return rss/channel
       const parser = new DOMParser()
       const doc = parser.parseFromString(str, 'text/xml')
       const errorNode = doc.querySelector('parsererror')
@@ -299,7 +282,7 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
       }
       return doc.getElementsByTagName('channel')[0]
     })
-    .then(data => { // Display excerpts
+    .then(data => {     // Display excerpts
       var doc1 = data.getElementsByTagName('item')[0].getElementsByTagName('description')[0].outerHTML
       var doc2 = data.getElementsByTagName('item')[1].getElementsByTagName('description')[0].outerHTML
       // console.log("This is doc1:" +doc1);
@@ -321,7 +304,7 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
       document.getElementById(`excerpt_${workId}_${index}`).classList.remove('no-excerpts')
       document.getElementById(`excerpt_${workId}_${index}`).classList.add('excerpts')
     })
-    .catch(error => {
+    .catch(error => {   // Catch and display errors
       console.error('There has been a problem with your fetch operation:', error)
     })
     .finally(() => { hideSpinnerDetails(`spinner_details__${workId}_${index}`) })
@@ -330,6 +313,7 @@ async function excerptsSearch (workId, index, searchterm, string1, string2) {
 // This updates url parameters in a list of elements, like a crumbtrail.
 // It is not clear where it is called from, however. (TODO: check this)
 // eslint-disable-next-line no-unused-vars
+/*
 function updateAllURLParameters (nodelist, param, paramVal) {
   for (let i = 0; i < nodelist.length; i++) {
     if (nodelist[i].nodeType === 1 && nodelist[i].tagName === 'A') {
@@ -340,6 +324,7 @@ function updateAllURLParameters (nodelist, param, paramVal) {
     return nodelist[i]
   }
 };
+*/
 
 function showSpinnerTotal () {
   document.getElementById('spinner-total').classList.add('show')
@@ -354,32 +339,33 @@ function hideSpinnerDetails (id) {
   document.getElementById(id).classList.remove('show')
 };
 
+// Events
+
 $('#doSearch').click(function (event) { // Do the Search!
-  let params = (new URL(window.location.href)).searchParams
-  let page = params.has('offset') ? params.get('offset') : 0
-  let limit = params.has('limit') ? params.get('limit') : 10
-
-  let field = document.getElementById('field').value
-  // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
-  // eslint-disable-next-line no-undef
-  window.history.replaceState('', '', updateURLParameter(window.location.href, 'field', field))
-
-  let searchterm = document.getElementById('q').value
-  // updateURLParameter is defined in the sal-common.js file loaded from the HTML file
-  // eslint-disable-next-line no-undef
-  window.history.replaceState('', '', updateURLParameter(window.location.href, 'q', searchterm))
-
+  let searchterm = sanitizeText(document.getElementById('q').value)
   if (searchterm.length > 0) {
+    let field = sanitizeText(document.getElementById('field').value)
+    let offset = 0
+    let limit = 10
+    params.set('field', field)
+    params.set('q', searchterm)
+    params.set('offset', 0)
+    params.set('limit', 10)
+
+    window.history.replaceState('', '', 'search.html?' + params) // update URL in address bar
     document.title = searchterm + ' - The School of Salamanca'
-    mainSearch(field, searchterm, 'resultsList', page, limit)
+    targetListId = 'resultsList'
+    mainSearch(field, searchterm, targetListId, offset, limit)
   }
   event.stopImmediatePropagation()
   event.preventDefault()
 })
 
 document.querySelector('#resultsList').addEventListener('click', async function (e) { // Call details handling
-  // Since details are not available on document load, we have to listen to events on the ancestor
+  // Since details are not available on document load,
+  // we have to listen to events on the ancestor
   // The clicked element then is in `e.target`.
+
   /* If querying excerpts right on loading the main query is too much overhead, we can re-enable this and defer excerpting to here...
       if (e.target.classList.contains('toggle-details')) {
           let workId = e.target.getAttribute('data-wid')
@@ -394,13 +380,14 @@ document.querySelector('#resultsList').addEventListener('click', async function 
           }
       }
   */
+
   if (e.target.classList.contains('paging-details')) {
-    let workId = e.target.getAttribute('data-wid')
-    let oldPage = parseInt(e.target.getAttribute('data-current-page'))
-    let limit = parseInt(e.target.getAttribute('data-limit'))
-    let newPage = e.target.classList.contains('forward') ? oldPage + limit : Math.max(oldPage - limit, 0)
-    let searchterm = document.getElementById('q').value
-    await detailsSearch(workId, newPage, 5, searchterm)
+    let workId    = e.target.getAttribute('data-wid')
+    let oldOffset = parseInt(e.target.getAttribute('data-current-offset'))
+    let limit     = parseInt(e.target.getAttribute('data-limit'))
+    let newOffset = e.target.classList.contains('forward') ? oldOffset + limit : Math.max(oldOffset - limit, 0)
+    let searchterm = sanitizeText(params.get('q'))
+    await detailsSearch(workId, newOffset, 5, searchterm)
     // for (let item of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
     // for (let item of e.target.closest('.detailsDiv').querySelector('.detailsTable').getElementsByClassName('details_td')) {
     for (let item of e.target.closest('.detailsDiv').getElementsByClassName('details_td')) {
@@ -419,17 +406,17 @@ document.querySelector('#resultsList').addEventListener('click', async function 
 // Prepare page: fill fields (and run search if requested) if url parameters are present,
 //               position backtotop and help popup
 $(document).ready(function () {
-  let params = (new URL(window.location.href)).searchParams
-  let page = params.has('offset') ? params.get('offset') : 0
-  let limit = params.has('limit') ? params.get('limit') : 10
-  let field = params.has('field') ? params.get('field') : 'corpus'
-  let searchterm = params.has('q') ? params.get('q') : ''
+  let offset = params.has('offset') ? parseInt(params.get('offset')) : 0
+  let limit  = params.has('limit')  ? parseInt(params.get('limit')) : 10
+  let field  = params.has('field')  ? sanitizeText(params.get('field')) : 'corpus'
+  let searchterm = params.has('q')  ? sanitizeText(params.get('q')) : ''
 
   document.getElementById('field').value = field // Prepopulate fields based on url paramaters
   document.getElementById('q').value = searchterm
   if (searchterm.length > 0) {
     document.title = searchterm + ' - The School of Salamanca'
-    mainSearch(field, searchterm, 'resultsList', page, limit) // immediately call search function if "q" parameter given
+    targetListId = 'resultsList'
+    mainSearch(field, searchterm, targetListId, offset, limit) // immediately call search function if "q" parameter given
   }
 
   $('.toggle-details').on('click', function (e) { e.preventDefault() }) // prevent default action on .toggle-details
@@ -463,7 +450,11 @@ $(document).ready(function () {
 })
 
 $(document).on('click', '#toggleHelp', function (event) {
-  if ($('#helpBox2').dialog('isOpen')) { $('#helpBox2').dialog('close') } else { $('#helpBox2').dialog('open') }
+  if ($('#helpBox2').dialog('isOpen')) {
+    $('#helpBox2').dialog('close')
+  } else {
+    $('#helpBox2').dialog('open')
+  }
   event.preventDefault()
 })
 
@@ -479,16 +470,3 @@ $(document).on('click', 'a[href^="#div_"]', function (event) {
   $('#helpBox2').scrollTop($(target).position().top)
   event.preventDefault()
 })
-
-/*
-$(document).on('click', 'a[href^="https://id.salamanca.school/"]', function () {
-  sessionStorage.setItem('q', $(this).attr('href').split('?q=').pop())
-  sessionStorage.setitem('desc', $(this).siblings('description').text())
-  console.log('Clicked!')
-})
-$(document).bind('contextmenu', 'a[href^="https://id.salamanca.school/"]', function () {
-  sessionStorage.setItem('q', $(this).attr('href').split('?q=').pop())
-  sessionStorage.setitem('desc', $(this).siblings('description').text())
-  console.log('Clicked!')
-})
-*/

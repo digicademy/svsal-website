@@ -1,16 +1,5 @@
 /*eslint-env browser */
 
-// ==== Beta Feature Switch ====
-
-function showBeta () {
-  // show beta features if beta is activated via commandline switch
-  if (beta) {
-    document.querySelectorAll('.beta').forEach(function (el) {
-      el.style.display = 'block'
-    })
-  }
-}
-
 // ===== Diplomatic/Constituted mode viewing =====
 
 // This toggles diplomatic/constituted mode
@@ -32,19 +21,7 @@ function applyOrigMode () {
     el.classList.remove('unsichtbar')
   })
   params.set('mode', 'orig')
-  window.history.replaceState(
-    null,
-    '',
-    window.location.pathname + '?' + params + window.location.hash
-  )
-/*
-  console.log(
-    'applyOrigMode: ' +
-      (null,
-      '',
-      window.location.pathname + '?' + params + window.location.hash)
-  )
-*/
+  window.history.replaceState(null, '' , window.location.pathname + '?' + params + window.location.hash)
   $('.next, .prev, .top').each(function (i, obj) {
     let nextParams = (new URL(obj.href)).searchParams
     nextParams.set('mode', 'orig')
@@ -59,19 +36,7 @@ function applyEditMode () {
     el.classList.remove('unsichtbar')
   })
   params.set('mode', 'edit')
-  window.history.replaceState(
-    null,
-    '',
-    window.location.pathname + '?' + params + window.location.hash
-  )
-/*
-  console.log(
-    'applyEditMode: ' +
-      (null,
-      '',
-      window.location.pathname + '?' + params + window.location.hash)
-  )
-*/
+  window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
   $('.next, .prev, .top').each(function (i, obj) {
     let nextParams = (new URL(obj.href)).searchParams
     nextParams.set('mode', 'edit')
@@ -102,9 +67,6 @@ function highlightSearchTerm () {
 
     // also update the links to next/prev/top inside the iasContainer
     $('.next, .prev, .top').each(function (i, obj) {
-      // let nextParams = (new URL(obj.href)).searchParams
-      // nextParams.set('q', searchTerm)
-      // obj.href = obj.pathname + '?' + nextParams
       obj.href = obj.pathname + '?' + params
     })
   } else {
@@ -123,7 +85,7 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
   console.log(`Requesting highlighting of html with searchTerm ${searchTerm} ...`)
 
   // construct POST request
-  const endpoint = 'https://search.salamanca.school/lemmatized/excerpts'
+  const endpoint = SPHINX_SERVER + '/excerpts'
   const myFormData = new FormData()
   myFormData.append('opts[limit]', '0')
   myFormData.append('opts[html_strip_mode]', 'retain')
@@ -159,6 +121,7 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
     })
     .then((data) => {
       // Push highlighted HTML to target element
+      // This can be unsanitized because we control the data source
       const doc1 = data
         .getElementsByTagName('item')[0]
         .getElementsByTagName('description')[0].innerHTML
@@ -168,9 +131,6 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
     .then((_) => {
       // also update the links to next/prev/top inside the iasContainer
       $('.next, .prev, .top').each(function (i, obj) {
-        // let nextParams = (new URL(obj.href)).searchParams
-        // nextParams.set('q', searchTerm)
-        // obj.href = obj.pathname + '?' + nextParams
         obj.href = obj.pathname + '?' + params
       })
     })
@@ -208,9 +168,7 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
 // eslint-disable-next-line no-unused-vars
 function highlightSpanClassInText (htmlClass, invokingElement) {
   // make all htmlClass elements have the inverse highlighting of the invoking element
-  if (
-    document.getElementById(invokingElement).classList.contains('highlighted')
-  ) {
+  if (document.getElementById(invokingElement).classList.contains('highlighted')) {
     [].forEach.call(document.getElementsByClassName(htmlClass), function (el) {
       el.classList.remove('highlighted')
     })
@@ -370,9 +328,9 @@ async function showEmbeddingsExperiment (elem) {
   // Our target ID is (only) in the cite link
   const targetID = elem.parentElement.parentElement.getElementsByClassName('cite-link')[0].textContent
   const citRec = elem.parentElement.parentElement.getElementsByClassName('sal-cite-rec')[0].textContent.replace(/\s+/g, ' ').trim()
-  const citation = citRec.substring(0, citRec.indexOf(', in: '))
+  const citation = sanitizeText(citRec.substring(0, citRec.indexOf(', in: ')))
 
-  document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
+  document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
   document.getElementById('embeddings_experiment_text').innerHTML = `Retrieve similar texts ...
       <div id="spinner-dialog" class="ispinner ispinner-medium">
           <div class="spinner-container">
@@ -397,19 +355,19 @@ async function showEmbeddingsExperiment (elem) {
 
   // If user cancelled or didn't provide a key, show message and exit
   if (!VDB_API_KEY) {
-    document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
+    document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
     document.getElementById('embeddings_experiment_text').innerHTML = 'API key required to retrieve similar texts.'
     hideSpinnerMedium()
     return
   }
 
-  const threshold = 0.7
-  const limit = 5
-
   const targetIDEncoded = encodeURIComponent(targetID)
   const authorEncoded = encodeURIComponent(document.querySelector('meta[name="author"]').content)
-  const queryURL = 'https://c100-188.cloud.gwdg.de/vdb-api/v1/similars/sal/sal-openai-large/' + targetIDEncoded +
-    '?threshold=' + threshold + '&limit=' + limit + '&metadata_path=author&metadata_value=' + authorEncoded
+  const queryURL = EMBEDDINGS_SERVER + '/similars/' + EMBEDDINGS_PROJECT + '/'
+                      + targetIDEncoded
+                      + '?threshold=' + EMBEDDINGS_THRESHOLD
+                      + '&limit=' + EMBEDDINGS_LIMIT
+                      + '&metadata_path=author&metadata_value=' + authorEncoded
   const getHeaders = { 'Authorization': `Bearer ${VDB_API_KEY}`, 'Content-Type': 'application/json' }
   var count = 0
 
@@ -426,18 +384,17 @@ async function showEmbeddingsExperiment (elem) {
     const data = JSON.parse(str)
     const ids = data.ids
 
-    if (!ids || ids.length === 0) {
-      document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
-      document.getElementById('embeddings_experiment_text').innerHTML = `
+    if (!ids || ids.map(id => decodeURIComponent(id)).length === 0) {
+      document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
+      document.getElementById('embeddings_experiment_text').innerHTML = sanitizeHTML(`
         <div class="no-results-message">
-          <p>No similar texts were found in the database with the current threshold (${threshold}).</p>
+          <p>No similar texts were found in the database with the current threshold (${EMBEDDINGS_THRESHOLD}).</p>
           <p>This may be because:</p>
           <ul>
             <li>This text is unique in its content and approach</li>
             <li>Similar texts exist but are not yet in our database</li>
-            <li>The similarity threshold (${threshold}) may be too high</li>
+            <li>The similarity threshold (${EMBEDDINGS_THRESHOLD}) may be too high</li>
           </ul>
-          <p>You can <button class="try-again-btn" onclick="showEmbeddingsExperiment(document.querySelector('[data-rel=\'popover\']'))">try again</button> with a different text passage.</p>
         </div>
         <style>
           .no-results-message {
@@ -447,24 +404,8 @@ async function showEmbeddingsExperiment (elem) {
             padding: 20px;
             margin-top: 20px;
           }
-          .try-again-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 5px 0;
-            cursor: pointer;
-            border-radius: 4px;
-          }
-          .try-again-btn:hover {
-            background-color: #45a049;
-          }
         </style>
-      `
+      `)
       hideSpinnerMedium()
       return
     }
@@ -473,40 +414,31 @@ async function showEmbeddingsExperiment (elem) {
 
     // Add the original text to the list
     urls.unshift(targetID)
-    count = urls.length
+    count = urls.length - 1 // do not count the original text
 
-    if (count === 0) {
-      document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
-      document.getElementById('embeddings_experiment_text').innerHTML = 'No similar texts found'
-      hideSpinnerMedium()
-      return
-    }
-
-    document.getElementById('embeddings_experiment_title').innerHTML = `${citation}`
-    document.getElementById('embeddings_experiment_text').innerHTML = `${count} similar texts found. Analysing...`
+    document.getElementById('embeddings_experiment_title').textContent = `${citation}`
+    document.getElementById('embeddings_experiment_text').textContent = `${count} similar texts found. Analysing...`
 
     // Second request: fetch text and metadata for each URL
-    const requestURLs = urls.map(url => 'https://c100-188.cloud.gwdg.de/vdb-api/v1/embeddings/sal/sal-openai-large/' + encodeURIComponent(url))
+    const requestURLs = urls.map(url => EMBEDDINGS_SERVER + '/embeddings/' + EMBEDDINGS_PROJECT + '/' + encodeURIComponent(url))
     const records = await Promise.all(requestURLs.map(async (u) => {
       const response = await fetch(u, { method: 'GET', headers: getHeaders })
-
       if (!response.ok) {
         throw new Error(`Network response was not ok for URL: ${u}`)
       }
-
       return response.json()
     }))
 
     // Process the records
     const objects = records.map(r => ({
-      'id': r.text_id,
-      'text': r.text,
-      'author': r.metadata.author,
-      'year': r.metadata.year,
-      'language': r.metadata.lang,
-      'url': r.metadata.url,
-      'wid': r.metadata.wid,
-      'xmlid': r.metadata.xmlid
+      'id': ensureUrlEncoded(r.text_id),
+      'text': sanitizeText(r.text),
+      'author': sanitizeText(r.metadata.author),
+      'year': sanitizeText(r.metadata.year),
+      'language': sanitizeText(r.metadata.lang),
+      'url': ensureUrlEncoded(r.metadata.url),
+      'wid': sanitizeText(r.metadata.wid),
+      'xmlid': sanitizeText(r.metadata.xmlid)
     }))
 
     // Store texts in a global variable for later analysis
@@ -515,11 +447,11 @@ async function showEmbeddingsExperiment (elem) {
     // Display the texts without analysis
     const htmlContent = displayTextComparison(objects)
 
-    document.getElementById('embeddings_experiment_title').innerHTML = `${citation}: (${count} similar texts)`
+    document.getElementById('embeddings_experiment_title').textContent = `${citation}: (${count} similar texts)`
     document.getElementById('embeddings_experiment_text').innerHTML = htmlContent
   } catch (error) {
     console.error('There has been a problem with the fetch operation in showEmbeddingsExperiment():', error)
-    document.getElementById('embeddings_experiment_text').innerHTML = `Error: ${error.message}`
+    document.getElementById('embeddings_experiment_text').textContent = `Error: ${error.message}`
   } finally {
     if (document.getElementsByClassName('ispinner-medium').length > 0) {
       hideSpinnerMedium()
@@ -535,11 +467,11 @@ function displayTextComparison (texts) {
       ${texts.map((text, index) => `
         <div class="expandable-section">
           <div class="section-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
-            <h4>Text ${index + 1}${index === 0 ? ' (original text)' : ''}: ${text.author} (${text.year})</h4>
+            <h4>Text ${index + 1}${index === 0 ? ' (original text)' : ''}: ${sanitizeText(text.author)} (${sanitizeText(text.year)})</h4>
           </div>
           <div class="section-content" style="display: none;">
-            <a href="${text.url}" target="_blank">Go to full text</a><br/>
-            ${text.text}
+            <a href="${sanitizeText(text.url)}" target="_blank">Go to full text</a><br/>
+            ${sanitizeText(text.text)}
           </div>
         </div>
       `).join('')}
@@ -552,7 +484,7 @@ function displayTextComparison (texts) {
         </div>
       </div>
     </div>
-    
+
     <style>
       .text-comparison-container {
         font-family: Arial, sans-serif;
@@ -612,7 +544,6 @@ function displayTextComparison (texts) {
       }
     </style>
   `
-
   return htmlContent
 }
 
@@ -620,7 +551,7 @@ function displayTextComparison (texts) {
 // eslint-disable-next-line no-unused-vars
 async function generateTextAnalysis () {
   // Show a loading indicator
-  document.getElementById('analysis-content').innerHTML = `
+  document.getElementById('analysis-content').innerHTML = sanitizeHTML(`
     <div class="analysis-loading">
       <div class="spinner-container">
         <div class="ispinner ispinner-small">
@@ -636,7 +567,7 @@ async function generateTextAnalysis () {
       </div>
       <p>Generating analysis...</p>
     </div>
-  `
+  `)
 
   try {
     // Get the OpenAI API key (either from storage or by prompting the user)
@@ -659,7 +590,7 @@ async function generateTextAnalysis () {
     const messages = [
       {
         role: 'system',
-        content: `You are an expert text analyst.
+        content: `You are an expert historian text analyst.
                   Compare the following text passages that are presumably about the same or very similar topics.
                   The texts are excerpts in Latin, Spanish, or both, of larger, early modern works about legal, ethical, social or administrative issues.
                   Determine whether the passages really are about the same subject and analyze their similarities and differences.
@@ -679,22 +610,22 @@ async function generateTextAnalysis () {
       {
         role: 'user',
         content: texts.map((text, index) =>
-          `Text ${index + 1} ${index === 0 ? '(original text)' : ''} from ${text.year} by ${text.author}:\n\n${text.text}`
+          `Text ${index + 1} ${index === 0 ? '(original text)' : ''} from ${sanitizeText(text.year)} by ${sanitizeText(text.author)}:\n\n${sanitizeText(text.text)}`
         ).join('\n\n---\n\n')
       }
     ]
 
     // Send request to OpenAI API
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(EMBEDDINGS_SUMMARY_SERVER, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model: EMBEDDINGS_SUMMARY_MODEL,
         messages: messages,
-        temperature: 0.4,
+        temperature: EMBEDDINGS_SUMMARY_TEMP,
         max_tokens: 1500
       })
     })
@@ -708,11 +639,11 @@ async function generateTextAnalysis () {
     const comparisonText = data.choices[0].message.content
 
     // Update the analysis content
-    document.getElementById('analysis-content').innerHTML = `<p>${comparisonText.replace(/\n/g, '<br>')}</p>`
+    document.getElementById('analysis-content').innerHTML = sanitizeHTML(`<p>${comparisonText.replace(/\n/g, '<br>')}</p>`)
   } catch (error) {
     console.error('Error generating text analysis:', error)
     document.getElementById('analysis-content').innerHTML = `
-      <p>Error generating analysis: ${error.message}</p>
+      <p>Error generating analysis: ${sanitizeText(error.message)}</p>
       <button id="generate-analysis-btn" class="generate-analysis-btn" onclick="generateTextAnalysis()">
         Try Again
       </button>
@@ -724,7 +655,6 @@ async function generateTextAnalysis () {
 function storeEncryptedAPIKey (keyName, apiKey, expirationDays = 30) {
   try {
     // Simple encryption (not truly secure, but better than plaintext)
-    // In production, use a more robust encryption method
     const encryptedKey = btoa(apiKey.split('').reverse().join(''))
 
     const expiration = new Date()
@@ -1086,11 +1016,7 @@ async function showTify (targetCanvasID) {
 
   // Reflect viewer status in url
   params.set('viewer', targetCanvasID)
-  window.history.replaceState(
-    null,
-    '',
-    window.location.pathname + '?' + params + window.location.hash
-  )
+  window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
   console.log('In canvas ' + window.location.hash)
 }
 
@@ -1102,11 +1028,7 @@ function viewObsCallback (mutations) {
     const id = canvas['@id']
     console.log(`Open viewer on canvas ${id} / image ${number}.`)
     params.set('viewer', id)
-    window.history.replaceState(
-      null,
-      '',
-      window.location.pathname + '?' + params + window.location.hash
-    )
+    window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
     console.log('In viewObsCallBack ' + window.location.hash)
   })
 }
@@ -1123,20 +1045,22 @@ viewerObserver.observe(document.getElementById('Viewer'), observerOptions)
 
 // Scroll an anchor into view if we have one
 function myScrollIntoView (targetId) {
-  targetEl = document.getElementById(targetId)
-  scrollMarginTop = parseInt($('div.navbar-white').css('height')) + 15
-  targetEl.style.scrollMarginTop = `${scrollMarginTop}px`
-  console.log(`Scrolling element ${targetId} into view.`)
-  targetEl.scrollIntoView()
-  showTextWithDelay(1)
-  // targetEl.effect('highlight', {color: 'LightSkyBlue'}, 1200)
-  targetEl.animate(
-    [ { backgroundColor: 'white' }, { backgroundColor: 'LightSkyBlue' } ], { duration: 600, iterations: 6, direction: 'alternate' } 
-  )
+  try {
+    targetEl = document.getElementById(targetId)
+    scrollMarginTop = parseInt($('div.navbar-white').css('height')) + 15
+    targetEl.style.scrollMarginTop = `${scrollMarginTop}px`
+    console.log(`Scrolling element ${targetId} into view.`)
+    targetEl.scrollIntoView()
+    showTextWithDelay(1)
+    // targetEl.effect('highlight', {color: 'LightSkyBlue'}, 1200)
+    targetEl.animate(
+      [ { backgroundColor: 'white' }, { backgroundColor: 'LightSkyBlue' } ], { duration: 600, iterations: 6, direction: 'alternate' } 
+    )
+  } catch (error) {
+    console.log(`Error scrolling to element ${targetId}: ${error}`)
+    showTextWithDelay(1)
+  }
 }
-
-// Mobil-View: scroll to last collapsed navbar item on mobile when there are many items
-// $('.navbar-collapse').css({ maxHeight: $(window).height() - $('.navbar-header').height() + 'px' })
 
 // ===== InfiniteAjaxScroll =====
 
@@ -1153,13 +1077,6 @@ const ias = new InfiniteAjaxScroll('#iasContainer', {
   negativeMargin: 100 // when to start loading new items (before reaching the very bottom),
 })
 
-// Darken body (when scrolling) in order not to confuse readers by ias's jumping around
-/*function hideText () {
-  document.getElementById('body').classList.add('darkenBody')
-} */
-/* function showText () {
-   document.getElementById('body').classList.remove('darkenBody')
-}; */
 async function showTextWithDelay (delay) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -1171,39 +1088,15 @@ async function showTextWithDelay (delay) {
   })
 }
 
-// and also hide during loading of new ias items (only when scrolling up/backwards)
-// ias.on('top', (event) => { // when user scrolls to the top
-//   hideText()
-// })
-
 ias.on('page', (event) => {
   // when user scrolls to a new segment: update address bar
   const target = new URL(event.url, location.protocol + '//' + location.hostname + '/') // event.url is a string, but we want to use URL methods (second parameter is basename)
   // console.log('This is target :' + target)
-  params.forEach(function (value, key) {
-    // sanitize query parameters
-    if (validParams.indexOf(key) === -1) {
-      params.delete(key)
-    }
-    // console.log('Here are all the query parameters: ' + params)
-  })
-  const newUrl = target.pathname.substr(target.pathname.lastIndexOf('/') + 1) + '?' + params
+  sanitizeParams()
+  const newUrl = target.pathname.substr(target.pathname.lastIndexOf('/') + 1) + '?' + params + window.location.hash
   history.replaceState(history.state, '', newUrl)
   // showTextWithDelay(0)
 })
-
-/*
-  ias.on('nexted', (e) => { // re-apply original/edited mode after adding new elements at the end
-    applyMode()
-    showTextWithDelay(0) // should not be necessary but cannot hurt
-  })
-  ias.on('preved', (e) => { // re-apply original/edited mode after adding new elements at the top
-    console.log('preved event')
-    applyMode()
-    showTextWithDelay(0)
-    // setTimeout(showText(), 2500)
-  })
-*/
 
 ias.on('append', function (event) {
   // when items are appended: add searchTerm highlighting as needed
@@ -1226,9 +1119,6 @@ ias.on('prepended', function (e) {
 })
 
 // ===== Binding and Initialization =====
-
-// Hide text during loading
-//hideText()
 
 // Bind all click events
 document.body.addEventListener('click', async function (e) {
@@ -1309,6 +1199,7 @@ document.body.addEventListener('click', async function (e) {
 // - window.load event, by contrast, triggers when *everything* has been loaded (i.e. later)
 document.addEventListener('DOMContentLoaded', function (event) {
   console.log('DomContentLoaded')
+
   // init backTop
   $('#backTop').backTop({ position: 100, speed: 200, color: 'white' })
 
@@ -1344,15 +1235,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
     },
     close: function (event, ui) {
       params.delete('viewer')
-      window.history.replaceState(
-        null,
-        '',
-        window.location.pathname + '?' + params + window.location.hash
-      )
-      console.log('In orig/edit ' + window.location.hash)
-      console.log(`Stop event propagation for ${event} ...`)
+      window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
+      // console.log('In orig/edit ' + window.location.hash)
+      // console.log(`Stop event propagation for ${event} ...`)
       event.stopImmediatePropagation()
-      console.log(`Not performing default action for ${event} ...`)
+      // console.log(`Not performing default action for ${event} ...`)
       event.preventDefault()
       return false
     }
@@ -1363,7 +1250,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     position: { my: 'left top', at: 'left+155 bottom+40', of: 'div.navbar' },
     // inset: 55px auto auto 137px;
     autoOpen: false,
-    width: Math.min($(window).width() * 0.8, 1200), // startsize of the dialog
+    width:  Math.min($(window).width() * 0.8, 1200), // startsize of the dialog
     height: Math.min($(window).height() * 0.8, 700),
     create: function (event, ui) {
       $(event.target).parent().css('position', 'fixed')
@@ -1380,19 +1267,16 @@ document.addEventListener('DOMContentLoaded', function (event) {
       $('#embeddings_experiment').dialog('option', 'position', position)
     },
     close: function (event, ui) {
-      console.log(`Stop event propagation for ${event} ...`)
+      // console.log(`Stop event propagation for ${event} ...`)
       event.stopImmediatePropagation()
-      console.log(`Not performing default action for ${event} ...`)
+      // console.log(`Not performing default action for ${event} ...`)
       event.preventDefault()
       return false
     }
   })
 
   // show GUI-Nav when scolling upwards
-  $('.navbar-white').css(
-    'padding-top',
-    parseInt($('#main-menu').css('height')) - 2
-  )
+  $('.navbar-white').css('padding-top', parseInt($('#main-menu').css('height')) - 2)
 
   // apply search term highlighting
   highlightSearchTerm()
@@ -1413,7 +1297,8 @@ window.addEventListener('load', async function (e) {
   } else {
     showTextWithDelay(0)
   }
-  
+
+  // enable beta features if requested
   showBeta()
 
   // if we have a 'viewer' URL parameter, open the viewer popup
