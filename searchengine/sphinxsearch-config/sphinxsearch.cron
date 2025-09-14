@@ -1,0 +1,2 @@
+# Rebuild all indexes daily (omitting messages about duplicate word forms) and notify searchd.
+@daily      root /etc/sphinxsearch/xmlprepare.sh && /usr/bin/indexer --quiet --rotate --all 2>&1
