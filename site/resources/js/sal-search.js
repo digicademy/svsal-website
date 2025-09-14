@@ -17,7 +17,7 @@ async function mainSearch (field, st, targetListId, offset, limit) {
   const docFilter = '@sphinx_work ^W0*'
   const alsoAuthor = 'sphinx_author,'
   const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)'
-  const searchterm = sanitizeText(decodeURIComponent(st))
+  const searchterm = decodeURIComponent(st)
   const grouping = '&groupby=sphinx_work&groupsort=sphinx_author asc&groupfunc=4' // groupfunc 4: by attribute
   const sorting = '&sort=4&sortby=sphinx_year asc&ranker=2' // sort 2: attribute ascending; ranker 2: no ranking
   const detailsOffset = 0
@@ -176,34 +176,36 @@ async function detailsSearch (workId, offset, limit, searchterm) {
 
         // format crumbtrail (add query parameters to crumbtrail component links)
         try {
-          var ct = document.createElement('div')
-          ct.innerHTML = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
-          let crumbtrailURL = ct.innerHTML.split('href="').pop() // get everything after the last href="
-          let crumbtrailHit = crumbtrailURL.substr(0, crumbtrailURL.indexOf('"')) // remove the trailing quote, so we have the last URL from the search engine's 'hit_crumbtrail' field foir the current 'value' (i.e. search result item)
-          let newUrl = new URL(crumbtrailHit)
-          newUrl.searchParams.set('q', searchterm)
-          if (beta) { newUrl.searchParams.set('beta', true) }
-          let replacedCrumbtrailHit = newUrl.href
-          let replacedTotalCrumbtrail = ct.innerHTML.replace(crumbtrailHit, replacedCrumbtrailHit)
-          ct.innerHTML = replacedTotalCrumbtrail
-          _ct = document.createDocumentFragment()
-        // console.log(`This is _ct: ${_ct}.innerHTML`)
-          do {
-            if (ct.firstChild.nodeType === 1 && ct.firstChild.tagName === 'A') {
-              // ct.firstChild.setAttribute('href', updateURLParameter(ct.firstChild.getAttribute('href'), 'q', searchterm)) // add q parameter to all links in the crumbtrail
+          var ct = decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26'))
+          var _ct = document.createElement('div')
+          ct.split(' ⨠ ').forEach((item, idx) => {
+            if (idx > 0) {
+              let anchor = new URL('https://www.salamanca.school/' + item.split('href="').pop().split('"')[0])
+              anchor.searchParams.set('q', searchterm)
+              if (beta) { anchor.searchParams.set('beta', true) }
+              let replacedAnchor = item.replace(item.split('href="').pop().split('"')[0], anchor.href)
+              let a = document.createElement('a')
+              a.innerHTML = replacedAnchor
+              _ct.appendChild(a)
+            } else {
+              let span = document.createElement('span')
+              span.innerHTML = item
+              _ct.appendChild(span)
             }
-            _ct.appendChild(ct.firstChild) // This in fact removes the element from our nodelist
-            // console.log(crumbFrag);
-          } while (ct.childNodes.length > 0)
+            if (idx < ct.split(' ⨠ ').length - 1) {
+              let sep = document.createElement('span')
+              sep.innerText = ' ⨠ '
+              _ct.appendChild(sep)
+            }
+          })
         } catch (e) {
-          console.error('Could not parse crumbtrail URL from ' + decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26')))
+          console.error('Could not parse crumbtrail URL from ' + decodeURIComponent(value.getElementsByTagName('hit_crumbtrail')[0].innerHTML.replace(/%26amp%3B/g, '%26')) + ': ' + e + '.')
           _ct = document.createDocumentFragment()
           continue
         }
 
         var _docOrig = value.getElementsByTagName('description_orig')[0].innerHTML
         var _docEdit = value.getElementsByTagName('description_edit')[0].innerHTML
-        // console.log(`This is docEdit: ${_docEdit}`)
         const itemString = `<tr>
                               <td class="details_td" data-wid="${workId}" data-index="${index}">
                               <div id="spinner_details__${workId}_${index}" class="spinner-details ispinner">
@@ -342,7 +344,7 @@ function hideSpinnerDetails (id) {
 // Events
 
 $('#doSearch').click(function (event) { // Do the Search!
-  let searchterm = sanitizeText(document.getElementById('q').value)
+  let searchterm = document.getElementById('q').value
   if (searchterm.length > 0) {
     let field = sanitizeText(document.getElementById('field').value)
     let offset = 0
@@ -386,7 +388,7 @@ document.querySelector('#resultsList').addEventListener('click', async function 
     let oldOffset = parseInt(e.target.getAttribute('data-current-offset'))
     let limit     = parseInt(e.target.getAttribute('data-limit'))
     let newOffset = e.target.classList.contains('forward') ? oldOffset + limit : Math.max(oldOffset - limit, 0)
-    let searchterm = sanitizeText(params.get('q'))
+    let searchterm = params.get('q')
     await detailsSearch(workId, newOffset, 5, searchterm)
     // for (let item of Array.from(e.target.parentElement.nextElementSibling.getElementsByClassName('details_td')).entries()) {
     // for (let item of e.target.closest('.detailsDiv').querySelector('.detailsTable').getElementsByClassName('details_td')) {
@@ -409,7 +411,7 @@ $(document).ready(function () {
   let offset = params.has('offset') ? parseInt(params.get('offset')) : 0
   let limit  = params.has('limit')  ? parseInt(params.get('limit')) : 10
   let field  = params.has('field')  ? sanitizeText(params.get('field')) : 'corpus'
-  let searchterm = params.has('q')  ? sanitizeText(params.get('q')) : ''
+  let searchterm = params.has('q')  ? params.get('q') : ''
 
   document.getElementById('field').value = field // Prepopulate fields based on url paramaters
   document.getElementById('q').value = searchterm
