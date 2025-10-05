@@ -192,6 +192,13 @@
     popupWindow = window.open('', 'visualization', 
       'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes');
       
+    // Escape the search term to prevent XSS
+    const escapedSearchTerm = searchTermCurrent.replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+    
     // Create HTML content for the popup
     const popupContent = 
       '<!DOCTYPE html>\n' +
@@ -245,7 +252,7 @@
       '  <h2>3D Visualization of Search Results in Semantic Space</h2>\n' +
       '  <div id="visualization"></div>\n' +
       '  <div class="info-panel">\n' +
-      '    <h3>Search: "' + searchTermCurrent + '"</h3>\n' +
+      '    <h3>Search: "' + escapedSearchTerm + '"</h3>\n' +
       '    <p><strong>' + searchResultIds.length + '</strong> matching results</p>\n' +
       '    <p><strong>' + filteredCoordinates.contextPoints.length + '</strong> context points</p>\n' +
       '  </div>\n' +
