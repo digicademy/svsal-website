@@ -1,3 +1,6 @@
+/* global SPHINX_SERVER, sanitizeText */
+/* eslint-env browser */
+
 /*
  * Search Results 3D Visualization Integration
  * This script adds a 3D visualization capability to the search page

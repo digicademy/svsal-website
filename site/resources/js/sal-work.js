@@ -1,4 +1,5 @@
 /* eslint-env browser */
+/* global SPHINX_SERVER, BETA, params, showBeta, sanitizeParams */
 
 // import { SPHINX_SERVER, BETA, params, showBeta, sanitizeParams } from './sal-common.js'
 
@@ -117,7 +118,7 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
       const errorNode = doc.querySelector('parsererror')
       // console.log('This is string: ' + str)
       if (errorNode) {
-        throw new Error('Response could not be parsed as html')
+        throw new Error('Response could not be parsed as xml')
       }
       return doc.getElementsByTagName('channel')[0]
     })
@@ -156,10 +157,7 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
     })
     */
     .catch((error) => {
-      console.error(
-        'There has been a problem with the fetch operation in highlightSearch(): ',
-        error
-      )
+      console.error('There has been a problem with the fetch operation in highlightSearch(): ', error)
     })
 }
 

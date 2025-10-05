@@ -1,4 +1,5 @@
 /* eslint-env browser */
+/* global SPHINX_SERVER, SPHINX_DETAILS_LIMIT, BETA, params, sanitizeText */
 
 // import { SPHINX_SERVER, SPHINX_DETAILS_LIMIT, BETA, params, sanitizeText } from './sal-common.js'
 
