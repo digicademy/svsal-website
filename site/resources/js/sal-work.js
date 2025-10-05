@@ -366,7 +366,12 @@ async function showEmbeddingsExperiment (elem) {
   const citRec = elem.parentElement.parentElement.getElementsByClassName('sal-cite-rec')[0].textContent.replace(/\s+/g, ' ').trim()
   const citation = citRec.substring(0, citRec.indexOf(', in: '))
 
-  document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
+  // Escape citation to prevent XSS
+  const escapedCitation = citation.replace(/[<>&"']/g, function(match) {
+    return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+  })
+
+  document.getElementById('embeddings_experiment_title').innerHTML = `${escapedCitation}:`
   document.getElementById('embeddings_experiment_text').innerHTML = `Retrieve similar texts ...
       <div id="spinner-dialog" class="ispinner ispinner-medium">
           <div class="spinner-container">
@@ -478,13 +483,21 @@ async function showEmbeddingsExperiment (elem) {
     count = urls.length
 
     if (count === 0) {
-      document.getElementById('embeddings_experiment_title').innerHTML = `${citation}:`
+      // Escape citation to prevent XSS
+      const escapedCitation = citation.replace(/[<>&"']/g, function(match) {
+        return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+      })
+      document.getElementById('embeddings_experiment_title').innerHTML = `${escapedCitation}:`
       document.getElementById('embeddings_experiment_text').innerHTML = 'No similar texts found'
       hideSpinnerMedium()
       return
     }
 
-    document.getElementById('embeddings_experiment_title').innerHTML = `${citation}`
+    // Escape citation to prevent XSS
+    const escapedCitation = citation.replace(/[<>&"']/g, function(match) {
+      return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+    })
+    document.getElementById('embeddings_experiment_title').innerHTML = `${escapedCitation}`
     document.getElementById('embeddings_experiment_text').innerHTML = `${count} similar texts found. Analysing...`
 
     // Second request: fetch text and metadata for each URL
@@ -517,11 +530,19 @@ async function showEmbeddingsExperiment (elem) {
     // Display the texts without analysis
     const htmlContent = displayTextComparison(objects)
 
-    document.getElementById('embeddings_experiment_title').innerHTML = `${citation}: (${count} similar texts)`
+    // Escape citation to prevent XSS
+    const escapedCitation = citation.replace(/[<>&"']/g, function(match) {
+      return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+    })
+    document.getElementById('embeddings_experiment_title').innerHTML = `${escapedCitation}: (${count} similar texts)`
     document.getElementById('embeddings_experiment_text').innerHTML = htmlContent
   } catch (error) {
     console.error('There has been a problem with the fetch operation in showEmbeddingsExperiment():', error)
-    document.getElementById('embeddings_experiment_text').innerHTML = `Error: ${error.message}`
+    // Escape error message to prevent XSS
+    const escapedErrorMsg = String(error.message || 'Unknown error').replace(/[<>&"']/g, function(match) {
+      return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+    })
+    document.getElementById('embeddings_experiment_text').innerHTML = `Error: ${escapedErrorMsg}`
   } finally {
     if (document.getElementsByClassName('ispinner-medium').length > 0) {
       hideSpinnerMedium()
@@ -531,20 +552,39 @@ async function showEmbeddingsExperiment (elem) {
 
 // Function to display texts without LLM analysis
 function displayTextComparison (texts) {
+  // Helper function to escape HTML to prevent XSS
+  const escapeHtml = (unsafe) => {
+    if (typeof unsafe !== 'string') return String(unsafe)
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;')
+  }
+
   // Generate HTML with expandable sections, but without LLM analysis
   const htmlContent = `
     <div class="text-comparison-container">
-      ${texts.map((text, index) => `
+      ${texts.map((text, index) => {
+        // Escape all user-controllable data from API
+        const escapedAuthor = escapeHtml(text.author)
+        const escapedYear = escapeHtml(text.year)
+        const escapedText = escapeHtml(text.text)
+        const escapedUrl = encodeURI(text.url) // URL encoding for href attribute
+        
+        return `
         <div class="expandable-section">
           <div class="section-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
-            <h4>Text ${index + 1}${index === 0 ? ' (original text)' : ''}: ${text.author} (${text.year})</h4>
+            <h4>Text ${index + 1}${index === 0 ? ' (original text)' : ''}: ${escapedAuthor} (${escapedYear})</h4>
           </div>
           <div class="section-content" style="display: none;">
-            <a href="${text.url}" target="_blank">Go to full text</a><br/>
-            ${text.text}
+            <a href="${escapedUrl}" target="_blank">Go to full text</a><br/>
+            ${escapedText}
           </div>
         </div>
-      `).join('')}
+        `
+      }).join('')}
       <div class="analysis-section">
         <button id="generate-analysis-btn" class="generate-analysis-btn" onclick="generateTextAnalysis()">
           Generate AI Analysis
