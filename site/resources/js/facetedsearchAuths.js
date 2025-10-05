@@ -219,7 +219,11 @@ function createFacetUI() {
     facetHtml.append(facetItemHtml);
     var facetlist = $(settings.facetListContainer);
     _.each(settings.facetStore[facet], function(filter, filtername){
-      var item = {id: filter.id, name: filtername, count: filter.count};
+      // Escape filter name to prevent XSS
+      const escapedFilterName = filtername.replace(/[<>&"']/g, function(match) {
+        return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+      })
+      var item = {id: filter.id, name: escapedFilterName, count: filter.count};
       var filteritem  = $(itemtemplate(item));
       if (_.indexOf(settings.state.filters[facet], filtername) >= 0) {
         filteritem.addClass("activefacet");
