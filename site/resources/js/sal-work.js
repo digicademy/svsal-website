@@ -1,4 +1,6 @@
-/*eslint-env browser */
+/* eslint-env browser */
+
+// import { SPHINX_SERVER, BETA, params, showBeta, sanitizeParams } from './sal-common.js'
 
 // ===== Diplomatic/Constituted mode viewing =====
 
@@ -21,7 +23,7 @@ function applyOrigMode () {
     el.classList.remove('unsichtbar')
   })
   params.set('mode', 'orig')
-  window.history.replaceState(null, '' , window.location.pathname + '?' + params + window.location.hash)
+  window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
   $('.next, .prev, .top').each(function (i, obj) {
     let nextParams = (new URL(obj.href)).searchParams
     nextParams.set('mode', 'orig')
@@ -111,7 +113,7 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
     .then((str) => {
       // Parse OpenSearch xml document and return rss/channel
       const parser = new DOMParser()
-      const doc = parser.parseFromString(str, 'text/html')
+      const doc = parser.parseFromString(str, 'text/xml')
       const errorNode = doc.querySelector('parsererror')
       // console.log('This is string: ' + str)
       if (errorNode) {
@@ -216,7 +218,7 @@ function toolboxHighlight (elem, mode) {
 
 // ===== Passage context/hand menu: Cite, Copy link, Export =====
 
-function initializePopupsAndHighlighting() {
+function initializePopupsAndHighlighting () {
   // Initialize paragraph popups with link, refresh and print icons
   $('[data-rel="popover"]').popover({
     trigger: 'click',
@@ -245,7 +247,7 @@ function initializePopupsAndHighlighting() {
 
   // Add tooltip
   $('.messengers').tooltipster({'multiple': true})
-  
+
   // Add entity highlighting as needed
   $('#hiliteBox a.highlighted').each(function () {
     $(this).click() // this disables highlighting
@@ -255,7 +257,7 @@ function initializePopupsAndHighlighting() {
 
   // Show Beta features if applicable
   showBeta()
-  
+
   // enable minimap for search results
   // document.getElementById("minimap").style.visibility = "visible"
 }
@@ -358,6 +360,7 @@ async function loadTifyManifest (manifest) {
   // eslint-disable-next-line no-undef
   myViewer = new Tify(tifyOptions)
 }
+
 async function setTifyPage (canvasId, title) {
   const requestedManifest = canvasId.split('/canvas/')[0]
   if (typeof myViewer !== 'undefined') {
@@ -406,6 +409,7 @@ async function setTifyPage (canvasId, title) {
     }
   })
 }
+
 async function showTify (targetCanvasID) {
   // Set tify to the correct page
   await setTifyPage(targetCanvasID, targetCanvasID)
@@ -431,6 +435,7 @@ function viewObsCallback (mutations) {
     console.log('In viewObsCallBack ' + window.location.hash)
   })
 }
+
 const viewerObserver = new MutationObserver(viewObsCallback)
 const observerOptions = {
   childList: false,
@@ -438,22 +443,25 @@ const observerOptions = {
   characterData: true,
   subtree: true
 }
-viewerObserver.observe(document.getElementById('Viewer'), observerOptions)
+const viewerElement = document.getElementById('Viewer')
+if (viewerElement) {
+  viewerObserver.observe(viewerElement, observerOptions)
+}
 
 // ===== Scrolling =====
 
 // Scroll an anchor into view if we have one
 function myScrollIntoView (targetId) {
   try {
-    targetEl = document.getElementById(targetId)
-    scrollMarginTop = parseInt($('div.navbar-white').css('height')) + 15
+    let targetEl = document.getElementById(targetId)
+    let scrollMarginTop = parseInt($('div.navbar-white').css('height')) + 15
     targetEl.style.scrollMarginTop = `${scrollMarginTop}px`
     console.log(`Scrolling element ${targetId} into view.`)
     targetEl.scrollIntoView()
     showTextWithDelay(1)
     // targetEl.effect('highlight', {color: 'LightSkyBlue'}, 1200)
     targetEl.animate(
-      [ { backgroundColor: 'white' }, { backgroundColor: 'LightSkyBlue' } ], { duration: 600, iterations: 6, direction: 'alternate' } 
+      [ { backgroundColor: 'white' }, { backgroundColor: 'LightSkyBlue' } ], { duration: 600, iterations: 6, direction: 'alternate' }
     )
   } catch (error) {
     console.log(`Error scrolling to element ${targetId}: ${error}`)
@@ -540,7 +548,7 @@ document.body.addEventListener('click', async function (e) {
 
   if (t.matches('a[href*="#W"]')) {
     // a local link: scroll to anchor
-    const z = t.attr('href').slice(t.attr('href').indexOf('#') + 1)
+    const z = t.getAttribute('href').slice(t.getAttribute('href').indexOf('#') + 1)
     if (z !== undefined && z.length !== 0) {
       myScrollIntoView(z)
       // don't use the browser's navigation to scoll to target, since we already should be there
@@ -555,15 +563,17 @@ document.body.addEventListener('click', async function (e) {
     $('#loadMeLast').innerHtml = (self + '#later li')
   } else if (t.matches('#toggleButton')) {
     // toggle ToC tree: expand/collapse
-    if (t.hasClass('expanded')) {
+    if (t.classList.contains('expanded')) {
       $('#tableOfConts').jstree('close_all')
-      t.removeClass('expanded').addClass('collapsed')
+      t.classList.remove('expanded')
+      t.classList.add('collapsed')
       $('span[class="glyphicon glyphicon-resize-small"]')
         .removeClass('glyphicon glyphicon-resize-small')
         .addClass('glyphicon glyphicon-fullscreen')
-    } else if (t.hasClass('collapsed')) {
+    } else if (t.classList.contains('collapsed')) {
       $('#tableOfConts').jstree('open_all')
-      t.removeClass('collapsed').addClass('expanded')
+      t.classList.remove('collapsed')
+      t.classList.add('expanded')
       $('span[class="glyphicon glyphicon-fullscreen"]')
         .removeClass('glyphicon glyphicon-fullscreen')
         .addClass('glyphicon glyphicon-resize-small')
@@ -597,7 +607,7 @@ document.body.addEventListener('click', async function (e) {
 //   Synchronous scripts have been executed (no images, styles loaded and no async scripts executed),
 // - window.load event, by contrast, triggers when *everything* has been loaded (i.e. later)
 document.addEventListener('DOMContentLoaded', function (event) {
-  console.log('DomContentLoaded')
+  console.log('sal-work.js: DomContentLoaded')
 
   // init backTop
   $('#backTop').backTop({ position: 100, speed: 200, color: 'white' })
@@ -644,36 +654,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   })
 
-  // initialize (jquery) dialog window for embeddings experiment
-  $('#embeddings_experiment').dialog({
-    position: { my: 'left top', at: 'left+155 bottom+40', of: 'div.navbar' },
-    // inset: 55px auto auto 137px;
-    autoOpen: false,
-    width:  Math.min($(window).width() * 0.8, 1200), // startsize of the dialog
-    height: Math.min($(window).height() * 0.8, 700),
-    create: function (event, ui) {
-      $(event.target).parent().css('position', 'fixed')
-    },
-    // Add to the create or open event
-    open: function (event, ui) {
-      // Add reset API key buttons to dialog title bar
-      addResetAPIKeyButtons()
-    },
-    resizeStop: function (event, ui) {
-      const position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
-        (Math.floor(ui.position.top) - $(window).scrollTop())]
-      $(event.target).parent().css('position', 'fixed')
-      $('#embeddings_experiment').dialog('option', 'position', position)
-    },
-    close: function (event, ui) {
-      // console.log(`Stop event propagation for ${event} ...`)
-      event.stopImmediatePropagation()
-      // console.log(`Not performing default action for ${event} ...`)
-      event.preventDefault()
-      return false
-    }
-  })
-
   // show GUI-Nav when scolling upwards
   $('.navbar-white').css('padding-top', parseInt($('#main-menu').css('height')) - 2)
 
@@ -698,7 +678,7 @@ window.addEventListener('load', async function (e) {
   }
 
   // enable beta features if requested
-  showBeta()
+  if (BETA) showBeta()
 
   // if we have a 'viewer' URL parameter, open the viewer popup
   if (

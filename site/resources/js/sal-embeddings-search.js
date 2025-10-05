@@ -1,199 +1,213 @@
-/* 
+/*
  * Search Results 3D Visualization Integration
  * This script adds a 3D visualization capability to the search page
  * that shows search results in their embedding space.
  */
 
-(function() {
+// import { SPHINX_SERVER, sanitizeText } from './sal-common.js'
+// import { mainSearch } from './sal-search.js'
+
+(function () {
   // Global variables within this scope
-  let coordinatesData = null;
-  let searchResultIds = [];
-  let searchTermCurrent = "";
-  let searchFieldCurrent = "";
-  let visualizationInitialized = false;
-  let popupWindow = null;
+  let coordinatesData = null
+  let searchResultIds = []
+  let searchTermCurrent = ''
+  let popupWindow = null
 
   // Only initialize if the beta parameter is present
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initOnBeta);
+    document.addEventListener('DOMContentLoaded', initOnBeta)
   } else {
-    initOnBeta();
+    initOnBeta()
   }
 
-  function initOnBeta() {
-    const urlParams = new URLSearchParams(window.location.search);
+  function initOnBeta () {
+    const urlParams = new URLSearchParams(window.location.search)
     if (urlParams.has('beta')) {
-      initVisualizationFeature();
+      initVisualizationFeature()
     }
   }
 
   /**
    * Initialize the visualization feature by adding UI elements and event handlers
    */
-  function initVisualizationFeature() {
+  function initVisualizationFeature () {
     // Add visualization button to the search interface
-    const searchSummary = document.getElementById('searchSummary');
+    const searchSummary = document.getElementById('searchSummary')
     if (searchSummary) {
-      const vizButton = document.createElement('button');
-      vizButton.id = 'showVisualization';
-      vizButton.className = 'btn btn-primary btn-sm';
-      vizButton.innerHTML = '<i class="fa fa-cube"></i> 3D View (Beta)';
-      vizButton.style.marginLeft = '10px';
-      vizButton.style.display = 'none'; // Initially hidden until search results load
-      vizButton.onclick = showVisualizationPopup;
-      searchSummary.appendChild(vizButton);
-      
+      const vizButton = document.createElement('button')
+      vizButton.id = 'showVisualization'
+      vizButton.className = 'btn btn-primary btn-sm'
+      vizButton.innerHTML = '<i class="fa fa-cube"></i> 3D View (Beta)'
+      vizButton.style.marginLeft = '10px'
+      vizButton.style.display = 'none' // Initially hidden until search results load
+      vizButton.onclick = showVisualizationPopup
+      searchSummary.appendChild(vizButton)
+
       // Prefetch coordinates data
-      fetchCoordinatesData();
+      fetchCoordinatesData()
     }
-    
+
     // Extend the main search function to capture current search parameters
-    const originalMainSearch = window.mainSearch;
-    window.mainSearch = function(field, st, targetListId, page, limit) {
+    const originalMainSearch = window.mainSearch
+    window.mainSearch = function (field, st, targetListId, page, limit) {
       // Store current search parameters for later use in visualization
-      searchFieldCurrent = field;
-      searchTermCurrent = st;
-      
+      searchTermCurrent = st
+
       // Show the visualization button when a search is performed
-      const vizButton = document.getElementById('showVisualization');
+      const vizButton = document.getElementById('showVisualization')
       if (vizButton && st && st.length > 0) {
-        vizButton.style.display = 'inline-block';
+        vizButton.style.display = 'inline-block'
       }
-      
-      // Call the original search function
-      originalMainSearch(field, st, targetListId, page, limit);
-    };
+
+      // Call the original search function if it exists
+      if (typeof originalMainSearch === 'function') {
+        return originalMainSearch(field, st, targetListId, page, limit)
+      } else {
+        console.warn('originalMainSearch not available; mainSearch was called but no original function to delegate to.')
+        return Promise.resolve()
+      }
+    }
   }
 
   /**
    * Fetches the coordinates data JSON file
    */
-  function fetchCoordinatesData() {
+  function fetchCoordinatesData () {
     fetch('/resources/files/data_passages_with_umap_3d.json')
-      .then(function(response) {
+      .then(function (response) {
         if (!response.ok) {
-          throw new Error('Network response was not OK');
+          throw new Error('Network response was not OK')
         }
-        return response.json();
+        return response.json()
       })
-      .then(function(data) {
-        coordinatesData = data;
-        console.log('Coordinates data loaded successfully');
+      .then(function (data) {
+        coordinatesData = data
+        console.log('Coordinates data loaded successfully')
       })
-      .catch(function(error) {
-        console.error('Error loading coordinates data:', error);
-      });
+      .catch(function (error) {
+        console.error('Error loading coordinates data:', error)
+      })
   }
 
   /**
    * Performs a direct search to get all matching document IDs without grouping or paging
    */
-  async function performVisualizationSearch() {
+  async function performVisualizationSearch () {
     if (!searchTermCurrent) {
-      console.error('No search term available');
-      return [];
+      console.error('No search term available')
+      return []
     }
-    
+
     // Show loading state in the button
-    const vizButton = document.getElementById('showVisualization');
-    const originalButtonText = vizButton.innerHTML;
-    vizButton.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading...';
-    
+    const vizButton = document.getElementById('showVisualization')
+    const originalButtonText = vizButton.innerHTML
+    vizButton.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading...'
+
     // Build the search request without grouping and with a high limit
-    const endpoint = 'https://search.salamanca.school/lemmatized/search';
-    const docFilter = '@sphinx_work ^W0*';
-    const alsoAuthor = 'sphinx_author,';
-    const fields = '@(' + alsoAuthor + 'sphinx_description_edit,sphinx_description_orig)';
-    const sorting = '&sort=4&sortby=sphinx_year asc&ranker=2'; // sort 2: attribute ascending; ranker 2: no ranking
-    const searchterm = encodeURIComponent(searchTermCurrent);
-    const limit = 10000; // Set high limit to get all results
-    const url = endpoint + '?q=' + docFilter + ' ' + fields + ' ' + searchterm + sorting + '&offset=0&limit=' + limit;
-    
+    const u = new URL(SPHINX_SERVER + '/search')
+    const docFilter = '@sphinx_work ^W0*'
+    const fields = '@(sphinx_author,sphinx_description_edit,sphinx_description_orig)'
+    u.searchParams.set('q', `${docFilter} ${fields} ${searchTermCurrent}`)
+    u.searchParams.set('groupby', 'sphinx_work')
+    u.searchParams.set('groupsort', 'sphinx_author asc')
+    u.searchParams.set('groupfunc', '4') // groupfunc 4: by attribute
+    u.searchParams.set('sort', '4')
+    u.searchParams.set('sortby', 'sphinx_year asc')
+    u.searchParams.set('ranker', '2') // ranker 2: no ranking
+    u.searchParams.set('offset', 0)
+    u.searchParams.set('limit', 100000)
+    const url = u.href
+
     // For debugging purposes
-    console.log('Visualization search URL:', url);
-    
+    console.log('Visualization search URL:', url)
+
     try {
       // Send request
-      const response = await fetch(url);
+      const response = await fetch(url)
       if (!response.ok) {
-        throw new Error('Network response was not OK');
+        throw new Error('Network response was not OK')
       }
-      
-      const text = await response.text();
-      
+
+      const text = await response.text()
+
       // Parse OpenSearch XML document
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(text, 'text/xml');
-      const errorNode = doc.querySelector('parsererror');
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(text, 'text/xml')
+      const errorNode = doc.querySelector('parsererror')
       if (errorNode) {
-        throw new Error('Response could not be parsed as XML');
+        throw new Error('Response could not be parsed as XML')
       }
-      
-      const channel = doc.getElementsByTagName('channel')[0];
-      const items = channel.getElementsByTagName('item');
-      const ids = [];
-      
+
+      const channel = doc.getElementsByTagName('channel')[0]
+      const items = channel.getElementsByTagName('item')
+      const ids = []
+
       // Extract IDs from each result
       for (let i = 0; i < items.length; i++) {
-        const item = items[i];
+        const item = items[i]
         // Assuming there's an element with the ID
-        const hitId = item.getElementsByTagName('hit_id')[0]?.textContent;
+        const hitId = item.getElementsByTagName('hit_id')[0] ? item.getElementsByTagName('hit_id')[0].textContent : null
         if (hitId) {
-          ids.push(hitId);
+          ids.push(hitId)
         } else {
           // As a fallback, try to get ID from fragment path
-          const fragPath = item.getElementsByTagName('fragment_path')[0]?.textContent;
+          const fragPath = item.getElementsByTagName('fragment_path')[0] ? item.getElementsByTagName('fragment_path')[0].textContent : null
           if (fragPath) {
-            const match = fragPath.match(/xmlid=([^&]+)/);
+            const match = fragPath.match(/xmlid=([^&]+)/)
             if (match && match[1]) {
-              ids.push(match[1]);
+              ids.push(match[1])
             }
           }
         }
       }
-      
-      console.log('Found ' + ids.length + ' result IDs for visualization');
-      return ids;
+
+      console.log('Found ' + ids.length + ' result IDs for visualization')
+      return ids
     } catch (error) {
-      console.error('Error performing visualization search:', error);
-      return [];
+      console.error('Error performing visualization search:', error)
+      return []
     } finally {
       // Restore button text
-      vizButton.innerHTML = originalButtonText;
+      vizButton.innerHTML = originalButtonText
     }
   }
 
   /**
    * Shows the visualization popup window
    */
-  async function showVisualizationPopup() {
+  async function showVisualizationPopup () {
     if (!coordinatesData) {
-      alert('Coordinates data is not loaded yet. Please try again in a moment.');
-      return;
+      alert('Coordinates data is not loaded yet. Please try again in a moment.')
+      return
     }
-    
+
     // Run a direct search to get all matching IDs
-    searchResultIds = await performVisualizationSearch();
-    
+    searchResultIds = await performVisualizationSearch()
+
     if (searchResultIds.length === 0) {
-      alert('No matching results found for visualization.');
-      return;
+      alert('No matching results found for visualization.')
+      return
     }
-    
+
     // Filter coordinates to only include search results
-    const filteredCoordinates = filterCoordinatesBySearchResults();
-    
+    const filteredCoordinates = filterCoordinatesBySearchResults()
+
     // Create and open a popup window
-    const width = 1000;
-    const height = 800;
-    const left = (window.innerWidth - width) / 2;
-    const top = (window.innerHeight - height) / 2;
-    
-    popupWindow = window.open('', 'visualization', 
-      'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes');
-      
+    const width = 1000
+    const height = 800
+    const left = (window.innerWidth - width) / 2
+    const top = (window.innerHeight - height) / 2
+
+    popupWindow = window.open('', 'visualization',
+      'width=' + width +
+      ',height=' + height +
+      ',left=' + left +
+      ',top=' + top +
+      ',resizable=yes,scrollbars=yes')
+
     // Create HTML content for the popup
-    const popupContent = 
+    const popupContent =
       '<!DOCTYPE html>\n' +
       '<html lang="en">\n' +
       '<head>\n' +
@@ -245,7 +259,7 @@
       '  <h2>3D Visualization of Search Results in Semantic Space</h2>\n' +
       '  <div id="visualization"></div>\n' +
       '  <div class="info-panel">\n' +
-      '    <h3>Search: "' + searchTermCurrent + '"</h3>\n' +
+      '    <h3>Search: "' + sanitizeText(searchTermCurrent) + '"</h3>\n' +
       '    <p><strong>' + searchResultIds.length + '</strong> matching results</p>\n' +
       '    <p><strong>' + filteredCoordinates.contextPoints.length + '</strong> context points</p>\n' +
       '  </div>\n' +
@@ -259,8 +273,9 @@
       '  </div>\n' +
       '  <script>\n' +
       '    // Data will be injected here\n' +
-      '    const searchResultData = ' + JSON.stringify(filteredCoordinates.resultPoints) + ';\n' +
-      '    const contextData = ' + JSON.stringify(filteredCoordinates.contextPoints) + ';\n' +
+      '    const searchResultData = ' + JSON.stringify(filteredCoordinates.resultPoints).replace(/<\/script/gi, '<\\/script') + ';\n' +
+      '    const contextData = ' + JSON.stringify(filteredCoordinates.contextPoints).replace(/<\/script/gi, '<\\/script') + ';\n' +
+      '    const parentSearchTerm = ' + JSON.stringify(searchTermCurrent).replace(/<\/script/gi, '<\\/script') + ';\n' +
       '    \n' +
       '    // Create visualization\n' +
       '    function initVisualization() {\n' +
@@ -354,7 +369,7 @@
       '          \n' +
       '          // Construct URL to the document\n' +
       '          var baseUrl = \'https://id.salamanca.school/works/\';\n' +
-      '          var url = baseUrl + xmlId + \'?q=\' + encodeURIComponent(window.opener.searchTermCurrent);\n' +
+      '          var url = baseUrl + xmlId + \'?q=\' + encodeURIComponent(parentSearchTerm);\n' +
       '          window.open(url, \'_blank\');\n' +
       '        }\n' +
       '      });\n' +
@@ -364,87 +379,90 @@
       '    document.addEventListener(\'DOMContentLoaded\', initVisualization);\n' +
       '  </script>\n' +
       '</body>\n' +
-      '</html>';
-    
+      '</html>'
+
     // Write the content to the popup window
-    popupWindow.document.write(popupContent);
-    popupWindow.document.close();
+    popupWindow.document.write(popupContent)
+    popupWindow.document.close()
   }
 
   /**
    * Filters coordinates data to return search result points and context points
    */
-  function filterCoordinatesBySearchResults() {
+  function filterCoordinatesBySearchResults () {
     if (!coordinatesData || !coordinatesData.passages) {
-      return { resultPoints: [], contextPoints: [] };
+      return { resultPoints: [], contextPoints: [] }
     }
-    
+
     // Filter points that match search result IDs
-    const resultPoints = coordinatesData.passages.filter(function(p) {
-      return searchResultIds.includes(p.xmlid);
-    });
-    
+    const resultPoints = coordinatesData.passages.filter(function (p) {
+      return searchResultIds.includes(p.xmlid)
+    })
+
     // Find bounding box of result points
-    const bounds = getBoundingBox(resultPoints);
-    
+    const bounds = getBoundingBox(resultPoints)
+
     // Get context points (points in the bounding box that aren't search results)
-    const contextPoints = coordinatesData.passages.filter(function(p) {
-      return !searchResultIds.includes(p.xmlid) && 
-             isPointInExpandedBoundingBox(p, bounds, 0.05); // 5% expansion of the bounding box
-    });
-    
+    const contextPoints = coordinatesData.passages.filter(function (p) {
+      return !searchResultIds.includes(p.xmlid) &&
+             isPointInExpandedBoundingBox(p, bounds, 0.05) // 5% expansion of the bounding box
+    })
+
     return {
       resultPoints: resultPoints,
       contextPoints: contextPoints
-    };
+    }
   }
 
   /**
    * Calculates the bounding box of a set of points
    */
-  function getBoundingBox(points) {
+  function getBoundingBox (points) {
     if (!points || points.length === 0) {
-      return { minX: 0, maxX: 0, minY: 0, maxY: 0, minZ: 0, maxZ: 0 };
+      return { minX: 0, maxX: 0, minY: 0, maxY: 0, minZ: 0, maxZ: 0 }
     }
-    
-    var minX = Infinity, maxX = -Infinity;
-    var minY = Infinity, maxY = -Infinity;
-    var minZ = Infinity, maxZ = -Infinity;
-    
+
+    var minX = Infinity
+    var maxX = -Infinity
+    var minY = Infinity
+    var maxY = -Infinity
+    var minZ = Infinity
+    var maxZ = -Infinity
+
     for (var i = 0; i < points.length; i++) {
-      var p = points[i];
-      minX = Math.min(minX, p.umap_x);
-      maxX = Math.max(maxX, p.umap_x);
-      minY = Math.min(minY, p.umap_y);
-      maxY = Math.max(maxY, p.umap_y);
-      minZ = Math.min(minZ, p.umap_z);
-      maxZ = Math.max(maxZ, p.umap_z);
+      var p = points[i]
+      minX = Math.min(minX, p.umap_x)
+      maxX = Math.max(maxX, p.umap_x)
+      minY = Math.min(minY, p.umap_y)
+      maxY = Math.max(maxY, p.umap_y)
+      minZ = Math.min(minZ, p.umap_z)
+      maxZ = Math.max(maxZ, p.umap_z)
     }
-    
-    return { minX: minX, maxX: maxX, minY: minY, maxY: maxY, minZ: minZ, maxZ: maxZ };
+
+    return { minX: minX, maxX: maxX, minY: minY, maxY: maxY, minZ: minZ, maxZ: maxZ }
   }
 
   /**
    * Checks if a point is within an expanded bounding box
    */
-  function isPointInExpandedBoundingBox(point, box, expansionFactor) {
+  function isPointInExpandedBoundingBox (point, box, expansionFactor) {
     // Calculate expanded dimensions
-    var xRange = box.maxX - box.minX;
-    var yRange = box.maxY - box.minY;
-    var zRange = box.maxZ - box.minZ;
-    
-    var expandedMinX = box.minX - xRange * expansionFactor;
-    var expandedMaxX = box.maxX + xRange * expansionFactor;
-    var expandedMinY = box.minY - yRange * expansionFactor;
-    var expandedMaxY = box.maxY + yRange * expansionFactor;
-    var expandedMinZ = box.minZ - zRange * expansionFactor;
-    var expandedMaxZ = box.maxZ + zRange * expansionFactor;
-    
+    var xRange = box.maxX - box.minX
+    var yRange = box.maxY - box.minY
+    var zRange = box.maxZ - box.minZ
+
+    var expandedMinX = box.minX - xRange * expansionFactor
+    var expandedMaxX = box.maxX + xRange * expansionFactor
+    var expandedMinY = box.minY - yRange * expansionFactor
+    var expandedMaxY = box.maxY + yRange * expansionFactor
+    var expandedMinZ = box.minZ - zRange * expansionFactor
+    var expandedMaxZ = box.maxZ + zRange * expansionFactor
+
     // Check if point is within expanded box
     return (
       point.umap_x >= expandedMinX && point.umap_x <= expandedMaxX &&
       point.umap_y >= expandedMinY && point.umap_y <= expandedMaxY &&
       point.umap_z >= expandedMinZ && point.umap_z <= expandedMaxZ
-    );
+    )
   }
-})();
+})()
