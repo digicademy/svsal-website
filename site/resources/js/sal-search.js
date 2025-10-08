@@ -80,7 +80,7 @@ async function mainSearch (field, searchterm, targetListId, offset, limit) {
 
       // Results paging
       let previousPageLink = document.createElement('a')
-      let previousPageURL = new URL('search.html')
+      let previousPageURL = new URL('/search.html', window.location)
       previousPageURL.searchParams.set('field', field)
       previousPageURL.searchParams.set('q', searchterm)
       previousPageURL.searchParams.set('offset', Math.max(parseInt(offset) - parseInt(limit), 0))
@@ -88,7 +88,7 @@ async function mainSearch (field, searchterm, targetListId, offset, limit) {
       previousPageLink.href = previousPageURL.href
       previousPageLink.innerText = 'previous page'
       let nextPageLink = document.createElement('a')
-      let nextPageURL = new URL('search.html')
+      let nextPageURL = new URL('/search.html', window.location)
       nextPageURL.searchParams.set('field', field)
       nextPageURL.searchParams.set('q', searchterm)
       nextPageURL.searchParams.set('offset', parseInt(offset) + parseInt(limit))
@@ -233,6 +233,7 @@ async function detailsSearch (workId, offset, limit, searchterm) {
   */
 
   // Send request and handle response
+  // console.log('This is the details request\'s URL: ' + url)
   window.fetch(url)
     .then(response => { // Check network status and return response's text content
       if (!response.ok) {
@@ -554,7 +555,7 @@ $('#doSearch').click(function (event) { // Do the Search!
     params.set('offset', 0)
     params.set('limit', 10)
 
-    window.history.replaceState('', '', 'search.html?' + params) // update URL in address bar
+    window.history.replaceState('', '', 'search.html?' + params.toString()) // update URL in address bar
     document.title = sanitizeText(searchterm) + ' - The School of Salamanca'
     let targetListId = 'resultsList'
     mainSearch(field, searchterm, targetListId, offset, limit)

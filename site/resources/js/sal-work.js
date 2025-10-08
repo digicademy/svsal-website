@@ -24,7 +24,7 @@ function applyOrigMode () {
     el.classList.remove('unsichtbar')
   })
   params.set('mode', 'orig')
-  window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
+  window.history.replaceState(null, '', window.location.pathname + '?' + params.toString() + window.location.hash)
   $('.next, .prev, .top').each(function (i, obj) {
     let nextParams = (new URL(obj.href)).searchParams
     nextParams.set('mode', 'orig')
@@ -417,7 +417,7 @@ async function showTify (targetCanvasID) {
 
   // Reflect viewer status in url
   params.set('viewer', targetCanvasID)
-  window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
+  window.history.replaceState(null, '', window.location.pathname + '?' + params.toString() + window.location.hash)
   console.log('In canvas ' + window.location.hash)
 }
 
@@ -429,7 +429,7 @@ function viewObsCallback (mutations) {
     const id = canvas['@id']
     console.log(`Open viewer on canvas ${id} / image ${number}.`)
     params.set('viewer', id)
-    window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
+    window.history.replaceState(null, '', window.location.pathname + '?' + params.toString() + window.location.hash)
     console.log('In viewObsCallBack ' + window.location.hash)
   })
 }
@@ -642,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     },
     close: function (event, ui) {
       params.delete('viewer')
-      window.history.replaceState(null, '', window.location.pathname + '?' + params + window.location.hash)
+      window.history.replaceState(null, '', window.location.pathname + '?' + params.toString() + window.location.hash)
       // console.log('In orig/edit ' + window.location.hash)
       // console.log(`Stop event propagation for ${event} ...`)
       event.stopImmediatePropagation()
