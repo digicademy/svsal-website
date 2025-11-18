@@ -1,6 +1,9 @@
 {{ $domain := "salamanca.school" }}
 {{ $info := index .Args 0 }}
-{{ $searchterm := placeholder "http.request.uri.query.q" }}
+{{/* $searchterm := placeholder "http.request.uri.query.q" */}}
+{{/* instead of the above, protect valid '<<' token, escape HTML chars, then restore '<<' */}}
+{{ $searchterm_raw := placeholder "http.request.uri.query.q" }}
+{{ $searchterm := $searchterm_raw | replace "<<" "__LEFTLEFT__" | replace "&"  "&amp;" | replace "<"  "&lt;" | replace ">"  "&gt;" | replace `"`  "&quot;" | replace "'"  "&#39;" | replace "__LEFTLEFT__" "<<" }}
 
 <!DOCTYPE html>
 <html>

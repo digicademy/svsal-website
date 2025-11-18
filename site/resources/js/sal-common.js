@@ -1,4 +1,5 @@
 /* eslint-env browser */
+/* eslint-disable no-unused-vars */
 
 // ==== Config settings ====
 
@@ -7,7 +8,7 @@ const EMBEDDINGS_PROJECT = 'sal/sal-openai-large'
 const EMBEDDINGS_THRESHOLD = 0.75
 const EMBEDDINGS_LIMIT = 5
 const EMBEDDINGS_SUMMARY_SERVER = 'https://api.openai.com/v1/chat/completions'
-const EMBEDDINGS_SUMMARY_MODEL = 'gpt-5-nano'
+const EMBEDDINGS_SUMMARY_MODEL = 'gpt-4o'
 const EMBEDDINGS_SUMMARY_TEMP = 0.4
 const SPHINX_SERVER = 'https://search.salamanca.school/lemmatized'
 const SPHINX_DETAILS_LIMIT = 5
@@ -24,13 +25,13 @@ $('.carousel').carousel({ interval: 1500 * 10 }) // interval is in milliseconds.
 const validParams = ['mode', 'format', 'viewer', 'beta', 'lang', 'q', 'field', 'offset', 'limit', 'wid', 'frag']
 const params = (new URL(window.location.href)).searchParams
 sanitizeParams()
-const beta = Boolean(params.get('beta'))
+const BETA = Boolean(params.get('beta'))
 
 // Sanitize URL query parameters
-function sanitizeParams() {
+function sanitizeParams () {
   params.forEach(function (value, key) {
     if (!validParams.includes(key)) {
-      params.delete(key)                                 // remove any invalid parameters
+      params.delete(key) // remove any invalid parameters
     } else {
       params.set(key, params.get(key).substring(0, 200)) // limit length of parameters to 200 chars
     }
@@ -38,43 +39,47 @@ function sanitizeParams() {
 }
 
 // Sanitize strings, used for user input
-function sanitizeText(input) {
+function sanitizeText (input) {
   const escapedInput = input
-    .replace(/[<>&"']/g, function(match) {
-        return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
-      })
+    .replace(/[<>&"']/g, function (match) {
+      return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'}[match]
+    })
   return escapedInput
 }
 
 // Sanitize html we are constructing ourselves
-function sanitizeHTML(input) {
-  return input
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/javascript:/gi, '')
-    .replace(/on\w+\s*=/gi, '')
-    .replace(/data:/gi, '')
-    .replace(/vbscript:/gi, '')
-}
+/*
+  function sanitizeHTML (input) {
+    return input
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+\s*=/gi, '')
+      .replace(/data:/gi, '')
+      .replace(/vbscript:/gi, '')
+  }
+*/
 
 // Ensure a string is properly URL-encoded
-function ensureUrlEncoded (str) {
-  try {
-    const decoded = decodeURIComponent(str)
-    const reencoded = encodeURIComponent(decoded)
-    // if reencoded === original, it was already (properly) encoded,
-    // otherwise return the normalized encoded form
-    return reencoded === str ? str : reencoded
-  } catch (e) {
-    // malformed percent-escapes — just encode the original string
-    return encodeURIComponent(str)
+/*
+  function ensureUrlEncoded (str) {
+    try {
+      const decoded = decodeURIComponent(str)
+      const reencoded = encodeURIComponent(decoded)
+      // if reencoded === original, it was already (properly) encoded,
+      // otherwise return the normalized encoded form
+      return reencoded === str ? str : reencoded
+    } catch (e) {
+      // malformed percent-escapes — just encode the original string
+      return encodeURIComponent(str)
+    }
   }
-}
+*/
 
 // ==== Beta Feature Switch ====
 
 function showBeta () {
   // show beta features if beta is activated via commandline switch
-  if (beta) {
+  if (BETA) {
     document.querySelectorAll('.beta').forEach(function (el) {
       el.style.display = 'block'
     })
@@ -105,10 +110,12 @@ function getI18nAccessString () {
   return '(' + accessed + ' ' + date + ')'
 }
 
+// determine language from URL parameter or URL path
 function getLang () {
-  if (params.get('lang').length > 0 &&
-          ['de', 'en', 'es'].indexOf(params.get('lang').substring(0, 2)) >= 0) {
-    return params.get('lang').substring(0, 2)
+  const langParam = params.get('lang')
+  if (langParam && langParam.length > 0 &&
+          ['de', 'en', 'es'].indexOf(langParam.substring(0, 2)) >= 0) {
+    return langParam.substring(0, 2)
   } else if (window.location.href.indexOf('/de/') !== -1) return 'de'
   else if (window.location.href.indexOf('/es/') !== -1) return 'es'
   else return 'en'
@@ -117,12 +124,12 @@ function getLang () {
 // This is being called from other sal-search.js and sal-work.js scripts
 // eslint-disable-next-line no-unused-vars
 function updateURLParameter (url, param, paramVal) {
-  let newUrl = new URL(url);
+  let newUrl = new URL(url)
   if (newUrl.searchParams.get(param) === paramVal) {
-    return url;
+    return url
   }
-  newUrl.searchParams.set(param, paramVal);
-  return newUrl.href;
+  newUrl.searchParams.set(param, paramVal)
+  return newUrl.href
 };
 
 // ==== Binding events ====

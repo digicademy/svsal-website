@@ -1,77 +1,6 @@
 /* eslint-env browser */
 
-const validParams = ['mode', 'q', 'format', 'viewer']
-const params = (new URL(window.location.href)).searchParams
-
 // ===== Search term highlighting =====
-
-// This replaces innerHTML of a target element
-// with a highlighted version of the original HTML
-async function highlightReplace (origHTML, searchTerm, targetElement) {
-  // console.log('searchTerm: ' + searchTerm)
-
-  // check if target element exists
-  if (targetElement === null) {
-    return
-  }
-
-  const endpoint = 'https://search.salamanca.school/lemmatized/excerpts'
-  const myFormData = new FormData()
-  myFormData.append('opts[limit]', '0')
-  myFormData.append('opts[html_strip_mode]', 'retain')
-  myFormData.append('opts[query_mode]', 'true')
-  myFormData.append('words', searchTerm)
-  myFormData.append('docs[0]', origHTML)
-
-  const myOptions = {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    body: myFormData // body data type must match "Content-Type" header
-  }
-
-  // Send request and handle response
-  window.fetch(endpoint, myOptions)
-    .then(response => { // Check network status and return response's text content
-      if (!response.ok) {
-        console.log(myOptions)
-        throw new Error('Network response was not OK')
-      }
-      return response.text()
-    })
-    .then(str => { // Parse OpenSearch xml document and return rss/channel
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(str, 'text/html')
-      const errorNode = doc.querySelector('parsererror')
-      // console.log('This is string: ' + str)
-      if (errorNode) {
-        throw new Error('Response could not be parsed as html')
-      }
-      return doc.getElementsByTagName('channel')[0]
-    })
-    .then(data => { // Push highlighted HTML to target element
-      const doc1 = data.getElementsByTagName('item')[0].getElementsByTagName('description')[0].innerHTML
-      console.log('Replacing targetElement.innerHTML with highlighted HTML.')
-      targetElement.innerHTML = doc1
-    })
-    .then(_ => { // Update minimap
-      pagemap(document.getElementById('minimap'), {
-        viewport: null,
-        styles: {
-          'header,footer,section,article': 'rgba(0,0,0,0.38)',
-          'div': 'rgba(0,0,0,0.01)',
-          'h1,a': 'rgba(0,0,100,0.30)',
-          'h2,h3,h4': 'rgba(0,0,0,0.38)',
-          'span.hi': 'rgba(253,185,36,0.90)'
-        },
-        back: 'rgba(0,0,0,0.02)',
-        view: 'rgba(0,0,0,0.10)',
-        drag: 'rgba(0,0,0,0.40)',
-        interval: null
-      })
-    })
-    .catch(error => {
-      console.error('There has been a problem with the fetch operation in highlightSearch(): ', error)
-    })
-}
 
 // This checks if a searchTerm URL query parameter is present (?q=XY)
 // and, if so, replaces innerHTML of the InfiniteAjaxScroll container element
@@ -86,9 +15,7 @@ function highlightSearchTerm () {
 
     // also update the links to next/prev/top inside the iasContainer
     $('.next, .prev, .top').each(function (i, obj) {
-      let nextParams = (new URL(obj.href)).searchParams
-      nextParams.set('q', searchTerm)
-      obj.href = obj.pathname + '?' + nextParams
+      obj.href = obj.pathname + '?' + params
     })
 
   // enable minimap for search results
@@ -96,6 +23,84 @@ function highlightSearchTerm () {
   } else {
     document.getElementById('minimap').style.visibility = 'hidden'
   }
+}
+
+// This replaces innerHTML of a target element
+// with a highlighted version of the original HTML
+async function highlightReplace (origHTML, searchTerm, targetElement) {
+  // check if target element exists
+  if (targetElement === null) {
+    return
+  }
+
+  console.log(`Requesting highlighting of html with searchTerm ${searchTerm} ...`)
+
+  // construct POST request
+  const endpoint = SPHINX_SERVER + '/excerpts'
+  const myFormData = new FormData()
+  myFormData.append('opts[limit]', '0')
+  myFormData.append('opts[html_strip_mode]', 'retain')
+  myFormData.append('opts[query_mode]', 'true')
+  myFormData.append('words', searchTerm)
+  myFormData.append('docs[0]', origHTML)
+  const myOptions = {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    body: myFormData // body data type must match "Content-Type" header
+  }
+
+  // Send request and handle response
+  window
+    .fetch(endpoint, myOptions)
+    .then((response) => {
+      // Check network status and return response's text content
+      if (!response.ok) {
+        console.log(myOptions)
+        throw new Error('Network response was not OK')
+      }
+      return response.text()
+    })
+    .then((str) => {
+      // Parse OpenSearch xml document and return rss/channel
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(str, 'text/xml')
+      const errorNode = doc.querySelector('parsererror')
+      // console.log('This is string: ' + str)
+      if (errorNode) {
+        throw new Error('Response could not be parsed as xml')
+      }
+      return doc.getElementsByTagName('channel')[0]
+    })
+    .then((data) => {
+      // Push highlighted HTML to target element
+      // This can be unsanitized because we control the data source
+      const doc1 = data
+        .getElementsByTagName('item')[0]
+        .getElementsByTagName('description')[0].innerHTML
+      console.log('Replacing targetElement.innerHTML with highlighted HTML.')
+      targetElement.innerHTML = doc1
+    })
+    /*
+    .then((_) => {
+      // Update minimap
+        pagemap(document.getElementById('minimap'), {
+          viewport: null,
+          styles: {
+            'header,footer,section,article': 'rgba(0,0,0,0.38)',
+            'div': 'rgba(0,0,0,0.01)',
+            'h1,a': 'rgba(0,0,100,0.30)',
+            'h2,h3,h4': 'rgba(0,0,0,0.38)',
+            'span.hi': 'rgba(253,185,36,0.90)'
+          },
+          back: 'rgba(0,0,0,0.02)',
+          view: 'rgba(0,0,0,0.10)',
+          drag: 'rgba(0,0,0,0.40)',
+          interval: null
+        })
+    })
+    */
+    .catch((error) => {
+      console.error('There has been a problem with the fetch operation in highlightSearch(): ', error)
+    })
 }
 
 // ===== Entity highlighting =====
@@ -115,7 +120,7 @@ function highlightSpanClassInText (htmlClass, invokingElement) {
 }
 
 function toolboxHighlight (elem, mode) {
-  const target = elem.className === "sal-toolbox" ? elem : elem.parentElement.nextElementSibling;
+  const target = elem.className === 'sal-toolbox' ? elem : elem.parentElement.nextElementSibling
   if (target !== undefined && mode === 'on') {
     if (elem.closest('.sal-toolbox-marginal')) {
       elem.style.visibility = 'visible'
@@ -125,20 +130,17 @@ function toolboxHighlight (elem, mode) {
       target.style.backgroundColor = '#F0F0F0'
     }
   } else if (target !== undefined && mode === 'off') {
-console.log(elem)
-   // elem.closest('.sal-toolbox').children('span').style.removeProperty('color')
-     //elem.closest('span').parentElement.style.removeProperty('color')
- //elem.closest('span').parentElement.style.removeProperty('background-color')
-console.log(elem.className)
-console.log(elem.style)
+    console.log(elem)
+    // elem.closest('.sal-toolbox').children('span').style.removeProperty('color')
+    // elem.closest('span').parentElement.style.removeProperty('color')
+    // elem.closest('span').parentElement.style.removeProperty('background-color')
+    console.log(elem.className)
+    console.log(elem.style)
     if (target !== null) {
       target.style.backgroundColor = ''
-      
-
-      }
+    }
     if (elem.closest('.sal-toolbox-marginal')) {
-    
-elem.style.visibility = 'hidden'
+      elem.style.visibility = 'hidden'
     }
   }
 }
@@ -151,23 +153,49 @@ $('#hiliteBox a.highlighted').each(function () {
 
 // ===== Passage context/hand menu: Cite, Copy link, Export =====
 
-// Initialize paragraph popups with link, refresh and print icons
-$('[data-rel="popover"]').popover({
-  trigger: 'click',
-  animation: 'true',
-  placement: 'bottom',
-  container: 'body',
-  template: '<div class="popover sal-toolbox-body"><div class="popover-content"></div></div>',
-  html: true,
-  title: function () { return $('#popover-head').html() },
-  content: function () {
-    toolboxHighlight(this, 'on')
-    return $(this).siblings('.sal-toolbox-body').html() 
-  }
-})
+function initializePopupsAndHighlighting () {
+  // Initialize paragraph popups with link, refresh and print icons
+  $('[data-rel="popover"]').popover({
+    trigger: 'click',
+    animation: 'true',
+    placement: 'bottom',
+    container: 'body',
+    template:
+      '<div class="popover sal-toolbox-body"><div class="popover-content"></div></div>',
+    html: true,
+    title: function () {
+      return $('#popover-head').html()
+    },
+    content: function () {
+      var target = $(this)
+      if (!target.data('popover-initialized')) {
+        toolboxHighlight(this, 'on')
+        target.data('popover-initialized', true)
+        // Reset the flag when the popover is hidden
+        target.on('hidden.bs.popover', function () {
+          target.removeData('popover-initialized')
+        })
+      }
+      return target.siblings('.sal-toolbox-body').html()
+    }
+  })
 
-// Add tooltip
-$('.messengers').tooltipster({'multiple': true})
+  // Add tooltip
+  $('.messengers').tooltipster({'multiple': true})
+
+  // Add entity highlighting as needed
+  $('#hiliteBox a.highlighted').each(function () {
+    $(this).click() // this disables highlighting
+    $(this).click() // this re-enables it
+    console.log('This is hilitebox initializer')
+  })
+
+  // Show Beta features if applicable
+  showBeta()
+
+  // enable minimap for search results
+  // document.getElementById("minimap").style.visibility = "visible"
+}
 
 // Helper function
 function copyNotify (elem) {
@@ -234,21 +262,19 @@ function copyCitRef (elem) {
 // Bind all click events
 document.body.addEventListener('click', async function (e) {
   const t = e.target
-const targ = $(event.target)
-//  $('.collapse .navbar-collapse').collapse('hide') // Hide collapsible menu after clicking anywhere
-//console.log('element collapsed')
+  // $('.collapse .navbar-collapse').collapse('hide') // Hide collapsible menu after clicking anywhere
+  // console.log('element collapsed')
   // Click outside of popover: close popover and no longer highlight text section
   // (and continue checking against all the other event listeners)
   if (!t.closest('[data-rel="popover"]')) {
- let salToolbox = t
-console.log(targ.parents('div.sal-toolbox-body').siblings('a'))
+    let salToolbox = t
+    console.log(t.parents('div.sal-toolbox-body').siblings('a'))
     $('[data-rel="popover"]').popover('hide')
-
-toolboxHighlight(salToolbox, 'off')
+    toolboxHighlight(salToolbox, 'off')
   }
- $('.collapse .navbar-collapse').collapse('hide') // Hide collapsible menu after clicking anywhere
- console.log('element collapsed')
-//Problem here: the glyphicon-resize-small in useless, as only the cross can close the ToC.
+  $('.collapse .navbar-collapse').collapse('hide') // Hide collapsible menu after clicking anywhere
+  console.log('element collapsed')
+  // Problem here: the glyphicon-resize-small in useless, as only the cross can close the ToC.
   if (t.matches('#toggleButton')) { // toggle ToC tree: expand/collapse
     if (t.hasClass('expanded')) {
       $('#tableOfConts').jstree('close_all')
@@ -270,7 +296,7 @@ toolboxHighlight(salToolbox, 'off')
     console.log(`Stop event propagation for ${e} ...`)
     e.stopPropagation()
     $(t.closest('[data-rel="popover"]')).popover('show')
-      console.log("inside addEventListener, toolboxhighlight") 
+    console.log('inside addEventListener, toolboxhighlight')
     toolboxHighlight(t, 'on')
   }
 })
@@ -296,9 +322,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
       document.location.href = href
     })
     .jstree({ 'core': { } })
+
+  // apply search term highlighting
+  highlightSearchTerm()
 })
 
 window.addEventListener('load', async function (e) {
-  // apply search term highlighting
-  highlightSearchTerm()
+  // initialize context menu and highlighting (so late because it may need
+  // to apply to asynchronously loaded data)
+  initializePopupsAndHighlighting()
 })
