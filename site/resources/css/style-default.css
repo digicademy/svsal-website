@@ -173,6 +173,30 @@ border-color:#337ab7
 background-color:white
 }
 
+/* Beta toggle button - hidden/invisible but clickable */
+/* Available on all screen resolutions at leftmost edge of navbar */
+.beta-toggle-btn {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1051;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.beta-toggle-btn:hover,
+.beta-toggle-btn:focus {
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
 /* Buttons */
 .btn-sample:hover, 
 .btn-sample:focus, 
