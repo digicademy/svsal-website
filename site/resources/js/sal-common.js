@@ -25,7 +25,22 @@ $('.carousel').carousel({ interval: 1500 * 10 }) // interval is in milliseconds.
 const validParams = ['mode', 'format', 'viewer', 'beta', 'lang', 'q', 'field', 'offset', 'limit', 'wid', 'frag']
 const params = (new URL(window.location.href)).searchParams
 sanitizeParams()
-const BETA = Boolean(params.get('beta'))
+
+// Beta mode: check localStorage first, then URL parameter
+let betaMode = localStorage.getItem('betaMode') === 'true'
+if (params.get('beta')) {
+  betaMode = true
+  localStorage.setItem('betaMode', 'true')
+}
+// Apply beta mode from localStorage if not in URL
+if (betaMode && !params.get('beta')) {
+  params.set('beta', 'true')
+  // Update URL without reloading the page
+  const newUrl = new URL(window.location.href)
+  newUrl.searchParams.set('beta', 'true')
+  window.history.replaceState(null, '', newUrl.toString())
+}
+const BETA = betaMode
 
 // Sanitize URL query parameters
 function sanitizeParams () {
@@ -84,6 +99,27 @@ function showBeta () {
       el.style.display = 'block'
     })
   }
+}
+
+// Toggle beta mode
+// eslint-disable-next-line no-unused-vars
+function toggleBetaMode () {
+  const currentBeta = localStorage.getItem('betaMode') === 'true'
+  const newBeta = !currentBeta
+  
+  // Update localStorage
+  localStorage.setItem('betaMode', newBeta.toString())
+  
+  // Update URL and reload page to apply changes
+  const newUrl = new URL(window.location.href)
+  if (newBeta) {
+    newUrl.searchParams.set('beta', 'true')
+  } else {
+    newUrl.searchParams.delete('beta')
+  }
+  
+  // Reload the page with the new beta state
+  window.location.href = newUrl.toString()
 }
 
 // ==== Other helper functions ====
