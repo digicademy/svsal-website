@@ -73,6 +73,12 @@ async function showEmbeddingsExperiment (elem) {
   try {
     // First request: get similar text IDs
     const response = await fetch(queryURL, {method: 'GET', headers: getHeaders})
+    if (response.status === 404) {
+      document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
+      document.getElementById('embeddings_experiment_text').textContent = `For the passage you have requested, no set of similar passages could be retrieved (404 error). One possible cause could be that for the passage in question, no embeddings have been created and uploaded yet.`
+      hideSpinnerMedium()
+      return
+    }
     if (!response.ok) {
       throw new Error('Network response was not OK')
     }
