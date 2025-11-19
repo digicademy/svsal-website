@@ -45,15 +45,18 @@ async function showEmbeddingsExperiment (elem) {
   $('[data-rel="popover"]').popover('hide')
 
   // Prompt for VDB API key
-  const VDB_API_KEY = await getVdbAPIKey()
+  // DISABLED: VDB API key is no longer required for accessing the vector database
+  // const VDB_API_KEY = await getVdbAPIKey()
 
   // If user cancelled or didn't provide a key, show message and exit
-  if (!VDB_API_KEY) {
-    document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
-    document.getElementById('embeddings_experiment_text').textContent = 'API key required to retrieve similar texts.'
-    hideSpinnerMedium()
-    return
-  }
+  // DISABLED: VDB API key is no longer required
+  // if (!VDB_API_KEY) {
+  //   document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
+  //   document.getElementById('embeddings_experiment_text').textContent = 'API key required to retrieve similar texts.'
+  //   hideSpinnerMedium()
+  //   return
+  // }
+  const VDB_API_KEY = null // Not used anymore
 
   const targetIDEncoded = encodeURIComponent(targetID)
   const authorEncoded = encodeURIComponent(document.querySelector('meta[name="author"]').content)
@@ -61,7 +64,9 @@ async function showEmbeddingsExperiment (elem) {
                       '?threshold=' + EMBEDDINGS_THRESHOLD +
                       '&limit=' + EMBEDDINGS_LIMIT +
                       '&metadata_path=author&metadata_value=' + authorEncoded
-  const getHeaders = { 'Authorization': `Bearer ${VDB_API_KEY}`, 'Content-Type': 'application/json' }
+  // DISABLED: VDB API key is no longer required, but keeping code structure for potential future use
+  // const getHeaders = { 'Authorization': `Bearer ${VDB_API_KEY}`, 'Content-Type': 'application/json' }
+  const getHeaders = { 'Content-Type': 'application/json' }
   var count = 0
 
   // Send async request and handle response
@@ -560,8 +565,10 @@ function addResetAPIKeyButtons () {
     const vdbStored = !!getStoredAPIKey('vdb_api_key')
     const openaiStored = !!getStoredAPIKey('openai_api_key')
 
+    // DISABLED: VDB API Key section removed from menu as it's no longer required
     menu.innerHTML = `
       <div style="padding: 6px 8px; border-bottom: 1px solid #eee; font-weight: bold;">API Key Management</div>
+      <!--
       <div style="padding: 8px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f5f5f5;">
         <div>
           <div style="font-size:0.95em;">VDB API Key</div>
@@ -571,6 +578,7 @@ function addResetAPIKeyButtons () {
           <button type="button" id="forget-vdb-key-btn" style="padding:6px 8px; margin-left:8px;">${vdbStored ? 'Forget' : 'Set'}</button>
         </div>
       </div>
+      -->
       <div style="padding: 8px; display:flex; justify-content:space-between; align-items:center;">
         <div>
           <div style="font-size:0.95em;">OpenAI API Key</div>
@@ -584,33 +592,37 @@ function addResetAPIKeyButtons () {
     titleBar.appendChild(menu)
 
     // VDB handler: remove menu first, then act (await prompt safely)
-    menu.querySelector('#forget-vdb-key-btn').addEventListener('click', async (ev) => {
-      ev.stopPropagation()
-      const btn = ev.currentTarget
-      btn.disabled = true
-      // remove menu to avoid UI overlap with prompt
-      menu.parentNode && menu.parentNode.removeChild(menu)
-
-      const currentlyStored = !!getStoredAPIKey('vdb_api_key')
-      if (currentlyStored) {
-        if (confirm('Are you sure you want to forget your VDB API key?')) {
-          deleteStoredAPIKey('vdb_api_key')
-        }
-        btn.disabled = false
-        return
-      }
-
-      try {
-        const key = await promptForAPIKey('vdb')
-        if (key) {
-          storeEncryptedAPIKey('vdb_api_key', key)
-        }
-      } catch (err) {
-        console.error('Error setting VDB key from menu:', err)
-      } finally {
-        btn.disabled = false
-      }
-    })
+    // DISABLED: VDB API key is no longer required
+    // const vdbBtn = menu.querySelector('#forget-vdb-key-btn')
+    // if (vdbBtn) {
+    //   vdbBtn.addEventListener('click', async (ev) => {
+    //     ev.stopPropagation()
+    //     const btn = ev.currentTarget
+    //     btn.disabled = true
+    //     // remove menu to avoid UI overlap with prompt
+    //     menu.parentNode && menu.parentNode.removeChild(menu)
+    //
+    //     const currentlyStored = !!getStoredAPIKey('vdb_api_key')
+    //     if (currentlyStored) {
+    //       if (confirm('Are you sure you want to forget your VDB API key?')) {
+    //         deleteStoredAPIKey('vdb_api_key')
+    //       }
+    //       btn.disabled = false
+    //       return
+    //     }
+    //
+    //     try {
+    //       const key = await promptForAPIKey('vdb')
+    //       if (key) {
+    //         storeEncryptedAPIKey('vdb_api_key', key)
+    //       }
+    //     } catch (err) {
+    //       console.error('Error setting VDB key from menu:', err)
+    //     } finally {
+    //       btn.disabled = false
+    //     }
+    //   })
+    // }
 
     // OpenAI handler: same pattern
     menu.querySelector('#forget-openai-key-btn').addEventListener('click', async (ev) => {
