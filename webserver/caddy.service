@@ -13,10 +13,13 @@ StartLimitBurst=10
 [Service]
 Restart=on-failure
 RestartSec=1080
+TimeoutSec=900
 
 ; User and group the process will run as.
 User=www-data
 Group=podman
+
+Environment="DOMAIN=salamanca.school"
 
 ; Commands to start/reload/stop the server and extend the stock configuration with available routes
 ExecStart=/usr/local/bin/caddy run --config /etc/caddy/caddy_config.json

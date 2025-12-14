@@ -1,0 +1,33 @@
+[Unit]
+Description=any23 Podman Container
+After=network.target
+
+[Service]
+Type=simple
+TimeoutStartSec=450
+RestartSec=60
+
+ExecStartPre=-/bin/rm -f /tmp/any23-container.pid /tmp/any23-container.cid
+User=any23
+
+ExecStart=/usr/bin/podman run \
+  --rm \
+  --name any23 \
+  -v /dev/log:/dev/log \
+  -p 8880:8880 \
+  --network="host" \
+  --conmon-pidfile /tmp/any23-container.pid \
+  --cidfile /tmp/any23-container.cid \
+  "/var/data/any23/"
+
+ExecStop=/bin/sh -c "/usr/bin/podman stop -t 20 --cidfile=/tmp/any23-container.cid"
+ExecStop=/bin/sh -c "/usr/bin/podman stop -i -t 20 any23"
+ExecStop=/bin/sh -c "/usr/bin/podman rm -f --cidfile=/tmp/any23-container.cid"
+ExecStop=/bin/sh -c "/usr/bin/podman rm -i any23"
+
+Restart=on-failure
+KillMode=none
+PIDFile=/tmp/any23-container.pid
+
+[Install]
+WantedBy=multi-user.target

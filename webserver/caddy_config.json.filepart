@@ -3,22 +3,51 @@
     "logs": {
       "default": {
         "writer": {
-          "filename": "/var/log/caddy/access.log",
+          "filename": "/var/log/caddy/caddy.log",
           "output": "file"
         },
         "encoder": {
           "fields": {
+            "request>client_ip": {
+              "filter": "ip_mask"
+            },
+            "request>headers>X-Forwarded-For": {
+              "filter": "ip_mask"
+            },
             "request>remote_ip": {
-              "filter": "ip_mask",
-              "ipv4_cidr": 1,
-              "ipv6_cidr": 56
+              "filter": "ip_mask"
             }
           },
-          "format":"filter",
+          "format": "filter",
           "wrap": {
-            "format":"console"
+            "format": "console"
           }
-        }
+        },
+        "exclude":[
+          "http.log.access.log0",
+          "http.log.access.log1"
+        ],
+        "level": "info"
+      },
+      "log0": {
+        "writer": {
+          "filename": "/var/log/caddy/access.log",
+          "output":"file"
+        },
+        "encoder": {
+          "format": "json"
+        },
+        "level": "info",
+        "include": [
+          "http.log.access.log0",
+          "http.log.access.log1",
+          "http.log.access.log2",
+          "http.log.access.log3",
+          "http.log.access.log4",
+          "http.log.access.log5",
+          "http.log.access.log6",
+          "http.log.access.log7"
+        ]
       }
     }
   },
@@ -31,13 +60,7 @@
           ],
           "routes": [
             {
-              "match": [
-                {
-                  "host": [
-                    "search.salamanca.school"
-                  ]
-                }
-              ],
+              "match": [ { "host": [ "search.salamanca.school" ] } ],
               "handle": [
                 {
                   "handler": "subroute",
@@ -172,13 +195,7 @@
               "terminal": true
             },
             {
-              "match": [
-                {
-                  "host": [
-                    "blog.salamanca.school"
-                  ]
-                }
-              ],
+              "match": [ { "host": [ "blog.salamanca.school" ] } ],
               "handle": [
                 {
                   "handler": "subroute",
@@ -313,13 +330,7 @@
               "terminal": true
             },
             {
-              "match": [
-                {
-                  "host": [
-                    "salamanca.school"
-                  ]
-                }
-              ],
+              "match": [ { "host": [ "salamanca.school" ] } ],
               "handle": [
                 {
                   "handler": "subroute",
@@ -343,15 +354,7 @@
               "terminal": true
             },
             {
-              "match": [
-                {
-                  "host": [
-                    "c100-101.cloud.gwdg.de",
-                    "salamanca.school",
-                    "www.salamanca.school"
-                  ]
-                }
-              ],
+              "match": [ { "host": [ "c100-101.cloud.gwdg.de", "salamanca.school", "www.salamanca.school" ] } ],
               "handle": [
                 {
                   "handler": "subroute",
@@ -503,13 +506,7 @@
               "terminal": true
             },
             {
-              "match": [
-                {
-                  "host": [
-                    "files.salamanca.school"
-                  ]
-                }
-              ],
+              "match": [ { "host": [ "files.salamanca.school" ] } ],
               "handle": [
                 {
                   "encodings": {
@@ -560,13 +557,7 @@
               "terminal": true
             },
             {
-              "match": [
-                {
-                  "host": [
-                    "api.salamanca.school"
-                  ]
-                }
-              ],
+              "match": [ { "host": [ "api.salamanca.school" ] } ],
               "handle": [
                 {
                   "handler": "subroute",
@@ -1300,7 +1291,7 @@
                         {
                           "handler": "log_append",
                           "key": "reason",
-                          "value": "Blocked for suspect User Agent value: {http.request.header.User-Agent}"
+                          "value": "Blocked for suspect User Agent value"
                         },
                         {
                           "handler": "static_response",
@@ -1369,7 +1360,7 @@
                           },
                           "upstreams": [
                             {
-                              "dial": "localhost:8080"
+                              "dial": "localhost:3000"
                             }
                           ]
                         }
@@ -1381,13 +1372,7 @@
               "terminal": true
             },
             {
-              "match": [
-                {
-                  "host": [
-                    "id.salamanca.school"
-                  ]
-                }
-              ],
+              "match": [ { "host": [ "id.salamanca.school" ] } ],
               "handle": [
                 {
                   "handler": "subroute",
@@ -2121,7 +2106,7 @@
                         {
                           "handler": "log_append",
                           "key": "reason",
-                          "value": "Blocked for suspect User Agent value: {http.request.header.User-Agent}"
+                          "value": "Blocked for suspect User Agent value"
                         },
                         {
                           "handler": "static_response",
@@ -2610,6 +2595,27 @@
                                 }
                               ]
                             },
+
+                            {
+                              "match": [
+                                {
+                                  "header": {
+                                    "Sec-Fetch-Mode": null,
+                                    "User-Agent": [
+                                      "*Firefox/*",
+                                      "*Chrome/*"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "handle": [
+                                {
+                                  "handler": "static_response",
+                                  "status_code": 403
+                                }
+                              ]
+                            },
+
                             {
                               "group": "group9",
                               "handle": [
@@ -2640,7 +2646,7 @@
                                   },
                                   "upstreams": [
                                     {
-                                      "dial": "localhost:8080"
+                                      "dial": "localhost:3000"
                                     }
                                   ]
                                 }
@@ -2656,13 +2662,7 @@
               "terminal": true
             },
             {
-              "match": [
-                {
-                  "host": [
-                    "facs.salamanca.school"
-                  ]
-                }
-              ],
+              "match": [ { "host": [ "facs.salamanca.school" ] } ],
               "handle": [
                 {
                   "handler": "subroute",
@@ -2905,7 +2905,19 @@
               ],
               "terminal": true
             }
-          ]
+          ],
+          "logs": {
+            "logger_names": {
+              "salamanca.school": "log0",
+              "api.salamanca.school": "log0",
+              "blog.salamanca.school": "log0",
+              "facs.salamanca.school": "log0",
+              "files.salamanca.school": "log0",
+              "id.salamanca.school": "log0",
+              "search.salamanca.school": "log0",
+              "www.salamanca.school": "log0"
+            }
+          }
         }
       }
     },

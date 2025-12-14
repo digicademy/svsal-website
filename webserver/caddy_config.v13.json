@@ -7,18 +7,9 @@
           "output": "file"
         },
         "encoder": {
-          "fields": {
-            "request>remote_ip": {
-              "filter": "ip_mask",
-              "ipv4_cidr": 1,
-              "ipv6_cidr": 56
-            }
-          },
-          "format":"filter",
-          "wrap": {
-            "format":"console"
-          }
-        }
+          "format": "console"
+        },
+        "level": "DEBUG"
       }
     }
   },
@@ -1298,11 +1289,6 @@
                       ],
                       "handle": [
                         {
-                          "handler": "log_append",
-                          "key": "reason",
-                          "value": "Blocked for suspect User Agent value: {http.request.header.User-Agent}"
-                        },
-                        {
                           "handler": "static_response",
                           "status_code": 403
                         }
@@ -2118,11 +2104,6 @@
                         }
                       ],
                       "handle": [
-                        {
-                          "handler": "log_append",
-                          "key": "reason",
-                          "value": "Blocked for suspect User Agent value: {http.request.header.User-Agent}"
-                        },
                         {
                           "handler": "static_response",
                           "status_code": 403

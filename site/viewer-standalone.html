@@ -30,7 +30,7 @@
             const params = (new URL(window.location.href)).searchParams
 
             function getLang() {
-                if (params.get('lang').length > 0)
+                if (params.get('lang') && params.get('lang').length > 0)
                     return params.get('lang')
                 else if (window.location.href.indexOf("_es") > -1)
                     return 'es'

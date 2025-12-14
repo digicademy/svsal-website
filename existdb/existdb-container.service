@@ -7,31 +7,35 @@ Type=simple
 TimeoutStartSec=450
 RestartSec=120
 
-ExecStartPre=-/usr/bin/rm -f %T/%n.pid %T/%n.cid
+ExecStartPre=-/bin/rm -f /tmp/existdb-container.pid /tmp/existdb-container.cid
 User=existdb
 
 ExecStart=/usr/bin/podman run \
+  --rm \
+  --replace \
   --name existdb \
+  --memory 10g \
   -v /var/data/existdb/data:/exist/data \
   -v /var/data/existdb/logs:/exist/logs \
+  -v /var/data/existdb/conf/log4j2.xml:/exist/etc/log4j2.xml \
   -p 8080:8080 \
   -p 8443:8443 \
-  --conmon-pidfile %T/%n.pid \
-  --cidfile %T/%n.cid \
-  --network=host \
-  -e JAVA_TOOL_OPTIONS='-Xmx7g -Xms7g -Dfile.encoding=UTF8 -Dsun.jnu.encoding=UTF-8 -Djava.awt.headless=true -Dorg.exist.db-connection.cacheSize=256M -Dorg.exist.db-connection.pool.max=20 -Dlog4j.configurationFile=/exist/etc/log4j2.xml -Dexist.home=/exist -Dexist.configurationFile=/exist/etc/conf.xml -Djetty.home=/exist -Dexist.jetty.config=/exist/etc/jetty/standard.enabled-jetty-configs -XX:+UseG1GC -XX:+UseStringDeduplication -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError' \
-  existdb/existdb:latest
-#  --detach \
-#  --rm \
+  --network="host" \
+  --conmon-pidfile /tmp/existdb-container.pid \
+  --cidfile /tmp/existdb-container.cid \
+  -e JAVA_TOOL_OPTIONS='-Xmx8g -Xms2g -Dorg.exist.db-connection.cacheSize=512m -Dorg.exist.db-connection.pool.max=30 -Dexist.home=/exist -Dlog4j.configurationFile=/exist/etc/log4j2.xml -Dexist.configurationFile=/exist/etc/conf.xml -Djetty.home=/exist -Dexist.jetty.config=/exist/etc/jetty/standard.enabled-jetty-configs -Djava.awt.headless=true -XX:+UseG1GC -XX:+UseStringDeduplication -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/exist/data/heapdump.bin -Dfile.encoding=UTF8 -Dsun.jnu.encoding=UTF-8' \
+  "docker.io/existdb/existdb:7.0.0-SNAPSHOT-DEBUG"
 
-ExecStop=/usr/bin/sh -c "/usr/bin/podman stop -t 30 `cat %T/%n.cid`"
-ExecStop=/usr/bin/sh -c "/usr/bin/podman stop existdb"
-# ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat %T/%n.cid`"
-# ExecStop=/usr/bin/sh -c "/usr/bin/podman rm existdb"
+  # "docker.io/existdb/existdb:6.4.0-DEBUG"
+  # "docker.io/existdb/existdb:6.2.0-DEBUG"
+
+ExecStop=/bin/sh -c "/usr/bin/podman stop -t 20 --cidfile=/tmp/existdb-container.cid"
+ExecStop=/bin/sh -c "/usr/bin/podman stop -i -t 20 existdb"
+ExecStop=/bin/sh -c "/usr/bin/podman rm -f --cidfile=/tmp/existdb-container.cid"
+ExecStop=/bin/sh -c "/usr/bin/podman rm -i existdb"
 
 Restart=on-failure
-# KillMode=none
-PIDFile=%T/%n.pid
+PIDFile=/tmp/existdb-container.pid
 
 [Install]
 WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=any23
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/etc/init.d/any23 start
+ExecStop=/etc/init.d/any23 stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

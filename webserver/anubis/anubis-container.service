@@ -1,0 +1,37 @@
+[Unit]
+Description=Anubis Podman Container
+After=network.target
+
+[Service]
+Type=simple
+TimeoutStartSec=450
+RestartSec=120
+
+ExecStartPre=-/bin/rm -f /tmp/anubis-container.pid /tmp/anubis-container.cid
+# User=anubis
+
+ExecStart=/usr/bin/podman run \
+  --rm \
+  --replace \
+  --name anubis \
+  -p 3000:3000 \
+  --network="host" \
+  --env 'BIND=:3000' \
+  --env 'TARGET=http://localhost:8080' \
+  --env 'COOKIE_SECURE=false' \
+  --conmon-pidfile /tmp/anubis-container.pid \
+  --cidfile /tmp/anubis-container.cid \
+  "ghcr.io/techarohq/anubis:latest"
+
+#  --env 'REDIRECT_DOMAINS="salamanca.school,*.salamanca.school,salamanca.school:3000,salamanca.school:8080,www.salamanca.school:8080"' \
+
+ExecStop=/bin/sh -c "/usr/bin/podman stop -t 20 --cidfile=/tmp/anubis-container.cid"
+ExecStop=/bin/sh -c "/usr/bin/podman stop -i -t 20 anubis"
+ExecStop=/bin/sh -c "/usr/bin/podman rm -f --cidfile=/tmp/anubis-container.cid"
+ExecStop=/bin/sh -c "/usr/bin/podman rm -i anubis"
+
+Restart=on-failure
+PIDFile=/tmp/anubis-container.pid
+
+[Install]
+WantedBy=multi-user.target
