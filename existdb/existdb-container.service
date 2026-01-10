@@ -18,15 +18,18 @@ ExecStart=/usr/bin/podman run \
   -v /var/data/existdb/data:/exist/data \
   -v /var/data/existdb/logs:/exist/logs \
   -v /var/data/existdb/conf/log4j2.xml:/exist/etc/log4j2.xml \
+  -v /var/data/existdb/conf/jetty-ssl-context.xml:/exist/etc/jetty/jetty-ssl-context.xml \
+  -v /var/data/existdb/conf/salamanca.p12:/exist/etc/jetty/keystore.p12 \
   -p 8080:8080 \
   -p 8443:8443 \
   --network="host" \
   --conmon-pidfile /tmp/existdb-container.pid \
   --cidfile /tmp/existdb-container.cid \
   -e JAVA_TOOL_OPTIONS='-Xmx8g -Xms2g -Dorg.exist.db-connection.cacheSize=512m -Dorg.exist.db-connection.pool.max=30 -Dexist.home=/exist -Dlog4j.configurationFile=/exist/etc/log4j2.xml -Dexist.configurationFile=/exist/etc/conf.xml -Djetty.home=/exist -Dexist.jetty.config=/exist/etc/jetty/standard.enabled-jetty-configs -Djava.awt.headless=true -XX:+UseG1GC -XX:+UseStringDeduplication -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/exist/data/heapdump.bin -Dfile.encoding=UTF8 -Dsun.jnu.encoding=UTF-8' \
-  "docker.io/existdb/existdb:7.0.0-SNAPSHOT-DEBUG"
+  "docker.io/existdb/existdb:6.4.0-DEBUG"
 
-  # "docker.io/existdb/existdb:6.4.0-DEBUG"
+  # -v /var/data/existdb/conf/keystore.p12:/exist/etc/jetty/keystore.p12 \
+  # "docker.io/existdb/existdb:7.0.0-SNAPSHOT-DEBUG"
   # "docker.io/existdb/existdb:6.2.0-DEBUG"
 
 ExecStop=/bin/sh -c "/usr/bin/podman stop -t 20 --cidfile=/tmp/existdb-container.cid"
