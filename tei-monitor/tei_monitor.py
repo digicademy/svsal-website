@@ -64,11 +64,12 @@ STATUS_WARNING = ('warning', '#FFEB3B', 'Warning')
 MONITORED_FILE_TYPES = {
     'tei_xml', 'node_index', 'manifest', 'details',
     'toc', 'pages', 'routes', 'pdf', 'text_edit',
-    'text_orig', 'csv', 'html_fragments', 'snippets'
+    'text_orig', 'csv', 'html_fragments', 'snippets',
+    'stats'
 }
 
 # File types displayed but not monitored (yet)
-UNMONITORED_FILE_TYPES = {'stats', 'rdf'}
+UNMONITORED_FILE_TYPES = {'rdf'}
 
 ##############################################################################
 # Logging Helper
@@ -705,13 +706,16 @@ class WorkAnalysis:
         else:
             snippets_status = STATUS_NA
 
-        # CSV - with row count
-        csv_path = self.work_dir / f"{self.work_id}.csv"
-        csv_rows = count_csv_rows(csv_path)
-        csv_status = check_file_status(csv_path, self.reference_time, require_content)
-        if csv_rows is not None and csv_status[0] != 'na':
-            csv_status = (csv_status[0], csv_status[1],
-                         f"{csv_status[2]}<br>{csv_rows} rows")
+        # CSV - with row count (N/A for metadata-only)
+        if self.is_dummy:
+            csv_status = STATUS_NA
+        else:
+            csv_path = self.work_dir / f"{self.work_id}.csv"
+            csv_rows = count_csv_rows(csv_path)
+            csv_status = check_file_status(csv_path, self.reference_time, require_content)
+            if csv_rows is not None and csv_status[0] != 'na':
+                csv_status = (csv_status[0], csv_status[1],
+                             f"{csv_status[2]}<br>{csv_rows} rows")
 
         # Routes - with route count
         routes_path = self.work_dir / f"{self.work_id}_routes.json"
@@ -721,9 +725,12 @@ class WorkAnalysis:
             routes_status = (routes_status[0], routes_status[1],
                             f"{routes_status[2]}<br>{route_count} routes")
 
-        # Stats - NOT monitored for issues
-        stats_path = self.work_dir / f"{self.work_id}-stats.json"
-        stats_status = check_file_status(stats_path, self.reference_time, True, monitored=False)
+        # Stats - NOT monitored for issues (N/A for metadata-only)
+        if self.is_dummy:
+            stats_status = STATUS_NA
+        else:
+            stats_path = self.work_dir / f"{self.work_id}-stats.json"
+            stats_status = check_file_status(stats_path, self.reference_time, True, monitored=False)
 
         # RDF - NOT monitored for issues
         rdf_path = self.work_dir / f"{self.work_id}.rdf"
@@ -1201,8 +1208,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         <th>Snippets</th>
                         <th>CSV</th>
                         <th>Routes</th>
-                        <th class="unmonitored-header">Stats</th>
-                        <th class="unmonitored-header">RDF</th>
+                        <th{stats_header_class}>Stats</th>
+                        <th{rdf_header_class}>RDF</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1229,8 +1236,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
                 // Check for issues (missing or stale cells, but not in unmonitored columns)
                 if (showIssuesOnly) {{
-                    // Get all cells except Stats and RDF (last two columns)
-                    const cells = Array.from(row.cells).slice(0, -2);
+                    // Get all cells except those with unmonitored-column class
+                    const cells = Array.from(row.cells).filter(cell => !cell.classList.contains('unmonitored-column'));
                     const hasIssues = cells.some(cell =>
                         cell.classList.contains('status-missing') ||
                         cell.classList.contains('status-stale')
@@ -1618,17 +1625,19 @@ def generate_html(analyses: List[Dict]) -> str:
     else:
         totals_cells.append('<td title="Routes">—</td>')
 
-    # Stats (unmonitored)
+    # Stats
+    stats_class = ' class="unmonitored-column"' if 'stats' in UNMONITORED_FILE_TYPES else ''
     if totals['stats']['size'] > 0:
-        totals_cells.append(f'<td class="unmonitored-column" title="Statistics">{format_file_size(totals["stats"]["size"])}</td>')
+        totals_cells.append(f'<td{stats_class} title="Statistics">{format_file_size(totals["stats"]["size"])}</td>')
     else:
-        totals_cells.append('<td class="unmonitored-column" title="Statistics">—</td>')
+        totals_cells.append(f'<td{stats_class} title="Statistics">—</td>')
 
-    # RDF (unmonitored)
+    # RDF
+    rdf_class = ' class="unmonitored-column"' if 'rdf' in UNMONITORED_FILE_TYPES else ''
     if totals['rdf']['size'] > 0:
-        totals_cells.append(f'<td class="unmonitored-column" title="RDF Export">{format_file_size(totals["rdf"]["size"])}</td>')
+        totals_cells.append(f'<td{rdf_class} title="RDF Export">{format_file_size(totals["rdf"]["size"])}</td>')
     else:
-        totals_cells.append('<td class="unmonitored-column" title="RDF Export">—</td>')
+        totals_cells.append(f'<td{rdf_class} title="RDF Export">—</td>')
 
     totals_row = '\n                        '.join(totals_cells)
 
@@ -1700,6 +1709,10 @@ def generate_html(analyses: List[Dict]) -> str:
     }
     unmonitored_columns = ', '.join(column_name_map.get(ft, ft) for ft in sorted(UNMONITORED_FILE_TYPES))
 
+    # Determine header classes for stats and rdf columns based on monitoring status
+    stats_header_class = ' class="unmonitored-header"' if 'stats' in UNMONITORED_FILE_TYPES else ''
+    rdf_header_class = ' class="unmonitored-header"' if 'rdf' in UNMONITORED_FILE_TYPES else ''
+
     return HTML_TEMPLATE.format(
         timestamp=timestamp,
         total_works=total_works,
@@ -1711,6 +1724,8 @@ def generate_html(analyses: List[Dict]) -> str:
         total_size_str=total_size_str,
         unmonitored_columns=unmonitored_columns,
         fragment_threshold=FRAGMENT_AGE_THRESHOLD_HOURS,
+        stats_header_class=stats_header_class,
+        rdf_header_class=rdf_header_class,
         table_rows='\n'.join(rows),
         totals_row=totals_row
     )
