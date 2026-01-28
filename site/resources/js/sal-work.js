@@ -137,6 +137,12 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
         obj.href = obj.pathname + '?' + params
       })
     })
+    .then((_) => {
+      // Re-initialize popups and highlighting after innerHTML replacement
+      // This fixes the race condition where context menus don't work with search terms
+      console.log('Re-initializing popups and highlighting after search term highlighting.')
+      initializePopupsAndHighlighting()
+    })
     /*
     .then((_) => {
         // Update minimap
