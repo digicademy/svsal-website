@@ -113,14 +113,25 @@ async function highlightReplace (origHTML, searchTerm, targetElement) {
     })
     .then((str) => {
       // Parse OpenSearch xml document and return rss/channel
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(str, 'text/xml')
-      const errorNode = doc.querySelector('parsererror')
-      // console.log('This is string: ' + str)
-      if (errorNode) {
-        throw new Error('Response could not be parsed as xml')
+      const xmlParser = new DOMParser()
+      const xmlDoc = xmlParser.parseFromString(str, 'text/xml')
+      const errorNode = xmlDoc.querySelector('parsererror')
+
+      if (!errorNode) {
+        // XML Parsing succeeded
+        return xmlDoc.getElementsByTagName('channel')[0]
       }
-      return doc.getElementsByTagName('channel')[0]
+
+      // Fallback: Try HTML parsing
+      console.warn('XML parsing failed, trying HTML parser as fallback')
+      const htmlParser = new DOMParser()
+      const htmlDoc = htmlParser.parseFromString(str, 'text/html')
+      const channel = htmlDoc.querySelector('channel')
+
+      if (!channel) {
+        throw new Error('Could not parse response as XML or HTML')
+      }
+      return channel
     })
     .then((data) => {
       // Push highlighted HTML to target element
