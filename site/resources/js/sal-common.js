@@ -3,8 +3,8 @@
 
 // ==== Config settings ====
 
-const EMBEDDINGS_SERVER = 'https://c100-188.cloud.gwdg.de/vdb-api/v1'
-const EMBEDDINGS_PROJECT = 'sal/sal-openai-large'
+const EMBEDDINGS_SERVER = 'https://c100-188.cloud.gwdg.de/embapi/v1'
+const EMBEDDINGS_PROJECT = 'sal/openai-small'
 const EMBEDDINGS_THRESHOLD = 0.75
 const EMBEDDINGS_LIMIT = 5
 const EMBEDDINGS_SUMMARY_SERVER = 'https://api.openai.com/v1/chat/completions'

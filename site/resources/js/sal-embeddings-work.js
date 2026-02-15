@@ -85,8 +85,8 @@ async function showEmbeddingsExperiment (elem) {
 
     const str = await response.text()
     const data = JSON.parse(str)
-    const ids = data.ids
-    if (!ids || ids.map(id => decodeURIComponent(id)).length === 0) {
+    const ids = data.results ? data.results.map(r => r.id) : []
+    if (!ids || ids.length === 0) {
       document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
       document.getElementById('embeddings_experiment_text').textContent = `
           No similar texts were found in the database with the current threshold (${EMBEDDINGS_THRESHOLD}).
