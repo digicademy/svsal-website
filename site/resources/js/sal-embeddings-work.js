@@ -44,28 +44,28 @@ async function showEmbeddingsExperiment (elem) {
   $('#embeddings_experiment').dialog('open')
   $('[data-rel="popover"]').popover('hide')
 
-  // Prompt for VDB API key
-  // DISABLED: VDB API key is no longer required for accessing the vector database
-  // const VDB_API_KEY = await getVdbAPIKey()
+  // Prompt for EmbAPI key
+  // DISABLED: EmbAPI key is no longer required for accessing the vector database
+  // const EMBAPI_KEY = await getEmbAPIKey()
 
   // If user cancelled or didn't provide a key, show message and exit
-  // DISABLED: VDB API key is no longer required
-  // if (!VDB_API_KEY) {
+  // DISABLED: EMBAPI key is no longer required
+  // if (!EMBAPI_KEY) {
   //   document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
   //   document.getElementById('embeddings_experiment_text').textContent = 'API key required to retrieve similar texts.'
   //   hideSpinnerMedium()
   //   return
   // }
-  const VDB_API_KEY = null // Not used anymore
+  const EMBAPI_KEY = null // Not used anymore
 
   const targetIDEncoded = encodeURIComponent(targetID)
   const authorEncoded = encodeURIComponent(document.querySelector('meta[name="author"]').content)
   const queryURL = EMBEDDINGS_SERVER + '/similars/' + EMBEDDINGS_PROJECT + '/' + targetIDEncoded +
                       '?threshold=' + EMBEDDINGS_THRESHOLD +
                       '&limit=' + EMBEDDINGS_LIMIT +
-                      '&metadata_path=author&metadata_value=' + authorEncoded
-  // DISABLED: VDB API key is no longer required, but keeping code structure for potential future use
-  // const getHeaders = { 'Authorization': `Bearer ${VDB_API_KEY}`, 'Content-Type': 'application/json' }
+                      '&metadata_path=author-name&metadata_value=' + authorEncoded
+  // DISABLED: EMBAPI key is no longer required, but keeping code structure for potential future use
+  // const getHeaders = { 'Authorization': `Bearer ${EMBAPI_KEY}`, 'Content-Type': 'application/json' }
   const getHeaders = { 'Content-Type': 'application/json' }
   var count = 0
 
@@ -80,7 +80,7 @@ async function showEmbeddingsExperiment (elem) {
       return
     }
     if (!response.ok) {
-      throw new Error('Network response was not OK')
+      throw new Error(`Network response was not OK: ${response.status}/${response.details}`)
     }
 
     const str = await response.text()
@@ -109,7 +109,7 @@ async function showEmbeddingsExperiment (elem) {
     const records = await Promise.all(requestURLs.map(async (u) => {
       const response = await fetch(u, { method: 'GET', headers: getHeaders })
       if (!response.ok) {
-        throw new Error(`Network response was not ok for URL: ${u}`)
+        throw new Error(`Network response was not ok for URL: ${u} - ${response.status}/${response.details}`)
       }
       return response.json()
     }))
@@ -117,9 +117,15 @@ async function showEmbeddingsExperiment (elem) {
     // Process the records
     const objects = records.map(r => ({
       'id': r.text_id,
+      'project': r.user_handle + '/' + r.project_handle,
+      'vector_dim': r.vector_dim,
       'text': r.text,
-      'author': r.metadata.author,
+      'author': r.metadata['author-name'],
+      'author_id': r.metadata['author-id'],
+      'title': r.metadata.title,
       'year': r.metadata.year,
+      'passage': r.metadata.passage,
+      'cit_rec': r.metadata['citation-recommendation'],
       'language': r.metadata.lang,
       'url': r.metadata.url,
       'wid': r.metadata.wid,
@@ -171,7 +177,8 @@ function displayTextComparison (texts) {
       next.style.display = (next.style.display === 'none' || next.style.display === '') ? 'block' : 'none'
     }
     const h4 = document.createElement('h4')
-    h4.textContent = `Text ${index + 1}${index === 0 ? ' (original text)' : ''}: ${text.author} (${text.year})`
+    const citation = text.cit_rec.substring(0, text.cit_rec.indexOf(', in: '))
+    h4.textContent = `Text ${index + 1}${index === 0 ? ' (original text)' : ''}: ${citation}`
     header.appendChild(h4)
     section.appendChild(header)
 
@@ -182,7 +189,8 @@ function displayTextComparison (texts) {
     try {
       link.href = text.url
       link.target = '_blank'
-      link.textContent = 'Go to full text'
+      link.textContent = '<Go to full text>'
+      link.style.color = '#102873'
     } catch (e) {
       link.href = '#'
     }
@@ -407,12 +415,13 @@ async function generateTextAnalysis () {
       {
         role: 'system',
         content: `You are an expert historian text analyst.
-                  Compare the following text passages that are presumably about the same or very similar topics.
+                  Compare the following text passages that are arguably about the same or very similar topics.
                   The texts are excerpts in Latin, Spanish, or both, of larger, early modern works about legal, ethical, social or administrative issues.
-                  Determine whether the passages really are about the same subject and analyze their similarities and differences.
+                  Determine whether the passages really are about the same subject and analyze where they agree and disagree.
                   If there are many texts and groups of them agree on certain things, group them in your analysis, too. Explain your reasoning.
                   Also indicate when a text seemst to be about a different subject altogether.
                   The first of the texts is our focus text, and the others are similar texts that we want to compare to it.
+                  Do not summarize the texts, focus on agreements and disagreements. Highlight if the texts refer to one another.
                   Give your analysis in clear and precise English, detailing points of agreement and disagreement between the authors.
                   Prioritize thoroughness and accuracy in your interpretations, drawing on linguistic cues and on your interpretation of what
                   general convictions and ideas the authors might have, but explain them only to the extent that they are relevant for their
@@ -425,7 +434,7 @@ async function generateTextAnalysis () {
       {
         role: 'user',
         content: texts.map((text, index) =>
-          `Text ${index + 1} ${index === 0 ? '(original text)' : ''} from ${text.year} by ${text.author}:\n\n${text.text}`
+          `Text ${index + 1} ${index === 0 ? '(original text)' : ''}: ${text.title} by ${text.author} (${text.year})\n\n${text.text}`
         ).join('\n\n---\n\n')
       }
     ]
@@ -440,8 +449,8 @@ async function generateTextAnalysis () {
       body: JSON.stringify({
         model: EMBEDDINGS_SUMMARY_MODEL,
         messages: messages,
-        temperature: EMBEDDINGS_SUMMARY_TEMP,
-        max_tokens: 1500
+        // temperature: EMBEDDINGS_SUMMARY_TEMP,
+        max_completion_tokens: 1500
       })
     })
     if (!response.ok) {
@@ -571,17 +580,17 @@ function addResetAPIKeyButtons () {
     const vdbStored = !!getStoredAPIKey('vdb_api_key')
     const openaiStored = !!getStoredAPIKey('openai_api_key')
 
-    // DISABLED: VDB API Key section removed from menu as it's no longer required
+    // DISABLED: EmbAPI Key section removed from menu as it's no longer required
     menu.innerHTML = `
       <div style="padding: 6px 8px; border-bottom: 1px solid #eee; font-weight: bold;">API Key Management</div>
       <!--
       <div style="padding: 8px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f5f5f5;">
         <div>
-          <div style="font-size:0.95em;">VDB API Key</div>
-          <div style="font-size:0.8em; color:#666;">${vdbStored ? 'Stored' : 'Not set'}</div>
+          <div style="font-size:0.95em;">EmbAPI Key</div>
+          <div style="font-size:0.8em; color:#666;">${embapiStored ? 'Stored' : 'Not set'}</div>
         </div>
         <div>
-          <button type="button" id="forget-vdb-key-btn" style="padding:6px 8px; margin-left:8px;">${vdbStored ? 'Forget' : 'Set'}</button>
+          <button type="button" id="forget-vdb-key-btn" style="padding:6px 8px; margin-left:8px;">${embapiStored ? 'Forget' : 'Set'}</button>
         </div>
       </div>
       -->
@@ -597,33 +606,33 @@ function addResetAPIKeyButtons () {
     `
     titleBar.appendChild(menu)
 
-    // VDB handler: remove menu first, then act (await prompt safely)
-    // DISABLED: VDB API key is no longer required
-    // const vdbBtn = menu.querySelector('#forget-vdb-key-btn')
-    // if (vdbBtn) {
-    //   vdbBtn.addEventListener('click', async (ev) => {
+    // EmbAPI handler: remove menu first, then act (await prompt safely)
+    // DISABLED: EmbAPI key is no longer required
+    // const embapiBtn = menu.querySelector('#forget-embapi-key-btn')
+    // if (embapiBtn) {
+    //   embapiBtn.addEventListener('click', async (ev) => {
     //     ev.stopPropagation()
     //     const btn = ev.currentTarget
     //     btn.disabled = true
     //     // remove menu to avoid UI overlap with prompt
     //     menu.parentNode && menu.parentNode.removeChild(menu)
     //
-    //     const currentlyStored = !!getStoredAPIKey('vdb_api_key')
+    //     const currentlyStored = !!getStoredAPIKey('embapi_key')
     //     if (currentlyStored) {
-    //       if (confirm('Are you sure you want to forget your VDB API key?')) {
-    //         deleteStoredAPIKey('vdb_api_key')
+    //       if (confirm('Are you sure you want to forget your EmbAPI key?')) {
+    //         deleteStoredAPIKey('embapi_key')
     //       }
     //       btn.disabled = false
     //       return
     //     }
     //
     //     try {
-    //       const key = await promptForAPIKey('vdb')
+    //       const key = await promptForAPIKey('embapi')
     //       if (key) {
-    //         storeEncryptedAPIKey('vdb_api_key', key)
+    //         storeEncryptedAPIKey('embapi_key', key)
     //       }
     //     } catch (err) {
-    //       console.error('Error setting VDB key from menu:', err)
+    //       console.error('Error setting EmbAPI key from menu:', err)
     //     } finally {
     //       btn.disabled = false
     //     }
@@ -676,9 +685,9 @@ function promptForAPIKey (keyType) {
     const baseSuffix = String(keyType).replace(/[^a-z0-9_-]/gi, '').toLowerCase()
     const instanceId = `${baseSuffix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`
 
-    const title = keyType === 'vdb' ? 'VDB API Key Required' : 'OpenAI API Key Required'
-    const description = keyType === 'vdb'
-      ? 'To retrieve similar texts, please enter your VDB API key.'
+    const title = keyType === 'embapi' ? 'EmbAPI Key Required' : 'OpenAI API Key Required'
+    const description = keyType === 'embapi'
+      ? 'To retrieve similar texts, please enter your EmbAPI key.'
       : 'To generate an AI analysis of the similar texts, please enter your OpenAI API key.'
 
     const modalHTML = `
@@ -688,7 +697,7 @@ function promptForAPIKey (keyType) {
           <h3>${title}</h3>
           <p>${description}</p>
           <p>Your key will be securely stored in your browser and never sent to our servers.</p>
-          <input type="text" id="api-key-input-${instanceId}" class="api-key-input" placeholder="Enter your ${keyType === 'vdb' ? 'VDB' : 'OpenAI'} API key" 
+          <input type="text" id="api-key-input-${instanceId}" class="api-key-input" placeholder="Enter your ${keyType === 'embapi' ? 'EmbAPI' : 'OpenAI'} key" 
                  style="width: 100%; padding: 8px; margin: 10px 0;">
           <div style="display: flex; justify-content: space-between; margin-top: 15px;">
             <label style="display: flex; align-items: center;">
@@ -771,7 +780,7 @@ function promptForAPIKey (keyType) {
       if (apiKey) {
         try {
           if (rememberCheckbox && rememberCheckbox.checked) {
-            const keyName = keyType === 'vdb' ? 'vdb_api_key' : 'openai_api_key'
+            const keyName = keyType === 'embapi' ? 'embapi_key' : 'openai_api_key'
             storeEncryptedAPIKey(keyName, apiKey)
           }
         } catch (err) {
@@ -820,15 +829,15 @@ function promptForAPIKey (keyType) {
     }, 50)
   })
 }
-// Function to get the VDB API key (from storage or prompt user)
-async function getVdbAPIKey () {
+// Function to get the EmbAPI key (from storage or prompt user)
+async function getEmbAPIKey () {
   // First check if we have a stored key
-  const storedKey = getStoredAPIKey('vdb_api_key')
+  const storedKey = getStoredAPIKey('embapi_key')
   if (storedKey) {
     return storedKey
   }
   // If no stored key, prompt the user
-  return promptForAPIKey('vdb')
+  return promptForAPIKey('embapi')
 }
 // Function to get the OpenAI API key (from storage or prompt user)
 async function getOpenAIAPIKey () {
