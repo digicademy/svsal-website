@@ -217,6 +217,16 @@
     // Filter coordinates to only include search results
     const filteredCoordinates = filterCoordinatesBySearchResults()
 
+    // Store data in sessionStorage before opening the popup
+    try {
+      sessionStorage.setItem('sal-viz-resultPoints', JSON.stringify(filteredCoordinates.resultPoints))
+      sessionStorage.setItem('sal-viz-contextPoints', JSON.stringify(filteredCoordinates.contextPoints))
+      sessionStorage.setItem('sal-viz-searchTerm', searchTermCurrent)
+    } catch (e) {
+      alert('Error storing visualization data: ' + e.message + '. The dataset may be too large for your browser.')
+      return
+    }
+
     // Create and open a popup window
     const width = 1000
     const height = 800
@@ -283,9 +293,9 @@
       '  <h2>3D Visualization of Search Results in Semantic Space</h2>\n' +
       '  <div id="visualization"></div>\n' +
       '  <div class="info-panel">\n' +
-      '    <h3>Search: "' + sanitizeText(searchTermCurrent) + '"</h3>\n' +
-      '    <p><strong>' + searchResultIds.length + '</strong> matching results</p>\n' +
-      '    <p><strong>' + filteredCoordinates.contextPoints.length + '</strong> context points</p>\n' +
+      '    <h3>Search: <span id="searchTermDisplay"></span></h3>\n' +
+      '    <p><strong id="resultCount"></strong> matching results</p>\n' +
+      '    <p><strong id="contextCount"></strong> context points</p>\n' +
       '  </div>\n' +
       '  <div class="control-panel">\n' +
       '    <label>\n' +
@@ -296,10 +306,29 @@
       '    <button id="closeButton">Close</button>\n' +
       '  </div>\n' +
       '  <script>\n' +
-      '    // Data will be injected here\n' +
-      '    const searchResultData = ' + JSON.stringify(filteredCoordinates.resultPoints.slice(0,10000)).replace(/<\/script/gi, '<\\/script') + ';\n' +
-      '    const contextData = ' + JSON.stringify(filteredCoordinates.contextPoints.slice(0,120000)).replace(/<\/script/gi, '<\\/script') + ';\n' +
-      '    const parentSearchTerm = ' + JSON.stringify(searchTermCurrent).replace(/<\/script/gi, '<\\/script') + ';\n' +
+      '    // Retrieve data from sessionStorage\n' +
+      '    let searchResultData, contextData, parentSearchTerm;\n' +
+      '    try {\n' +
+      '      searchResultData = JSON.parse(sessionStorage.getItem(\'sal-viz-resultPoints\'));\n' +
+      '      contextData = JSON.parse(sessionStorage.getItem(\'sal-viz-contextPoints\'));\n' +
+      '      parentSearchTerm = sessionStorage.getItem(\'sal-viz-searchTerm\');\n' +
+      '      \n' +
+      '      if (!searchResultData || !contextData || !parentSearchTerm) {\n' +
+      '        throw new Error(\'Required data not found in sessionStorage\');\n' +
+      '      }\n' +
+      '      \n' +
+      '      // Update info panel with actual data\n' +
+      '      document.getElementById(\'searchTermDisplay\').textContent = \'"\' + parentSearchTerm + \'"\';\n' +
+      '      document.getElementById(\'resultCount\').textContent = searchResultData.length;\n' +
+      '      document.getElementById(\'contextCount\').textContent = contextData.length;\n' +
+      '    } catch (e) {\n' +
+      '      document.body.innerHTML = \'<div style="padding: 20px; text-align: center;">\' +\n' +
+      '        \'<h2>Error Loading Visualization</h2>\' +\n' +
+      '        \'<p>Unable to load visualization data: \' + e.message + \'</p>\' +\n' +
+      '        \'<p>Please close this window and try again.</p>\' +\n' +
+      '        \'</div>\';\n' +
+      '      throw e;\n' +
+      '    }\n' +
       '    \n' +
       '    // Create visualization\n' +
       '    function initVisualization() {\n' +
@@ -380,7 +409,18 @@
       '      \n' +
       '      // Close button handler\n' +
       '      document.getElementById(\'closeButton\').addEventListener(\'click\', function() {\n' +
+      '        // Clean up sessionStorage\n' +
+      '        sessionStorage.removeItem(\'sal-viz-resultPoints\');\n' +
+      '        sessionStorage.removeItem(\'sal-viz-contextPoints\');\n' +
+      '        sessionStorage.removeItem(\'sal-viz-searchTerm\');\n' +
       '        window.close();\n' +
+      '      });\n' +
+      '      \n' +
+      '      // Clean up sessionStorage when window is closed by any means\n' +
+      '      window.addEventListener(\'beforeunload\', function() {\n' +
+      '        sessionStorage.removeItem(\'sal-viz-resultPoints\');\n' +
+      '        sessionStorage.removeItem(\'sal-viz-contextPoints\');\n' +
+      '        sessionStorage.removeItem(\'sal-viz-searchTerm\');\n' +
       '      });\n' +
       '      \n' +
       '      // Add click handler to open document when a point is clicked\n' +
