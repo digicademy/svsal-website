@@ -16,6 +16,10 @@
   let searchResultIds = []
   let searchTermCurrent = ''
   let popupWindow = null
+  // let coordinatesFile = '/resources/files/data_passages_with_umap_3d.json'
+  // let coordinatesFile = '/resources/files/passages_with_umap_3d_google_gemini-embedding-001_SEMANTIC_SIMILARITY.json'
+  let coordinatesFile = '/resources/files/passages_with_umap_3d_cohere_embed-v4.0_clustering.json'
+  // let coordinatesFile = '/resources/files/passages_with_umap_3d_openai_text-embedding-3-small.json'
 
   // Only initialize if the beta parameter is present
   if (document.readyState === 'loading') {
@@ -29,6 +33,23 @@
     if (urlParams.has('beta')) {
       initVisualizationFeature()
     }
+  }
+
+  function parseJSONLFromText(text) {
+    const lines = text.split('\n');
+    const results = [];
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line) {
+            try {
+                const data = JSON.parse(line);
+                results.push(data);
+            } catch (error) {
+                console.error(`Error parsing line ${i + 1}:`, error.message);
+            }
+        }
+    }
+    return results;
   }
 
   /**
@@ -77,16 +98,16 @@
    * Fetches the coordinates data JSON file
    */
   function fetchCoordinatesData () {
-    fetch('/resources/files/data_passages_with_umap_3d.json')
+    fetch(coordinatesFile)
       .then(function (response) {
         if (!response.ok) {
           throw new Error('Network response was not OK')
         }
-        return response.json()
+        return response.text()
       })
       .then(function (data) {
-        coordinatesData = data
-        console.log('Coordinates data loaded successfully')
+        coordinatesData = parseJSONLFromText(data)
+        console.log(`Coordinates data loaded successfully: ${coordinatesData.length} objects`)
       })
       .catch(function (error) {
         console.error('Error loading coordinates data:', error)
@@ -112,7 +133,7 @@
     const docFilter = '@sphinx_work ^W0*'
     const fields = '@(sphinx_author,sphinx_description_edit,sphinx_description_orig)'
     u.searchParams.set('q', `${docFilter} ${fields} ${searchTermCurrent}`)
-    u.searchParams.set('groupby', 'sphinx_work')
+    // u.searchParams.set('groupby', 'sphinx_work')
     u.searchParams.set('groupsort', 'sphinx_author asc')
     u.searchParams.set('groupfunc', '4') // groupfunc 4: by attribute
     u.searchParams.set('sort', '4')
@@ -216,7 +237,7 @@
       '<head>\n' +
       '  <meta charset="UTF-8">\n' +
       '  <title>3D Visualization of Search Results</title>\n' +
-      '  <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>\n' +
+      '  <script src="https://cdn.plot.ly/plotly-3.3.0.min.js" charset="utf-8"></script>\n' +
       '  <style>\n' +
       '    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;}\n' +
       '    #visualization {\n' +
@@ -276,8 +297,8 @@
       '  </div>\n' +
       '  <script>\n' +
       '    // Data will be injected here\n' +
-      '    const searchResultData = ' + JSON.stringify(filteredCoordinates.resultPoints).replace(/<\/script/gi, '<\\/script') + ';\n' +
-      '    const contextData = ' + JSON.stringify(filteredCoordinates.contextPoints).replace(/<\/script/gi, '<\\/script') + ';\n' +
+      '    const searchResultData = ' + JSON.stringify(filteredCoordinates.resultPoints.slice(0,10000)).replace(/<\/script/gi, '<\\/script') + ';\n' +
+      '    const contextData = ' + JSON.stringify(filteredCoordinates.contextPoints.slice(0,120000)).replace(/<\/script/gi, '<\\/script') + ';\n' +
       '    const parentSearchTerm = ' + JSON.stringify(searchTermCurrent).replace(/<\/script/gi, '<\\/script') + ';\n' +
       '    \n' +
       '    // Create visualization\n' +
@@ -288,12 +309,13 @@
       '        z: searchResultData.map(function(p) { return p.umap_z; }),\n' +
       '        mode: \'markers\',\n' +
       '        type: \'scatter3d\',\n' +
+      '        showticklabels: false,\n' +
       '        marker: {\n' +
       '          size: 4,\n' +
       '          color: \'red\',\n' +
       '          opacity: 0.6\n' +
       '        },\n' +
-      '        text: searchResultData.map(function(p) { return p.xmlid + \' (\' + p[\'author-name\'] + \', \' + p.year + \')\'; }),\n' +
+      '        text: searchResultData.map(function(p) { return p[\'author-name\'] + \' \' + p.title + \' (\' + p.year + \', <i>\' + p.lang + \'</i>)\'; }),\n' +
       '        hoverinfo: \'text\',\n' +
       '        name: \'Search Results\'\n' +
       '      };\n' +
@@ -393,12 +415,12 @@
    * Filters coordinates data to return search result points and context points
    */
   function filterCoordinatesBySearchResults () {
-    if (!coordinatesData || !coordinatesData.passages) {
+    if (!coordinatesData) {
       return { resultPoints: [], contextPoints: [] }
     }
 
     // Filter points that match search result IDs
-    const resultPoints = coordinatesData.passages.filter(function (p) {
+    const resultPoints = coordinatesData.filter(function (p) {
       return searchResultIds.includes(p.xmlid)
     })
 
@@ -406,7 +428,7 @@
     const bounds = getBoundingBox(resultPoints)
 
     // Get context points (points in the bounding box that aren't search results)
-    const contextPoints = coordinatesData.passages.filter(function (p) {
+    const contextPoints = coordinatesData.filter(function (p) {
       return !searchResultIds.includes(p.xmlid) &&
              isPointInExpandedBoundingBox(p, bounds, 0.05) // 5% expansion of the bounding box
     })
