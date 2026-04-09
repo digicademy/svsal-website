@@ -14,6 +14,7 @@ var itemTemplate =
         '<p>' +
           '<span><% if (obj.author) {  %><%= obj.author %><% } %></span>' +
         '</p>' +
+        '<p style="font-size: smaller; text-align: right; margin-top: 1ex; margin-bottom: -1.5ex;"><% if (obj.citation) { %><b>Citation:</b> <%= obj.citation %><% } %></p>' +
       '</div>' +
     '</div>' +
   '</div>' +
