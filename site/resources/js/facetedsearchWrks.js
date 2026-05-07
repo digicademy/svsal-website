@@ -24,7 +24,7 @@
                         '</div>' +
                       '<%} else if (name == "Edited Work") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
-                          '<div class="facetitem_container">Scholarly Edited Works <span class="facetitemcount"> (<%= count %>) </span>' +
+                          '<div class="facetitem_container">Scholarly Edited Works&nbsp; <span class="facetitemcount"> (<%= count %>) </span>' +
                             '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Fully edited texts">' +
                             '</div>' +
                           '</div>' +

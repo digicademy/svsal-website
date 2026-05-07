@@ -12,7 +12,8 @@ var itemTemplate =
           '<span><% if (obj.name) {  %><%= obj.name %><% } %></span>' +
         '</p>' +
         '<p>' +
-          '<span><% if (obj.author) {  %><%= obj.author %><% } %></span>' +
+          '<span><% if (obj.author) {  %><%= obj.author %><% } %></span><br/>' +
+          '<span style="font-size: smaller;"><% if (obj.date) { %><%= obj.date %><% } %></span>' +
         '</p>' +
         '<p style="font-size: smaller; text-align: right; margin-top: 1ex; margin-bottom: -1.5ex;"><% if (obj.citation) { %><b>Citation:</b> <%= obj.citation %><% } %></p>' +
       '</div>' +
