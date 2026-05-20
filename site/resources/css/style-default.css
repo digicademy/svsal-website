@@ -530,15 +530,20 @@ margin-top: 1%;*/
 display:none
 }
 /* a_ to f_ : inaccessible */
+.panel-default.unpublished,
 .panel-default.a_raw,
 .panel-default.b_cleared,
 .panel-default.c_hyph_proposed,
 .panel-default.d_hyph_approved,
 .panel-default.e_emended_unenriched,
-.panel-default.f_enriched{
+.panel-default.f_enriched {
 background-color: #DEDFE4;
 color: DimGray;
 }
+
+.panel-default.unpublished a.lead,
+.panel-default.unpublished .lead a,
+.panel-default.unpublished .volumeLinks a,
 .panel-default.a_raw a.lead,
 .panel-default.a_raw .lead a,
 .panel-default.a_raw .volumeLinks a,
@@ -617,6 +622,7 @@ pointer-events:none
 .panel-default.j_frozen {
 background-color:white
 }
+a.unpublished,
 a.a_raw,
 a.b_cleared,
 a.c_hyph_proposed,
@@ -627,12 +633,14 @@ pointer-events:none;
 cursor:default;
 color:DimGray
 }
+.button.unpublished,
 .button.a_raw,
 .button.b_cleared,
 .button.c_hyph_proposed,
 .button.d_hyph_approved,
 .button.e_emended_unenriched,
 .button.f_enriched,
+.teaser-button.unpublished,
 .teaser-button.a_raw,
 .teaser-button.b_cleared,
 .teaser-button.c_hyph_proposed,

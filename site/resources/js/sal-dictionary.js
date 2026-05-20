@@ -24,10 +24,9 @@ var itemTemplate =
 var settings = {
   items: dictionaryItems,
   facets: {
-
-
               'nameFacet'         : 'Title',                                    
-              'authorFacet'        : 'Author'
+              'authorFacet'       : 'Author',
+              'status'            : 'Status'
 },
   resultSelector: '#results',
   facetSelector: '#facets',
@@ -35,8 +34,8 @@ var settings = {
   deselectTemplate: '<div class=deselectstartover><span class="glyphicon glyphicon-remove-circle"></span> Deselect filters</div>',
   countTemplate: '<div class=facettotalcount style="position: absolute; top: 10px; left:340px;width:400px"><%= count %> Entries </div>',
   noResults: '<div class=results style=float:left;>Sorry, but no items match these criteria (or the list of items has not been found [hint to admin])</div>',
-  paginationCount: 20,
-  orderByOptions: {'title': 'Title', 'sortName': 'Author'}
+  paginationCount: 40,
+  orderByOptions: {'sortName': 'Title', 'authorName': 'Author'}
 }
 
 $.facetelize(settings)

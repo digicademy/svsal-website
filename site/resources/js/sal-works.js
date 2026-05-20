@@ -148,7 +148,7 @@ const settings = {
   deselectTemplate: '<div class=deselectstartover><span class="glyphicon glyphicon-remove-circle"></span> Deselect filters</div>',
   countTemplate: '<div class=facettotalcount style="position: absolute; top: 10px; left:340px;width:400px"><%= count %> Entries</div>',
   noResults: '<div class=results style=float:left;>Sorry, but no items match these criteria (or the list of items has not been found [hint to admin])</div>',
-  paginationCount: 30,
+  paginationCount: 40,
   orderByOptions: {'sortName': 'Author', 'title': 'Title', 'printingPlace': 'Publish place', 'date': 'Year of Publication'}
 }
 
