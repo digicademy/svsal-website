@@ -17,35 +17,35 @@
     facetListContainer: '<div class=facetlist style=padding-top:3%;></div>',
     listItemTemplate: '<% if (name == "Automatically Edited Work") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
-                          '<div class="facetitem_container">Automatically Edited Works <span class="facetitemcount">(<%= count %>)</span>' +
+                          '<div class="facetitem_container">Automatically Edited Works&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
                             '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed texts with technical editing only">' +
                             '</div>' +
                           '</div>' +
                         '</div>' +
                       '<%} else if (name == "Electronic Text (+ Facsimiles)") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
-                          '<div class="facetitem_container">Electronic Texts (+ Facsimiles) <span class="facetitemcount">(<%= count %>)</span>' +
+                          '<div class="facetitem_container">Electronic Texts (+ Facsimiles)&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
                             '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Fully edited texts">' +
                             '</div>' +
                           '</div>' +
                         '</div>' +
                       '<%} else if (name == "Reference Work") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
-                          '<div class="facetitem_container">Reference Works <span class="facetitemcount">(<%= count %>)</span>' +
+                          '<div class="facetitem_container">Reference Works&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
                             '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed texts with technical editing only">' +
                             '</div>' +
                           '</div>' +
                         '</div>' +
                       '<% } else if (name == "Facsimiles") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
-                          '<div class="facetitem_container">Facsimiles <span class="facetitemcount">(<%= count %>)</span>' +
+                          '<div class="facetitem_container">Facsimiles&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
                             '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Image scans only; text is forthcoming">' +
                             '</div>' +
                           '</div>' +
                         '</div>' +
                       '<% } else { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
-                          '<div class="facetitem_container"><%= name %>&nbsp; <span class="facetitemcount">(<%= count %>)</span>' +
+                          '<div class="facetitem_container"><%= name %>&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
                           '</div>' +
                         '</div>' +
                       '<% }%>',
