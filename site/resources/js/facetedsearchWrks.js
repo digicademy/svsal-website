@@ -18,28 +18,28 @@
     listItemTemplate: '<% if (name == "Automatically Edited Work") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
                           '<div class="facetitem_container">Automatically Edited Works&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
-                            '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed texts with technical editing only">' +
+                            '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="Transcribed texts with technical editing only">' +
                             '</div>' +
                           '</div>' +
                         '</div>' +
                       '<%} else if (name == "Electronic Text (+ Facsimiles)") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
                           '<div class="facetitem_container">Electronic Texts (+ Facsimiles)&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
-                            '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Fully edited texts">' +
+                            '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="Fully edited texts">' +
                             '</div>' +
                           '</div>' +
                         '</div>' +
                       '<%} else if (name == "Reference Work") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
                           '<div class="facetitem_container">Reference Works&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
-                            '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed texts with technical editing only">' +
+                            '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="Transcribed texts with technical editing only">' +
                             '</div>' +
                           '</div>' +
                         '</div>' +
                       '<% } else if (name == "Facsimiles") { %>' +
                         '<div class="facetitem" id="<%= id %>">' +
                           '<div class="facetitem_container">Facsimiles&nbsp; <span class="facetitemcount"> (<%= count %>)</span>' +
-                            '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Image scans only; text is forthcoming">' +
+                            '<div type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="Image scans only; text is forthcoming">' +
                             '</div>' +
                           '</div>' +
                         '</div>' +
@@ -52,7 +52,7 @@
     bottomContainer: '<sal></sal>',
     orderByTemplate: '<div class="orderby" style="margin-left: -12%; margin-top:-25%; padding-bottom: 10%">' +
                         '<div class="dropdown">' +
-                          '<button class="btn btn-link btn-xlarge dropdown-toggle" id="order" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"><span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span> &nbsp;<span class="caret"></span>' +
+                          '<button class="btn btn-link btn-xlarge dropdown-toggle" id="order" type="button" id="dropdownMenu1" aria-expanded="true"><span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span> &nbsp;<span class="caret"></span>' +
                           '</button>' +
                           '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">' +
                             '<% _.each(options, function(value, key) { %>' +
@@ -393,10 +393,11 @@
 })()
 
 /* Tooltip control for boostrap tooltip (only for 3.3.5), 4.06.2024 */
-
+/*
 $(function () {
   $('[data-toggle="tooltip"]').tooltip('toggle')
 })
+*/
 
 /**
  * Please note that when passing in custom templates for

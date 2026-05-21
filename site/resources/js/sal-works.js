@@ -6,23 +6,23 @@ const itemTemplate =
         '<% if (obj.WIPstatus == "yes") { %><p class="watermark-wip-text">Work in Progress!</p><% } %> ' +
         '<div class="lead">' +
           '<% if (obj.type == "Reference Work") { %>' +
-            '<p class="typeWork"><%= obj.type %> <a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"><span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed reference text with automatic editing only"></span></a></p>' +
+            '<p class="typeWork"><%= obj.type %> <a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"><span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="Transcribed reference text with automatic editing only"></span></a></p>' +
             '</br>' +
             '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) { %><%= obj.title %><% } %></span></a>' +
           '<% } else if (obj.type == "Automatically Edited Work") { %>' +
-            '<p class="typeWork"><%= obj.type %> <a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"><span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Transcribed text with automatic editing only"></span></a></p>' +
+            '<p class="typeWork"><%= obj.type %> <a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"><span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="Transcribed text with automatic editing only"></span></a></p>' +
             '</br>' +
             '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) { %><%= obj.title %><% } %></span></a>' +
           '<% } else if (obj.type == "Edited Work") { %>' +
-            '<p class="typeWork"><%= obj.type %> <a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"><span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Fully scholarly edited text"></span></a></p>' +
+            '<p class="typeWork"><%= obj.type %> <a href="https://www.salamanca.school/guidelines.html#en-edition" target="_blank"><span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="Fully scholarly edited text"></span></a></p>' +
             '</br>' +
             '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) { %><%= obj.title %><% } %></span></a>' +
           '<% } else if (obj.type == "Facsimiles") { %>' +
-            '<p class="typeWork"><%= obj.type %> <span type="btn" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Image scans only; text is forthcoming"></span></p>' +
+            '<p class="typeWork"><%= obj.type %> <span type="btn" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="Image scans only; text is forthcoming"></span></p>' +
             '</br>' +
             '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) { %><%= obj.title %><% } %></span></a>' +
           '<% } else { %>' +
-            ' <p class="typeWork">Other <span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="No type found"></span></p>' +
+            ' <p class="typeWork">Other <span type="button" style="margin-left: 4px;" class="glyphicon glyphicon-info-sign" title="No type found"></span></p>' +
             '</br>' +
             '<a href="<%= obj.monoMultiUrl %>"><span class="work-title"><% if (obj.title) { %><%= obj.title %><% } %></span></a>' +
           '<% }%>' +
@@ -182,8 +182,8 @@ function loadCorpusStats() {
         })
         .then(function(data) {
             // Check if data exists and has the expected structure
-            if (data && data.length > 0 && data[0].corpus) {
-                var corpus = data[0].corpus;
+            if (data !== undefined && data !== null && data.constructor == Object && 'corpus' in data) {
+                var corpus = data.corpus;
                 var statsHtml = '';
 
                 // Helper to format numbers
@@ -206,9 +206,9 @@ function loadCorpusStats() {
                   var hyph = formatNum(corpus.normalizations_count.unmarked_hyph);
                 }
                 if (corpus.facs_count) {
-                  var facs_txt = formatNum(corpus.facs_count.full_text);
-                  var facs_img = formatNum(corpus.facs_count.images);
-                  var facs_total = facs_txt !== 'N/A' && facs_img !== 'N/A' ? formatNum(parseInt(corpus.facs_count.full_text) + parseInt(corpus.facs_count.images)) : 'N/A';
+                  var facs_txt = formatNum(corpus.facs_count.transcribed);
+                  var facs_img = formatNum(corpus.facs_count.images_only);
+                  var facs_total = facs_txt !== 'N/A' && facs_img !== 'N/A' ? formatNum(parseInt(corpus.facs_count.transcribed) + parseInt(corpus.facs_count.images_only)) : 'N/A';
                 }
 
                 // Construct HTML with Bootstrap classes and Glyphicons (Table format)
@@ -224,8 +224,8 @@ function loadCorpusStats() {
                 statsHtml += '<tr><td class="stat-label"><span class="glyphicon glyphicon-picture"></span> <strong>Untranscribed:</strong></td><td class="stat-value">' + facs_img + '</td></tr>';
                 statsHtml += '<tr><td class="stat-label"><span class="glyphicon glyphicon-picture"></span> <strong>Total:</strong></td><td class="stat-value">' + facs_total + '</td></tr>';
                 statsHtml += '<tr><td colspan="2" class="section-header"><strong>Normalizations</strong></td></tr>';
-                statsHtml += '<tr><td class="stat-label"><span class="glyphicon glyphicon-ok"></span> <strong>Errors:</strong></td><td class="stat-value">' + sic + '/' + corr + '</td></tr>';
-                statsHtml += '<tr><td class="stat-label"><span class="glyphicon glyphicon-ok"></span> <strong>Abbreviations:</strong></td><td class="stat-value">' + abbr + '/' + expan + '</td></tr>';
+                statsHtml += '<tr><td class="stat-label"><span class="glyphicon glyphicon-ok"></span> <strong>sic/corr:</strong></td><td class="stat-value">' + sic + '/' + corr + '</td></tr>';
+                statsHtml += '<tr><td class="stat-label"><span class="glyphicon glyphicon-ok"></span> <strong>abbr/expan:</strong></td><td class="stat-value">' + abbr + '/' + expan + '</td></tr>';
                 statsHtml += '<tr><td class="stat-label"><span class="glyphicon glyphicon-ok"></span> <strong>Fixed hyphenations:</strong></td><td class="stat-value">' + hyph + '</td></tr>';
                 statsHtml += '</tbody>';
                 statsHtml += '</table>';
@@ -237,6 +237,15 @@ function loadCorpusStats() {
                 if (placeholder) {
                     placeholder.outerHTML = statsHtml;
                 }
+            } else {
+                console.warn('Corpus statistics data is missing or has an unexpected structure:');
+                console.log('data.length: ' + (data ? data.length : 'undefined'));
+                console.log(data);
+                // Optional: Add a fallback message if the data is not as expected
+                // var placeholder = document.querySelector('[data-template="app:corpusStatsTeaser"]');
+                // if (placeholder) {
+                //     placeholder.innerHTML = '<p>Statistics unavailable.</p>';
+                // }
             }
         })
         .catch(function(error) {
