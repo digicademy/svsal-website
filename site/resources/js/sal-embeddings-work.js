@@ -477,19 +477,33 @@ function createHeatText (text, tokenRows, tokenClassName) {
 
   const scoreMap = new Map()
   visible.forEach(row => {
-    scoreMap.set(normalizeVisibleToken(row.token).toLowerCase(), Math.max(scoreMap.get(normalizeVisibleToken(row.token).toLowerCase()) || 0, row.share))
+    const normalizedToken = normalizeVisibleToken(row.token).toLowerCase()
+    if (!normalizedToken) return
+    scoreMap.set(normalizedToken, Math.max(scoreMap.get(normalizedToken) || 0, row.share))
   })
+  const scoreEntries = Array.from(scoreMap.entries())
 
   const container = document.createElement('p')
   const parts = String(text || '').split(/(\s+)/)
   parts.forEach(part => {
     const normalized = normalizeVisibleToken(part).toLowerCase()
-    if (scoreMap.has(normalized)) {
+    let matchedScore = scoreMap.get(normalized)
+    if (!matchedScore && normalized) {
+      for (const [token, score] of scoreEntries) {
+        if (
+          token.length >= 3 &&
+          (normalized.startsWith(token) || token.startsWith(normalized))
+        ) {
+          matchedScore = Math.max(matchedScore || 0, score)
+        }
+      }
+    }
+    if (matchedScore) {
       const span = document.createElement('span')
       span.className = `mv-token-chip ${tokenClassName}`
       span.textContent = part
       span.dataset.token = normalized
-      span.style.opacity = String(Math.max(0.35, Math.min(1, 0.25 + scoreMap.get(normalized) * 1.7)))
+      span.style.opacity = String(Math.max(0.35, Math.min(1, 0.25 + matchedScore * 1.7)))
       span.addEventListener('mouseenter', function () {
         highlightTokenLinks(normalized)
       })

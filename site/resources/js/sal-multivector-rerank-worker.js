@@ -4,7 +4,7 @@ let extractorPromise = null
 let loadedModelId = null
 let loadedDevice = 'wasm'
 
-const TRANSFORMERS_JS_URL = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2'
+const TRANSFORMERS_JS_URL = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js'
 const DEFAULT_MODEL = 'Xenova/paraphrase-multilingual-MiniLM-L12-v2'
 
 self.onmessage = async function (event) {
