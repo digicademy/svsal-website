@@ -185,16 +185,18 @@ async function showEmbeddingsExperiment (elem) {
 
     document.getElementById('embeddings_experiment_text').textContent = `${count} similar texts found. Running browser-side reranking...`
 
-    const rerankTelemetry = await runClientSideRerank(objects)
+    const rerankResponse = await runClientSideRerank(objects)
+    const rerankTelemetry = rerankResponse.telemetry
+    const orderedObjects = rerankResponse.texts
     if (BETA && rerankTelemetry && rerankTelemetry.message) {
       console.log('[embeddings-rerank]', rerankTelemetry.message, rerankTelemetry.details || {})
     }
 
     // Store texts in a global variable for later analysis
-    window.embeddingTexts = objects
+    window.embeddingTexts = orderedObjects
 
     // Display the texts without analysis
-    const htmlContent = displayTextComparison(objects, rerankTelemetry)
+    const htmlContent = displayTextComparison(orderedObjects, rerankTelemetry)
 
     document.getElementById('embeddings_experiment_title').textContent = `${citation}: (${count} similar texts)`
     const container = document.getElementById('embeddings_experiment_text')
@@ -212,19 +214,24 @@ async function showEmbeddingsExperiment (elem) {
 
 async function runClientSideRerank (objects) {
   if (!objects || objects.length < 2) {
-    return { message: 'No reranking needed', details: {} }
+    return { texts: objects || [], telemetry: { message: 'No reranking needed', details: {} } }
   }
 
   const queryDoc = objects[0]
   const maxCandidates = Number(EMBEDDINGS_RERANK_CANDIDATE_LIMIT) || 40
   const candidates = objects.slice(1, 1 + maxCandidates)
-  if (candidates.length === 0) return { message: 'No candidates for reranking', details: {} }
+  if (candidates.length === 0) {
+    return { texts: objects, telemetry: { message: 'No candidates for reranking', details: {} } }
+  }
 
   let worker
   try {
     worker = getRerankWorker()
   } catch (error) {
-    return { message: 'Web Worker unavailable, fallback to initial order', details: { error: error.message } }
+    return {
+      texts: objects,
+      telemetry: { message: 'Web Worker unavailable, fallback to initial order', details: { error: error.message } }
+    }
   }
 
   const messageId = `rerank-${Date.now()}-${rerankWorkerRequests++}`
@@ -262,7 +269,10 @@ async function runClientSideRerank (objects) {
     const rerankedCandidates = candidates
       .map(item => {
         const result = byId.get(item.id)
-        if (!result) return null
+        if (!result) {
+          item.rerank_rank = item.initial_rank
+          return item
+        }
         item.rerank_rank = result.rerank_rank
         item.rerank_score = result.score
         item.rerank_confidence = result.confidence
@@ -270,25 +280,27 @@ async function runClientSideRerank (objects) {
         item.score_delta = (item.initial_rank || 999) - result.rerank_rank
         return item
       })
-      .filter(Boolean)
       .sort((a, b) => (a.rerank_rank || 0) - (b.rerank_rank || 0))
 
     const untouchedTail = objects.slice(1 + maxCandidates)
-    window.embeddingTexts = [queryDoc].concat(rerankedCandidates, untouchedTail)
-    for (let i = 0; i < window.embeddingTexts.length; i++) {
-      objects[i] = window.embeddingTexts[i]
-    }
+    const reordered = [queryDoc].concat(rerankedCandidates, untouchedTail)
 
     return {
-      message: 'Browser-side MaxSim reranking applied',
-      details: {
-        model: response.model,
-        device: response.device,
-        telemetry: response.telemetry
+      texts: reordered,
+      telemetry: {
+        message: 'Browser-side MaxSim reranking applied',
+        details: {
+          model: response.model,
+          device: response.device,
+          telemetry: response.telemetry
+        }
       }
     }
   } catch (error) {
-    return { message: 'Reranking failed, fallback to initial order', details: { error: error.message } }
+    return {
+      texts: objects,
+      telemetry: { message: 'Reranking failed, fallback to initial order', details: { error: error.message } }
+    }
   }
 }
 
@@ -450,7 +462,7 @@ function splitSentences (text) {
   return (sentences || [source]).map(s => s.trim()).filter(Boolean)
 }
 
-function createHeatText (text, tokenRows, linksByTokenIndex, tokenClassName) {
+function createHeatText (text, tokenRows, tokenClassName) {
   const top = Number(EMBEDDINGS_RERANK_TOP_SIGNALS) || 15
   const visible = (tokenRows || [])
     .filter(row => !row.is_special && !row.is_punctuation)
@@ -581,8 +593,8 @@ function showExplainabilityModal (queryTextObj, candidateTextObj) {
 
     const selectedSentence = sentenceSelect.value
     const selectedText = selectedSentence === 'all' ? queryTextObj.text : (sentences[Number(selectedSentence)] || '')
-    queryPane.appendChild(createHeatText(selectedText, queryRows, data.links, 'query'))
-    docPane.appendChild(createHeatText(candidateTextObj.text, docRows, data.links, 'doc'))
+    queryPane.appendChild(createHeatText(selectedText, queryRows, 'query'))
+    docPane.appendChild(createHeatText(candidateTextObj.text, docRows, 'doc'))
   }
 
   sentenceSelect.onchange = render

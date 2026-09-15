@@ -362,7 +362,7 @@ function dot (a, b) {
 function isSpecialToken (token) {
   const t = String(token || '')
   if (!t) return true
-  return /^\[.*\]$/.test(t) || /^<.*>$/.test(t) || t === '[CLS]' || t === '[SEP]' || t === '[PAD]' || t === '[MASK]'
+  return /^\[.*\]$/.test(t) || /^<.*>$/.test(t)
 }
 
 function isPunctuationToken (token) {
