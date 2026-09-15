@@ -1,4 +1,4 @@
-/* global EMBEDDINGS_SERVER, EMBEDDINGS_PROJECT, EMBEDDINGS_THRESHOLD, EMBEDDINGS_LIMIT, EMBEDDINGS_SUMMARY_SERVER, EMBEDDINGS_SUMMARY_MODEL, EMBEDDINGS_SUMMARY_TEMP */
+/* global EMBEDDINGS_SERVER, EMBEDDINGS_PROJECT, EMBEDDINGS_THRESHOLD, EMBEDDINGS_LIMIT, EMBEDDINGS_RERANK_CANDIDATE_LIMIT, EMBEDDINGS_RERANK_MODEL, EMBEDDINGS_RERANK_TIMEOUT_MS, EMBEDDINGS_RERANK_MAX_QUERY_TOKENS, EMBEDDINGS_RERANK_MAX_DOC_TOKENS, EMBEDDINGS_RERANK_DOC_POOL_FACTOR, EMBEDDINGS_RERANK_TOP_SIGNALS, EMBEDDINGS_SUMMARY_SERVER, EMBEDDINGS_SUMMARY_MODEL, EMBEDDINGS_SUMMARY_TEMP, BETA */
 /* eslint-env browser */
 
 // ===== Embeddings Experiment =====
@@ -15,6 +15,40 @@ import {
   sanitizeText
 } from './sal-common.js'
 */
+
+const RERANK_WORKER_URL = '/resources/js/sal-multivector-rerank-worker.js'
+let rerankWorker
+let rerankWorkerRequests = 0
+const rerankPending = new Map()
+
+function getRerankWorker () {
+  if (rerankWorker) return rerankWorker
+  rerankWorker = new window.Worker(RERANK_WORKER_URL, { type: 'module' })
+  rerankWorker.addEventListener('message', function (event) {
+    const payload = event.data || {}
+    if (payload.type !== 'rerank_result') return
+    const pending = rerankPending.get(payload.messageId)
+    if (!pending) return
+    window.clearTimeout(pending.timeoutId)
+    rerankPending.delete(payload.messageId)
+    if (payload.ok) pending.resolve(payload)
+    else pending.reject(new Error(payload.error || 'Reranking failed'))
+  })
+  return rerankWorker
+}
+
+function scoreToText (value, fallback) {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return fallback || '—'
+  return value.toFixed(4)
+}
+
+function decodeMaybeEncoded (value) {
+  try {
+    return decodeURIComponent(value)
+  } catch (e) {
+    return value
+  }
+}
 
 // This is being called from the HTML element's onclick event
 // eslint-disable-next-line no-unused-vars
@@ -56,13 +90,15 @@ async function showEmbeddingsExperiment (elem) {
   //   hideSpinnerMedium()
   //   return
   // }
-  const EMBAPI_KEY = null // Not used anymore
-
   const targetIDEncoded = encodeURIComponent(targetID)
   const authorEncoded = encodeURIComponent(document.querySelector('meta[name="author"]').content)
+  const retrieveLimit = Math.max(
+    Number(EMBEDDINGS_RERANK_CANDIDATE_LIMIT) || 40,
+    Number(EMBEDDINGS_LIMIT) || 5
+  )
   const queryURL = EMBEDDINGS_SERVER + '/similars/' + EMBEDDINGS_PROJECT + '/' + targetIDEncoded +
                       '?threshold=' + EMBEDDINGS_THRESHOLD +
-                      '&limit=' + EMBEDDINGS_LIMIT +
+                      '&limit=' + retrieveLimit +
                       '&metadata_path=author-name&metadata_value=' + authorEncoded
   // DISABLED: EMBAPI key is no longer required, but keeping code structure for potential future use
   // const getHeaders = { 'Authorization': `Bearer ${EMBAPI_KEY}`, 'Content-Type': 'application/json' }
@@ -85,7 +121,8 @@ async function showEmbeddingsExperiment (elem) {
 
     const str = await response.text()
     const data = JSON.parse(str)
-    const ids = data.results ? data.results.map(r => r.id) : []
+    const initialResults = Array.isArray(data.results) ? data.results : []
+    const ids = initialResults.map(r => r.id)
     if (!ids || ids.length === 0) {
       document.getElementById('embeddings_experiment_title').textContent = `${citation}:`
       document.getElementById('embeddings_experiment_text').textContent = `
@@ -97,12 +134,20 @@ async function showEmbeddingsExperiment (elem) {
       hideSpinnerMedium()
       return
     }
-    const urls = ids.map(id => decodeURIComponent(id))
+    const urls = ids.map(id => decodeMaybeEncoded(id))
+    const initialById = new Map()
+    initialResults.forEach((row, idx) => {
+      initialById.set(decodeMaybeEncoded(row.id), {
+        initial_rank: idx + 1,
+        initial_score: Number(row.score || row.similarity || row.distance)
+      })
+    })
+
     // Add the original text to the list
     urls.unshift(targetID)
     count = urls.length - 1 // do not count the original text
     document.getElementById('embeddings_experiment_title').textContent = `${citation}`
-    document.getElementById('embeddings_experiment_text').textContent = `${count} similar texts found. Analysing...`
+    document.getElementById('embeddings_experiment_text').textContent = `${count} similar texts found. Retrieving texts...`
 
     // Second request: fetch text and metadata for each URL
     const requestURLs = urls.map(url => EMBEDDINGS_SERVER + '/embeddings/' + EMBEDDINGS_PROJECT + '/' + encodeURIComponent(url))
@@ -115,7 +160,10 @@ async function showEmbeddingsExperiment (elem) {
     }))
 
     // Process the records
-    const objects = records.map(r => ({
+    const objects = records.map((r, index) => {
+      const sourceId = decodeMaybeEncoded(r.text_id || urls[index])
+      const initialMeta = initialById.get(sourceId) || {}
+      return ({
       'id': r.text_id,
       'project': r.user_handle + '/' + r.project_handle,
       'vector_dim': r.vector_dim,
@@ -129,14 +177,26 @@ async function showEmbeddingsExperiment (elem) {
       'language': r.metadata.lang,
       'url': r.metadata.url,
       'wid': r.metadata.wid,
-      'xmlid': r.metadata.xmlid
-    }))
+      'xmlid': r.metadata.xmlid,
+      'initial_rank': index === 0 ? 0 : (initialMeta.initial_rank || index),
+      'initial_score': index === 0 ? null : initialMeta.initial_score
+      })
+    })
+
+    document.getElementById('embeddings_experiment_text').textContent = `${count} similar texts found. Running browser-side reranking...`
+
+    const rerankResponse = await runClientSideRerank(objects)
+    const rerankTelemetry = rerankResponse.telemetry
+    const orderedObjects = rerankResponse.texts
+    if (BETA && rerankTelemetry && rerankTelemetry.message) {
+      console.log('[embeddings-rerank]', rerankTelemetry.message, rerankTelemetry.details || {})
+    }
 
     // Store texts in a global variable for later analysis
-    window.embeddingTexts = objects
+    window.embeddingTexts = orderedObjects
 
     // Display the texts without analysis
-    const htmlContent = displayTextComparison(objects)
+    const htmlContent = displayTextComparison(orderedObjects, rerankTelemetry)
 
     document.getElementById('embeddings_experiment_title').textContent = `${citation}: (${count} similar texts)`
     const container = document.getElementById('embeddings_experiment_text')
@@ -152,10 +212,100 @@ async function showEmbeddingsExperiment (elem) {
   }
 }
 
-// Function to display texts without LLM analysis
-function displayTextComparison (texts) {
-  // Generate HTML with expandable sections, but without LLM analysis
-  let htmlContent = document.createElement('div')
+async function runClientSideRerank (objects) {
+  if (!objects || objects.length < 2) {
+    return { texts: objects || [], telemetry: { message: 'No reranking needed', details: {} } }
+  }
+
+  const queryDoc = objects[0]
+  const maxCandidates = Number(EMBEDDINGS_RERANK_CANDIDATE_LIMIT) || 40
+  const candidates = objects.slice(1, 1 + maxCandidates)
+  if (candidates.length === 0) {
+    return { texts: objects, telemetry: { message: 'No candidates for reranking', details: {} } }
+  }
+
+  let worker
+  try {
+    worker = getRerankWorker()
+  } catch (error) {
+    return {
+      texts: objects,
+      telemetry: { message: 'Web Worker unavailable, fallback to initial order', details: { error: error.message } }
+    }
+  }
+
+  const messageId = `rerank-${Date.now()}-${rerankWorkerRequests++}`
+  const timeoutMs = Number(EMBEDDINGS_RERANK_TIMEOUT_MS) || 12000
+
+  const payload = {
+    type: 'rerank',
+    messageId,
+    queryText: queryDoc.text,
+    candidates: candidates.map(item => ({
+      id: item.id,
+      text: item.text,
+      initial_rank: item.initial_rank
+    })),
+    settings: {
+      model: EMBEDDINGS_RERANK_MODEL,
+      preferWebGPU: true,
+      maxQueryTokens: Number(EMBEDDINGS_RERANK_MAX_QUERY_TOKENS) || 320,
+      maxDocTokens: Number(EMBEDDINGS_RERANK_MAX_DOC_TOKENS) || 240,
+      docPoolFactor: Number(EMBEDDINGS_RERANK_DOC_POOL_FACTOR) || 1
+    }
+  }
+
+  try {
+    const response = await new Promise((resolve, reject) => {
+      const timeoutId = window.setTimeout(() => {
+        rerankPending.delete(messageId)
+        reject(new Error(`Reranking timeout (${timeoutMs} ms)`))
+      }, timeoutMs)
+      rerankPending.set(messageId, { resolve, reject, timeoutId })
+      worker.postMessage(payload)
+    })
+
+    const byId = new Map(response.results.map(r => [r.id, r]))
+    const rerankedCandidates = candidates
+      .map(item => {
+        const result = byId.get(item.id)
+        if (!result) {
+          item.rerank_rank = item.initial_rank
+          return item
+        }
+        item.rerank_rank = result.rerank_rank
+        item.rerank_score = result.score
+        item.rerank_confidence = result.confidence
+        item.explainability = result.explainability
+        item.score_delta = (item.initial_rank || 999) - result.rerank_rank
+        return item
+      })
+      .sort((a, b) => (a.rerank_rank || 0) - (b.rerank_rank || 0))
+
+    const untouchedTail = objects.slice(1 + maxCandidates)
+    const reordered = [queryDoc].concat(rerankedCandidates, untouchedTail)
+
+    return {
+      texts: reordered,
+      telemetry: {
+        message: 'Browser-side MaxSim reranking applied',
+        details: {
+          model: response.model,
+          device: response.device,
+          telemetry: response.telemetry
+        }
+      }
+    }
+  } catch (error) {
+    return {
+      texts: objects,
+      telemetry: { message: 'Reranking failed, fallback to initial order', details: { error: error.message } }
+    }
+  }
+}
+
+function displayTextComparison (texts, rerankTelemetry) {
+  const htmlContent = document.createElement('div')
   htmlContent.className = 'text-comparison-container'
   if (!texts || texts.length === 0) {
     htmlContent.innerHTML = '<p>No texts to display.</p>'
@@ -166,7 +316,67 @@ function displayTextComparison (texts) {
     return htmlContent
   }
 
-  // Add each text as an expandable section
+  const queryText = texts[0]
+  const similarTexts = texts.slice(1)
+
+  const rankingSection = document.createElement('div')
+  rankingSection.className = 'rerank-summary'
+  rankingSection.innerHTML = `
+    <h4>Retrieve → rerank (beta)</h4>
+    <p class="rerank-status">${rerankTelemetry ? rerankTelemetry.message : 'Initial ranking only'}</p>
+    <div class="table-responsive">
+      <table class="table table-condensed rerank-table">
+        <thead>
+          <tr>
+            <th>Text</th>
+            <th>Initial rank</th>
+            <th>Reranked rank</th>
+            <th>Score</th>
+            <th>Confidence</th>
+            <th>Explain</th>
+          </tr>
+        </thead>
+        <tbody id="rerank-table-body"></tbody>
+      </table>
+    </div>
+  `
+  htmlContent.appendChild(rankingSection)
+
+  const tableBody = rankingSection.querySelector('#rerank-table-body')
+  similarTexts.forEach((text, idx) => {
+    const citation = text.cit_rec && text.cit_rec.indexOf(', in: ') > -1
+      ? text.cit_rec.substring(0, text.cit_rec.indexOf(', in: '))
+      : (text.title || text.id)
+    const tr = document.createElement('tr')
+    const tdLabel = document.createElement('td')
+    tdLabel.textContent = `${idx + 2}. ${citation}`
+    const tdInitial = document.createElement('td')
+    tdInitial.textContent = String(text.initial_rank || idx + 1)
+    const tdRerank = document.createElement('td')
+    tdRerank.textContent = String(text.rerank_rank || '—')
+    const tdScore = document.createElement('td')
+    tdScore.textContent = scoreToText(text.rerank_score, scoreToText(text.initial_score, '—'))
+    const tdConfidence = document.createElement('td')
+    tdConfidence.textContent = scoreToText(text.rerank_confidence, '—')
+    const tdExplain = document.createElement('td')
+    const explainButton = document.createElement('button')
+    explainButton.type = 'button'
+    explainButton.className = 'btn btn-xs btn-default explain-match-btn'
+    explainButton.textContent = 'Explain match'
+    if (!text.explainability) explainButton.disabled = true
+    explainButton.addEventListener('click', function () {
+      showExplainabilityModal(queryText, text)
+    })
+    tdExplain.appendChild(explainButton)
+    tr.appendChild(tdLabel)
+    tr.appendChild(tdInitial)
+    tr.appendChild(tdRerank)
+    tr.appendChild(tdScore)
+    tr.appendChild(tdConfidence)
+    tr.appendChild(tdExplain)
+    tableBody.appendChild(tr)
+  })
+
   texts.forEach((text, index) => {
     const section = document.createElement('div')
     section.className = 'expandable-section'
@@ -177,8 +387,14 @@ function displayTextComparison (texts) {
       next.style.display = (next.style.display === 'none' || next.style.display === '') ? 'block' : 'none'
     }
     const h4 = document.createElement('h4')
-    const citation = text.cit_rec.substring(0, text.cit_rec.indexOf(', in: '))
-    h4.textContent = `Text ${index + 1}${index === 0 ? ' (original text)' : ''}: ${citation}`
+    const citation = text.cit_rec && text.cit_rec.indexOf(', in: ') > -1
+      ? text.cit_rec.substring(0, text.cit_rec.indexOf(', in: '))
+      : (text.title || text.id)
+    if (index === 0) {
+      h4.textContent = `Text ${index + 1} (original text): ${citation}`
+    } else {
+      h4.textContent = `Text ${index + 1}: ${citation} | initial #${text.initial_rank || index} → reranked #${text.rerank_rank || '—'}`
+    }
     header.appendChild(h4)
     section.appendChild(header)
 
@@ -200,11 +416,21 @@ function displayTextComparison (texts) {
     para.textContent = text.text
     content.appendChild(para)
 
+    if (index > 0 && text.explainability) {
+      const explainBtn = document.createElement('button')
+      explainBtn.type = 'button'
+      explainBtn.className = 'btn btn-default btn-xs explain-match-inline'
+      explainBtn.textContent = 'Explain match'
+      explainBtn.addEventListener('click', function () {
+        showExplainabilityModal(queryText, text)
+      })
+      content.appendChild(explainBtn)
+    }
+
     section.appendChild(content)
     htmlContent.appendChild(section)
   })
 
-  // Add section for analysis button and content
   const analysisSection = document.createElement('div')
   analysisSection.className = 'analysis-section'
   analysisSection.innerHTML = `
@@ -216,159 +442,178 @@ function displayTextComparison (texts) {
     </div>
   `
   htmlContent.appendChild(analysisSection)
-
-  // attach handler to the button
   analysisSection.querySelector('#generate-analysis-btn').addEventListener('click', generateTextAnalysis)
 
-  // Add CSS styles
-  const styleSection = document.createElement('style')
-  styleSection.innerHTML = `
-      .text-comparison-container {
-        font-family: Arial, sans-serif;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      .comparison-explanation {
-        background-color: #fbfbfb;
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-      }
-      .expandable-section {
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        border-radius: 5px;
-      }
-      .section-header {
-        background-color: #f9f9f9;
-        padding: 10px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .section-header h3 {
-        margin: 0;
-      }
-      .metadata {
-        color: #666;
-        font-size: 0.8em;
-      }
-      .section-content {
-        padding: 10px;
-        background-color: #ffffff;
-      }
-      .generate-analysis-btn {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 10px 0;
-        cursor: pointer;
-        border-radius: 4px;
-      }
-      .generate-analysis-btn:hover {
-        background-color: #45a049;
-      }
-      .analysis-section {
-        margin-top: 20px;
-        border-top: 1px solid #ddd;
-        padding-top: 15px;
-      }
-  `
-  htmlContent.appendChild(styleSection)
-
   return htmlContent
+}
 
-  /* This was the original version generating HTML as a string
-    const htmlContent = `
-      <div class="text-comparison-container">
-        ${texts.map((text, index) => `
-          <div class="expandable-section">
-            <div class="section-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
-              <h4>Text ${index + 1}${index === 0 ? ' (original text)' : ''}: ${sanitizeText(text.author)} (${sanitizeText(text.year)})</h4>
-            </div>
-            <div class="section-content" style="display: none;">
-              <a href="${ensureUrlEncoded(text.url)}" target="_blank">Go to full text</a><br/>
-              ${sanitizeText(text.text)}
-            </div>
+function normalizeVisibleToken (token) {
+  return String(token || '')
+    .replace(/^##/, '')
+    .replace(/^▁/, '')
+    .replace(/^Ġ/, '')
+    .trim()
+}
+
+function splitSentences (text) {
+  const source = String(text || '').trim()
+  if (!source) return []
+  const sentences = source.match(/[^.!?]+[.!?]*/g)
+  return (sentences || [source]).map(s => s.trim()).filter(Boolean)
+}
+
+function createHeatText (text, tokenRows, tokenClassName) {
+  const top = Number(EMBEDDINGS_RERANK_TOP_SIGNALS) || 15
+  const visible = (tokenRows || [])
+    .filter(row => !row.is_special && !row.is_punctuation)
+    .sort((a, b) => b.share - a.share)
+    .slice(0, top)
+
+  if (visible.length === 0) {
+    const p = document.createElement('p')
+    p.textContent = text
+    return p
+  }
+
+  const scoreMap = new Map()
+  visible.forEach(row => {
+    const normalizedToken = normalizeVisibleToken(row.token).toLowerCase()
+    if (!normalizedToken) return
+    scoreMap.set(normalizedToken, Math.max(scoreMap.get(normalizedToken) || 0, row.share))
+  })
+  const scoreEntries = Array.from(scoreMap.entries())
+
+  const container = document.createElement('p')
+  const parts = String(text || '').split(/(\s+)/)
+  parts.forEach(part => {
+    const normalized = normalizeVisibleToken(part).toLowerCase()
+    let matchedScore = scoreMap.get(normalized)
+    if (!matchedScore && normalized) {
+      for (const [token, score] of scoreEntries) {
+        if (
+          token.length >= 3 &&
+          (normalized.startsWith(token) || token.startsWith(normalized))
+        ) {
+          matchedScore = Math.max(matchedScore || 0, score)
+        }
+      }
+    }
+    if (matchedScore) {
+      const span = document.createElement('span')
+      span.className = `mv-token-chip ${tokenClassName}`
+      span.textContent = part
+      span.dataset.token = normalized
+      span.style.opacity = String(Math.max(0.35, Math.min(1, 0.25 + matchedScore * 1.7)))
+      span.addEventListener('mouseenter', function () {
+        highlightTokenLinks(normalized)
+      })
+      span.addEventListener('mouseleave', clearTokenLinksHighlight)
+      container.appendChild(span)
+    } else {
+      container.appendChild(document.createTextNode(part))
+    }
+  })
+  return container
+}
+
+function highlightTokenLinks (token) {
+  document.querySelectorAll('.mv-token-chip').forEach(el => {
+    if (el.dataset.token === token) el.classList.add('linked')
+  })
+}
+
+function clearTokenLinksHighlight () {
+  document.querySelectorAll('.mv-token-chip.linked').forEach(el => el.classList.remove('linked'))
+}
+
+function showExplainabilityModal (queryTextObj, candidateTextObj) {
+  const data = candidateTextObj.explainability
+  if (!data) return
+
+  let modal = document.getElementById('mv-explain-modal')
+  if (!modal) {
+    modal = document.createElement('div')
+    modal.id = 'mv-explain-modal'
+    modal.className = 'mv-explain-modal'
+    modal.innerHTML = `
+      <div class="mv-explain-dialog">
+        <div class="mv-explain-head">
+          <h4>Token-level match explanation</h4>
+          <button type="button" class="close" aria-label="Close">&times;</button>
+        </div>
+        <div class="mv-explain-controls">
+          <label>Sentence:
+            <select id="mv-sentence-filter"></select>
+          </label>
+          <label style="margin-left:15px;">
+            <input type="checkbox" id="mv-top-signals-only" checked> Top signals only
+          </label>
+        </div>
+        <div class="mv-explain-panes">
+          <div class="mv-explain-pane">
+            <h5>Query passage</h5>
+            <div id="mv-query-pane"></div>
           </div>
-        `).join('')}
-        <div class="analysis-section">
-          <button id="generate-analysis-btn" class="generate-analysis-btn" onclick="generateTextAnalysis()">
-            Generate AI Analysis
-          </button>
-          <div id="analysis-content" class="comparison-explanation">
-            <p>Click the button above to generate an AI analysis comparing these texts.</p>
+          <div class="mv-explain-pane">
+            <h5>Candidate passage</h5>
+            <div id="mv-doc-pane"></div>
           </div>
         </div>
       </div>
-
-      <style>
-        .text-comparison-container {
-          font-family: Arial, sans-serif;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-        .comparison-explanation {
-          background-color: #fbfbfb;
-          padding: 15px;
-          margin-bottom: 20px;
-          border-radius: 5px;
-        }
-        .expandable-section {
-          border: 1px solid #ddd;
-          margin-bottom: 10px;
-          border-radius: 5px;
-        }
-        .section-header {
-          background-color: #f9f9f9;
-          padding: 10px;
-          cursor: pointer;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        .section-header h3 {
-          margin: 0;
-        }
-        .metadata {
-          color: #666;
-          font-size: 0.8em;
-        }
-        .section-content {
-          padding: 10px;
-          background-color: #ffffff;
-        }
-        .generate-analysis-btn {
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          padding: 10px 15px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 16px;
-          margin: 10px 0;
-          cursor: pointer;
-          border-radius: 4px;
-        }
-        .generate-analysis-btn:hover {
-          background-color: #45a049;
-        }
-        .analysis-section {
-          margin-top: 20px;
-          border-top: 1px solid #ddd;
-          padding-top: 15px;
-        }
-      </style>
     `
-    return htmlContent
-  */
+    document.body.appendChild(modal)
+    modal.querySelector('.close').addEventListener('click', function () {
+      modal.style.display = 'none'
+    })
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) modal.style.display = 'none'
+    })
+  }
+
+  modal.style.display = 'flex'
+
+  const sentenceSelect = modal.querySelector('#mv-sentence-filter')
+  const topSignalsOnly = modal.querySelector('#mv-top-signals-only')
+  const queryPane = modal.querySelector('#mv-query-pane')
+  const docPane = modal.querySelector('#mv-doc-pane')
+
+  const sentences = splitSentences(queryTextObj.text)
+  sentenceSelect.innerHTML = '<option value="all">All</option>'
+  sentences.forEach((sentence, idx) => {
+    const option = document.createElement('option')
+    option.value = String(idx)
+    option.textContent = `Sentence ${idx + 1}`
+    sentenceSelect.appendChild(option)
+  })
+
+  const render = function () {
+    const allQueryRows = data.query_tokens || []
+    const allDocRows = data.doc_tokens || []
+    const top = Number(EMBEDDINGS_RERANK_TOP_SIGNALS) || 15
+
+    let queryRows = allQueryRows
+    let docRows = allDocRows
+    if (topSignalsOnly.checked) {
+      queryRows = allQueryRows
+        .filter(row => !row.is_special && !row.is_punctuation)
+        .sort((a, b) => b.share - a.share)
+        .slice(0, top)
+      const docIndexes = new Set(queryRows.map(row => row.best_doc_token_index).filter(v => v >= 0))
+      docRows = allDocRows.filter(row => docIndexes.has(row.index))
+    }
+
+    queryPane.innerHTML = ''
+    docPane.innerHTML = ''
+
+    const selectedSentence = sentenceSelect.value
+    const selectedText = selectedSentence === 'all' ? queryTextObj.text : (sentences[Number(selectedSentence)] || '')
+    queryPane.appendChild(createHeatText(selectedText, queryRows, 'query'))
+    docPane.appendChild(createHeatText(candidateTextObj.text, docRows, 'doc'))
+  }
+
+  sentenceSelect.onchange = render
+  topSignalsOnly.onchange = render
+  render()
 }
 
 // Function to generate "AI Analysis"
