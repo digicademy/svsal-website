@@ -4,8 +4,8 @@
 // ==== Config settings ====
 
 const EMBEDDINGS_SERVER = 'https://c100-188.cloud.gwdg.de/embapi/v1'
-const EMBEDDINGS_PROJECT = 'sal/openai-small'
-const EMBEDDINGS_THRESHOLD = 0.75
+const EMBEDDINGS_PROJECT = 'sal/cohere'
+const EMBEDDINGS_THRESHOLD = 0.15
 const EMBEDDINGS_LIMIT = 5
 const EMBEDDINGS_SUMMARY_SERVER = 'https://api.openai.com/v1/chat/completions'
 const EMBEDDINGS_SUMMARY_MODEL = 'gpt-4o'
