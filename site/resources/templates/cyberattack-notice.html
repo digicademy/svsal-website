@@ -1,0 +1,129 @@
+<div id="sal-cyberattack-notice"
+     class="sal-cyberattack-notice"
+     role="region"
+     aria-label="Service status notice"
+     hidden>
+    <div class="sal-cyberattack-notice__inner">
+        <p class="sal-cyberattack-notice__text">
+            <span class="sal-cyberattack-notice__icon" aria-hidden="true">⚠️</span>
+            <strong>Service notice:</strong>
+            Our service was recently affected by a cyber attack.
+            We are in the process of recovery and expect intermittent
+            disruptions over the next few days. We apologize for any
+            inconvenience.
+        </p>
+        <button type="button"
+                class="sal-cyberattack-notice__dismiss"
+                aria-label="Dismiss this notice">
+            Got it
+        </button>
+    </div>
+</div>
+
+<style>
+    .sal-cyberattack-notice {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #ffc107;                    /* Bootstrap-warning yellow */
+        background-image: linear-gradient(180deg, #ffd43b 0%, #ffc107 100%);
+        color: #1c1c1c;
+        padding: 1rem 1.25rem;
+        font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.35rem);
+        line-height: 1.5;
+        font-weight: 500;
+        z-index: 10500;
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.28);
+        border-bottom: 3px solid #d39e00;
+        animation: sal-cyberattack-slide-in 0.35s ease-out;
+    }
+    .sal-cyberattack-notice[hidden] { display: none !important; }
+
+    .sal-cyberattack-notice__inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.25rem;
+    }
+    .sal-cyberattack-notice__text {
+        margin: 0;
+        flex: 1;
+    }
+    .sal-cyberattack-notice__icon {
+        font-size: 1.35em;
+        vertical-align: -0.15em;
+        margin-right: 0.35em;
+    }
+    .sal-cyberattack-notice__text strong {
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-right: 0.35em;
+    }
+    .sal-cyberattack-notice__dismiss {
+        flex-shrink: 0;
+        background: #1c1c1c;
+        color: #ffc107;
+        border: none;
+        padding: 0.55rem 1.25rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+        transition: background 0.15s ease, transform 0.05s ease;
+    }
+    .sal-cyberattack-notice__dismiss:hover,
+    .sal-cyberattack-notice__dismiss:focus {
+        background: #000;
+        outline: none;
+    }
+    .sal-cyberattack-notice__dismiss:active {
+        transform: translateY(1px);
+    }
+
+    @keyframes sal-cyberattack-slide-in {
+        from { transform: translateY(-100%); opacity: 0; }
+        to   { transform: translateY(0);     opacity: 1; }
+    }
+
+    @media (max-width: 640px) {
+        .sal-cyberattack-notice {
+            font-size: 1rem;
+            padding: 0.9rem 1rem;
+        }
+        .sal-cyberattack-notice__inner {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+        }
+        .sal-cyberattack-notice__dismiss {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+(function () {
+    var KEY = 'sal-cyberattack-notice-v2';   /* bumped from v1 */
+    var el  = document.getElementById('sal-cyberattack-notice');
+    if (!el) return;
+
+    var dismissed = false;
+    try { dismissed = window.sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+    if (dismissed) return;
+
+    el.hidden = false;
+
+    var btn = el.querySelector('.sal-cyberattack-notice__dismiss');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            el.hidden = true;
+            try { window.sessionStorage.setItem(KEY, '1'); } catch (e) {}
+        });
+    }
+})();
+</script>
